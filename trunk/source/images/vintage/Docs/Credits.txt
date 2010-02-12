@@ -1,0 +1,4 @@
+Theme Name: UltimaBB Vintage
+Author: Chris Evans a.k.a Scan
+Copyright: (c) 2006-2007 The UltimaBB Group
+License: Released under the GNU GPL license. A copy is provided with this theme package.

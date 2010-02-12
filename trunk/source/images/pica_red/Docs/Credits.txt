@@ -1,0 +1,4 @@
+Theme Name: Pica Red
+Author(s): Torben Rygg
+Copyright: (c) 2006 The UltimaBB Group
+License: Released under the GNU GPL license. A copy is provided with this theme package.
