@@ -1,0 +1,4 @@
+Theme Name: UltimaBB Pro Black
+Author(s): John Briggs, Rodrigo Moraes, Tanner Ferguson, Adam Houtz, James Appleby
+Copyright: (c) 2004-2007 The UltimaBB Group
+License: Released under the GNU GPL license. A copy is provided with this theme package.

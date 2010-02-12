@@ -1,0 +1,4 @@
+Theme Name: UltimaBB Pro Red
+Author: John Briggs, Rodrigo Moraes
+Copyright: (c) 2006 The UltimaBB Group
+License: Released under the GNU GPL license. A copy is provided with this theme package.
