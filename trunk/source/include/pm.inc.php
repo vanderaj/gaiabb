@@ -156,7 +156,15 @@ class pmModel
                     if (isset($_FILES['attach']) && ($attachedfile = $this->getAttachment($_FILES['attach'], $CONFIG['pmattachstatus'], $CONFIG['max_attach_size'])) !== false)
                     {
                         $next_pmid = $db->result($db->query("SELECT last_insert_id(pmid+1) FROM ".X_PREFIX."pm ORDER BY pmid DESC LIMIT 0,1"),0);
-                        $db->query("INSERT INTO ".X_PREFIX."pm_attachments (aid, pmid, filename, filetype, filesize, fileheight, filewidth, attachment, owner) VALUES ('', '$next_pmid', '$filename', '$filetype', '$filesize', '$fileheight', '$filewidth', '$attachedfile', '$username')");
+                        $db->query("INSERT INTO ".X_PREFIX."pm_attachments (aid, pmid, filename, filetype, filesize, fileheight, filewidth, attachment, owner) VALUES ".
+                        	"('', '".$next_pmid."', ".
+                        	"'".$db->escape($filename)."', ".
+                        	"'".$db->escape($filetype)."', ". 
+                        	"'".intval($filesize)."', ". 
+                        	"'".intval($fileheight)."', ". 
+                        	"'".intval($filewidth)."', ". 
+                        	"'".$db->escape($attachedfile)."', ". 
+                        	"'".$db->escape($username)."')");
                     }
                 }
 
@@ -167,7 +175,16 @@ class pmModel
                     $pm1 = $pm_dao->insert_pm($username, $self['username'], $usr_uid, $self['uid'], 'outgoing', $self['username'], 'Outbox', $subject, $message, 'no', 'yes', $usepmsig);
                     if (isset($_FILES['attach']) && ($attachedfile = $this->getAttachment($_FILES['attach'], $CONFIG['pmattachstatus'], $CONFIG['max_attach_size'])) !== false)
                     {
-                        $db->query("INSERT INTO ".X_PREFIX."pm_attachments (aid, pmid, filename, filetype, filesize, fileheight, filewidth, attachment, owner) VALUES ('', '$pm1', '$filename', '$filetype', '$filesize', '$fileheight', '$filewidth', '$attachedfile', '$self[username]')");
+                        $db->query("INSERT INTO ".X_PREFIX."pm_attachments (aid, pmid, filename, filetype, filesize, fileheight, filewidth, attachment, owner) VALUES ".
+                        "('',". 
+                        "'".$pm1."'", 
+                        "'".$db->escape($filename)."', ".
+                        "'".$db->escape($filetype)."', ". 
+                        "'".intval($filesize)."', ". 
+                        "'".intval($fileheight)."', ". 
+                        "'".intval($filewidth)."', ". 
+                        "'".$db->escape($attachedfile)."', ". 
+                        "'".$db->escape($self[username])."')");
                     }
                 }
 
