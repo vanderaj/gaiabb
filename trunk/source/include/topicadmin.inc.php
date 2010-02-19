@@ -721,7 +721,7 @@ class mod
             $reason = checkInput(formVar('reason'));
             $message = $lang['reportmessage'].' '.$posturl."\n\n".$lang['reason'].' '.$reason;
 
-            $db->query("INSERT INTO ".X_PREFIX."pm (pmid, msgto, msgfrom, type, owner, folder, subject, message, dateline, readstatus, sentstatus, usesig) VALUES ('', '$mod', '$self[username]', 'incoming', '$mod', 'Inbox', '$lang[reportsubject]', '$message', $time, 'no', 'yes', 'no')");
+            $db->query("INSERT INTO ".X_PREFIX."pm (pmid, msgto, msgfrom, type, owner, folder, subject, message, dateline, readstatus, sentstatus, usesig) VALUES ('', '".$db->escape($mod)."', '".$db->escape($self[username])."', 'incoming', '".$db->escape($mod)."', 'Inbox', '$lang[reportsubject]', '".$db->escape($message)."', $time, 'no', 'yes', 'no')");
             $sent++;
         }
 
