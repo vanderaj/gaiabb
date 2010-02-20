@@ -138,7 +138,15 @@ class mysql5Php5 extends DataAccessObject {
     */
     function panic($head, $msg)
     {
-	mail('admin@aussieveedubbers.com', 'Database panic', $msg->getMessage() . "\r\n" . $this->conn->error );
+    	global $CONFIG;
+    	
+    	// TODO: make this configurable as not every host has mail configured
+    	// TODO: make this use the SMTP classes, if possible
+    	if ( isset($CONFIG['adminemail']) && isset($CONFIG['bbname']) ) 
+    	{
+			mail($CONFIG['adminemail'], 'GaiaBB :: Database panic from '.$CONFIG['bbname'], $msg->getMessage() . "\r\n" . $this->conn->error );    		
+    	}
+		
         $this->view_header($head);
         ?>
         <table cellspacing="0" cellpadding="0" border="0" width="97%" align="center" bgcolor="#5176B5">
