@@ -1676,4 +1676,5 @@ $lang['pic_not_located'] = 'The image you\'ve selected could not be opened. Plea
 $lang['noadminemail'] = 'Please set a valid Administrator Email before proceeding!';
 $lang['nobbname'] = 'Please set a valid Forum Name before proceeding!';
 $lang['inactiveusers'] = 'Maximum number of days after which a new user has registered but has never logged in, will be deleted.<br /><span class="smalltxt">Set to 0 to disable.</span>';
+$lang['passwordsuccess'] = 'You have successfully updated your password. You will be logged out. Please login with your new password';
 ?>
