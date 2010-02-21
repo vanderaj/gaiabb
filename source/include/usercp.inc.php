@@ -1118,7 +1118,7 @@ class userObj
     {
         global $db, $oToken, $lang, $THEME, $title, $CONFIG;
         global $selHTML, $self, $onlinetime, $shadow2, $menu;
-        global $cookiepath, $cookiedomain;
+        global $cookiepath, $cookiedomain, $authC;
 
         reset($self);
 
@@ -1192,7 +1192,9 @@ class userObj
             $db->query("UPDATE ".X_PREFIX."members SET $pwtxt WHERE uid = '$self[uid]'");
 
             $currtime = $onlinetime + (86400*30);
-            $authC->logout();
+            $output = table_msg($lang['passwordsuccess']);
+	        eval('echo stripslashes("'.template('usercp_home_layout').'");');
+	        $authC->logout('index.php', 2.5);
         }
 
         $output = table_msg($lang['usercpeditpromsg']);
