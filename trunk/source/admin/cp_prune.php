@@ -171,7 +171,6 @@ function doPanel()
     $pruneByDateType = formVar('pruneByDateType');
 
     $pruneFrom = formVar('pruneFrom');
-
     $pruneFromFid = formVar('pruneFromFid');
 
     $pruneType = formArray('pruneType');
@@ -184,31 +183,42 @@ function doPanel()
             break;
         case 'list':
             $fs = array();
+            
             foreach ($pruneFromList as $fid)
             {
-                $fs[] = (int) trim($fid);
+                $fs[] = intval($fid);
             }
+            
             $fs = array_unique($fs);
+            
             if (count($fs) < 1)
             {
                 cp_error($lang['nopruneforums'], false, '', '</td></tr></table>');
             }
-            $queryWhere[] = 'fid IN ('.implode(',', $fs).')';
+            
+            $queryWhere[] = 't.fid IN ('.implode(',', $fs).')';
             break;
+            
         case 'fid':
             $fs = array();
+            
             $fids = explode(',', $pruneFromFid);
+            
             foreach ($fids as $fid)
             {
-                $fs[] = (int) trim($fid);
+                $fs[] = intval($fid);
             }
+            
             $fs = array_unique($fs);
+            
             if (count($fs) < 1)
             {
                 cp_error($lang['nopruneforums'], false, '', '</td></tr></table>');
             }
-            $queryWhere[] = 'fid IN ('.implode(',', $fs).')';
+            
+            $queryWhere[] = 't.fid IN ('.implode(',', $fs).')';
             break;
+            
         default:
             cp_error($lang['nopruneforums'], false, '', '</td></tr></table>');
             break;
@@ -222,15 +232,18 @@ function doPanel()
             case 'less':
                 $sign = '<';
                 break;
+                
             case 'is':
                 $sign = '=';
                 break;
+                
             case 'more':
             default:
                 $sign = '>';
                 break;
         }
-        $queryWhere[] = 'replies '.$sign.' '.($pruneByPosts-1);
+        
+        $queryWhere[] = 't.replies '.$sign.' '.($pruneByPosts-1);
     }
 
     if (in_array('date', $pruneBy))
@@ -239,38 +252,38 @@ function doPanel()
         switch ($pruneByDateType)
         {
             case 'less':
-                $queryWhere[] = 'lastpost >= '.($onlinetime-(24*3600*$pruneByDate));
+                $queryWhere[] = 't.tid=l.tid AND l.dateline >= '.($onlinetime-(24*3600*$pruneByDate));
                 break;
             case 'is':
-                $queryWhere[] = 'lastpost >= '.($onlinetime-(24*3600*($pruneByDate-1))).' AND lastpost <= '.($onlinetime-(24*3600*($pruneByDate)));
+                $queryWhere[] = 't.tid=l.tid AND l.dateline >= '.($onlinetime-(24*3600*($pruneByDate-1))).' AND l.dateline <= '.($onlinetime-(24*3600*($pruneByDate)));
                 break;
             case 'more':
             default:
-                $queryWhere[] = 'lastpost <= '.($onlinetime-(24*3600*$pruneByDate));
+                $queryWhere[] = 't.tid=l.tid AND l.dateline <= '.($onlinetime-(24*3600*$pruneByDate));
                 break;
         }
     }
 
     if (!in_array('closed', $pruneType))
     {
-        $queryWhere[] = "closed != 'yes'";
+        $queryWhere[] = "t.closed != 'yes'";
     }
 
     if (!in_array('topped', $pruneType))
     {
-        $queryWhere[] = "topped != '1'";
+        $queryWhere[] = "t.topped != '1'";
     }
 
     if (!in_array('normal', $pruneType))
     {
-        $queryWhere[] = "(topped = '1' OR closed = 'yes')";
+        $queryWhere[] = "(t.topped = '1' OR t.closed = 'yes')";
     }
 
     if (count($queryWhere) > 0)
     {
         $tids = array();
         $queryWhere = implode(' AND ', $queryWhere);
-        $q = $db->query("SELECT tid FROM ".X_PREFIX."threads WHERE ".$queryWhere);
+        $q = $db->query("SELECT t.tid FROM ".X_PREFIX."threads t, ".X_PREFIX."lastposts l WHERE ".$queryWhere);
         if ($db->num_rows($q) > 0)
         {
             while ($t = $db->fetch_array($q))
@@ -279,10 +292,10 @@ function doPanel()
             }
             $db->free_result($q);
             $tids = implode(',', $tids);
-            $db->query("DELETE FROM ".X_PREFIX."threads WHERE tid IN($tids)");
-            $db->query("DELETE FROM ".X_PREFIX."posts WHERE tid IN($tids)");
-            $db->query("DELETE FROM ".X_PREFIX."attachments WHERE tid IN($tids)");
-            $db->query("DELETE FROM ".X_PREFIX."subscriptions WHERE tid IN($tids)");
+            $db->query("DELETE FROM ".X_PREFIX."threads WHERE tid IN (".$tids.")");
+            $db->query("DELETE FROM ".X_PREFIX."posts WHERE tid IN (".$tids.")");
+            $db->query("DELETE FROM ".X_PREFIX."attachments WHERE tid IN (".$tids.")");
+            $db->query("DELETE FROM ".X_PREFIX."subscriptions WHERE tid IN (".$tids.")");
             updatelastposts();
         }
     }
@@ -292,7 +305,7 @@ function doPanel()
         $db->query("TRUNCATE TABLE ".X_PREFIX."attachments");
         $db->query("TRUNCATE TABLE ".X_PREFIX."posts");
         $db->query("TRUNCATE TABLE ".X_PREFIX."subscriptions");
-        $db->query("UPDATE ".X_PREFIX."members SET postnum = '0'");
+        $db->query("UPDATE ".X_PREFIX."members SET postnum = 0");
         updatelastposts();
     }
 
