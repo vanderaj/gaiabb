@@ -132,14 +132,14 @@ function doPanel()
     {
         if (is_numeric($val) && $val > 0)
         {
-            $clean_array[] = $val;
+            $clean_array[] = intval($val);
         }
     }
     $clean_str = implode(',', $clean_array);
-
+    
     if (!empty($clean_str))
     {
-        $db->query("UPDATE ".X_PREFIX."threads SET closed = 'yes' WHERE fid IN ($clean_str) AND lastpost < $old");
+        $db->query("UPDATE ".X_PREFIX."threads t, ".X_PREFIX."lastposts l SET t.closed = 'yes' WHERE t.fid IN (".$clean_str.") AND t.tid=l.tid AND l.dateline < " . $old);
     }
     cp_message($lang['tool_inactivethreads'], false, '', '</td></tr></table>', 'index.php', true, false, true);
 }
