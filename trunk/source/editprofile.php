@@ -184,25 +184,7 @@ if (noSubmit('editsubmit'))
     $themelist = implode("\n", $themelist);
     $db->free_result($query);
 
-    $lfs = array();
-    $dir = opendir(ROOT.'lang');
-    while ($file = readdir($dir))
-    {
-        if (is_file(ROOT.'lang/'.$file) && false !== strpos($file, '.lang.php'))
-        {
-            $file = str_replace('.lang.php', '', $file);
-            if ($file == $member['langfile'])
-            {
-                $lfs[] = '<option value="'.$file.'" '.$selHTML.'>'.$file.'</option>';
-            }
-            else
-            {
-                $lfs[] = '<option value="'.$file.'">'.$file.'</option>';
-            }
-        }
-    }
-    natcasesort($lfs);
-    $langfileselect = '<select name="langfilenew">'.implode("\n", $lfs).'</select>';
+    $langfileselect = langSelect();
 
     BDayDisplay();
 
@@ -394,7 +376,7 @@ if (onSubmit('editsubmit'))
     }
     $timeformatnew = addslashes(formVar('timeformatnew'));
     $dateformatnew = addslashes(formVar('dateformatnew'));
-    $langfilenew = addslashes(formVar('langfilenew'));
+    $langfilenew = $db->escape(findLangName(formInt('langfilenew')));
 
     $max_size = explode('x', $CONFIG['max_avatar_size']);
     if ($max_size[0] > 0 && $max_size[1] > 0 && substr_count($avatar, ',') < 2)

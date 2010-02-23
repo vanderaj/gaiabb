@@ -46,49 +46,6 @@ loadtpl(
 );
 
 /**
-* findLangName() - given a number between 1..n, find its language name
-*
-* In olden days, we would return a partial filename to the user. In these
-* days of high security, that's no good at all. So we return a simple
-* number between 1..n to the user. This function's job is to turn that
-* returned number back into a partial filename in a safe way.
-*
-* @param    $instance   integer, the value from the user
-* @return   string, partial filename useful for stashing in the settings array
-*/
-function findLangName($instance)
-{
-    $instance = intval($instance);
-    if ($instance < 1)
-    {
-        return "";
-    }
-
-    $dir = opendir(ROOT.'lang');
-    $langpos = 0;
-    $file = '';
-    while ($file = readdir($dir))
-    {
-        if ($instance == $langpos)
-        {
-            if (is_file(ROOT.'lang/'.$file) && false !== strpos($file, '.lang.php'))
-            {
-                $file = str_replace('.lang.php', '', $file);
-                break;
-            }
-        }
-        $langpos++;
-    }
-
-    if (empty($file))
-    {
-        $file = 'English';
-    }
-
-    return $file;
-}
-
-/**
 * function() - short description of function
 *
 * Long description of function
@@ -270,27 +227,7 @@ switch ($action)
             }
             else
             {
-                $lfs = array();
-                $dir = opendir(ROOT.'lang');
-                $langpos = 0;
-                while ($file = readdir($dir))
-                {
-                    if (is_file(ROOT.'lang/'.$file) && false !== strpos($file, '.lang.php'))
-                    {
-                        $file = str_replace('.lang.php', '', $file);
-                        if ($file == $CONFIG['langfile'])
-                        {
-                            $lfs[] = '<option value="'.$langpos.'" '.$selHTML.'>'.$file.'</option>';
-                        }
-                        else
-                        {
-                            $lfs[] = '<option value="'.$langpos.'">'.$file.'</option>';
-                        }
-                    }
-                    $langpos++;
-                }
-                natcasesort($lfs);
-                $langfileselect = '<select name="langfilenew">'.implode("\n", $lfs).'</select>';
+                $langfileselect = langSelect();
 
                 $currdate = gmdate($self['timecode'], $onlinetime);
                 eval($lang['evaloffset']);
