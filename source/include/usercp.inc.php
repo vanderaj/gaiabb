@@ -734,7 +734,7 @@ class userObj
 
         $member->record['timeformat'] = formVar('timeformatnew');
         $member->record['dateformat'] = formVar('dateformatnew');
-        $member->record['langfile'] = formVar('langfilenew');
+        $member->record['langfile'] = findLangName(formInt('langfilenew'));
 
         if (!empty($self['firstname']) || !empty($self['firstname']))
         {

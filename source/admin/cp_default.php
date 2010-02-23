@@ -71,24 +71,7 @@ function viewPanel()
     global $THEME, $lang, $shadow2, $oToken, $db, $CONFIG, $selHTML;
     global $self, $onlinetime, $ubblva;
 
-    $lfs = array();
-    $dir = opendir(ROOT.'lang');
-    while ($file = readdir($dir)) {
-        if (is_file(ROOT.'lang/'.$file) && false !== strpos($file, '.lang.php'))
-        {
-            $file = str_replace('.lang.php', '', $file);
-            if ($file == $CONFIG['langfile'])
-            {
-                $lfs[] = '<option value="'.$file.'" '.$selHTML.'>'.$file.'</option>';
-            }
-            else
-            {
-                $lfs[] = '<option value="'.$file.'">'.$file.'</option>';
-            }
-        }
-    }
-    natcasesort($lfs);
-    $langfileselect = '<select name="langfilenew">'.implode("\n", $lfs).'</select>';
+    $langfileselect = langSelect();
 
     $themelist = array();
     $themelist[] = '<select name="themenew">';
@@ -395,7 +378,7 @@ function doPanel()
     $timeformatnew = formVar('timeformatnew');
     $timeformatnew = ($timeformatnew == 24) ? 24 : 12;
     $daylightsavings1 = ($daylightsavings1 == 3600) ? 3600 : 0;
-    $langfilenew = $db->escape(formVar('langfilenew'));
+    $langfilenew = $db->escape(findLangName(formInt('langfilenew')));
     $dateformatnew = $db->escape(formVar('dateformatnew'));
 
     $config_array = array (
