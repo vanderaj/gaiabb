@@ -71,7 +71,7 @@ function viewPanel()
     global $THEME, $lang, $shadow2, $oToken, $db, $CONFIG;
     
     ?>
-    <form method="post" action="cp_fixfavorites.php">
+    <form method="post" action="cp_fixorphanedposts.php">
     <input type="hidden" name="token" value="<?php echo $oToken->get_new_token()?>" />
     <table cellspacing="0px" cellpadding="0px" border="0px" width="100%" align="center">
     <tr>
