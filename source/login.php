@@ -36,19 +36,13 @@ define('ROOT', './');
 
 require_once(ROOT.'header.php');
 
-if (onSubmit('loginsubmit'))
-{
-    $oToken->assert_token();
-    $authC->checkExcessiveLogins();
-    $authC->login();
-} 
-
 loadtpl(
 'login',
 'login_incorrectdetails'
 );
 
 $shadow = shadowfx();
+$shadow2 = shadowfx2();
 $meta = metaTags();
 
 smcwcache();
@@ -63,6 +57,25 @@ eval('echo "'.template('header').'";');
 if (X_MEMBER)
 {
     error($lang['plogtuf'], false);
+}
+
+$errMessage = '';
+
+if (onSubmit('loginsubmit'))
+{
+    $oToken->assert_token();
+    
+    $errMessage = $authC->checkExcessiveLogins();
+    
+    if ( empty($errMessage) ) 
+    {
+    	$errMessage = $authC->login();
+    }
+} 
+
+if ( !empty($errMessage) )
+{
+	echo $errMessage;
 }
 
 eval('echo stripslashes("'.template('login').'");');

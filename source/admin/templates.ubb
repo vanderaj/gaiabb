@@ -43,13 +43,14 @@ $listquickthemes
 </tr>
 <tr>
 <td class="ctrtablerow" bgcolor="{$THEME['altbg1']}" width="8%"><img src="{$THEME['imgdir']}/exclamation.gif" border="0px" alt="{$lang['featurewarning']}" title="{$lang['featurewarning']}" /></td>
-<td class="tablerow" bgcolor="{$THEME['altbg2']}"><span class="smalltxt"><strong>{$lang['textpw1']}</strong></span><br />{$lang['textpw2']}<br /></td>
+<td class="tablerow" bgcolor="{$THEME['altbg2']}"><span class="smalltxt"><strong>{$lang['textpw1']}</strong></span><br /></td>
 </tr>
 </table>
 </td>
 </tr>
 </table>
 $shadow
+<br />
 
 |#*UBB TEMPLATE FILE*#|error_nologinsession|#*UBB TEMPLATE*#|
 <form method="post" action="login.php">
@@ -6403,5 +6404,43 @@ $shadow2
 </tr>
 </table>
 $shadow
+
+|#*UBB TEMPLATE FILE*#|login_loginmaxmet|#*UBB TEMPLATE*#|
+<table cellspacing="0px" cellpadding="0px" border="0px" width="{$THEME['tablewidth']}" align="center">
+<tr>
+<td bgcolor="{$THEME['bordercolor']}">
+<table border="0px" cellspacing="{$THEME['borderwidth']}" cellpadding="{$THEME['tablespace']}" width="100%">
+<tr class="category">
+<td class="title" colspan="2">{$lang['textlogin_incorrect']}</td>
+</tr>
+<tr>
+<td class="ctrtablerow" bgcolor="{$THEME['altbg1']}" width="8%"><img src="{$THEME['imgdir']}/exclamation.gif" border="0px" alt="{$lang['featurewarning']}" title="{$lang['featurewarning']}" /></td>
+<td class="tablerow" bgcolor="{$THEME['altbg2']}"><span class="smalltxt"><strong>{$lang['login_max_met']}</strong></span><br /></td>
+</tr>
+</table>
+</td>
+</tr>
+</table>
+$shadow
+<br />
+
+|#*UBB TEMPLATE FILE*#|login_time_met|#*UBB TEMPLATE*#|
+<table cellspacing="0px" cellpadding="0px" border="0px" width="{$THEME['tablewidth']}" align="center">
+<tr>
+<td bgcolor="{$THEME['bordercolor']}">
+<table border="0px" cellspacing="{$THEME['borderwidth']}" cellpadding="{$THEME['tablespace']}" width="100%">
+<tr class="category">
+<td class="title" colspan="2">{$lang['textlogin_incorrect']}</td>
+</tr>
+<tr>
+<td class="ctrtablerow" bgcolor="{$THEME['altbg1']}" width="8%"><img src="{$THEME['imgdir']}/exclamation.gif" border="0px" alt="{$lang['featurewarning']}" title="{$lang['featurewarning']}" /></td>
+<td class="tablerow" bgcolor="{$THEME['altbg2']}"><span class="smalltxt"><strong>{$lang['login_time_met']}</strong></span><br /></td>
+</tr>
+</table>
+</td>
+</tr>
+</table>
+$shadow
+<br />
 
 |#*UBB TEMPLATE FILE*#|
