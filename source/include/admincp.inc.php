@@ -166,7 +166,7 @@ function displayAdminPanel()
     <li><a href="cp_fixthreads.php"><?php echo $THEME['navsymbol']?>&nbsp;<?php echo $lang['textfixothreads']?></a></li>
     <li><a href="cp_fixattachments.php"><?php echo $THEME['navsymbol']?>&nbsp;<?php echo $lang['textfixoattachments']?></a></li>
     <li><a href="cp_fixtools.php?action=fixorphanedposts&amp;token=<?php echo $oToken->get_new_token()?>"><?php echo $THEME['navsymbol']?>&nbsp;<?php echo $lang['tool_fixtids']?></a></li>
-    <li><a href="cp_fixtools.php?action=fixorphanedfavorites&amp;token=<?php echo $oToken->get_new_token()?>"><?php echo $THEME['navsymbol']?>&nbsp;<?php echo $lang['tool_fixfavtids']?></a></li>
+    <li><a href="cp_fixfavorites.php"><?php echo $THEME['navsymbol']?>&nbsp;<?php echo $lang['tool_fixfavtids']?></a></li>
     <li><a href="cp_fixtools.php?action=fixorphanedsubscriptions&amp;token=<?php echo $oToken->get_new_token()?>"><?php echo $THEME['navsymbol']?>&nbsp;<?php echo $lang['tool_fixsubtids']?></a></li>
     <li><a href="cp_fixsmilies.php"><?php echo $THEME['navsymbol']?>&nbsp;<?php echo $lang['fixsmilies']?></a></li>
     <li><a href="cp_pmdump.php"><?php echo $THEME['navsymbol']?>&nbsp;<?php echo $lang['pmdump']?></a></li>
