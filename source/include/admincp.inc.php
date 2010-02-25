@@ -167,7 +167,7 @@ function displayAdminPanel()
     <li><a href="cp_fixattachments.php"><?php echo $THEME['navsymbol']?>&nbsp;<?php echo $lang['textfixoattachments']?></a></li>
     <li><a href="cp_fixorphanedposts.php"><?php echo $THEME['navsymbol']?>&nbsp;<?php echo $lang['tool_fixtids']?></a></li>
     <li><a href="cp_fixfavorites.php"><?php echo $THEME['navsymbol']?>&nbsp;<?php echo $lang['tool_fixfavtids']?></a></li>
-    <li><a href="cp_fixtools.php?action=fixorphanedsubscriptions&amp;token=<?php echo $oToken->get_new_token()?>"><?php echo $THEME['navsymbol']?>&nbsp;<?php echo $lang['tool_fixsubtids']?></a></li>
+    <li><a href="cp_fixsubscriptions.php"><?php echo $THEME['navsymbol']?>&nbsp;<?php echo $lang['tool_fixsubtids']?></a></li>
     <li><a href="cp_fixsmilies.php"><?php echo $THEME['navsymbol']?>&nbsp;<?php echo $lang['fixsmilies']?></a></li>
     <li><a href="cp_pmdump.php"><?php echo $THEME['navsymbol']?>&nbsp;<?php echo $lang['pmdump']?></a></li>
     <li><a href="cp_deleteoldpms.php"><?php echo $THEME['navsymbol']?>&nbsp;<?php echo $lang['Delete_old_pms']?></a></li>

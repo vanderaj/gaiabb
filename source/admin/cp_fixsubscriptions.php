@@ -47,11 +47,14 @@ loadtpl(
 $shadow = shadowfx();
 $shadow2 = shadowfx2();
 $meta = metaTags();
-nav('<a href="index.php">' . $lang['textcp'] . '</a>');
-nav($lang['tools']);
-btitle($lang['textcp']);
-btitle($lang['tools']);
+
 eval('$css = "'.template('css').'";');
+
+nav('<a href="index.php">'.$lang['textcp'].'</a>');
+nav($lang['textfixothreads']);
+btitle($lang['textcp']);
+btitle($lang['textfixothreads']);
+
 eval('echo "'.template('cp_header').'";');
 
 if (!X_ADMIN)
@@ -66,69 +69,39 @@ smcwcache();
 function viewPanel()
 {
     global $THEME, $lang, $shadow2, $oToken, $db, $CONFIG;
-}
-function fixorphanedposts()
-{
-    global $THEME, $lang, $shadow2, $oToken, $db, $CONFIG;
-
-    $oToken->assert_token();
-
-    $query = $db->query("SELECT tid, pid FROM " . X_PREFIX . "posts WHERE 1 ORDER BY pid ASC");
-    $count = $count2 = 0;
-    while ($posts = $db->fetch_array($query))
-    {
-        $count2++;
-        $query2 = $db->query("SELECT tid, subject FROM " . X_PREFIX . "threads WHERE tid = $posts[tid]");
-        $thread = $db->fetch_array($query2);
-        if (empty ($thread['tid']))
-        {
-            $count++;
-            $db->query("DELETE FROM " . X_PREFIX . "posts WHERE pid = $posts[pid]");
-        }
-    }
-    $db->free_result($query);
-    if ($count == 0)
-    {
-        $percent = 0;
-    } else
-    {
-        $percent = 100 / ($count2 / $count);
-    }
-    cp_message($count . ' ' . $lang['tool_of'] . ' ' . $count2 . ' (' . $percent . '%) ' . $lang['tool_tids'], false, '', '</td></tr></table>', 'index.php', true, false, true);
-}
-
-function fixorphanedfavorites()
-{
-    global $THEME, $lang, $shadow2, $oToken, $db, $CONFIG;
-    $oToken->assert_token();
-    $query = $db->query("SELECT tid, username FROM " . X_PREFIX . "favorites WHERE 1 ORDER BY tid ASC");
-    $count = $count2 = 0;
-    while ($favs = $db->fetch_array($query))
-    {
-        $count2++;
-        $query2 = $db->query("SELECT tid FROM " . X_PREFIX . "threads WHERE tid = $favs[tid]");
-        $thread = $db->fetch_array($query2);
-        if (empty ($thread['tid']))
-        {
-            $count++;
-            $db->query("DELETE FROM " . X_PREFIX . "favorites WHERE tid = $favs[tid] AND username = '$favs[username]'");
-            $db->query("DELETE FROM " . X_PREFIX . "favorites WHERE username = ''");
-        }
-    }
-    $db->free_result($query);
-    if ($count == 0)
-    {
-        $percent = 0;
-    } else
-    {
-        $percent = 100 / ($count2 / $count);
-    }
-    cp_message($count . ' ' . $lang['tool_of'] . ' ' . $count2 . ' (' . $percent . '%) ' . $lang['tool_favorites'], false, '', '</td></tr></table>', 'index.php', true, false, true);
+    
+    ?>
+    <form method="post" action="cp_fixsubscriptions.php">
+    <input type="hidden" name="token" value="<?php echo $oToken->get_new_token()?>" />
+    <table cellspacing="0px" cellpadding="0px" border="0px" width="100%" align="center">
+    <tr>
+    <td bgcolor="<?php echo $THEME['bordercolor']?>">
+    <table border="0px" cellspacing="<?php echo $THEME['borderwidth']?>" cellpadding="<?php echo $THEME['tablespace']?>" width="100%">
+    <tr class="category">
+    <td colspan="2" class="title"><?php echo $lang['admin_fix_subscriptions_title']?></td>
+    </tr>
+    <tr class="ctrtablerow" bgcolor="<?php echo $THEME['altbg1']?>">
+    <td colspan="2"><?php echo $lang['admin_fix_subscriptions_confirm']?></td>
+    </tr>
+    <tr class="ctrtablerow" bgcolor="<?php echo $THEME['altbg2']?>">
+    <td colspan="2"><input class="submit" type="submit" name="yessubmit" value="<?php echo $lang['textyes']?>" />&nbsp;-&nbsp;
+    <input class="submit" type="submit" name="nosubmit" value="<?php echo $lang['textno']?>" /></td>
+    </tr>
+    </table>
+    </td>
+    </tr>
+    </table>
+    <?php echo $shadow2?>
+    </form>
+    </td>
+    </tr>
+    </table>
+    <?php
 }
 
-function fixorphanedsubscriptions()
+function doPanel()
 {
-    global $THEME, $lang, $shadow2, $oToken, $db, $CONFIG;
+	global $THEME, $lang, $shadow2, $oToken, $db, $CONFIG;
 
     $oToken->assert_token();
 
@@ -159,20 +132,19 @@ function fixorphanedsubscriptions()
 
 displayAdminPanel();
 
-switch ($action)
+if (noSubmit('yessubmit') && noSubmit('nosubmit'))
 {
-    case 'fixorphanedposts':
-        fixorphanedposts();
-        break;
-    case 'fixorphanedfavorites':
-        fixorphanedfavorites();
-        break;
-    case 'fixorphanedsubscriptions':
-        fixorphanedsubscriptions();
-        break;
-    default:
-        redirect('index.php', 0);
-    break;
+    viewPanel();
+}
+
+if (onSubmit('yessubmit') && noSubmit('nosubmit'))
+{
+    doPanel();
+}
+
+if (onSubmit('nosubmit') && noSubmit('yessubmit'))
+{
+    redirect('index.php', 0);
 }
 
 loadtime();

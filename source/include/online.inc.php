@@ -154,7 +154,9 @@ function url_to_text($url)
           false !== strpos($url, '/admin/cp_fixmposts.php') ||
           false !== strpos($url, '/admin/cp_fixmthreads.php') ||
           false !== strpos($url, '/admin/cp_fixsmilies.php') ||
-          false !== strpos($url, '/admin/cp_fixtools.php') ||
+          false !== strpos($url, '/admin/cp_fixfavorites.php') ||
+          false !== strpos($url, '/admin/cp_fixorphanedposts.php') ||
+          false !== strpos($url, '/admin/cp_fixsubscriptions.php') ||
           false !== strpos($url, '/admin/cp_fixttotals.php') ||
           false !== strpos($url, '/admin/cp_forums.php') ||
           false !== strpos($url, '/admin/cp_general.php') ||
