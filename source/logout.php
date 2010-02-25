@@ -36,16 +36,24 @@ define('ROOT', './');
 
 require_once(ROOT.'header.php');
 
-loadtpl('');
-
-// eval('$css = "'.template('css').'";');
-// eval('echo "'.template('header').'";');
-
 if (X_GUEST)
 {
     redirect('index.php', 0);
 }
-// CSRF test. In this case, we DONT want the user to be logged out, just warned
-$oToken->assert_token(false);
+
+loadtpl('css', 'error', 'footer', 'header');
+
+$shadow = shadowfx();
+$shadow2 = shadowfx2();
+$meta = metaTags();
+
+eval('$css = "'.template('css').'";');
+
+nav($lang['textlogout']);
+btitle($lang['textlogout']);
+
+eval('echo "'.template('header').'";');
+
+$oToken->assert_token();
 $authC->logout();
 ?>
