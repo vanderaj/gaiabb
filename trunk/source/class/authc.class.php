@@ -362,17 +362,21 @@ class AuthC
 
     function checkExcessiveLogins()
     {
-        global $lang, $onlinetime;
+        global $lang, $onlinetime, $THEME, $shadow;
 
+        $errmsg = '';
+        
         if (!empty ($_SESSION['login_next_attempt']) && $_SESSION['login_next_attempt'] > $onlinetime)
         {
-            error($lang['login_time_met'], false);
+            eval ('$errmsg = "' . template('login_time_met') . '";');
         }
         elseif (!empty ($_SESSION['login_next_attempt']) && $_SESSION['login_next_attempt'] <= $onlinetime)
         {
             unset ($_SESSION['login_next_attempt']);
             unset ($_SESSION['login_attempts']);
         }
+        
+        return $errmsg;
     }
 
     function checkForceLogout()
@@ -392,8 +396,11 @@ class AuthC
 
     function updateLoginCounters()
     {
-        global $CONFIG, $onlinetime, $lang;
+        global $CONFIG, $onlinetime, $lang, $THEME, $shadow;
         
+        $errmsg = '';
+		eval ('$errmsg = "' . template('login_incorrectdetails') . '";');
+		        
         if (!isset ($_SESSION['login_attempts']))
         {
             $_SESSION['login_attempts'] = 1;
@@ -403,16 +410,19 @@ class AuthC
             $_SESSION['login_attempts']++;
             if ($_SESSION['login_attempts'] >= $CONFIG['login_max_attempts'])
             {
-                $_SESSION['login_next_attempt'] = $onlinetime +600;
-                error($lang['login_max_met'], false, '', '', 'login.php');
+                $_SESSION['login_next_attempt'] = $onlinetime + 600;
+                eval ('$errmsg = "' . template('login_loginmaxmet') . '";'); 
             }
         }
-        eval ('echo "' . template('login_incorrectdetails') . '";');
+        
+        return $errmsg;
     }
 
     function login()
     {
         global $db, $member, $cookiedomain, $cookiepath, $onlinetime, $onlineip, $authState, $ubbuid, $ubbpw;
+        
+        $errmsg = '';
         
         $username = formVar('username');
         $password = md5(formVar('password'));
@@ -460,8 +470,10 @@ class AuthC
         }
         else
         {
-            $this->updateLoginCounters();
+            $errmsg = $this->updateLoginCounters();
         }
+        
+        return $errmsg;
     }
 
     function logout($url = 'index.php', $delay = 0)
