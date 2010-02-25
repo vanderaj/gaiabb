@@ -1551,12 +1551,9 @@ function ServerLoad()
 function error($msg, $showheader = true, $prepend = '', $append = '', $redirect = false, $die = true, $return_as_string = false, $showfooter = true)
 {
     global $footerstuff, $lang, $navigation;
-    global $CONFIG, $THEME;
+    global $CONFIG, $THEME, $shadow, $lang_nalign, $quickjump;
+    global $versionlong, $bottomcorners, $css;
 
-    if (isset($GLOBALS))
-    {
-        extract($GLOBALS);
-    }
     $args = func_get_args();
 
     $message = (isset($args[0]) ? $args[0] : '');
@@ -1570,18 +1567,15 @@ function error($msg, $showheader = true, $prepend = '', $append = '', $redirect 
 
     $header = $footer = $return = '';
 
-    loadtime();
-
-    if ($redirect !== false)
+	if ($redirect !== false)
     {
         redirect($redirect, 3.0, X_REDIRECT_JS);
     }
+    
+    loadtime();
 
-    if ($showheader === false)
-    {
-        $header = '';
-    }
-    else
+    $header = '';
+    if ($showheader === true)
     {
         if (!isset($css) || strlen($css) == 0)
         {
@@ -1593,29 +1587,27 @@ function error($msg, $showheader = true, $prepend = '', $append = '', $redirect 
     $error = '';
     eval('$error = "'.template('error').'";');
 
+    $footer = '';
     if ($showfooter === true)
     {
         eval('$footer = "'.template('footer').'";');
     }
-    else
-    {
-        $footer = '';
-    }
 
+    $return = '';
     if ($return_str !== false)
     {
-        $return = $prepend . $error . $append . $footer;
+        $return = $css . $header . $prepend . $error . $append . $footer;
     }
     else
     {
-        echo $prepend . $error . $append . $footer;
-        $return = '';
+        echo $css . $header . $prepend . $error . $append . $footer;
     }
 
     if ($die)
     {
         exit;
     }
+    
     return $return;
 }
 
