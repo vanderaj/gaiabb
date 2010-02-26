@@ -170,7 +170,7 @@ class DataAccessObject {
         <br />
         Powered by GaiaBB
         <br />
-        Copyright © 2009 The GaiaBB Group. All rights reserved.
+        Copyright &copy; 2010 The GaiaBB Group. All rights reserved.
         <br />
         <br />
         </td>

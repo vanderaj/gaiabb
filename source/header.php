@@ -905,11 +905,11 @@ if (!isset($CONFIG['max_reg_day']) || $CONFIG['max_reg_day'] < 1 || $CONFIG['max
 // display version build (John)
 if ($CONFIG['show_full_info'] == 'on')
 {
-    $versionlong = '<br />Powered by <a href="http://www.GaiaBB.com" target="_blank"><strong>'.$versionshort.'</strong></a> ('.$alpha.''.$beta.''.$gamma.''.$sp.'), © 2009 The GaiaBB Group';
+    $versionlong = '<br />Powered by <a href="http://www.GaiaBB.com" target="_blank"><strong>'.$versionshort.'</strong></a> ('.$alpha.''.$beta.''.$gamma.''.$sp.'), &copy; 2010 The GaiaBB Group';
 }
 else
 {
-    $versionlong = '<br />Powered by <a href="http://www.GaiaBB.com" target="_blank"><strong>'.$versionshort.'</strong></a>, © 2009 The GaiaBB Group';
+    $versionlong = '<br />Powered by <a href="http://www.GaiaBB.com" target="_blank"><strong>'.$versionshort.'</strong></a>, &copy; 2010 The GaiaBB Group';
 }
 
 // If the board is offline, display an appropriate message
