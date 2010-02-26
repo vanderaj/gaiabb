@@ -692,19 +692,27 @@ class mod
 
         $query = $db->query("SELECT count(pid) FROM ".X_PREFIX."posts WHERE tid = '$tid'");
         $postcount = $db->result($query, 0);
+        $db->free_result($query);
+        
         if ($postcount == 0)
         {
             error($lang['textnothread'], false);
         }
 
-        $query = $db->query("SELECT moderator FROM ".X_PREFIX."forums WHERE fid = '$fid'");
-        $query2 = $db->query("SELECT username FROM ".X_PREFIX."members WHERE status = 'Super Administrator' OR status = 'Administrator'");
-        $mods = explode(", ", $db->result($query, 0));
-        while ($usr = $db->fetch_array($query2))
+        $mods = array();
+        
+        $query = $db->query("SELECT username FROM ".X_PREFIX."members WHERE status = 'Super Administrator' OR status = 'Administrator'");
+        while ($usr = $db->fetch_array($query))
         {
             $mods[] = $usr['username'];
         }
         $db->free_result($query);
+        
+        $query = $db->query("SELECT moderator FROM ".X_PREFIX."forums WHERE fid = '$fid'");
+        $mods = explode(", ", $db->result($query, 0));
+        $db->free_result($query);
+        
+        $mods = array_unique($mods);
 
         $sent = 0;
         $time = $db->time($onlinetime);
@@ -721,7 +729,7 @@ class mod
             $reason = checkInput(formVar('reason'));
             $message = $lang['reportmessage'].' '.$posturl."\n\n".$lang['reason'].' '.$reason;
 
-            $db->query("INSERT INTO ".X_PREFIX."pm (pmid, msgto, msgfrom, type, owner, folder, subject, message, dateline, readstatus, sentstatus, usesig) VALUES ('', '".$db->escape($mod)."', '".$db->escape($self[username])."', 'incoming', '".$db->escape($mod)."', 'Inbox', '$lang[reportsubject]', '".$db->escape($message)."', $time, 'no', 'yes', 'no')");
+            $db->query("INSERT INTO ".X_PREFIX."pm (pmid, msgto, msgfrom, type, owner, folder, subject, message, dateline, readstatus, sentstatus, usesig) VALUES ('', '".$db->escape($mod)."', '".$db->escape($self['username'])."', 'incoming', '".$db->escape($mod)."', 'Inbox', '".$lang['reportsubject']."', '".$db->escape($message)."', $time, 'no', 'yes', 'no')");
             $sent++;
         }
 
