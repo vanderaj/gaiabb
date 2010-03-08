@@ -628,8 +628,8 @@ $config_cache->expire('pluglinks');
 $config_cache->expire('whosonline');
 $config_cache->expire('forumjump');
 
-$fdetails = getRequestVar('fdetails');
-$gdetails = getRequestVar('gdetails');
+$fdetails = getRequestInt('fdetails');
+$gdetails = getRequestInt('gdetails');
 
 if (noSubmit('faqsubmit') && empty($fdetails) && empty($gdetails))
 {
