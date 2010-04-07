@@ -857,7 +857,7 @@ class userObj
             }
 
             $newmd5pass = md5(trim($newpass));
-            $db->query("UPDATE ".X_PREFIX."members SET email = '$email', password = '$newmd5pass' WHERE uid = '$self[uid]'");
+            $db->query("UPDATE ".X_PREFIX."members SET email = '$email', password = '$newmd5pass' WHERE uid = '".$self['uid']."'");
             $db->query("DELETE FROM ".X_PREFIX."whosonline WHERE username = '".$self['username']."'");
 
 
@@ -871,7 +871,7 @@ class userObj
 
             $authC->logout();
         }
-        $db->query("UPDATE ".X_PREFIX."members SET email = '$email' WHERE uid = '$self[uid]'");
+        $db->query("UPDATE ".X_PREFIX."members SET email = '$email' WHERE uid = '".$self['uid']."'");
 
         $output = table_msg($lang['usercpeditpromsg']);
         eval('echo stripslashes("'.template('usercp_home_layout').'");');
@@ -1088,18 +1088,18 @@ class userObj
             }
 
             copy($tmppath, $photopath);
-            $db->query("UPDATE ".X_PREFIX."members SET photo = '$photopath' WHERE uid = '$self[uid]'");
+            $db->query("UPDATE ".X_PREFIX."members SET photo = '$photopath' WHERE uid = '".$self['uid']."'");
         }
 
         if (isset($_POST['newphoto']) && empty($_FILES['photofile']['name']))
         {
-            $db->query("UPDATE ".X_PREFIX."members SET photo = '$photo' WHERE uid = '$self[uid]'");
+            $db->query("UPDATE ".X_PREFIX."members SET photo = '$photo' WHERE uid = '".$self['uid']."'");
         }
 
         if (onSubmit('photosubmit') && isset($_POST['photodel']) != 1 && empty($_POST['newphoto']) && empty($_FILES['photofile']['name']))
         {
 
-            $db->query("UPDATE ".X_PREFIX."members SET photo = '$self[photo]' WHERE uid = '$self[uid]'");
+            $db->query("UPDATE ".X_PREFIX."members SET photo = '$self[photo]' WHERE uid = '".$self['uid']."'");
         }
         if (isset($_POST['photodel']) && isset($_POST['photodel']) == 1 && empty($_FILES['photofile']['name']))
         {
@@ -1107,7 +1107,7 @@ class userObj
             {
                 unlink($member->record['photo']);
             }
-            $db->query("UPDATE ".X_PREFIX."members SET photo = '' WHERE uid = '$self[uid]'");
+            $db->query("UPDATE ".X_PREFIX."members SET photo = '' WHERE uid = '".$self['uid']."'");
         }
         $output = table_msg($lang['photo_Updated']);
         eval('echo stripslashes("'.template('usercp_home_layout').'");');
@@ -1176,7 +1176,7 @@ class userObj
             }
 
             $curpassword = md5($curpassword);
-            $curpwq = $db->query("SELECT password FROM ".X_PREFIX."members WHERE uid = '$self[uid]'");
+            $curpwq = $db->query("SELECT password FROM ".X_PREFIX."members WHERE uid = '".$self['uid']."'");
             $curpwdata = $db->fetch_array($curpwq);
             $db->free_result($curpwq);
 
@@ -1189,12 +1189,13 @@ class userObj
 
             $pwtxt = "password = '$newpassword'";
 
-            $db->query("UPDATE ".X_PREFIX."members SET $pwtxt WHERE uid = '$self[uid]'");
+            $db->query("UPDATE ".X_PREFIX."members SET $pwtxt WHERE uid = '".$self['uid']."'");
 
             $currtime = $onlinetime + (86400*30);
             $output = table_msg($lang['passwordsuccess']);
 	        eval('echo stripslashes("'.template('usercp_home_layout').'");');
 	        $authC->logout('index.php', 2.5);
+	        exit;
         }
 
         $output = table_msg($lang['usercpeditpromsg']);
@@ -1292,11 +1293,11 @@ class userObj
             if (empty($sig))
             {
                 $db->query("UPDATE ".X_PREFIX."posts SET usesig = 'no' WHERE author = '".$self['username']."'");
-                $db->query("UPDATE ".X_PREFIX."members SET sig = '' WHERE uid = '$self[uid]'");
+                $db->query("UPDATE ".X_PREFIX."members SET sig = '' WHERE uid = '".$self['uid']."'");
             }
             else
             {
-                $db->query("UPDATE ".X_PREFIX."members SET sig = '$sig' WHERE uid = '$self[uid]'");
+                $db->query("UPDATE ".X_PREFIX."members SET sig = '$sig' WHERE uid = '".$self['uid']."'");
                 $db->query("UPDATE ".X_PREFIX."posts SET usesig = 'yes' WHERE author = '".$self['username']."'");
             }
         }
@@ -1304,11 +1305,11 @@ class userObj
         {   // Do not reset signatures, just change it
             if (empty($sig))
             {
-                $db->query("UPDATE ".X_PREFIX."members SET sig = '' WHERE uid = '$self[uid]'");
+                $db->query("UPDATE ".X_PREFIX."members SET sig = '' WHERE uid = '".$self['uid']."'");
             }
             else
             {
-                $db->query("UPDATE ".X_PREFIX."members SET sig = '$sig' WHERE uid = '$self[uid]'");
+                $db->query("UPDATE ".X_PREFIX."members SET sig = '$sig' WHERE uid = '".$self['uid']."'");
             }
         }
 
@@ -1537,17 +1538,17 @@ class userObj
             }
 
             copy($tmppath, $avatarpath);
-            $db->query("UPDATE ".X_PREFIX."members SET avatar = '$avatarpath' WHERE uid = '$self[uid]'");
+            $db->query("UPDATE ".X_PREFIX."members SET avatar = '$avatarpath' WHERE uid = '".$self['uid']."'");
         }
 
         if (isset($_POST['newavatar']) && empty($_FILES['avatarfile']['name']))
         {
-            $db->query("UPDATE ".X_PREFIX."members SET avatar = '$avatar' WHERE uid = '$self[uid]'");
+            $db->query("UPDATE ".X_PREFIX."members SET avatar = '$avatar' WHERE uid = '".$self['uid']."'");
         }
 
         if (onSubmit('avatarsubmit') && isset($_POST['avatardel']) != 1 && empty($_POST['newavatar']) && empty($_FILES['avatarfile']['name']))
         {
-            $db->query("UPDATE ".X_PREFIX."members SET avatar = '$self[avatar]' WHERE uid = '$self[uid]'");
+            $db->query("UPDATE ".X_PREFIX."members SET avatar = '$self[avatar]' WHERE uid = '".$self['uid']."'");
         }
 
         if (isset($_POST['avatardel']) && isset($_POST['avatardel']) == 1 && empty($_FILES['avatarfile']['name']))
@@ -1556,7 +1557,7 @@ class userObj
             {
                 unlink($member->record['avatar']);
             }
-            $db->query("UPDATE ".X_PREFIX."members SET avatar = '' WHERE uid = '$self[uid]'");
+            $db->query("UPDATE ".X_PREFIX."members SET avatar = '' WHERE uid = '".$self['uid']."'");
         }
 
         $output = table_msg($lang['Avatar_Updated']);
@@ -1800,7 +1801,7 @@ class userObj
                 error($lang['avatar_too_big'] . $CONFIG['max_avatar_size'] . $lang['avatarpixels'], false);
             }
         }
-        $db->query("UPDATE ".X_PREFIX."members SET avatar = '$_POST[avataricon]' WHERE uid = '$self[uid]'");
+        $db->query("UPDATE ".X_PREFIX."members SET avatar = '$_POST[avataricon]' WHERE uid = '".$self['uid']."'");
         $output = table_msg($lang['avatarupdated']);
         eval('echo stripslashes("'.template('usercp_home_layout').'");');
         redirect('usercp.php?action=gallery', 2.5, X_REDIRECT_JS);
@@ -2000,7 +2001,7 @@ class userObj
         global $db, $THEME, $title, $theme, $lang, $CONFIG;
         global $selHTML, $self, $shadow2, $menu;
 
-        $query = $db->query("SELECT * FROM ".X_PREFIX."members WHERE uid = '$self[uid]'");
+        $query = $db->query("SELECT * FROM ".X_PREFIX."members WHERE uid = '".$self['uid']."'");
         $member = $db->fetch_array($query);
         $db->free_result($query);
 
