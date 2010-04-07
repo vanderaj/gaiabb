@@ -1124,7 +1124,10 @@ class userObj
 
         if (empty($self['username']))
         {
-            error($lang['badname'], false);
+			$output = table_msg($lang['badname']);
+        	eval('echo stripslashes("'.template('usercp_home_layout').'");');
+        	redirect('usercp.php?action=password', 2.5, X_REDIRECT_JS);
+        	exit;
         }
 
         // Grab the current member's uid, and use it to populate some fields
@@ -1133,12 +1136,18 @@ class userObj
         // Check that we populated the object correctly
         if ($member->record['uid'] !== $self['uid'] || empty($member->record['username']))
         {
-            error($lang['badname'], false);
+			$output = table_msg($lang['badname']);
+        	eval('echo stripslashes("'.template('usercp_home_layout').'");');
+        	redirect('usercp.php?action=password', 2.5, X_REDIRECT_JS);
+        	exit;
         }
 
         if ($self['password'] != $member->record['password'])
         {
-            error($lang['textpwincorrect'], false);
+			$output = table_msg($lang['textpwincorrect']);
+        	eval('echo stripslashes("'.template('usercp_home_layout').'");');
+        	redirect('usercp.php?action=password', 2.5, X_REDIRECT_JS);
+        	exit;
         }
 
         if (isset($_POST['newpassword']) && (!isset($_POST['newpassword']) || isset($_GET['newpassword'])))
@@ -1160,19 +1169,28 @@ class userObj
 
         if (empty($newpassword) || empty($newpasswordcf))
         {
-            error($lang['Empty_Password_Error'], false);
+            $output = table_msg($lang['Empty_Password_Error']);
+        	eval('echo stripslashes("'.template('usercp_home_layout').'");');
+        	redirect('usercp.php?action=password', 2.5, X_REDIRECT_JS);
+        	exit;
         }
 
         if (strlen($newpassword) < 5 && strlen($newpasswordcf) < 5)
         {
-            error($lang['passwordlimits'], false);
+            $output = table_msg($lang['passwordlimits']);
+        	eval('echo stripslashes("'.template('usercp_home_layout').'");');
+        	redirect('usercp.php?action=password', 2.5, X_REDIRECT_JS);
+        	exit;
         }
 
         if (!empty($newpassword) && !empty($newpasswordcf))
         {
             if ($newpassword != $newpasswordcf)
             {
-                error($lang['pwnomatch'], false);
+				$output = table_msg($lang['pwnomatch']);
+        		eval('echo stripslashes("'.template('usercp_home_layout').'");');
+        		redirect('usercp.php?action=password', 2.5, X_REDIRECT_JS);
+        		exit;
             }
 
             $curpassword = md5($curpassword);
@@ -1182,7 +1200,10 @@ class userObj
 
             if ($curpassword != $curpwdata['password'])
             {
-                error($lang['pwcurincorrect'], false);
+                $output = table_msg($lang['pwcurincorrect']);
+        		eval('echo stripslashes("'.template('usercp_home_layout').'");');
+        		redirect('usercp.php?action=password', 2.5, X_REDIRECT_JS);
+        		exit;
             }
 
             $newpassword = md5($newpassword);
