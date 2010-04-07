@@ -786,7 +786,7 @@ else
 
 // create navigation symbol
 $THEME['navsymbol'] = (isset($THEME['navsymbol']) ? $THEME['navsymbol'] : '&raquo;');
-if (eregi('.bmp', $THEME['navsymbol']) || eregi('.gif', $THEME['navsymbol']) || eregi('.jpg', $THEME['navsymbol']) || eregi('.png', $THEME['navsymbol']))
+if (stristr($THEME['navsymbol'], '.bmp') || stristr($THEME['navsymbol'], '.gif') || stristr($THEME['navsymbol'], '.jpg') || stristr($THEME['navsymbol'], '.png') )
 {
     $THEME['navsymbol'] = '<img src="'.$THEME['imgdir'].'/'.$THEME['navsymbol'].'" border="0px" alt="'.$lang['navsymbolalt'].'" title="'.$lang['navsymbolalt'].'" />';
 }

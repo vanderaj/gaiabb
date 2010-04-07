@@ -59,6 +59,16 @@ if (!defined('DEBUG')) {
     define('DEBUG', false);
 }
 
+// 0 = completely off
+// 1 = normal, debug is enabled for X_SADMIN and above
+// 2 = more, debug is enabled for X_MEMBER and above (so no banned or guest debug messages)
+// 3 = all, debug is enabled for everyone (including banned and guests)
+define('DEBUGLEVEL', 1);
+
+// Production
+if (!defined('DEBUGLEVEL')) {
+    define('DEBUGLEVEL', 0);
+}
 /* Product name and version
  *
  * Change these as necessary.
