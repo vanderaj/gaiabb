@@ -1004,21 +1004,23 @@ function loadtime()
         $footerstuff['totaltime'] = '';
     }
 
-    if (X_SADMIN && DEBUG)
+    $footerstuff['querydump'] = '';
+    if ( DEBUG && DEBUGLEVEL > 0 )
     {
-        $stuff = array();
-        $stuff[] = '<table style="width: 97%;"><tr><td style="width: 2em;">#</td><td style="width: 8em;">Duration:</td><td>Query:</td></tr>';
-        foreach ($db->querylist as $key => $val)
-        {
-            $val = mysql_syn_highlight(htmlentities($val));
-            $stuff[] = '<tr><td><strong>'.++$key.'.</strong></td><td>'.number_format($db->querytimes[$key-1], 8).'</td><td>'.$val.'</td></tr>';
-        }
-        $stuff[] = '</table>';
-        $footerstuff['querydump'] = implode("\n", $stuff);
-    }
-    else
-    {
-        $footerstuff['querydump'] = '';
+    	if ( (DEBUGLEVEL == 1 && X_SADMIN ) ||
+    		 (DEBUGLEVEL == 2 && X_MEMBER ) ||
+    		  DEBUGLEVEL == 3 )	
+		{
+	        $stuff = array();
+	        $stuff[] = '<table style="width: 97%;"><tr><td style="width: 2em;">#</td><td style="width: 8em;">Duration:</td><td>Query:</td></tr>';
+	        foreach ($db->querylist as $key => $val)
+	        {
+	            $val = mysql_syn_highlight(htmlentities($val));
+	            $stuff[] = '<tr><td><strong>'.++$key.'.</strong></td><td>'.number_format($db->querytimes[$key-1], 8).'</td><td>'.$val.'</td></tr>';
+	        }
+	        $stuff[] = '</table>';
+	        $footerstuff['querydump'] = implode("\n", $stuff);
+	    }
     }
     return $footerstuff;
 }
@@ -2266,12 +2268,6 @@ function securityChecks()
     if (file_exists(ROOT.'install/emergency.php') && !@unlink(ROOT.'install/emergency.php'))
     {
         exit('<h1>Error:</h1><br />The emergency repair file("install/emergency.php") has been found on the server, but could not be removed. Please remove it as soon as possible.');
-    }
-
-    // Checks the format of the URL, blocks if necessary....
-    if (eregi("\?[0-9]+$", $url))
-    {
-        exit("Invalid String Format, Please Check Your URL");
     }
 
     // Checks the IP-format, if it's not a IPv4, nor a IPv6 type, it will be blocked, safe to remove....

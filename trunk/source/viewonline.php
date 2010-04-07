@@ -53,12 +53,12 @@ eval('$css = "'.template('css').'";');
 nav($lang['whosonline']);
 btitle($lang['whosonline']);
 
+eval('echo "'.template('header').'";');
+
 if (X_GUEST)
 {
-    error($lang['textnoaction']);
+    error($lang['textnoaction'], false);
 }
-
-eval('echo "'.template('header').'";');
 
 if ($CONFIG['whosonlinestatus'] == 'off')
 {
