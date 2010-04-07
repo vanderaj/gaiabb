@@ -631,27 +631,33 @@ $config_cache->expire('forumjump');
 $fdetails = getRequestInt('fdetails');
 $gdetails = getRequestInt('gdetails');
 
-if (noSubmit('faqsubmit') && empty($fdetails) && empty($gdetails))
+if ( $fdetails > 0 )
+{
+	if (noSubmit('faqsubmit'))
+	{
+    	dofDetailsPanel($fdetails);
+	}
+	else if (onSubmit('faqsubmit'))
+	{
+    	$oToken->assert_token();
+    	faqSubmit($fdetails);
+	}
+} 
+else if ( $gdetails > 0 )
+{
+	if (noSubmit('faqsubmit'))
+	{
+    	dogDetailsPanel($gdetails);
+	}
+	else if (onSubmit('faqsubmit'))
+	{
+    	$oToken->assert_token();
+    	dogDetails($gdetails);
+	}
+}
+else 
 {
     viewPanel();
-}
-else if (!empty($gdetails) && noSubmit('gsubmit'))
-{
-    dogDetailsPanel($gdetails);
-}
-else if (onSubmit('gsubmit'))
-{
-    $oToken->assert_token();
-    dogDetails($gdetails);
-}
-else if (!empty($fdetails) && noSubmit('faqsubmit'))
-{
-    dofDetailsPanel($fdetails);
-}
-else if (onSubmit('faqsubmit'))
-{
-    $oToken->assert_token();
-    faqSubmit($fdetails);
 }
 
 loadtime();
