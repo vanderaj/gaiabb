@@ -478,9 +478,9 @@ class AuthC
 
     function logout($url = 'index.php', $delay = 0)
     {
-        global $db, $onlinetime, $cookiepath, $cookiedomain;
+        global $db, $onlinetime, $cookiepath, $cookiedomain, $self;
         
-        $query = $db->query("DELETE FROM " . X_PREFIX . "whosonline WHERE username = '$self[uid]'");
+        $query = $db->query("DELETE FROM " . X_PREFIX . "whosonline WHERE username = '".$self['uid']."'");
 
         if (isset($_COOKIE['ubbstate'])) {
         	setcookie("ubbstate", '', 0, $cookiepath, $cookiedomain);
