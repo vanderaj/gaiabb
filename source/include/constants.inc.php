@@ -78,10 +78,10 @@ $versioncompany = 'The GaiaBB Group';
 $versionshort = 'GaiaBB';
 $versiongeneral = 'GaiaBB 1.0 trunk';
 $versioncopyright = 'GaiaBB 1.0 trunk, © 2010 The GaiaBB Group';
-$versionbuild = '20100226';
+$versionbuild = '20100407';
 $alpha = '';
 $beta = '';
-$gamma = '1.0 trunk dev';
+$gamma = '1.0 trunk dev sprint 1';
 $sp = '';
 
 // No user serviceable items below
