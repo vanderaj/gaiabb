@@ -133,8 +133,6 @@ function viewPanel()
     settingHTML('viewlocation', $viewlocationon, $viewlocationoff);
     $contactus_on = $contactus_off = '';
     settingHTML('contactus', $contactus_on, $contactus_off);
-    $modstatuson = $modstatusoff = '';
-    settingHTML('mod_status', $modstatuson, $modstatusoff);
     $attachiconon = $attachiconoff = '';
     settingHTML('attachicon_status', $attachiconon, $attachiconoff);
     $resetsigon = $resetsigoff = '';
@@ -210,7 +208,6 @@ function viewPanel()
     printsetting1($lang['textstatsstatus'], 'statsnew', $statson, $statsoff);
     printsetting1($lang['textmemliststatus'], 'memliststatusnew', $memliston, $memlistoff);
     printsetting1($lang['contactusstatus'], 'contactusnew', $contactus_on, $contactus_off);
-    printsetting1($lang['mod_status'], 'mod_statusnew', $modstatuson, $modstatusoff);
     printsetting1($lang['coppastatus'], 'coppanew', $coppaon, $coppaoff);
     printsetting1($lang['reportpoststatus'], 'reportpostnew', $reportposton, $reportpostoff);
     printsetting1($lang['allowrankedit'], 'allowrankeditnew', $allowrankediton, $allowrankeditoff);
@@ -295,7 +292,6 @@ function doPanel()
     $statsnew = formOnOff('statsnew');
     $memliststatusnew = formOnOff('memliststatusnew');
     $contactusnew = formOnOff('contactusnew');
-    $mod_statusnew = formOnOff('mod_statusnew');
     $coppanew = formOnOff('coppanew');
     $reportpostnew = formOnOff('reportpostnew');
     $allowrankeditnew = formOnOff('allowrankeditnew');
@@ -385,7 +381,7 @@ function doPanel()
         'rpg_status' => $rpg_statusnew,
         'viewlocation' => $viewlocationnew,
         'contactus' => $contactusnew,
-        'mod_status' => $mod_statusnew,
+        'mod_status' => 'off',    // Disabled as of 20100411
         'attachicon_status' => $attachicon_statusnew,
         'whosonlinetoday' => $whosonlinetodaynew,
         'resetsig' => $resetsignew,
