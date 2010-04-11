@@ -511,11 +511,6 @@ if (X_MEMBER)
         $cplink = ' - <a href="'.ROOT.'admin/index.php">'.$lang['textcp'].'</a>';
     }
 
-    if (X_STAFF && $CONFIG['mod_status'] == 'on')
-    {
-        $modcplink = ' - <a href="'.ROOT.'mod/index.php">'.$lang['modcp_index'].'</a>';
-    }
-
     $notify = $lang['loggedin'].' <a href="'.ROOT.'viewprofile.php?memberid='.intval($self['uid']).'"><strong>'.trim($self['username']).'</strong></a> - [ '.$loginout.' - '.$pmlink.''.$usercp.''.$modcplink.''.$cplink.' ]';
 }
 else

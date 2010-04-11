@@ -1608,7 +1608,6 @@ $lang['pluglinkadmin'] = "Lisalingi seaded";
 $lang['pluglinkcreate'] = "Lisa uus link:";
 $lang['pluglinknone'] = "Ühtegi linki pole";
 $lang['pluglinkupdate'] = "Lingid uuendatud.";
-$lang['mod_status'] = "Moderaatori paneeli staatus:<br /><span class=\"smalltxt\">Lubab modraatoritel kasutada ModCP-d.</span>";
 $lang['forumquickjump'] = "Vali foorum:";
 $lang['forumjump'] = "Foorumite kiirvaliku staatus:<br /><span class=\"smalltxt\">Näitab foorumi päises ja jaluses rippmenüüd foorumites navigeerimiseks.</span>";
 $lang['forumnodeleteall'] = "Sa ei saa kõiki kategooriaid kustutada, vähemalt 1 peab säilima.";

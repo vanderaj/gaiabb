@@ -1608,7 +1608,6 @@ $lang['pluglinkadmin'] = "Pluglink Settings";
 $lang['pluglinkcreate'] = "Create New Pluglink:";
 $lang['pluglinknone'] = "No pluglinks available";
 $lang['pluglinkupdate'] = "Pluglinks updated successfully.";
-$lang['mod_status'] = "ModCP Status:<br /><span class=\"smalltxt\">Enabling this will grant permission to all moderators to use certain tools in the moderator control panel.</span>";
 $lang['forumquickjump'] = "Select A Forum To View";
 $lang['forumjump'] = "Forum Jump Status:<br /><span class=\"smalltxt\">Enabling this will display a drop down menu in top and bottom of forum for navigating forums and categories.</span>";
 $lang['forumnodeleteall'] = "You can not delete all your categories, you must leave at-least 1.";
