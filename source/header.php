@@ -294,17 +294,30 @@ if ($CONFIG === false)
 
         $CONFIG[$key] = $val;
     }
+    
+    // Fixups
+    
+    if ($CONFIG['postperpage'] < 5)
+    {
+        $CONFIG['postperpage'] = 30;
+        $db->query("UPDATE ".X_PREFIX."settings SET config_value='".$CONFIG['postperpage']."' WHERE config_name='postperpage'");
+    }
+    
+    if ($CONFIG['topicperpage'] < 5)
+    {
+        $CONFIG['topicperpage'] = 30;
+        $db->query("UPDATE ".X_PREFIX."settings SET config_value='".$CONFIG['topicperpage']."' WHERE config_name='topicperpage'");
+    }
+    
+    // Add in inactive users if it doesn't already exist.
+    
+    if (!isset($CONFIG['inactiveusers']))
+    {
+        $CONFIG['inactiveusers'] = 0;
+        $db->query("INSERT INTO ".X_PREFIX."settings (config_name, config_value) VALUES ('inactiveusers', '".$CONFIG['inactiveusers']."')");
+    }
+    
     $config_cache->setData('settings', $CONFIG);
-}
-
-if ($CONFIG['postperpage'] < 5)
-{
-    $CONFIG['postperpage'] = 30;
-}
-
-if ($CONFIG['topicperpage'] < 5)
-{
-    $CONFIG['topicperpage'] = 30;
 }
 
 // Get the moderators and cache them for later use
