@@ -150,16 +150,6 @@ if ($psorting != 'ASC')
 {
     $psorting = 'DESC';
 }
-$tpp = formInt('tpp');
-if ($tpp < 5)
-{
-    $tpp = $CONFIG['topicperpage'];
-}
-$ppp = formInt('ppp');
-if ($ppp < 5)
-{
-    $ppp = $CONFIG['postperpage'];
-}
 $showemail = formYesNo('showemail');
 $newsletter = formYesNo('newsletter');
 $saveogpm = formYesNo('saveogpm');

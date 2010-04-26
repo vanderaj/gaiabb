@@ -321,9 +321,6 @@ switch ($order)
         break;
 }
 
-validateTpp();
-validatePpp();
-
 $page = getInt('page');
 $page = (isset($page) && is_numeric($page)) ? ($page < 1 ? 1 : ((int) $page)) : 1;
 $start_limit = ($page > 1) ? (($page-1) * $self['tpp']) : 0;

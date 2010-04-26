@@ -156,9 +156,6 @@ switch ($order)
         break;
 }
 
-validateTpp();
-validatePpp();
-
 $page = getRequestInt('page');
 if ($page < 1)
 {
