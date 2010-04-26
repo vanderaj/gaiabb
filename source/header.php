@@ -1015,4 +1015,7 @@ $CONFIG['sitename'] = stripslashes($CONFIG['sitename']);
 $CONFIG['siteurl'] = stripslashes($CONFIG['siteurl']);
 $CONFIG['indexnewstxt'] = stripslashes($CONFIG['indexnewstxt']);
 
+validateTpp();
+validatePpp();
+
 ?>
