@@ -52,7 +52,7 @@ eval('echo "'.template('header').'";');
 
 if (X_MEMBER)
 {
-    error($lang['plogtuf'], false);
+    error($lang['plogtuf'], false, '', '', 'index.php', true);
 }
 
 if (noSubmit('lostpwsubmit'))
@@ -74,13 +74,12 @@ else
         $time = $onlinetime - 86400;
         if ($member['pwdate'] > $time)
         {
-            error($lang['lostpw_in24hrs'], false);
+            error($lang['badinfo'], false, '', '', 'index.php', true);
         }
     }
     else
     {
-        error($lang['badinfo'], false);
-        exit;
+        error($lang['badinfo'], false, '', '', 'lostpw.php', true);
     }
 
     $email = stripslashes($member['email']); // SMTP functions cannot handle database escaped e-mail addresses
@@ -108,12 +107,12 @@ else
 
     if (empty($CONFIG['adminemail'])) // The mail class can handle this error, but it'll describe it vaguely
     {
-        error($lang['noadminemail'], false, '', '', 'cp_board.php', true, false, true);
+        error($lang['noadminemail'], false, '', '', 'admin/cp_board.php', true, false, true);
     }
 
     if (empty($CONFIG['bbname'])) // The mail class can handle this error, but it'll describe it vaguely
     {
-        error($lang['nobbname'], false, '', '', 'cp_board.php', true, false, true);
+        error($lang['nobbname'], false, '', '', 'admin/cp_board.php', true, false, true);
     }
 
     $mailsys->setTo($email);
