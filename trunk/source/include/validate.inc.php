@@ -309,13 +309,13 @@ function isValidFilename($filename)
 */
 function isValidEmail($addr)
 {
-    $emailPattern = "^([_a-z0-9-]+)(\.[_a-z0-9-]+)*@([a-z0-9-]+)(\.[a-z0-9-]+)*(\.[a-z]{2,4})$";
+    $emailPattern = "/^([_a-z0-9-]+)(\.[_a-z0-9-]+)*@([a-z0-9-]+)(\.[a-z0-9-]+)*(\.[a-z]{2,4})$/i";
     $emailValid = false;
 
-    if (eregi($emailPattern, $addr))
+    if (preg_match($emailPattern, $addr) > 0)
     {
-        // Under Windows, PHP does not possess getmxrr(), so we skip it
-        if (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN')
+        // Under Windows prior to 5.3.0, PHP does not possess getmxrr(), so we skip it
+        if (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN' && version_compare(phpversion(), "5.3.0") < 0 )
         {
             $emailValid = true;
             break;
@@ -323,11 +323,13 @@ function isValidEmail($addr)
 
         $user = '';
         $domain = '';
-        list($user, $domain) = split('@', $addr);
+        list($user, $domain) = explode('@', $addr);
 
         // Check if the site has an MX record. We can't send unless there is.
-        $mxrecords = '';
-        if (getmxrr($domain, $mxrecords))
+        $mxrecords = array();
+        $weights = array();
+        $found = getmxrr($domain, $mxrecords, $weights);
+        if ($found)
         {
             $emailValid = true;
         }
