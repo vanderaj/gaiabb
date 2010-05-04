@@ -1207,18 +1207,24 @@ else if ($action == 'printable')
 {
     pwverify($forum['password'], 'viewtopic.php?tid='.$tid, $fid, true);
 
-    $querypost = $db->query("SELECT * FROM ".X_PREFIX."posts WHERE fid = '$fid' AND tid = '$tid' ORDER BY pid");
+    $querypost = $db->query("SELECT p.*, m.*,w.time FROM ".X_PREFIX."posts p LEFT JOIN ".X_PREFIX."members m ON m.username = p.author LEFT JOIN ".X_PREFIX."whosonline w ON p.author = w.username WHERE p.fid = '$fid' AND p.tid = '$tid' ORDER BY p.pid $self[psorting] LIMIT $start_limit, ".$self['ppp']);
     $posts = '';
     $tmoffset = ($self['timeoffset'] * 3600) + $self['daylightsavings'];
     while ($post = $db->fetch_array($querypost))
     {
+        if ($post['status'] == 'Banned')
+        {
+            $post['message'] = $lang['bannedpostmsg'];
+        }
+        else
+        {
+            $post['message'] = censor($post['message']);
+            $post['message'] = postify($post['message'], $post['smileyoff'], $post['bbcodeoff'], $forum['allowsmilies'], $forum['allowbbcode'], $forum['allowimgcode']);    
+        }
         $date = gmdate($self['dateformat'], $post['dateline'] + $tmoffset);
         $time = gmdate($self['timecode'], $post['dateline'] + $tmoffset);
         $poston = $date.' '.$lang['textat'].' '.$time;
-        $post['message'] = censor($post['message']);
-        $bbcodeoff = $post['bbcodeoff'];
-        $smileyoff = $post['smileyoff'];
-        $post['message'] = postify($post['message'], $smileyoff, $bbcodeoff, $forum['allowsmilies'], $forum['allowbbcode'], $forum['allowimgcode']);
+        
         eval('$posts .= "'.template('viewtopic_printable_row').'";');
     }
     $db->free_result($querypost);
