@@ -536,7 +536,7 @@ function forum($forum, $template)
 {
     global $db, $THEME, $CONFIG, $lang, $self, $lastvisit2;
     global $oldtopics, $lastvisit, $index_subforums, $sub, $subforums, $MODERATORS, $moderators_cache;
-
+    
     if (!empty($forum['lp_user']))
     {
         $dalast = $forum['lp_dateline'];
@@ -1690,12 +1690,12 @@ function cp_error($msg, $showheader = true, $prepend = '', $append = '', $redire
 function message($msg, $showheader = true, $prepend = '', $append = '', $redirect = false, $die = true, $return_as_string = false, $showfooter = true)
 {
     global $footerstuff, $lang, $navigation;
-    global $CONFIG, $THEME;
+    global $CONFIG, $THEME, $shadow, $lang_nalign, $lang_code, $lang_dir, $lang_align; 
+    global $charset, $meta, $quickjump, $btitle, $versionpowered, $background;
+    global $versionlong, $bottomcorners, $css, $bbcodescript, $attachscript;
+    global $topcorners, $topbgcode, $logo, $links, $pluglink, $lastvisittext;
+    global $notify, $newpmmsg;
 
-    if (isset($GLOBALS))
-    {
-        extract($GLOBALS);
-    }
     $args = func_get_args();
 
     $message = (isset($args[0]) ? $args[0] : '');
