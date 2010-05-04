@@ -709,10 +709,10 @@ class mod
         $db->free_result($query);
         
         $query = $db->query("SELECT moderator FROM ".X_PREFIX."forums WHERE fid = '$fid'");
-        $mods = explode(", ", $db->result($query, 0));
+        $reports = explode(", ", $db->result($query, 0));
         $db->free_result($query);
         
-        $mods = array_unique($mods);
+        $mods = array_unique(array_merge($mods, $reports));
 
         $sent = 0;
         $time = $db->time($onlinetime);
