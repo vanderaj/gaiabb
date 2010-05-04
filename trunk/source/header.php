@@ -35,9 +35,9 @@ ini_set('display_errors', false);
 
 session_start();
 
-if (!isset($_SERVER))
+if ((version_compare(phpversion(), "5.2.6")) < 0)
 {
-    exit("GaiaBB requires PHP 4.3.2 or later, and is safest running PHP 4.4.2 or later.");
+    die("Unsupported PHP version");
 }
 
 define('IN_PROGRAM', true);
@@ -315,6 +315,13 @@ if ($CONFIG === false)
     {
         $CONFIG['inactiveusers'] = 0;
         $db->query("INSERT INTO ".X_PREFIX."settings (config_name, config_value) VALUES ('inactiveusers', '".$CONFIG['inactiveusers']."')");
+    }
+    
+    // Prune new users who have never logged in. Tempered by the number of days grace set in Admin > Settings.
+    if ($CONFIG['inactiveusers'] > 0)
+    {
+        $inactivebefore = $onlinetime - (60 * 60 * 24 * $CONFIG['inactiveusers']);
+        $db->query("DELETE FROM ".X_PREFIX."members WHERE lastvisit = 0 AND regdate < $inactivebefore AND status = 'Member'");
     }
     
     $config_cache->setData('settings', $CONFIG);

@@ -220,7 +220,7 @@ function doPanel()
         cp_error($lang['regerestricted'], false, '', '</td></tr></table>');
     }
 
-    if (empty($regemail) || !eregi("^[_a-z0-9-]+(\.[_a-z0-9-]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,3})$", $regemail))
+    if (empty($regemail) || isValidEmail($regemail) == false)
     {
         cp_error($lang['regbademail'], false, '', '</td></tr></table>');
     }

@@ -838,7 +838,7 @@ class userObj
             error($lang['emailvaliderror1'], false);
         }
 
-        if (empty($email) || !eregi("^[_a-z0-9-]+(\.[_a-z0-9-]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,3})$", $email))
+        if (empty($email) || isValidEmail($email) == false)
         {
             error($lang['emailvaliderror2'], false);
         }
