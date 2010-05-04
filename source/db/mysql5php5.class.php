@@ -37,7 +37,7 @@ if (!defined('IN_PROGRAM') && (defined('DEBUG') && DEBUG == false))
 
 define('X_DBCLASSNAME', 'mysql5Php5');
 define('X_FRIENDLYNAME', 'MySQL 4.1 and 5.0');
-define('X_DALMINPHP', '5.0.0');
+define('X_DALMINPHP', '5.2.6');
 define('X_DALMAXPHP', '5.9.9');
 
 if (!defined('ROOT'))
@@ -98,7 +98,7 @@ class mysql5Php5 extends DataAccessObject {
 
             $this->force = $force_db;
 
-            if ((version_compare(phpversion(), "5.0.0")) == -1)
+            if ((version_compare(phpversion(), "5.2.6")) < 0)
             {
                 throw new Exception("Unsupported PHP version");
             }
