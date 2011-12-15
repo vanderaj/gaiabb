@@ -1,7 +1,7 @@
 <?php
 /**
  * GaiaBB
- * Copyright (c) 2010 The GaiaBB Group
+ * Copyright (c) 2011 The GaiaBB Group
  * http://www.GaiaBB.com
  *
  * Based off UltimaBB
@@ -76,12 +76,12 @@ if (!defined('DEBUGLEVEL')) {
 $versionpowered = ' - Powered by GaiaBB';
 $versioncompany = 'The GaiaBB Group';
 $versionshort = 'GaiaBB';
-$versiongeneral = 'GaiaBB 1.0 trunk';
-$versioncopyright = 'GaiaBB 1.0 trunk, © 2010 The GaiaBB Group';
-$versionbuild = '20100407';
+$versiongeneral = 'GaiaBB 1.0-HEAD';
+$versioncopyright = 'GaiaBB 1.0-HEAD, &copy; 2011 The GaiaBB Group';
+$versionbuild = '2011121501';
 $alpha = '';
 $beta = '';
-$gamma = '1.0 trunk dev sprint 1';
+$gamma = '1.0-HEAD dev sprint 2';
 $sp = '';
 
 // No user serviceable items below

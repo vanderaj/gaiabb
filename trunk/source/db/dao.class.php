@@ -1,7 +1,7 @@
 <?php
 /**
  * GaiaBB
- * Copyright (c) 2010 The GaiaBB Group
+ * Copyright (c) 2011 The GaiaBB Group
  * http://www.GaiaBB.com
  *
  * Based off UltimaBB
@@ -170,7 +170,7 @@ class DataAccessObject {
         <br />
         Powered by GaiaBB
         <br />
-        Copyright &copy; 2010 The GaiaBB Group. All rights reserved.
+        Copyright &copy; 2011 The GaiaBB Group. All rights reserved.
         <br />
         <br />
         </td>
