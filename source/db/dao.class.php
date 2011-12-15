@@ -37,56 +37,56 @@ if (!defined('IN_PROGRAM') && (defined('DEBUG') && DEBUG == false))
 
 class DataAccessObject {
 
-    /**
-    * function() - short description of function
-    *
-    * Long description of function
-    *
-    * @param    $varname    type, what it does
-    * @return   type, what the return does
-    */
-    function DataAccessObject() {
-    }
+	/**
+	 * function() - short description of function
+	 *
+	 * Long description of function
+	 *
+	 * @param    $varname    type, what it does
+	 * @return   type, what the return does
+	 */
+	function DataAccessObject() {
+	}
 
-    /**
-    * function() - short description of function
-    *
-    * Long description of function
-    *
-    * @param    $varname    type, what it does
-    * @return   type, what the return does
-    */
-    function connect($dbhost = "localhost", $dbuser, $dbpw, $dbname, $pconnect = 0, $force_db = false)
-    {
-    }
+	/**
+	 * function() - short description of function
+	 *
+	 * Long description of function
+	 *
+	 * @param    $varname    type, what it does
+	 * @return   type, what the return does
+	 */
+	function connect($dbhost = "localhost", $dbuser, $dbpw, $dbname, $pconnect = 0, $force_db = false)
+	{
+	}
 
-    /**
-    * function() - short description of function
-    *
-    * Long description of function
-    *
-    * @param    $varname    type, what it does
-    * @return   type, what the return does
-    */
-    function panic($head, $msg)
-    {
-    }
+	/**
+	 * function() - short description of function
+	 *
+	 * Long description of function
+	 *
+	 * @param    $varname    type, what it does
+	 * @return   type, what the return does
+	 */
+	function panic($head, $msg)
+	{
+	}
 
-    /**
-    * function() - short description of function
-    *
-    * Long description of function
-    *
-    * @param    $varname    type, what it does
-    * @return   type, what the return does
-    */
-    function view_header($title = "Data Abstraction Layer")
-    {
-        $logo = ROOT.'images/problue/logo.gif';
-        $navtext = "Data Abstraction Layer";
-        $css = ROOT.'install/install.css';
-        $imgpath = ROOT.'images/problue/';
-        ?>
+	/**
+	 * function() - short description of function
+	 *
+	 * Long description of function
+	 *
+	 * @param    $varname    type, what it does
+	 * @return   type, what the return does
+	 */
+	function view_header($title = "Data Abstraction Layer")
+	{
+		$logo = ROOT.'images/prored/logo.gif';
+		$navtext = "Data Abstraction Layer";
+		$css = ROOT.'images/prored/style.css';
+		$imgpath = ROOT.'images/prored/';
+		?>
         <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
         "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
         <html>
@@ -98,12 +98,12 @@ class DataAccessObject {
         <link rel=stylesheet type="text/css" href="<?php echo $css?>" title="Stylesheet">
         <style type="text/css">@import url("<?php echo $css ?>");</style>
         </head>
-        <body bgcolor="#97A6BF" text="#000000">
+        <body bgcolor="#C9675D" text="#000000">
         <a name="top"></a>
-        <table cellspacing="0" cellpadding="0" border="0" width="100%" bgcolor="#5176B5" align="center"><tr><td><table border="0" cellspacing="1px" cellpadding="5px" width="100%" align="center"><tr><td bgcolor="#FFFFFF" align="center"><br />
+        <table cellspacing="0" cellpadding="0" border="0" width="100%" bgcolor="#BB6255" align="center"><tr><td><table border="0" cellspacing="1px" cellpadding="5px" width="100%" align="center"><tr><td bgcolor="#FFFFFF" align="center"><br />
         <table cellspacing="0" cellpadding="0" border="0" width="97%" align="center">
         <tr>
-        <td bgcolor="#5176B5"><table border="0" cellspacing="1" cellpadding="6" width="100%">
+        <td bgcolor="#BB6255"><table border="0" cellspacing="1" cellpadding="6" width="100%">
         <tr>
         <td width="74%" style="background-image: url(<?php echo $imgpath?>topbg.gif); text-align: left"><table border="0" width="100%" cellpadding="0" cellspacing="0">
         <tr>
@@ -196,7 +196,7 @@ class DataAccessObject {
         ?>
         <table cellspacing="0" cellpadding="0" border="0" width="97%" align="center">
         <tr>
-        <td width="100%" align="left"><img src="<?php echo ROOT?>images/problue/shadow.gif" border="0" alt="" title="" /></td>
+        <td width="100%" align="left"><img src="<?php echo ROOT?>images/prored/shadow.gif" border="0" alt="" title="" /></td>
         </tr>
         </table>
         <?php
