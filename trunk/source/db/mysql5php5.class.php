@@ -177,16 +177,8 @@ class mysql5Php5 extends DataAccessObject {
         // with DEBUG
         if (defined('DEBUG') && DEBUG)
         {
-            if ($this->conn)
-            {
-                $errnum = $this->conn->errno;
-                $errmsg = $this->conn->error;
-            }
-            else
-            {
-                $errnum = mysqli_connect_errno();
-                $errmsg = mysqli_connect_error();
-            }
+            $errnum = mysqli_connect_errno();
+            $errmsg = mysqli_connect_error();
             if (empty($errmsg))
             {
                 $errmsg = "No MySQL error";
