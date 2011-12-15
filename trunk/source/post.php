@@ -46,6 +46,7 @@ smcwcache();
 
 $forumController = new Forum();
 
+$captcha = '';
 $pid = getRequestInt('pid');
 $tid = getRequestInt('tid');
 $fid = getRequestInt('fid');
@@ -418,8 +419,6 @@ switch ($action)
                 $topoption = '<br /><input type="checkbox" name="toptopic" value="yes" ' . $topcheck . ' /> ' . $lang['topmsgques'];
                 $closeoption = '<br /><input type="checkbox" name="closetopic" value="yes" ' . $closecheck . ' /> ' . $lang['closeonpost'] . '<br />';
             }
-
-            $captcha = '';
 
             if ($poll && isset ($forums['pollstatus']) && $forums['pollstatus'] != 'off')
             {
