@@ -33,10 +33,11 @@ define('DEBUG_REG',true);
 define('ROOT', '../');
 define('ROOTINC', '../include/');
 define('ROOTCLASS', '../class/');
+define('ROOTHELPER', '../helper/');
 
 require_once(ROOT.'header.php');
 require_once(ROOTINC.'admincp.inc.php');
-require_once(ROOTINC.'settings.inc.php');
+require_once(ROOTHELPER.'formHelper.php');
 
 loadtpl(
 'cp_header',
@@ -109,7 +110,7 @@ function viewPanel()
     </tr>
     <?php
     $ruleson = $rulesoff = '';
-    settingHTML('bbrules', $ruleson, $rulesoff);
+    formHelper::getSettingOnOffHtml('bbrules', $ruleson, $rulesoff);
 
     $queryg = $db->query("SELECT * FROM ".X_PREFIX."faq WHERE type = 'rulesset'");
     $frules = $db->fetch_array($queryg);
@@ -145,7 +146,7 @@ function viewPanel()
     $nameo = stripslashes($frules['name']);
     $CONFIG['bbrulestxt'] = stripslashes($CONFIG['bbrulestxt']);
 
-    printsetting1($lang['board_rules_status'], 'bbrulesnew', $ruleson, $rulesoff);
+    formHelper::formSelectOnOff($lang['board_rules_status'], 'bbrulesnew', $ruleson, $rulesoff);
     echo $bbcodeinsert;
     ?>
     <tr class="tablerow">

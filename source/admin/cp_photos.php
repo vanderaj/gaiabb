@@ -33,10 +33,11 @@ define('DEBUG_REG', true);
 define('ROOT', '../');
 define('ROOTINC', '../include/');
 define('ROOTCLASS', '../class/');
+define('ROOTHELPER', '../helper/');
 
 require_once(ROOT.'header.php');
 require_once(ROOTINC.'admincp.inc.php');
-require_once(ROOTINC.'settings.inc.php');
+require_once(ROOTHELPER.'formHelper.php');
 
 loadtpl(
 'cp_header',
@@ -71,7 +72,7 @@ function viewPanel()
     global $shadow2, $lang, $db, $THEME, $oToken, $CONFIG, $cheHTML, $selHTML;
 
     $photoon = $photooff = '';
-    settingHTML('photostatus', $photoon, $photooff);
+    formHelper::getSettingOnOffHtml('photostatus', $photoon, $photooff);
 
     $avuchecked[0] = $avuchecked[1] = $avuchecked[2] = false;
     switch ($CONFIG['photo_whocanupload'])
@@ -100,16 +101,16 @@ function viewPanel()
     <td colspan="2" class="title"><?php echo $lang['photo_main_settings']?></td>
     </tr>
     <?php
-    printsetting1($lang['photostatus'], 'photostatusnew', $photoon, $photooff);
-    printsetting3($lang['photo_Whoupload'], 'photo_whocanuploadnew', array($lang['textoff'], $lang['photo_Upall'], $lang['photo_Upstaff']), array('off', 'all', 'staff'), $avuchecked, false);
-    printsetting2($lang['photo_Filesize'], 'photo_filesizenew', $CONFIG['photo_filesize'], 5);
-    printsetting2($lang['photo_Wdimensions'], 'photo_max_widthnew', $CONFIG['photo_max_width'], 4);
-    printsetting2($lang['photo_Hdimensions'], 'photo_max_heightnew', $CONFIG['photo_max_height'], 4);
-    printsetting2($lang['photo_Newwresize'], 'photo_new_widthnew', $CONFIG['photo_new_width'], 4);
-    printsetting2($lang['photo_Newhresize'], 'photo_new_heightnew', $CONFIG['photo_new_height'], 4);
-    printsetting2($lang['photo_Path'], 'photo_pathnew', $CONFIG['photo_path'], 20);
-    printsetting2($lang['max_photo_size_w'], 'max_photo_size_w_new', $max_photo_sizes[0], 4);
-    printsetting2($lang['max_photo_size_h'], 'max_photo_size_h_new', $max_photo_sizes[1], 4);
+    formHelper::formSelectOnOff($lang['photostatus'], 'photostatusnew', $photoon, $photooff);
+    formHelper::formSelectList($lang['photo_Whoupload'], 'photo_whocanuploadnew', array($lang['textoff'], $lang['photo_Upall'], $lang['photo_Upstaff']), array('off', 'all', 'staff'), $avuchecked, false);
+    formHelper::formTextBox($lang['photo_Filesize'], 'photo_filesizenew', $CONFIG['photo_filesize'], 5);
+    formHelper::formTextBox($lang['photo_Wdimensions'], 'photo_max_widthnew', $CONFIG['photo_max_width'], 4);
+    formHelper::formTextBox($lang['photo_Hdimensions'], 'photo_max_heightnew', $CONFIG['photo_max_height'], 4);
+    formHelper::formTextBox($lang['photo_Newwresize'], 'photo_new_widthnew', $CONFIG['photo_new_width'], 4);
+    formHelper::formTextBox($lang['photo_Newhresize'], 'photo_new_heightnew', $CONFIG['photo_new_height'], 4);
+    formHelper::formTextBox($lang['photo_Path'], 'photo_pathnew', $CONFIG['photo_path'], 20);
+    formHelper::formTextBox($lang['max_photo_size_w'], 'max_photo_size_w_new', $max_photo_sizes[0], 4);
+    formHelper::formTextBox($lang['max_photo_size_h'], 'max_photo_size_h_new', $max_photo_sizes[1], 4);
     ?>
     <tr class="ctrtablerow" bgcolor="<?php echo $THEME['altbg2']?>">
     <td colspan="2"><input class="submit" type="submit" name="photosubmit" value="<?php echo $lang['textsubmitchanges']?>" /></td>

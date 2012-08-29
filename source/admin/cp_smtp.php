@@ -33,10 +33,11 @@ define('DEBUG_REG',true);
 define('ROOT', '../');
 define('ROOTINC', '../include/');
 define('ROOTCLASS', '../class/');
+define('ROOTHELPER', '../helper/');
 
 require_once(ROOT.'header.php');
 require_once(ROOTINC.'admincp.inc.php');
-require_once(ROOTINC.'settings.inc.php');
+require_once(ROOTHELPER.'formHelper.php');
 
 loadtpl(
 'cp_header',
@@ -71,7 +72,7 @@ function viewPanel()
     global $oToken, $CONFIG, $cheHTML, $selHTML;
 
     $smtp_statuson = $smtp_statusoff = '';
-    settingHTML('smtp_status', $smtp_statuson, $smtp_statusoff);
+    formHelper::getSettingOnOffHtml('smtp_status', $smtp_statuson, $smtp_statusoff);
 
     $CONFIG['smtpServer'] = stripslashes($CONFIG['smtpServer']);
     $CONFIG['smtpusername'] = stripslashes($CONFIG['smtpusername']);
@@ -90,13 +91,13 @@ function viewPanel()
     <td colspan="2" class="category"><strong><font color="<?php echo $THEME['cattext']?>"><?php echo $lang['Smtp_Settings']?></font></strong></td>
     </tr>
     <?php
-    printsetting1($lang['Smtp_Status'], 'smtp_statusnew', $smtp_statuson, $smtp_statusoff);
-    printsetting2($lang['Smtp_Server'], 'smtpServernew', $CONFIG['smtpServer'], 50);
-    printsetting2($lang['Smtp_Port_Number'], 'smtpportnew', $CONFIG['smtpport'], 4);
-    printsetting2($lang['Smtp_Timeout'], 'smtptimeoutnew', $CONFIG['smtptimeout'], 3);
-    printsetting2($lang['Smtp_Username'], 'smtpusernamenew', $CONFIG['smtpusername'], 50);
-    printsetting2($lang['Smtp_Password'], 'smtppasswordnew', $CONFIG['smtppassword'], 50, true);
-    printsetting2($lang['Smtp_Host'], 'smtphostnew', $CONFIG['smtphost'], 50);
+    formHelper::formSelectOnOff($lang['Smtp_Status'], 'smtp_statusnew', $smtp_statuson, $smtp_statusoff);
+    formHelper::formTextBox($lang['Smtp_Server'], 'smtpServernew', $CONFIG['smtpServer'], 50);
+    formHelper::formTextBox($lang['Smtp_Port_Number'], 'smtpportnew', $CONFIG['smtpport'], 4);
+    formHelper::formTextBox($lang['Smtp_Timeout'], 'smtptimeoutnew', $CONFIG['smtptimeout'], 3);
+    formHelper::formTextBox($lang['Smtp_Username'], 'smtpusernamenew', $CONFIG['smtpusername'], 50);
+    formHelper::formTextBox($lang['Smtp_Password'], 'smtppasswordnew', $CONFIG['smtppassword'], 50, true);
+    formHelper::formTextBox($lang['Smtp_Host'], 'smtphostnew', $CONFIG['smtphost'], 50);
     ?>
     <tr>
     <td class="ctrtablerow" bgcolor="<?php echo $THEME['altbg2']?>" colspan="2">
