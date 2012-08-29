@@ -32,10 +32,11 @@ define('DEBUG_REG', true);
 define('ROOT', '../');
 define('ROOTINC', '../include/');
 define('ROOTCLASS', '../class/');
+define('ROOTHELPER', '../helper/');
 
 require_once(ROOT.'header.php');
 require_once(ROOTINC.'admincp.inc.php');
-require_once(ROOTINC.'settings.inc.php');
+require_once(ROOTHELPER.'formHelper.php');
 
 loadtpl(
 'cp_header',
@@ -647,17 +648,17 @@ function viewDetailsPanel($fdetails)
     $forum['mpnt'] = (int) $forum['mpnt'];
     $forum['attachnum'] = (int) $forum['attachnum'];
     $CONFIG['attach_num_default'] = (int) $CONFIG['attach_num_default'];
-    printsetting2($lang['textforumname'], 'namenew', $forum['name'], 20);
-    printsetting4($lang['textdesc'], 5, 'descnew', 50, $forum['description']);
-    printsetting1($lang['frules_status'], 'frules_statusnew', $fruleson, $frulesoff);
-    printsetting4($lang['frules_explain'], 5, 'frulesnew', 50, $forum['frules']);
-    printsetting1($lang['closethreadsstatus'], 'closethreadsnew', $closethreadson, $closethreadsoff);
-    printsetting1($lang['quickreply_status'], 'quickreplynew', $quickreplyon, $quickreplyoff);
-    printsetting1($lang['fpostcount'], 'postcountnew', $postcounton, $postcountoff);
-    printsetting2($lang['minchars'], 'mincharsnew', $forum['minchars'], 2);
-    printsetting2($lang['mpfa'], 'mpfanew', $forum['mpfa'], 2);
-    printsetting2($lang['mpnp'], 'mpnpnew', $forum['mpnp'], 2);
-    printsetting2($lang['mpnt'], 'mpntnew', $forum['mpnt'], 2);
+    formHelper::formTextBox($lang['textforumname'], 'namenew', $forum['name'], 20);
+    formHelper::formTextBox($lang['textdesc'], 5, 'descnew', 50, $forum['description']);
+    formHelper::formSelectOnOff($lang['frules_status'], 'frules_statusnew', $fruleson, $frulesoff);
+    formHelper::formTextBox($lang['frules_explain'], 5, 'frulesnew', 50, $forum['frules']);
+    formHelper::formSelectOnOff($lang['closethreadsstatus'], 'closethreadsnew', $closethreadson, $closethreadsoff);
+    formHelper::formSelectOnOff($lang['quickreply_status'], 'quickreplynew', $quickreplyon, $quickreplyoff);
+    formHelper::formSelectOnOff($lang['fpostcount'], 'postcountnew', $postcounton, $postcountoff);
+    formHelper::formTextBox($lang['minchars'], 'mincharsnew', $forum['minchars'], 2);
+    formHelper::formTextBox($lang['mpfa'], 'mpfanew', $forum['mpfa'], 2);
+    formHelper::formTextBox($lang['mpnp'], 'mpnpnew', $forum['mpnp'], 2);
+    formHelper::formTextBox($lang['mpnt'], 'mpntnew', $forum['mpnt'], 2);
     ?>
     <tr class="tablerow">
     <td bgcolor="<?php echo $THEME['altbg1']?>"><?php echo $lang['multiattach']?></td>
@@ -667,12 +668,12 @@ function viewDetailsPanel($fdetails)
     <td bgcolor="<?php echo $THEME['altbg1']?>" valign="top"><?php echo $lang['textallow']?></td>
     <td bgcolor="<?php echo $THEME['altbg2']?>" class="smalltxt">
     <?php
-    printsetting6('allowsmiliesnew', 'yes', $checked1, $lang['textsmilies']);
-    printsetting6('allowbbcodenew', 'yes', $checked2, $lang['textbbcode']);
-    printsetting6('allowimgcodenew', 'yes', $checked3, $lang['textimgcode']);
-    printsetting6('attachstatusnew', 'on', $checked4, $lang['attachments']);
-    printsetting6('pollstatusnew', 'on', $checked5, $lang['polls']);
-    printsetting6('guestpostingnew', 'on', $checked6, $lang['textanonymousposting']);
+    formHelper::formCheckBox('allowsmiliesnew', 'yes', $checked1, $lang['textsmilies']);
+    formHelper::formCheckBox('allowbbcodenew', 'yes', $checked2, $lang['textbbcode']);
+    formHelper::formCheckBox('allowimgcodenew', 'yes', $checked3, $lang['textimgcode']);
+    formHelper::formCheckBox('attachstatusnew', 'on', $checked4, $lang['attachments']);
+    formHelper::formCheckBox('pollstatusnew', 'on', $checked5, $lang['polls']);
+    formHelper::formCheckBox('guestpostingnew', 'on', $checked6, $lang['textanonymousposting']);
     ?>
     </td>
     </tr>
@@ -681,10 +682,10 @@ function viewDetailsPanel($fdetails)
     <td bgcolor="<?php echo $THEME['altbg2']?>"><?php echo $themelist?></td>
     </tr>
     <?php
-    printsetting1($lang['markthreadstatus'], 'mt_statusnew', $markthreadson, $markthreadsoff);
-    printsetting4($lang['markthreadopen'], 4, 'mt_opennew', 50, $forum['mt_open']);
-    printsetting4($lang['markthreadclose'], 4, 'mt_closenew', 50, $forum['mt_close']);
-    printsetting4($lang['topicsubjectprefixes'], 5, 'subjectprefixesnew', 50, $forum['subjectprefixes']);
+    formHelper::formSelectOnOff($lang['markthreadstatus'], 'mt_statusnew', $markthreadson, $markthreadsoff);
+    formHelper::formTextBox($lang['markthreadopen'], 4, 'mt_opennew', 50, $forum['mt_open']);
+    formHelper::formTextBox($lang['markthreadclose'], 4, 'mt_closenew', 50, $forum['mt_close']);
+    formHelper::formTextBox($lang['topicsubjectprefixes'], 5, 'subjectprefixesnew', 50, $forum['subjectprefixes']);
     ?>
     <tr class="tablerow">
     <td bgcolor="<?php echo $THEME['altbg1']?>"><?php echo $lang['whopostop1']?></td>
@@ -747,8 +748,8 @@ function viewDetailsPanel($fdetails)
     </td>
     </tr>
     <?php
-    printsetting4($lang['textuserlist'], 5, 'userlistnew', 50, $forum['userlist']);
-    printsetting2($lang['forumpw'], 'passwordnew', $forum['password'], 20);
+    formHelper::formTextBox($lang['textuserlist'], 5, 'userlistnew', 50, $forum['userlist']);
+    formHelper::formTextBox($lang['forumpw'], 'passwordnew', $forum['password'], 20);
     ?>
     <tr class="tablerow">
     <td bgcolor="<?php echo $THEME['altbg1']?>"><?php echo $lang['textdeleteques']?></td>

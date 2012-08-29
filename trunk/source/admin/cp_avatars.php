@@ -33,10 +33,11 @@ define('DEBUG_REG', true);
 define('ROOT', '../');
 define('ROOTINC', '../include/');
 define('ROOTCLASS', '../class/');
+define('ROOTHELPER', '../helper/');
 
 require_once(ROOT.'header.php');
 require_once(ROOTINC.'admincp.inc.php');
-require_once(ROOTINC.'settings.inc.php');
+require_once(ROOTHELPER.'formHelper.php');
 
 loadtpl(
 'cp_header',
@@ -79,7 +80,7 @@ function viewPanel()
     global $CONFIG, $lang, $THEME, $shadow2, $oToken;
 
     $avataron = $avataroff = '';
-    settingHTML('avastatus', $avataron, $avataroff);
+    formHelper::getSettingOnOffHtml('avastatus', $avataron, $avataroff);
 
     $avuchecked[0] = $avuchecked[1] = $avuchecked[2] = false;
     switch ($CONFIG['avatar_whocanupload'])
@@ -96,7 +97,7 @@ function viewPanel()
     }
 
     $avatars_status_on = $avatars_status_off = '';
-    settingHTML('avatars_status', $avatars_status_on, $avatars_status_off);
+    formHelper::getSettingOnOffHtml('avatars_status', $avatars_status_on, $avatars_status_off);
 
     $max_avatar_sizes = explode('x', $CONFIG['max_avatar_size']);
     $CONFIG['avatar_path'] = stripslashes($CONFIG['avatar_path']);
@@ -112,20 +113,20 @@ function viewPanel()
     <td colspan="2" class="title"><?php echo $lang['Avatar_Settings']?></td>
     </tr>
     <?php
-    printsetting1($lang['textavastatus'], 'avastatusnew', $avataron, $avataroff);
-    printsetting1($lang['avatars_status'], 'avatars_statusnew', $avatars_status_on, $avatars_status_off);
-    printsetting2($lang['avatarsperpage'], 'avatars_perpagenew', $CONFIG['avatars_perpage'], 2);
-    printsetting2($lang['avatarsperrow'], "avatars_perrownew", $CONFIG['avatars_perrow'], 2);
-    printsetting3($lang['Avatar_Whoupload'], 'avatar_whocanuploadnew', array($lang['textoff'], $lang['Avatar_Upall'], $lang['Avatar_Upstaff']), array('off', 'all', 'staff'), $avuchecked, false);
-    printsetting2($lang['Avatar_Filesize'], 'avatar_filesizenew', $CONFIG['avatar_filesize'], 5);
-    printsetting2($lang['Avatar_Wdimensions'], 'avatar_max_widthnew', $CONFIG['avatar_max_width'], 4);
-    printsetting2($lang['Avatar_Hdimensions'], 'avatar_max_heightnew', $CONFIG['avatar_max_height'], 4);
-    printsetting2($lang['Avatar_Newwresize'], 'avatar_new_widthnew', $CONFIG['avatar_new_width'], 4);
-    printsetting2($lang['Avatar_Newhresize'], 'avatar_new_heightnew', $CONFIG['avatar_new_height'], 4);
-    printsetting2($lang['Avatar_Path'], 'avatar_pathnew', $CONFIG['avatar_path'], 20);
-    printsetting2($lang['avgalpath'], 'avgalpathnew', $CONFIG['avgalpath'], 20);
-    printsetting2($lang['max_avatar_size_w'], 'max_avatar_size_w_new', $max_avatar_sizes[0], 4);
-    printsetting2($lang['max_avatar_size_h'], 'max_avatar_size_h_new', $max_avatar_sizes[1], 4);
+    formHelper::formSelectOnOff($lang['textavastatus'], 'avastatusnew', $avataron, $avataroff);
+    formHelper::formSelectOnOff($lang['avatars_status'], 'avatars_statusnew', $avatars_status_on, $avatars_status_off);
+    formHelper::formTextBox($lang['avatarsperpage'], 'avatars_perpagenew', $CONFIG['avatars_perpage'], 2);
+    formHelper::formTextBox($lang['avatarsperrow'], "avatars_perrownew", $CONFIG['avatars_perrow'], 2);
+    formHelper::formSelectList($lang['Avatar_Whoupload'], 'avatar_whocanuploadnew', array($lang['textoff'], $lang['Avatar_Upall'], $lang['Avatar_Upstaff']), array('off', 'all', 'staff'), $avuchecked, false);
+    formHelper::formTextBox($lang['Avatar_Filesize'], 'avatar_filesizenew', $CONFIG['avatar_filesize'], 5);
+    formHelper::formTextBox($lang['Avatar_Wdimensions'], 'avatar_max_widthnew', $CONFIG['avatar_max_width'], 4);
+    formHelper::formTextBox($lang['Avatar_Hdimensions'], 'avatar_max_heightnew', $CONFIG['avatar_max_height'], 4);
+    formHelper::formTextBox($lang['Avatar_Newwresize'], 'avatar_new_widthnew', $CONFIG['avatar_new_width'], 4);
+    formHelper::formTextBox($lang['Avatar_Newhresize'], 'avatar_new_heightnew', $CONFIG['avatar_new_height'], 4);
+    formHelper::formTextBox($lang['Avatar_Path'], 'avatar_pathnew', $CONFIG['avatar_path'], 20);
+    formHelper::formTextBox($lang['avgalpath'], 'avgalpathnew', $CONFIG['avgalpath'], 20);
+    formHelper::formTextBox($lang['max_avatar_size_w'], 'max_avatar_size_w_new', $max_avatar_sizes[0], 4);
+    formHelper::formTextBox($lang['max_avatar_size_h'], 'max_avatar_size_h_new', $max_avatar_sizes[1], 4);
     ?>
     <tr class="ctrtablerow" bgcolor="<?php echo $THEME['altbg2']?>">
     <td colspan="2"><input class="submit" type="submit" name="avatarsubmit" value="<?php echo $lang['textsubmitchanges']?>" /></td>

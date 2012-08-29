@@ -33,10 +33,11 @@ define('DEBUG_REG', true);
 define('ROOT', '../');
 define('ROOTINC', '../include/');
 define('ROOTCLASS', '../class/');
+define('ROOTHELPER', '../helper/');
 
 require_once(ROOT.'header.php');
 require_once(ROOTINC.'admincp.inc.php');
-require_once(ROOTINC.'settings.inc.php');
+require_once(ROOTHELPER.'formHelper.php');
 
 loadtpl(
 'cp_header',
@@ -85,7 +86,7 @@ function viewPanel()
     $bbcodeinsert = bbcodeinsert();
 
     $indexnewson = $indexnewsoff = '';
-    settingHTML('indexnews', $indexnewson, $indexnewsoff);
+    formHelper::getSettingOnOffHtml('indexnews', $indexnewson, $indexnewsoff);
 
     $CONFIG['indexnewstxt'] = stripslashes($CONFIG['indexnewstxt']);
     ?>
@@ -99,7 +100,7 @@ function viewPanel()
     <td class="title" colspan="2"><?php echo $lang['indexnewscp']?></td>
     </tr>
     <?php
-    printsetting1($lang['set_indexnews'], 'indexnewsnew', $indexnewson, $indexnewsoff);
+    formHelper::formSelectOnOff($lang['set_indexnews'], 'indexnewsnew', $indexnewson, $indexnewsoff);
     echo $bbcodeinsert;
     ?>
     <tr class="tablerow">

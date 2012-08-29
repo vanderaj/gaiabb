@@ -32,10 +32,11 @@
 define('ROOT', '../');
 define('ROOTINC', '../include/');
 define('ROOTCLASS', '../class/');
+define('ROOTHELPER', '../helper/');
 
 require_once(ROOT.'header.php');
 require_once(ROOTINC.'admincp.inc.php');
-require_once(ROOTINC.'settings.inc.php');
+require_once(ROOTHELPER.'formHelper.php');
 
 loadtpl(
 'cp_header',
@@ -313,15 +314,15 @@ if ($action == 'themes')
         }
 
         $shadowon = $shadowoff = '';
-        themeHTML('shadowfx', $shadowon, $shadowoff);
+        formHelper::getThemeOnOffHtml('shadowfx', $shadowon, $shadowoff);
         $themeon = $themeoff = '';
-        themeHTML('themestatus', $themeon, $themeoff);
+        formHelper::getThemeOnOffHtml('themestatus', $themeon, $themeoff);
         $celloveron = $celloveroff = '';
-        themeHTML('celloverfx', $celloveron, $celloveroff);
+        formHelper::getThemeOnOffHtml('celloverfx', $celloveron, $celloveroff);
         $riconon = $riconoff = '';
-        themeHTML('riconstatus', $riconon, $riconoff);
+        formHelper::getThemeOnOffHtml('riconstatus', $riconon, $riconoff);
         $spacecatson = $spacecatsoff = '';
-        themeHTML('space_cats', $spacecatson, $spacecatsoff);
+        formHelper::getThemeOnOffHtml('space_cats', $spacecatson, $spacecatsoff);
 
         $themedata['name'] = stripslashes($themedata['name']);
         $themedata['bgcolor'] = stripslashes($themedata['bgcolor']);

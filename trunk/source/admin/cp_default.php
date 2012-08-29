@@ -33,10 +33,11 @@ define('DEBUG_REG', true);
 define('ROOT', '../');
 define('ROOTINC', '../include/');
 define('ROOTCLASS', '../class/');
+define('ROOTHELPER', '../helper/');
 
 require_once(ROOT.'header.php');
 require_once(ROOTINC.'admincp.inc.php');
-require_once(ROOTINC.'settings.inc.php');
+require_once(ROOTHELPER.'formHelper.php');
 
 loadtpl(
 'cp_header',
@@ -229,7 +230,7 @@ function viewPanel()
     }
 
     $bbcimg_statuson = $bbcimg_statusoff = '';
-    settingHTML('bbcimg_status', $bbcimg_statuson, $bbcimg_statusoff);
+    formHelper::getSettingOnOffHtml('bbcimg_status', $bbcimg_statuson, $bbcimg_statusoff);
 
     $timeformatlist = array();
     $timeformatlist[] = '<select name="timeformatnew">';
@@ -270,20 +271,20 @@ function viewPanel()
     <td bgcolor="<?php echo $THEME['altbg2']?>"><?php echo $themelist?></td>
     </tr>
     <?php
-    printsetting2($lang['textppp'], 'postperpagenew', $CONFIG['postperpage'], 3);
-    printsetting2($lang['texttpp'], 'topicperpagenew', $CONFIG['topicperpage'], 3);
-    printsetting2($lang['textmpp'], 'memberperpagenew', $CONFIG['memberperpage'], 3);
-    printsetting2($lang['customposts'], 'custompostsnew', $CONFIG['customposts'], 3);
-    printsetting2($lang['pmposts'], 'pmpostsnew', $CONFIG['pmposts'], 3);
-    printsetting2($lang['max_reg_day'], 'max_reg_daynew', $CONFIG['max_reg_day'], 3);
-    printsetting2($lang['set_maxsigchars'], 'maxsigcharsnew', $CONFIG['maxsigchars'], 3);
-    printsetting2($lang['viewsigminposts'], 'viewsigminpostsnew', $CONFIG['viewsigminposts'], 3);
-    printsetting2($lang['attachnumdef'], 'attachnumnew', $attach_num, 2);
-    printsetting2($lang['max_attheight'], 'max_attheightnew', $CONFIG['max_attheight'], 3);
-    printsetting2($lang['max_attwidth'], 'max_attwidthnew', $CONFIG['max_attwidth'], 3);
-    printsetting1($lang['bbcimg_status'], 'bbcimg_statusnew', $bbcimg_statuson, $bbcimg_statusoff);
-    printsetting2($lang['bbc_maxht'], 'bbc_maxhtnew', $CONFIG['bbc_maxht'], 3);
-    printsetting2($lang['bbc_maxwd'], 'bbc_maxwdnew', $CONFIG['bbc_maxwd'], 3);
+    formHelper::formTextBox($lang['textppp'], 'postperpagenew', $CONFIG['postperpage'], 3);
+    formHelper::formTextBox($lang['texttpp'], 'topicperpagenew', $CONFIG['topicperpage'], 3);
+    formHelper::formTextBox($lang['textmpp'], 'memberperpagenew', $CONFIG['memberperpage'], 3);
+    formHelper::formTextBox($lang['customposts'], 'custompostsnew', $CONFIG['customposts'], 3);
+    formHelper::formTextBox($lang['pmposts'], 'pmpostsnew', $CONFIG['pmposts'], 3);
+    formHelper::formTextBox($lang['max_reg_day'], 'max_reg_daynew', $CONFIG['max_reg_day'], 3);
+    formHelper::formTextBox($lang['set_maxsigchars'], 'maxsigcharsnew', $CONFIG['maxsigchars'], 3);
+    formHelper::formTextBox($lang['viewsigminposts'], 'viewsigminpostsnew', $CONFIG['viewsigminposts'], 3);
+    formHelper::formTextBox($lang['attachnumdef'], 'attachnumnew', $attach_num, 2);
+    formHelper::formTextBox($lang['max_attheight'], 'max_attheightnew', $CONFIG['max_attheight'], 3);
+    formHelper::formTextBox($lang['max_attwidth'], 'max_attwidthnew', $CONFIG['max_attwidth'], 3);
+    formHelper::formSelectOnOff($lang['bbcimg_status'], 'bbcimg_statusnew', $bbcimg_statuson, $bbcimg_statusoff);
+    formHelper::formTextBox($lang['bbc_maxht'], 'bbc_maxhtnew', $CONFIG['bbc_maxht'], 3);
+    formHelper::formTextBox($lang['bbc_maxwd'], 'bbc_maxwdnew', $CONFIG['bbc_maxwd'], 3);
     ?>
     <tr class="tablerow">
     <td bgcolor="<?php echo $THEME['altbg1']?>"><?php echo $lang['daylightsavings']?></td>
@@ -333,7 +334,7 @@ function viewPanel()
     echo $df;
     $db->free_result($querydf);
 
-    printsetting3($lang['textoffset'], 'new_def_tz', array($lang['timezone1'], $lang['timezone2'], $lang['timezone3'], $lang['timezone4'], $lang['timezone5'], $lang['timezone6'], $lang['timezone7'], $lang['timezone8'], $lang['timezone9'], $lang['timezone10'], $lang['timezone11'], $lang['timezone12'], $lang['timezone13'], $lang['timezone14'], $lang['timezone15'], $lang['timezone16'], $lang['timezone17'], $lang['timezone18'], $lang['timezone19'], $lang['timezone20'], $lang['timezone21'], $lang['timezone22'], $lang['timezone23'], $lang['timezone24'], $lang['timezone25'], $lang['timezone26'], $lang['timezone27'], $lang['timezone28'], $lang['timezone29'], $lang['timezone30'], $lang['timezone31'], $lang['timezone32'], $lang['timezone33']), array('-12', '-11', '-10', '-9', '-8', '-7', '-6', '-5', '-4', '-3.5', '-3', '-2', '-1', '0', '1', '2', '3', '3.5', '4', '4.5', '5', '5.5', '5.75', '6', '6.5', '7', '8', '9', '9.5', '10', '11', '12', '13'), array($timezone1, $timezone2, $timezone3, $timezone4, $timezone5, $timezone6, $timezone7, $timezone8, $timezone9, $timezone10, $timezone11, $timezone12, $timezone13, $timezone14, $timezone15, $timezone16, $timezone17, $timezone18, $timezone19, $timezone20, $timezone21, $timezone22, $timezone23, $timezone24, $timezone25, $timezone26, $timezone27, $timezone28, $timezone29, $timezone30, $timezone31, $timezone32, $timezone33), false);
+    formHelper::formSelectList($lang['textoffset'], 'new_def_tz', array($lang['timezone1'], $lang['timezone2'], $lang['timezone3'], $lang['timezone4'], $lang['timezone5'], $lang['timezone6'], $lang['timezone7'], $lang['timezone8'], $lang['timezone9'], $lang['timezone10'], $lang['timezone11'], $lang['timezone12'], $lang['timezone13'], $lang['timezone14'], $lang['timezone15'], $lang['timezone16'], $lang['timezone17'], $lang['timezone18'], $lang['timezone19'], $lang['timezone20'], $lang['timezone21'], $lang['timezone22'], $lang['timezone23'], $lang['timezone24'], $lang['timezone25'], $lang['timezone26'], $lang['timezone27'], $lang['timezone28'], $lang['timezone29'], $lang['timezone30'], $lang['timezone31'], $lang['timezone32'], $lang['timezone33']), array('-12', '-11', '-10', '-9', '-8', '-7', '-6', '-5', '-4', '-3.5', '-3', '-2', '-1', '0', '1', '2', '3', '3.5', '4', '4.5', '5', '5.5', '5.75', '6', '6.5', '7', '8', '9', '9.5', '10', '11', '12', '13'), array($timezone1, $timezone2, $timezone3, $timezone4, $timezone5, $timezone6, $timezone7, $timezone8, $timezone9, $timezone10, $timezone11, $timezone12, $timezone13, $timezone14, $timezone15, $timezone16, $timezone17, $timezone18, $timezone19, $timezone20, $timezone21, $timezone22, $timezone23, $timezone24, $timezone25, $timezone26, $timezone27, $timezone28, $timezone29, $timezone30, $timezone31, $timezone32, $timezone33), false);
     ?>
     <tr class="ctrtablerow" bgcolor="<?php echo $THEME['altbg2']?>">
     <td colspan="2"><input class="submit" type="submit" name="defaultsubmit" value="<?php echo $lang['textsubmitchanges']?>" /></td>

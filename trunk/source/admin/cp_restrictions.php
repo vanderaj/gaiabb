@@ -33,10 +33,11 @@ define('DEBUG_REG', true);
 define('ROOT', '../');
 define('ROOTINC', '../include/');
 define('ROOTCLASS', '../class/');
+define('ROOTHELPER', '../helper/');
 
 require_once(ROOT.'header.php');
 require_once(ROOTINC.'admincp.inc.php');
-require_once(ROOTINC.'settings.inc.php');
+require_once(ROOTHELPER.'formHelper.php');
 
 loadtpl(
 'cp_header',
@@ -102,7 +103,7 @@ function viewPanel()
         <tr class="ctrtablerow" bgcolor="<?php echo $THEME['altbg2']?>">
         <td>
         <?php
-        printsetting6("delete" . $restricted['id'], $restricted['id'], '', '');
+        formHelper::formCheckBox("delete" . $restricted['id'], $restricted['id'], '', '');
         ?>
         </td>
         <td>
@@ -110,12 +111,12 @@ function viewPanel()
         </td>
         <td>
         <?php
-        printsetting6("case" . $restricted['id'], 'on', $case_check, '');
+        formHelper::formCheckBox("case" . $restricted['id'], 'on', $case_check, '');
         ?>
         </td>
         <td>
         <?php
-        printsetting6("partial" . $restricted['id'], 'on', $partial_check, '');
+        formHelper::formCheckBox("partial" . $restricted['id'], 'on', $partial_check, '');
         ?>
         </td>
         </tr>
@@ -142,12 +143,12 @@ function viewPanel()
     <td><input type="text" size="30" name="newname" value="" /></td>
     <td>
     <?php
-    printsetting6('newcase', 'on', $cheHTML, '');
+    formHelper::formCheckBox('newcase', 'on', $cheHTML, '');
     ?>
     </td>
     <td>
     <?php
-    printsetting6('newpartial', 'on', $cheHTML, '');
+    formHelper::formCheckBox('newpartial', 'on', $cheHTML, '');
     ?>
     </td>
     </tr>
