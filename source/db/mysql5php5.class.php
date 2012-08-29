@@ -40,13 +40,7 @@ define('X_FRIENDLYNAME', 'MySQL 4.1 and 5.0');
 define('X_DALMINPHP', '5.2.6');
 define('X_DALMAXPHP', '5.9.9');
 
-if (!defined('ROOT'))
-{
-    define('ROOT', '../');
-}
-require_once(ROOT.'db/dao.class.php');
-
-class mysql5Php5 extends DataAccessObject {
+class mysql5Php5 {
     public $querynum = 0;
     public $querylist = array();
     public $querytimes = array();
@@ -600,6 +594,23 @@ class mysql5Php5 extends DataAccessObject {
     }
 
     /**
+     * time() - create a SQL timestamp
+     *
+     * @param    $time, optional, an arbitrary point in time
+     * @return   string, the left padded timestamp suitable for SQL queries
+     */
+    function time($time=NULL)
+    {
+    	global $onlinetime;
+    
+    	if ($time === NULL)
+    	{
+    		$time = $onlinetime;
+    	}
+    	return "LPAD('".$time."', '15', '0')";
+    }
+    
+    /**
     * stop_timer() - start the query timer
     *
     * @return   always returns true
@@ -784,6 +795,136 @@ class mysql5Php5 extends DataAccessObject {
 
         return $retval;
     }
+    /**
+     * function() - short description of function
+     *
+     * Long description of function
+     *
+     * @param    $varname    type, what it does
+     * @return   type, what the return does
+     */
+    function view_header($title = "Data Abstraction Layer")
+    {
+    	$logo = ROOT.'images/prored/logo.gif';
+    	$navtext = "Data Abstraction Layer";
+    	$css = ROOT.'images/prored/style.css';
+    	$imgpath = ROOT.'images/prored/';
+    	?>
+            <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+            "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+            <html>
+            <head>
+            <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />
+            <title>
+            <?php echo $title ?>
+            </title>
+            <link rel=stylesheet type="text/css" href="<?php echo $css?>" title="Stylesheet">
+            <style type="text/css">@import url("<?php echo $css ?>");</style>
+            </head>
+            <body bgcolor="#C9675D" text="#000000">
+            <a name="top"></a>
+            <table cellspacing="0" cellpadding="0" border="0" width="100%" bgcolor="#BB6255" align="center"><tr><td><table border="0" cellspacing="1px" cellpadding="5px" width="100%" align="center"><tr><td bgcolor="#FFFFFF" align="center"><br />
+            <table cellspacing="0" cellpadding="0" border="0" width="97%" align="center">
+            <tr>
+            <td bgcolor="#BB6255"><table border="0" cellspacing="1" cellpadding="6" width="100%">
+            <tr>
+            <td width="74%" style="background-image: url(<?php echo $imgpath?>topbg.gif); text-align: left"><table border="0" width="100%" cellpadding="0" cellspacing="0">
+            <tr>
+            <td valign="top" rowspan="2"><a href="index.php"><img src="<?php echo $imgpath?>logo.gif" alt="Your Forums" title="Your Forums" border="0" /></a></td>
+            <td align="right" valign="top"><font class="smalltxt">Last active: Never<br />
+            </font>
+            </td>
+            </tr>
+            <tr>
+            <td align="right" valign="bottom"><font class="smalltxt">[ <?php echo $navtext?> ]</font></td>
+            </tr>
+            </table>
+            </td>
+            </tr>
+            <tr>
+            <td class="navtd">
+            <table width="100%" cellpadding="0" cellspacing="0">
+            <tr>
+            <td align="right"><a href="<?php echo ROOT?>index.php"><font class="navtd">Back to: <img src="<?php echo $imgpath?>home.gif" border="0" alt="Your Forums" title="Your Forums" /></font></a></td>
+            </tr>
+            </table>
+            </td>
+            </tr>
+            </table>
+            </td>
+            </tr>
+            </table>
+            <table cellspacing="0" cellpadding="0" border="0" width="97%" align="center">
+            <tr>
+            <td width="100%" align="left"><img src="<?php echo $imgpath?>shadow.gif" border="0" alt="" title="" /></td>
+            </tr>
+            </table>
+            <table cellspacing="0" cellpadding="1" border="0" width="97%" align="center">
+            <tr>
+            <td>
+            <table width="100%" cellspacing="0" cellpadding="2" align="center">
+            <tr>
+            <td class="nav" align="left"> <a href="index.php"><?php echo $navtext?></a> </td>
+            <td align="right">&nbsp;</td>
+            </tr>
+            </table>
+            </td>
+            </tr>
+            </table>
+            <br />
+            <?php
+        }
+    
+        /**
+        * function() - short description of function
+        *
+        * Long description of function
+        *
+        * @param    $varname    type, what it does
+        * @return   type, what the return does
+        */
+        function view_footer()
+        {
+            ?>
+            <table align="center">
+            <tr>
+            <td align="center" class="smalltxt">
+            <br />
+            <br />
+            Powered by GaiaBB
+            <br />
+            Copyright &copy; 2011 The GaiaBB Group. All rights reserved.
+            <br />
+            <br />
+            </td>
+            </tr>
+            </table>
+            <br /></td></tr></table></td></tr></table>
+            <a id="bottom" name="bottom"></a>
+            </body>
+            </html>
+            <?php
+        }
+    
+        /**
+        * function() - short description of function
+        *
+        * Long description of function
+        *
+        * @param    $varname    type, what it does
+        * @return   type, what the return does
+        */
+        function view_shadow()
+        {
+            ?>
+            <table cellspacing="0" cellpadding="0" border="0" width="97%" align="center">
+            <tr>
+            <td width="100%" align="left"><img src="<?php echo ROOT?>images/prored/shadow.gif" border="0" alt="" title="" /></td>
+            </tr>
+            </table>
+            <?php
+        }
+        
 }
 
 

@@ -176,12 +176,7 @@ if (isset($_SERVER['REQUEST_URI']))
     $url = $_SERVER['REQUEST_URI'];
 }
 
-if (!file_exists(ROOT.'db/'.$database.'.php'))
-{
-    die('Error: Could not load database driver.');
-}
-
-include(ROOT.'db/'.$database.'.php');
+include(ROOT.'db/mysql5php5.php');
 
 $oToken = new page_token();
 $oToken->init();
@@ -270,13 +265,7 @@ foreach ($tables as $name)
 // create secure table prefix by John
 define('X_PREFIX', $tablepre);
 
-// TODO: Remove me when old DAL goes away
-if (!defined('X_DBCLASSNAME'))
-{
-    define('X_DBCLASSNAME', 'dbstuff');
-}
-$dalname = X_DBCLASSNAME;
-$db = new $dalname;
+$db = new mysql5Php5();
 $db->connect($dbhost, $dbuser, $dbpw, $dbname, $pconnect, true);
 
 // Make all settings global, and put them in the $CONFIG[] array
