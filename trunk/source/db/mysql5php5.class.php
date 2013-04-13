@@ -893,7 +893,7 @@ class mysql5Php5 {
             <br />
             Powered by GaiaBB
             <br />
-            Copyright &copy; 2011 The GaiaBB Group. All rights reserved.
+            Copyright &copy; 2011-2013 The GaiaBB Group. All rights reserved.
             <br />
             <br />
             </td>
