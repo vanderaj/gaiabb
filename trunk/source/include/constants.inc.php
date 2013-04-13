@@ -69,6 +69,10 @@ define('DEBUGLEVEL', 1);
 if (!defined('DEBUGLEVEL')) {
     define('DEBUGLEVEL', 0);
 }
+
+// Change this if you want additional security in your installation
+define('GAIABB_MASTERKEY', 'sq^%L4Ld/<*C~WG)');
+
 /* Product name and version
  *
  * Change these as necessary.
@@ -78,7 +82,7 @@ $versioncompany = 'The GaiaBB Group';
 $versionshort = 'GaiaBB';
 $versiongeneral = 'GaiaBB 1.0-HEAD';
 $versioncopyright = 'GaiaBB 1.0-HEAD, &copy; 2011-2013 The GaiaBB Group';
-$versionbuild = '2011121501';
+$versionbuild = '2013041301';
 $alpha = '';
 $beta = '';
 $gamma = '1.0-HEAD dev sprint 2';
@@ -136,8 +140,6 @@ $cheHTML = 'checked="checked"';
 define('GAIABB_VERSION', $versiongeneral);
 define('GAIABB_BUILD', $versionbuild);
 define('GAIABB_COPYRIGHT', $versioncopyright);
-
-define('GAIABB_MASTERKEY', 'sq^%L4Ld/<*C~WG)');
 
 // Cache-control
 if (!defined('CACHECONTROL'))
