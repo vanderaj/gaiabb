@@ -36,7 +36,7 @@ if (!defined('IN_PROGRAM') && (defined('DEBUG') && DEBUG == false))
 }
 
 define('X_DBCLASSNAME', 'mysql5Php5');
-define('X_FRIENDLYNAME', 'MySQL 4.1 and 5.0');
+define('X_FRIENDLYNAME', 'MariaDB 5.1 or later (also compatible with Oracle MySQL)');
 define('X_DALMINPHP', '5.2.6');
 define('X_DALMAXPHP', '5.9.9');
 
@@ -805,7 +805,7 @@ class mysql5Php5 {
      */
     function view_header($title = "Data Abstraction Layer")
     {
-    	$logo = ROOT.'images/prored/logo.gif';
+    	$logo = ROOT.'images/prored/logo.png';
     	$navtext = "Data Abstraction Layer";
     	$css = ROOT.'images/prored/style.css';
     	$imgpath = ROOT.'images/prored/';
@@ -830,7 +830,7 @@ class mysql5Php5 {
             <tr>
             <td width="74%" style="background-image: url(<?php echo $imgpath?>topbg.gif); text-align: left"><table border="0" width="100%" cellpadding="0" cellspacing="0">
             <tr>
-            <td valign="top" rowspan="2"><a href="index.php"><img src="<?php echo $imgpath?>logo.gif" alt="Your Forums" title="Your Forums" border="0" /></a></td>
+            <td valign="top" rowspan="2"><a href="index.php"><img src="<?php echo $imgpath?>logo.png" alt="Your Forums" title="Your Forums" border="0" /></a></td>
             <td align="right" valign="top"><font class="smalltxt">Last active: Never<br />
             </font>
             </td>

@@ -1,4 +1,4 @@
-topicadmin_copy|#*UBB TEMPLATE*#|
+topicadmin_copy|#*GBB TEMPLATE*#|
 <form method="post" action="topicadmin.php?action=copy">
 <input type="hidden" name="token" value="$oToken->newToken" />
 <table cellspacing="0px" cellpadding="0px" border="0px" width="{$THEME['tablewidth']}" align="center">
@@ -26,14 +26,14 @@ topicadmin_copy|#*UBB TEMPLATE*#|
 $shadow
 </form>
 
-|#*UBB TEMPLATE FILE*#|usercp_home_themes|#*UBB TEMPLATE*#|
+|#*GBB TEMPLATE FILE*#|usercp_home_themes|#*GBB TEMPLATE*#|
 <form method="get" action="usercp.php?action=quicktheme">
 <select name="action" id="action" onchange="if(this.options[this.selectedIndex].value != '') { window.location=('usercp.php?action=quicktheme&amp;newtheme='+this.options[this.selectedIndex].value) }">
 $listquickthemes
 </select>
 </form>
 
-|#*UBB TEMPLATE FILE*#|login_incorrectdetails|#*UBB TEMPLATE*#|
+|#*GBB TEMPLATE FILE*#|login_incorrectdetails|#*GBB TEMPLATE*#|
 <table cellspacing="0px" cellpadding="0px" border="0px" width="{$THEME['tablewidth']}" align="center">
 <tr>
 <td bgcolor="{$THEME['bordercolor']}">
@@ -52,7 +52,7 @@ $listquickthemes
 $shadow
 <br />
 
-|#*UBB TEMPLATE FILE*#|error_nologinsession|#*UBB TEMPLATE*#|
+|#*GBB TEMPLATE FILE*#|error_nologinsession|#*GBB TEMPLATE*#|
 <form method="post" action="login.php">
 <input type="hidden" name="token" value="$oToken->newToken" />
 <table cellspacing="0px" cellpadding="0px" border="0px" width="{$THEME['tablewidth']}" align="center">
@@ -87,7 +87,7 @@ $shadow
 </table>
 </form>
 
-|#*UBB TEMPLATE FILE*#|stats|#*UBB TEMPLATE*#|
+|#*GBB TEMPLATE FILE*#|stats|#*GBB TEMPLATE*#|
 <table cellspacing="0px" cellpadding="0px" border="0px" width="{$THEME['tablewidth']}" align="center">
 <tr>
 <td bgcolor="{$THEME['bordercolor']}">
@@ -144,10 +144,10 @@ $shadow
 </table>
 $shadow
 
-|#*UBB TEMPLATE FILE*#|viewtopic_post_msn|#*UBB TEMPLATE*#|
+|#*GBB TEMPLATE FILE*#|viewtopic_post_msn|#*GBB TEMPLATE*#|
 <a href="http://members.msn.com/$post[msn]" target="_blank"><img src="{$THEME['imgdir']}/msn.gif" border="0px" alt="{$lang['altmsnyes']}" title="{$lang['altmsnyes']}" /></a>
 
-|#*UBB TEMPLATE FILE*#|admintool_editprofile|#*UBB TEMPLATE*#|
+|#*GBB TEMPLATE FILE*#|admintool_editprofile|#*GBB TEMPLATE*#|
 <form method="post" action="editprofile.php?memberid=$memberid" name="reg" enctype="multipart/form-data">
 <input type="hidden" name="token" value="$oToken->newToken" />
 <table cellspacing="0px" cellpadding="0px" border="0px" width="{$THEME['tablewidth']}" align="center">
@@ -433,7 +433,7 @@ $avatar
 </form>
 $shadow
 
-|#*UBB TEMPLATE FILE*#|footer|#*UBB TEMPLATE*#|
+|#*GBB TEMPLATE FILE*#|footer|#*GBB TEMPLATE*#|
 <br />
 <table cellspacing="{$THEME['borderwidth']}" cellpadding="0px" border="0px" width="{$THEME['tablewidth']}" align="center" bgcolor="{$THEME['bordercolor']}">
 <tr>
@@ -467,7 +467,7 @@ $bottomcorners
 </body>
 </html>
 
-|#*UBB TEMPLATE FILE*#|usercp_outputmsg|#*UBB TEMPLATE*#|
+|#*GBB TEMPLATE FILE*#|usercp_outputmsg|#*GBB TEMPLATE*#|
 <table cellspacing="0px" cellpadding="0px" border="0px" width="100%" align="center">
 <tr>
 <td bgcolor="{$THEME['bordercolor']}">
@@ -484,7 +484,7 @@ $bottomcorners
 </table>
 $shadow2
 
-|#*UBB TEMPLATE FILE*#|header|#*UBB TEMPLATE*#|
+|#*GBB TEMPLATE FILE*#|header|#*GBB TEMPLATE*#|
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="$lang_code" lang="$lang_code" dir="$lang_dir">
 <head>
@@ -558,7 +558,7 @@ $shadow
 </table>
 <br />
 
-|#*UBB TEMPLATE FILE*#|css|#*UBB TEMPLATE*#|
+|#*GBB TEMPLATE FILE*#|css|#*GBB TEMPLATE*#|
 <style type="text/css">
 body {
     text-align: left;
@@ -834,7 +834,7 @@ textarea, select, input, object {
 </style>
 $cssadd
 
-|#*UBB TEMPLATE FILE*#|online_row_admin|#*UBB TEMPLATE*#|
+|#*GBB TEMPLATE FILE*#|online_row_admin|#*GBB TEMPLATE*#|
 <tr class="tablerow" bgcolor="{$THEME['altbg1']}">
 <td width="18%">$online[username]</td>
 <td width="10%">$onlinetime</td>
@@ -846,14 +846,14 @@ $cssadd
 <a href="http://www.networldmap.com/TryIt.htm?GetLocation&amp;Template=demo.htm&amp;ipaddress=$online[ip]" target="_blank">M</a> $online[ip]</td>
 </tr>
 
-|#*UBB TEMPLATE FILE*#|viewtopic_poll_options_view|#*UBB TEMPLATE*#|
+|#*GBB TEMPLATE FILE*#|viewtopic_poll_options_view|#*GBB TEMPLATE*#|
 <tr class="tablerow">
 <td bgcolor="{$THEME['altbg2']}" width="30%"><font class="smalltxt">$array[name]</font></td>
 <td bgcolor="{$THEME['altbg2']}" width="60%"><img src="{$THEME['imgdir']}/pollbar-s.gif" alt="{$lang['altpollpercentage']}" title="{$lang['altpollpercentage']}" />$pollbar<img src="{$THEME['imgdir']}/pollbar-e.gif" alt="{$lang['altpollpercentage']}" title="{$lang['altpollpercentage']}" /></td>
 <td bgcolor="{$THEME['altbg2']}" width="10%"><font class="smalltxt">$array[votes] ($percentage)</font></td>
 </tr>
 
-|#*UBB TEMPLATE FILE*#|viewtopic_captcha|#*UBB TEMPLATE*#|
+|#*GBB TEMPLATE FILE*#|viewtopic_captcha|#*GBB TEMPLATE*#|
 $captcha_js
 <tr class="category">
 <td class="title" colspan="3">{$lang['imageverification']} - {$lang['required']}</td>
@@ -868,7 +868,7 @@ $captcha_js
 </td>
 </tr>
 
-|#*UBB TEMPLATE FILE*#|login|#*UBB TEMPLATE*#|
+|#*GBB TEMPLATE FILE*#|login|#*GBB TEMPLATE*#|
 <form method="post" action="login.php">
 <input type="hidden" name="token" value="$oToken->newToken" />
 <table cellspacing="0px" cellpadding="0px" border="0px" width="{$THEME['tablewidth']}" align="center">
@@ -904,7 +904,7 @@ $captcha_js
 </form>
 $shadow
 
-|#*UBB TEMPLATE FILE*#|lostpw|#*UBB TEMPLATE*#|
+|#*GBB TEMPLATE FILE*#|lostpw|#*GBB TEMPLATE*#|
 <form method="post" action="lostpw.php">
 <input type="hidden" name="token" value="$oToken->newToken" />
 <table cellspacing="0px" cellpadding="0px" border="0px" width="{$THEME['tablewidth']}" align="center">
@@ -935,7 +935,7 @@ $shadow
 </form>
 $shadow
 
-|#*UBB TEMPLATE FILE*#|online|#*UBB TEMPLATE*#|
+|#*GBB TEMPLATE FILE*#|online|#*GBB TEMPLATE*#|
 <table cellspacing="0px" cellpadding="0px" border="0px" width="{$THEME['tablewidth']}" align="center">
 <tr>
 <td bgcolor="{$THEME['bordercolor']}">
@@ -955,7 +955,7 @@ $onlineusers
 </table>
 $shadow
 
-|#*UBB TEMPLATE FILE*#|online_admin|#*UBB TEMPLATE*#|
+|#*GBB TEMPLATE FILE*#|online_admin|#*GBB TEMPLATE*#|
 <table cellspacing="0px" cellpadding="0px" border="0px" width="{$THEME['tablewidth']}" align="center">
 <tr>
 <td bgcolor="{$THEME['bordercolor']}">
@@ -976,7 +976,7 @@ $onlineusers
 </table>
 $shadow
 
-|#*UBB TEMPLATE FILE*#|index_whosonline|#*UBB TEMPLATE*#|
+|#*GBB TEMPLATE FILE*#|index_whosonline|#*GBB TEMPLATE*#|
 </table>
 </td>
 </tr>
@@ -1003,7 +1003,7 @@ $whostodayblock
 </td>
 </tr>
 
-|#*UBB TEMPLATE FILE*#|index|#*UBB TEMPLATE*#|
+|#*GBB TEMPLATE FILE*#|index|#*GBB TEMPLATE*#|
 $boardoffmsg
 $newsblock
 $welcome
@@ -1022,7 +1022,7 @@ $whosonline
 $shadow
 $statsblock
 
-|#*UBB TEMPLATE FILE*#|index_forum_row|#*UBB TEMPLATE*#|
+|#*GBB TEMPLATE FILE*#|index_forum_row|#*GBB TEMPLATE*#|
 <tr class="header">
 <td width="4%" align="center">&nbsp;</td>
 <td width="54%" align="center">{$lang['textforum']}</td>
@@ -1032,7 +1032,7 @@ $statsblock
 <td width="17%" align="center">{$lang['textmoderator']}</td>
 </tr>
 
-|#*UBB TEMPLATE FILE*#|index_stats|#*UBB TEMPLATE*#|
+|#*GBB TEMPLATE FILE*#|index_stats|#*GBB TEMPLATE*#|
 <br />
 <table border="0px" cellpadding="0px" cellspacing="0px" width="{$THEME['tablewidth']}" align="center">
 <tr>
@@ -1069,20 +1069,20 @@ $statsblock
 </table>
 $shadow
 
-|#*UBB TEMPLATE FILE*#|index_category|#*UBB TEMPLATE*#|
+|#*GBB TEMPLATE FILE*#|index_category|#*GBB TEMPLATE*#|
 $spacer
 <tr class="category">
 <td colspan="6"><a href="index.php?gid=$row[cat_fid]"><font color="{$THEME['cattext']}"><strong>$THEME[navsymbol]&nbsp;$row[cat_name]</strong></font></a></td>
 </tr>
 $catrow1
 
-|#*UBB TEMPLATE FILE*#|popup_footer|#*UBB TEMPLATE*#|
+|#*GBB TEMPLATE FILE*#|popup_footer|#*GBB TEMPLATE*#|
 </div>
 
 </body>
 </html>
 
-|#*UBB TEMPLATE FILE*#|index_forum|#*UBB TEMPLATE*#|
+|#*GBB TEMPLATE FILE*#|index_forum|#*GBB TEMPLATE*#|
 <tr class="tablerow">
 <td bgcolor="{$THEME['altbg1']}" class="ctrtablerow" width="4%">$folder</td>
 <td bgcolor="{$THEME['altbg2']}" width="54%" $mouseover><font class="mediumtxt"><a href="viewforum.php?fid=$forum[fid]"><strong>$forum[name]</strong></a></font><br /><font class="smalltxt">$forum[description]$subforums</font></td>
@@ -1092,17 +1092,17 @@ $catrow1
 <td bgcolor="{$THEME['altbg2']}" class="ctrtablerow"><select name="mod" onchange="if(options[selectedIndex].value){location = options[selectedIndex].value}"><option value="">{$lang['textmods']}</option><option value="">--------------------</option>$forum[moderator]</select></td>
 </tr>
 
-|#*UBB TEMPLATE FILE*#|viewforum_multipage|#*UBB TEMPLATE*#|
+|#*GBB TEMPLATE FILE*#|viewforum_multipage|#*GBB TEMPLATE*#|
 <tr class="tablerow" bgcolor="{$THEME['altbg2']}">
 <td class="multi" colspan="7">&nbsp;$multipage</td>
 </tr>
 
-|#*UBB TEMPLATE FILE*#|viewforum_multipage_admin|#*UBB TEMPLATE*#|
+|#*GBB TEMPLATE FILE*#|viewforum_multipage_admin|#*GBB TEMPLATE*#|
 <tr class="tablerow" bgcolor="{$THEME['altbg2']}">
 <td class="multi" colspan="8">&nbsp;$multipage</td>
 </tr>
 
-|#*UBB TEMPLATE FILE*#|viewforum|#*UBB TEMPLATE*#|
+|#*GBB TEMPLATE FILE*#|viewforum|#*GBB TEMPLATE*#|
 $subforum
 $forumrules
 $minimal_posts_needed
@@ -1234,7 +1234,7 @@ $dotlegend
 </table>
 $shadow
 
-|#*UBB TEMPLATE FILE*#|viewforum_admin|#*UBB TEMPLATE*#|
+|#*GBB TEMPLATE FILE*#|viewforum_admin|#*GBB TEMPLATE*#|
 $subforums
 $forumrules
 $minimal_posts_needed
@@ -1387,7 +1387,7 @@ $dotlegend
 </table>
 $shadow
 
-|#*UBB TEMPLATE FILE*#|viewforum_subforum|#*UBB TEMPLATE*#|
+|#*GBB TEMPLATE FILE*#|viewforum_subforum|#*GBB TEMPLATE*#|
 <tr class="tablerow">
 <td bgcolor="{$THEME['altbg1']}" class="ctrtablerow">$folder</td>
 <td bgcolor="{$THEME['altbg2']}" $mouseover><font class="mediumtxt"><a href="viewforum.php?fid=$forum[fid]">$forum[name]</a></font><br /><font class="smalltxt">$forum[description]</font></td>
@@ -1397,7 +1397,7 @@ $shadow
 <td bgcolor="{$THEME['altbg2']}" class="ctrtablerow"><select name="mod" onchange="if(options[selectedIndex].value){location = options[selectedIndex].value}"><option value="">{$lang['textmods']}</option><option value="">--------------------</option>$forum[moderator]</select></td>
 </tr>
 
-|#*UBB TEMPLATE FILE*#|viewforum_thread_admin|#*UBB TEMPLATE*#|
+|#*GBB TEMPLATE FILE*#|viewforum_thread_admin|#*GBB TEMPLATE*#|
 <tr class="tablerow">
 <td bgcolor="{$THEME['altbg2']}" class="ctrtablerow">$folder</td>
 <td bgcolor="{$THEME['altbg1']}" class="ctrtablerow">$thread[icon]</td>
@@ -1409,7 +1409,7 @@ $shadow
 <td bgcolor="{$THEME['altbg1']}" class="ctrtablerow"><input type="checkbox" name="cmassmod[]" value="$thread[realtid]" /></td>
 </tr>
 
-|#*UBB TEMPLATE FILE*#|viewforum_thread|#*UBB TEMPLATE*#|
+|#*GBB TEMPLATE FILE*#|viewforum_thread|#*GBB TEMPLATE*#|
 <tr class="tablerow">
 <td bgcolor="{$THEME['altbg2']}" class="ctrtablerow">$folder</td>
 <td bgcolor="{$THEME['altbg1']}" class="ctrtablerow">$thread[icon]</td>
@@ -1421,12 +1421,12 @@ $shadow
 <td bgcolor="{$THEME['altbg2']}" class="rghttablerow">$lastpostrow</td>
 </tr>
 
-|#*UBB TEMPLATE FILE*#|viewforum_nothreads|#*UBB TEMPLATE*#|
+|#*GBB TEMPLATE FILE*#|viewforum_nothreads|#*GBB TEMPLATE*#|
 <tr class="ctrtablerow">
 <td colspan="7" bgcolor="{$THEME['altbg1']}">{$lang['noposts']}</td>
 </tr>
 
-|#*UBB TEMPLATE FILE*#|error|#*UBB TEMPLATE*#|
+|#*GBB TEMPLATE FILE*#|error|#*GBB TEMPLATE*#|
 $header
 <table cellspacing="0px" cellpadding="0px" border="0px" width="{$THEME['tablewidth']}" align="center" bgcolor="{$THEME['bordercolor']}">
 <tr>
@@ -1444,22 +1444,22 @@ $header
 </table>
 $shadow
 
-|#*UBB TEMPLATE FILE*#|viewforum_invalidforum|#*UBB TEMPLATE*#|
+|#*GBB TEMPLATE FILE*#|viewforum_invalidforum|#*GBB TEMPLATE*#|
 <tr class="tablerow">
 <td colspan="8" bgcolor="{$THEME['altbg1']}">$notexist</td>
 </tr>
 
-|#*UBB TEMPLATE FILE*#|viewtopic_poll_options|#*UBB TEMPLATE*#|
+|#*GBB TEMPLATE FILE*#|viewtopic_poll_options|#*GBB TEMPLATE*#|
 <tr class="tablerow">
 <td bgcolor="{$THEME['altbg2']}"><input type="radio" name="postopnum" value="$poll[id]" /><font class="smalltxt">$poll[name]</font></td>
 </tr>
 
-|#*UBB TEMPLATE FILE*#|viewtopic_poll_submitbutton|#*UBB TEMPLATE*#|
+|#*GBB TEMPLATE FILE*#|viewtopic_poll_submitbutton|#*GBB TEMPLATE*#|
 <tr>
 <td class="ctrtablerow" bgcolor="{$THEME['altbg2']}" colspan="3"><input type="submit" class="submit" value="{$lang['submitvote']}" /></td>
 </tr>
 
-|#*UBB TEMPLATE FILE*#|viewtopic_poll|#*UBB TEMPLATE*#|
+|#*GBB TEMPLATE FILE*#|viewtopic_poll|#*GBB TEMPLATE*#|
 <form method="post" name="poll" action="topicadmin.php?action=votepoll&amp;fid=$fid&amp;tid=$tid">
 <input type="hidden" name="token" value="$oToken->newToken" />
 <table cellspacing="0px" cellpadding="0px" border="0px" width="{$THEME['tablewidth']}" align="center">
@@ -1478,41 +1478,41 @@ $buttoncode
 $shadow
 <br />
 
-|#*UBB TEMPLATE FILE*#|viewtopic_post_email|#*UBB TEMPLATE*#|
+|#*GBB TEMPLATE FILE*#|viewtopic_post_email|#*GBB TEMPLATE*#|
 <a href="email.php?memberid=$tuid"><img src="{$THEME['imgdir']}/email.gif" border="0px" alt="{$lang['altemailuser']}" title="{$lang['altemailuser']}" /></a>
 
-|#*UBB TEMPLATE FILE*#|viewtopic_post_site|#*UBB TEMPLATE*#|
+|#*GBB TEMPLATE FILE*#|viewtopic_post_site|#*GBB TEMPLATE*#|
 <a href="$post[site]" target="_blank"><img src="{$THEME['imgdir']}/site.gif" border="0px" alt="{$lang['altvisitsite']}" title="{$lang['altvisitsite']}" /></a>
 
-|#*UBB TEMPLATE FILE*#|viewtopic_post_repquote|#*UBB TEMPLATE*#|
+|#*GBB TEMPLATE FILE*#|viewtopic_post_repquote|#*GBB TEMPLATE*#|
 <a href="post.php?action=reply&amp;fid=$fid&amp;tid=$tid&amp;repquote=$post[pid]"><img src="{$THEME['imgdir']}/quote.gif" border="0px" alt="{$lang['altquote']}" title="{$lang['altquote']}" /></a>
 
-|#*UBB TEMPLATE FILE*#|viewtopic_post_edit|#*UBB TEMPLATE*#|
+|#*GBB TEMPLATE FILE*#|viewtopic_post_edit|#*GBB TEMPLATE*#|
 <a href="post.php?action=edit&amp;fid=$fid&amp;tid=$tid&amp;pid=$post[pid]"><img src="{$THEME['imgdir']}/edit.gif" border="0px" alt="{$lang['alteditpost']}" title="{$lang['alteditpost']}" /></a>
 
-|#*UBB TEMPLATE FILE*#|viewtopic_post_search|#*UBB TEMPLATE*#|
+|#*GBB TEMPLATE FILE*#|viewtopic_post_search|#*GBB TEMPLATE*#|
 <a href="search.php?srchuname=$encodename&amp;searchsubmit=a&amp;srchfid=all&amp;srchfrom=0"><img src="{$THEME['imgdir']}/find.gif" border="0px" alt="{$lang['altfindposts']}" title="{$lang['altfindposts']}" /></a>
 
-|#*UBB TEMPLATE FILE*#|viewtopic_post_profile|#*UBB TEMPLATE*#|
+|#*GBB TEMPLATE FILE*#|viewtopic_post_profile|#*GBB TEMPLATE*#|
 <a href="viewprofile.php?memberid=$tuid"><img src="{$THEME['imgdir']}/profile.gif" border="0px" alt="{$lang['altviewprofile']}" title="{$lang['altviewprofile']}" /></a>
 
-|#*UBB TEMPLATE FILE*#|viewtopic_post_pm|#*UBB TEMPLATE*#|
+|#*GBB TEMPLATE FILE*#|viewtopic_post_pm|#*GBB TEMPLATE*#|
 <a href="pm.php?action=send&amp;memberid=$tuid"><img src="{$THEME['imgdir']}/pm.gif" border="0px" alt="{$lang['altpmmember']}" title="{$lang['altpmmember']}" /></a>
 
-|#*UBB TEMPLATE FILE*#|viewtopic_post_ip|#*UBB TEMPLATE*#|
+|#*GBB TEMPLATE FILE*#|viewtopic_post_ip|#*GBB TEMPLATE*#|
 <a href="topicadmin.php?action=getip&amp;fid=$fid&amp;tid=$tid&amp;pid=$post[pid]"><img src="{$THEME['imgdir']}/ip.gif" border="0px" alt="{$lang['altgetip']}" title="{$lang['altgetip']}" /></a>
 
-|#*UBB TEMPLATE FILE*#|viewtopic_post_report|#*UBB TEMPLATE*#|
+|#*GBB TEMPLATE FILE*#|viewtopic_post_report|#*GBB TEMPLATE*#|
 <a href="topicadmin.php?action=report&amp;fid=$fid&amp;tid=$tid&amp;pid=$post[pid]"><img src="{$THEME['imgdir']}/report.gif" border="0px" alt="{$lang['altreportpost']}" title="{$lang['altreportpost']}" /></a>
 
-|#*UBB TEMPLATE FILE*#|viewtopic_post_attach_noborder|#*UBB TEMPLATE*#|
+|#*GBB TEMPLATE FILE*#|viewtopic_post_attach_noborder|#*GBB TEMPLATE*#|
 <br />
 <br />
 $attachicon{$lang['attachment']} <a href="viewtopic.php?action=attachment&amp;tid=$tid&amp;pid=$post[pid]&amp;aid=$attach[aid]" title="{$lang['textfilename']} $attach[filename] - {$lang['textfilesize']} $attachsize">$post[filename]</a> ($attachsize)
 <br /><font class="smalltxt">{$lang['textdownloadcount1']} $downloadcount {$lang['textdownloadcount2']}</font>
 <br />
 
-|#*UBB TEMPLATE FILE*#|viewtopic_post_attachment|#*UBB TEMPLATE*#|
+|#*GBB TEMPLATE FILE*#|viewtopic_post_attachment|#*GBB TEMPLATE*#|
 <br />
 <br />
 <table cellspacing="0px" cellpadding="0px" border="0px" width="100%" align="center">
@@ -1538,7 +1538,7 @@ $attachicon{$lang['attachment']} <a href="viewtopic.php?action=attachment&amp;ti
 </tr>
 </table>
 
-|#*UBB TEMPLATE FILE*#|viewtopic_post|#*UBB TEMPLATE*#|
+|#*GBB TEMPLATE FILE*#|viewtopic_post|#*GBB TEMPLATE*#|
 <tr class="tablerow" bgcolor="$thisbg">
 <td rowspan="3" valign="top" style="width: 18%;">
 <font class="mediumtxt"><strong>$postauthor</strong></font>
@@ -1605,15 +1605,15 @@ $profile$search$pm$email$site$blog$aim$icq$msn$yahoo
 </td>
 </tr>
 
-|#*UBB TEMPLATE FILE*#|viewtopic_post_nosig|#*UBB TEMPLATE*#|
+|#*GBB TEMPLATE FILE*#|viewtopic_post_nosig|#*GBB TEMPLATE*#|
 </font>
 
-|#*UBB TEMPLATE FILE*#|viewtopic_multipage|#*UBB TEMPLATE*#|
+|#*GBB TEMPLATE FILE*#|viewtopic_multipage|#*GBB TEMPLATE*#|
 <tr class="tablerow" bgcolor="{$THEME['altbg1']}">
 <td colspan="2" class="multi">&nbsp;$multipage</td>
 </tr>
 
-|#*UBB TEMPLATE FILE*#|viewtopic|#*UBB TEMPLATE*#|
+|#*GBB TEMPLATE FILE*#|viewtopic|#*GBB TEMPLATE*#|
 $forumrules
 $minimal_posts_needed
 $poll
@@ -1653,7 +1653,7 @@ $shadow
 </table>
 $quickreply
 
-|#*UBB TEMPLATE FILE*#|viewtopic_next_prev_links|#*UBB TEMPLATE*#|
+|#*GBB TEMPLATE FILE*#|viewtopic_next_prev_links|#*GBB TEMPLATE*#|
 <tr>
 <td class="navtd" colspan="2">
 <table width="100%" cellpadding="0" cellspacing="0">
@@ -1665,19 +1665,19 @@ $npt_list[next]
 </td>
 </tr>
 
-|#*UBB TEMPLATE FILE*#|addresslist_address_online|#*UBB TEMPLATE*#|
+|#*GBB TEMPLATE FILE*#|addresslist_address_online|#*GBB TEMPLATE*#|
 <tr class="tablerow">
 <td bgcolor="{$THEME['altbg1']}" width="75%">$address[addressname]</td>
 <td bgcolor="{$THEME['altbg1']}">$addressstatus</td>
 </tr>
 
-|#*UBB TEMPLATE FILE*#|addresslist_address_offline|#*UBB TEMPLATE*#|
+|#*GBB TEMPLATE FILE*#|addresslist_address_offline|#*GBB TEMPLATE*#|
 <tr class="tablerow">
 <td bgcolor="{$THEME['altbg1']}" width="75%">$address[addressname]</td>
 <td bgcolor="{$THEME['altbg1']}">{$lang['textoffline']}</td>
 </tr>
 
-|#*UBB TEMPLATE FILE*#|addresslist|#*UBB TEMPLATE*#|
+|#*GBB TEMPLATE FILE*#|addresslist|#*GBB TEMPLATE*#|
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="$lang_code" lang="$lang_code" dir="$lang_dir">
 <head>
@@ -1730,7 +1730,7 @@ $shadow
 </body>
 </html>
 
-|#*UBB TEMPLATE FILE*#|addresslist_edit|#*UBB TEMPLATE*#|
+|#*GBB TEMPLATE FILE*#|addresslist_edit|#*GBB TEMPLATE*#|
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="$lang_code" lang="$lang_code" dir="$lang_dir">
 <head>
@@ -1799,13 +1799,13 @@ $shadow
 </body>
 </html>
 
-|#*UBB TEMPLATE FILE*#|addresslist_edit_address|#*UBB TEMPLATE*#|
+|#*GBB TEMPLATE FILE*#|addresslist_edit_address|#*GBB TEMPLATE*#|
 <tr class="ctrtablerow">
 <td bgcolor="{$THEME['altbg1']}" align="center"><input type="checkbox" name="delete[]" value="$address[addressname]" /></td>
 <td bgcolor="{$THEME['altbg1']}">$address[addressname]</td>
 </tr>
 
-|#*UBB TEMPLATE FILE*#|addresslist_message|#*UBB TEMPLATE*#|
+|#*GBB TEMPLATE FILE*#|addresslist_message|#*GBB TEMPLATE*#|
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="$lang_code" lang="$lang_code" dir="$lang_dir">
 <head>
@@ -1829,7 +1829,7 @@ $shadow
 </body>
 </html>
 
-|#*UBB TEMPLATE FILE*#|register_coppa|#*UBB TEMPLATE*#|
+|#*GBB TEMPLATE FILE*#|register_coppa|#*GBB TEMPLATE*#|
 <form method="post" action="register.php?action=reg">
 <input type="hidden" name="token" value="$oToken->newToken" />
 <table cellspacing="0px" cellpadding="0px" border="0px" width="{$THEME['tablewidth']}" align="center">
@@ -1851,7 +1851,7 @@ $shadow
 </table>
 </form>
 
-|#*UBB TEMPLATE FILE*#|search|#*UBB TEMPLATE*#|
+|#*GBB TEMPLATE FILE*#|search|#*GBB TEMPLATE*#|
 <form method="post" action="search.php">
 <input type="hidden" name="token" value="$oToken->newToken" />
 <table cellspacing="0px" cellpadding="0px" border="0px" width="{$THEME['tablewidth']}" align="center">
@@ -1901,7 +1901,7 @@ $shadow
 </form>
 $shadow
 
-|#*UBB TEMPLATE FILE*#|register_password|#*UBB TEMPLATE*#|
+|#*GBB TEMPLATE FILE*#|register_password|#*GBB TEMPLATE*#|
 <tr class="tablerow">
 <td bgcolor="{$THEME['altbg1']}">{$lang['textpassword']}</td>
 <td bgcolor="{$THEME['altbg2']}"><input type="password" name="password" size="25" maxlength="25" value="" autocomplete="off" />{$lang['registernotepword']}
@@ -1911,7 +1911,7 @@ $shadow
 <td bgcolor="{$THEME['altbg2']}"><input type="password" name="password2" size="25" maxlength="25" value="" autocomplete="off" /></td>
 </tr>
 
-|#*UBB TEMPLATE FILE*#|register|#*UBB TEMPLATE*#|
+|#*GBB TEMPLATE FILE*#|register|#*GBB TEMPLATE*#|
 $captcha_js
 <form method="post" action="register.php?action=reg">
 <input type="hidden" name="token" value="$oToken->newToken" />
@@ -2087,7 +2087,7 @@ $df
 </form>
 $shadow
 
-|#*UBB TEMPLATE FILE*#|search_results|#*UBB TEMPLATE*#|
+|#*GBB TEMPLATE FILE*#|search_results|#*GBB TEMPLATE*#|
 <table cellspacing="0px" cellpadding="0px" border="0px" width="{$THEME['tablewidth']}" align="center">
 <tr>
 <td bgcolor="{$THEME['bordercolor']}">
@@ -2104,18 +2104,18 @@ $nextlink
 </table>
 $shadow
 
-|#*UBB TEMPLATE FILE*#|search_results_row|#*UBB TEMPLATE*#|
+|#*GBB TEMPLATE FILE*#|search_results_row|#*GBB TEMPLATE*#|
 <tr class="tablerow">
 <td bgcolor="{$THEME['altbg2']}" $mouseover><strong><a href="viewtopic.php?tid=$post[ttid]&amp;page=$page#pid$post[pid]">$post[tsubject]</a></strong><br />$add_pre $show $add_post</td>
 <td bgcolor="{$THEME['altbg1']}">$poston<br />{$lang['textby']}: $postby</td>
 </tr>
 
-|#*UBB TEMPLATE FILE*#|search_results_none|#*UBB TEMPLATE*#|
+|#*GBB TEMPLATE FILE*#|search_results_none|#*GBB TEMPLATE*#|
 <tr bgcolor="{$THEME['altbg2']}">
 <td class="mediumtxt" colspan="3">{$lang['noresults']}</td>
 </tr>
 
-|#*UBB TEMPLATE FILE*#|viewtopic_modoptions|#*UBB TEMPLATE*#|
+|#*GBB TEMPLATE FILE*#|viewtopic_modoptions|#*GBB TEMPLATE*#|
 <a name="admintools"></a>
 <form action="topicadmin.php?tid=$tid&amp;fid=$fid" method="post">
 <input type="hidden" name="token" value="$oToken->newToken" />
@@ -2135,12 +2135,12 @@ $mt_option
 </select>
 </form>
 
-|#*UBB TEMPLATE FILE*#|viewtopic_invalid|#*UBB TEMPLATE*#|
+|#*GBB TEMPLATE FILE*#|viewtopic_invalid|#*GBB TEMPLATE*#|
 <tr class="tablerow" bgcolor="{$THEME['altbg1']}">
 <td colspan="8">$notexist</td>
 </tr>
 
-|#*UBB TEMPLATE FILE*#|viewtopic_printable|#*UBB TEMPLATE*#|
+|#*GBB TEMPLATE FILE*#|viewtopic_printable|#*GBB TEMPLATE*#|
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="$lang_code" lang="$lang_code" dir="$lang_dir">
 <head>
@@ -2180,11 +2180,11 @@ $posts
 </body>
 </html>
 
-|#*UBB TEMPLATE FILE*#|viewtopic_printable_row|#*UBB TEMPLATE*#|
+|#*GBB TEMPLATE FILE*#|viewtopic_printable_row|#*GBB TEMPLATE*#|
 <hr /><span class="14px">$post[author]</span> - <span class="13px">$poston</span>
 <p>$post[message]</p>
 
-|#*UBB TEMPLATE FILE*#|post_preview|#*UBB TEMPLATE*#|
+|#*GBB TEMPLATE FILE*#|post_preview|#*GBB TEMPLATE*#|
 <table cellspacing="0px" cellpadding="0px" border="0px" width="{$THEME['tablewidth']}" align="center">
 <tr>
 <td bgcolor="{$THEME['bordercolor']}"><table border="0px" cellspacing="{$THEME['borderwidth']}" cellpadding="{$THEME['tablespace']}" width="100%">
@@ -2205,7 +2205,7 @@ $posts
 $shadow
 <br />
 
-|#*UBB TEMPLATE FILE*#|post_newthread|#*UBB TEMPLATE*#|
+|#*GBB TEMPLATE FILE*#|post_newthread|#*GBB TEMPLATE*#|
 $preview
 <form method="post" name="input" action="post.php?action=newthread&amp;fid=$fid" enctype="multipart/form-data">
 <input type="hidden" name="token" value="$oToken->newToken" />
@@ -2276,7 +2276,7 @@ $captcha
 $shadow
 </form>
 
-|#*UBB TEMPLATE FILE*#|post_captcha|#*UBB TEMPLATE*#|
+|#*GBB TEMPLATE FILE*#|post_captcha|#*GBB TEMPLATE*#|
 $captcha_js
 <tr class="category">
 <td class="title" colspan="2">{$lang['imageverification']} - {$lang['required']}</td>
@@ -2291,7 +2291,7 @@ $captcha_js
 </td>
 </tr>
 
-|#*UBB TEMPLATE FILE*#|topicadmin_openclose|#*UBB TEMPLATE*#|
+|#*GBB TEMPLATE FILE*#|topicadmin_openclose|#*GBB TEMPLATE*#|
 <form method="post" action="topicadmin.php?action=close">
 <input type="hidden" name="token" value="$oToken->newToken" />
 <table cellspacing="0px" cellpadding="0px" border="0px" width="{$THEME['tablewidth']}" align="center">
@@ -2314,7 +2314,7 @@ $captcha_js
 $shadow
 </form>
 
-|#*UBB TEMPLATE FILE*#|topicadmin_move|#*UBB TEMPLATE*#|
+|#*GBB TEMPLATE FILE*#|topicadmin_move|#*GBB TEMPLATE*#|
 <form method="post" action="topicadmin.php?action=move">
 <input type="hidden" name="token" value="$oToken->newToken" />
 <table cellspacing="0px" cellpadding="0px" border="0px" width="{$THEME['tablewidth']}" align="center">
@@ -2348,7 +2348,7 @@ $shadow
 $shadow
 </form>
 
-|#*UBB TEMPLATE FILE*#|topicadmin_topuntop|#*UBB TEMPLATE*#|
+|#*GBB TEMPLATE FILE*#|topicadmin_topuntop|#*GBB TEMPLATE*#|
 <form method="post" action="topicadmin.php?action=top">
 <input type="hidden" name="token" value="$oToken->newToken" />
 <table cellspacing="0px" cellpadding="0px" border="0px" width="{$THEME['tablewidth']}" align="center">
@@ -2371,7 +2371,7 @@ $shadow
 $shadow
 </form>
 
-|#*UBB TEMPLATE FILE*#|topicadmin_bump|#*UBB TEMPLATE*#|
+|#*GBB TEMPLATE FILE*#|topicadmin_bump|#*GBB TEMPLATE*#|
 <form method="post" action="topicadmin.php?action=bump">
 <input type="hidden" name="token" value="$oToken->newToken" />
 <table cellspacing="0px" cellpadding="0px" border="0px" width="{$THEME['tablewidth']}" align="center">
@@ -2394,7 +2394,7 @@ $shadow
 $shadow
 </form>
 
-|#*UBB TEMPLATE FILE*#|topicadmin_split|#*UBB TEMPLATE*#|
+|#*GBB TEMPLATE FILE*#|topicadmin_split|#*GBB TEMPLATE*#|
 <form method="post" action="topicadmin.php?action=split">
 <input type="hidden" name="token" value="$oToken->newToken" />
 <table cellspacing="0px" cellpadding="0px" border="0px" width="{$THEME['tablewidth']}" align="center">
@@ -2426,7 +2426,7 @@ $posts
 $shadow
 </form>
 
-|#*UBB TEMPLATE FILE*#|topicadmin_split_row|#*UBB TEMPLATE*#|
+|#*GBB TEMPLATE FILE*#|topicadmin_split_row|#*GBB TEMPLATE*#|
 <tr class="tablerow">
 <td bgcolor="{$THEME['altbg1']}"><input type="checkbox" name="move[]" value="$post[pid]" /></td>
 <td bgcolor="{$THEME['altbg2']}"><font class="smalltxt"><strong>$post[author]</strong>
@@ -2434,7 +2434,7 @@ $shadow
 <br />$post[message]</font></td>
 </tr>
 
-|#*UBB TEMPLATE FILE*#|topicadmin_merge|#*UBB TEMPLATE*#|
+|#*GBB TEMPLATE FILE*#|topicadmin_merge|#*GBB TEMPLATE*#|
 <form method="post" action="topicadmin.php?action=merge">
 <input type="hidden" name="token" value="$oToken->newToken" />
 <table cellspacing="0px" cellpadding="0px" border="0px" width="{$THEME['tablewidth']}" align="center">
@@ -2462,7 +2462,7 @@ $shadow
 $shadow
 </form>
 
-|#*UBB TEMPLATE FILE*#|topicadmin_report|#*UBB TEMPLATE*#|
+|#*GBB TEMPLATE FILE*#|topicadmin_report|#*GBB TEMPLATE*#|
 <form method="post" name="input" action="topicadmin.php?action=report">
 <input type="hidden" name="token" value="$oToken->newToken" />
 <table cellspacing="0px" cellpadding="0px" border="0px" width="{$THEME['tablewidth']}" align="center">
@@ -2485,7 +2485,7 @@ $shadow
 $shadow
 </form>
 
-|#*UBB TEMPLATE FILE*#|viewforum_password|#*UBB TEMPLATE*#|
+|#*GBB TEMPLATE FILE*#|viewforum_password|#*GBB TEMPLATE*#|
 <br />
 <form method="post" action="$url">
 <input type="hidden" name="token" value="$oToken->newToken" />
@@ -2510,7 +2510,7 @@ $shadow
 $shadow
 </form>
 
-|#*UBB TEMPLATE FILE*#|register_rules|#*UBB TEMPLATE*#|
+|#*GBB TEMPLATE FILE*#|register_rules|#*GBB TEMPLATE*#|
 <form method="post" action="register.php?action=reg">
 <input type="hidden" name="token" value="$oToken->newToken" />
 <table cellspacing="0px" cellpadding="0px" border="0px" width="{$THEME['tablewidth']}" align="center">
@@ -2535,7 +2535,7 @@ $shadow
 </table>
 </form>
 
-|#*UBB TEMPLATE FILE*#|post_newpoll|#*UBB TEMPLATE*#|
+|#*GBB TEMPLATE FILE*#|post_newpoll|#*GBB TEMPLATE*#|
 $preview
 <form method="post" name="input" action="post.php?action=newthread&amp;fid=$fid&amp;poll=yes" enctype="multipart/form-data">
 <input type="hidden" name="token" value="$oToken->newToken" />
@@ -2603,7 +2603,7 @@ $captcha
 </form>
 $shadow
 
-|#*UBB TEMPLATE FILE*#|post_reply|#*UBB TEMPLATE*#|
+|#*GBB TEMPLATE FILE*#|post_reply|#*GBB TEMPLATE*#|
 $preview
 <form method="post" name="input" action="post.php?action=reply&amp;fid=$fid&amp;tid=$tid" enctype="multipart/form-data">
 <input type="hidden" name="token" value="$oToken->newToken" />
@@ -2678,7 +2678,7 @@ $posts
 </table>
 $shadow
 
-|#*UBB TEMPLATE FILE*#|post_reply_review_post|#*UBB TEMPLATE*#|
+|#*GBB TEMPLATE FILE*#|post_reply_review_post|#*GBB TEMPLATE*#|
 <tr class="tablerow" bgcolor="$thisbg">
 <td rowspan="2" valign="top" width="19%"><font class="mediumtxt"><strong>$post[author]</strong></font><br /><br /></td>
 <td>$post[icon]&nbsp;$poston</td>
@@ -2687,12 +2687,12 @@ $shadow
 <td>$post[message]<br /></td>
 </tr>
 
-|#*UBB TEMPLATE FILE*#|post_reply_review_toolong|#*UBB TEMPLATE*#|
+|#*GBB TEMPLATE FILE*#|post_reply_review_toolong|#*GBB TEMPLATE*#|
 <tr class="tablerow" bgcolor="{$THEME['altbg2']}">
 <td colspan="2" valign="top" width="19%">{$lang['trevltmsg']}</td>
 </tr>
 
-|#*UBB TEMPLATE FILE*#|post_edit|#*UBB TEMPLATE*#|
+|#*GBB TEMPLATE FILE*#|post_edit|#*GBB TEMPLATE*#|
 $preview
 <form method="post" name="input" action="post.php?action=edit" enctype="multipart/form-data">
 <input type="hidden" name="token" value="$oToken->newToken" />
@@ -2759,7 +2759,7 @@ $attachment
 $shadow
 </form>
 
-|#*UBB TEMPLATE FILE*#|functions_bbcodeinsert|#*UBB TEMPLATE*#|
+|#*GBB TEMPLATE FILE*#|functions_bbcodeinsert|#*GBB TEMPLATE*#|
 <tr class="tablerow">
 <td bgcolor="{$THEME['altbg1']}">{$lang['cb_fomatting']}<br /><span class="smalltxt">
 <input type="radio" name="mode" value="2" onclick="chmode('2')" $cheHTML /> {$lang['cb_normalmode']}<br />
@@ -2950,23 +2950,23 @@ $shadow
 </td>
 </tr>
 
-|#*UBB TEMPLATE FILE*#|functions_smilieinsert_smilie|#*UBB TEMPLATE*#|
+|#*GBB TEMPLATE FILE*#|functions_smilieinsert_smilie|#*GBB TEMPLATE*#|
 <td valign="top"><a style="cursor:pointer" onclick="javascript:icon('$smilie[code]')"><img src="$THEME[smdir]/$smilie[url]" border="0px" alt="$smilie[code]" title="$smilie[code]" /></a></td>
 
-|#*UBB TEMPLATE FILE*#|functions_smilieinsert|#*UBB TEMPLATE*#|
+|#*GBB TEMPLATE FILE*#|functions_smilieinsert|#*GBB TEMPLATE*#|
 <td>
 <table align="center">
 $smilies
 </table>
 </td>
 
-|#*UBB TEMPLATE FILE*#|post_attachmentbox|#*UBB TEMPLATE*#|
+|#*GBB TEMPLATE FILE*#|post_attachmentbox|#*GBB TEMPLATE*#|
 <tr class="tablerow">
 <td bgcolor="{$THEME['altbg1']}">{$lang['attachment']}&nbsp;( <a href="javascript:add('attach')">{$lang['attach_add']}</a> )</td>
 <td bgcolor="{$THEME['altbg2']}"><input type="hidden" name="MAX_FILE_SIZE" value="$CONFIG[max_attach_size]" /><div id="attachment" style="display:none"><input type="file" id="file" name="attach[]" size="40" /> <span onclick="javascript:removeFile(this.parentNode.parentNode,this.parentNode)">{$lang['attach_remove']}</span></div><input type="file" id="file" name="attach[0]" size="40" /><div id="attachment_box"></div></td>
 </tr>
 
-|#*UBB TEMPLATE FILE*#|post_notloggedin|#*UBB TEMPLATE*#|
+|#*GBB TEMPLATE FILE*#|post_notloggedin|#*GBB TEMPLATE*#|
 <tr class="tablerow">
 <td bgcolor="{$THEME['altbg1']}" width="22%">{$lang['textusername']}</td>
 <td bgcolor="{$THEME['altbg2']}"><input type="text" name="username" size="25" maxlength="25" value="" />&nbsp;<span class="smalltxt"><a href="register.php?action=coppa">{$lang['regques']}</a></span></td>
@@ -2976,13 +2976,13 @@ $smilies
 <td bgcolor="{$THEME['altbg2']}"><input type="password" name="password" size="25" value="" autocomplete="off" />&nbsp;<span class="smalltxt"><a href="lostpw.php">{$lang['forgotpw']}</a></span></td>
 </tr>
 
-|#*UBB TEMPLATE FILE*#|post_loggedin|#*UBB TEMPLATE*#|
+|#*GBB TEMPLATE FILE*#|post_loggedin|#*GBB TEMPLATE*#|
 <tr class="tablerow">
 <td bgcolor="{$THEME['altbg1']}" width="22%">{$lang['loggedinuser']}</td>
 <td bgcolor="{$THEME['altbg2']}">{$self['username']}</td>
 </tr>
 
-|#*UBB TEMPLATE FILE*#|index_login|#*UBB TEMPLATE*#|
+|#*GBB TEMPLATE FILE*#|index_login|#*GBB TEMPLATE*#|
 <form method="post" action="login.php">
 <input type="hidden" name="token" value="$oToken->newToken" />
 <table cellspacing="0px" cellpadding="0px" border="0px" width="{$THEME['tablewidth']}" align="center">
@@ -3001,13 +3001,13 @@ $smilies
 </table>
 </form>
 
-|#*UBB TEMPLATE FILE*#|viewtopic_post_attimg_noborder|#*UBB TEMPLATE*#|
+|#*GBB TEMPLATE FILE*#|viewtopic_post_attimg_noborder|#*GBB TEMPLATE*#|
 <br />
 <br />
 $postauthor {$lang['textattachedimg']}<br /><img src="viewtopic.php?action=attachment&amp;tid=$tid&amp;pid=$post[pid]&amp;aid=$attach[aid]" border="0px" title="{$lang['textfilename']} $attach[filename] - {$lang['textfilesize']} $attachsize" alt="{$lang['textfilename']} $attach[filename] - {$lang['textfilesize']} $attachsize" width="$n_width" height="$n_height" />
 <br />
 
-|#*UBB TEMPLATE FILE*#|viewtopic_post_attachmentimage|#*UBB TEMPLATE*#|
+|#*GBB TEMPLATE FILE*#|viewtopic_post_attachmentimage|#*GBB TEMPLATE*#|
 <br />
 <br />
 <table cellspacing="0px" cellpadding="0px" border="0px" width="100%" align="center">
@@ -3037,22 +3037,22 @@ $postauthor {$lang['textattachedimg']}<br /><img src="viewtopic.php?action=attac
 </tr>
 </table>
 
-|#*UBB TEMPLATE FILE*#|viewforum_newtopic|#*UBB TEMPLATE*#|
+|#*GBB TEMPLATE FILE*#|viewforum_newtopic|#*GBB TEMPLATE*#|
 <a href="post.php?action=newthread&amp;fid=$fid"><img src="{$THEME['imgdir']}/newtopic.gif" border="0px" alt="{$lang['altpostnewthread']}" title="{$lang['altpostnewthread']}" /></a>
 
-|#*UBB TEMPLATE FILE*#|viewtopic_newtopic|#*UBB TEMPLATE*#|
+|#*GBB TEMPLATE FILE*#|viewtopic_newtopic|#*GBB TEMPLATE*#|
 <a href="post.php?action=newthread&amp;fid=$fid"><img src="{$THEME['imgdir']}/newtopic.gif" border="0px" alt="{$lang['altpostnewthread']}" title="{$lang['altpostnewthread']}" /></a>
 
-|#*UBB TEMPLATE FILE*#|viewforum_newpoll|#*UBB TEMPLATE*#|
+|#*GBB TEMPLATE FILE*#|viewforum_newpoll|#*GBB TEMPLATE*#|
 <a href="post.php?action=newthread&amp;fid=$fid&amp;poll=yes"><img src="{$THEME['imgdir']}/poll.gif" border="0px" alt="{$lang['textnewpoll']}" title="{$lang['textnewpoll']}" /></a>
 
-|#*UBB TEMPLATE FILE*#|viewtopic_newpoll|#*UBB TEMPLATE*#|
+|#*GBB TEMPLATE FILE*#|viewtopic_newpoll|#*GBB TEMPLATE*#|
 <a href="post.php?action=newthread&amp;fid=$fid&amp;poll=yes"><img src="{$THEME['imgdir']}/poll.gif" border="0px" alt="{$lang['textnewpoll']}" title="{$lang['textnewpoll']}" /></a>
 
-|#*UBB TEMPLATE FILE*#|viewtopic_reply|#*UBB TEMPLATE*#|
+|#*GBB TEMPLATE FILE*#|viewtopic_reply|#*GBB TEMPLATE*#|
 <a href="post.php?action=reply&amp;fid=$fid&amp;tid=$tid"><img src="{$THEME['imgdir']}/reply.gif" border="0px" alt="{$lang['textpostreply']}" title="{$lang['textpostreply']}" /></a>
 
-|#*UBB TEMPLATE FILE*#|index_forum_lastpost|#*UBB TEMPLATE*#|
+|#*GBB TEMPLATE FILE*#|index_forum_lastpost|#*GBB TEMPLATE*#|
 <table cellpadding="0px" cellspacing="0px" border="0px" width="100%">
 <tr class="rghttablerow">
 <td bgcolor="{$THEME['altbg1']}" nowrap="nowrap"><font class="smalltxt">$lastpost</font></td>
@@ -3060,7 +3060,7 @@ $postauthor {$lang['textattachedimg']}<br /><img src="viewtopic.php?action=attac
 </tr>
 </table>
 
-|#*UBB TEMPLATE FILE*#|viewforum_subforum_lastpost|#*UBB TEMPLATE*#|
+|#*GBB TEMPLATE FILE*#|viewforum_subforum_lastpost|#*GBB TEMPLATE*#|
 <table cellpadding="0px" cellspacing="0px" border="0px" width="100%">
 <tr class="rghttablerow">
 <td bgcolor="{$THEME['altbg1']}" nowrap="nowrap"><font class="smalltxt">$lastpost</font></td>
@@ -3068,7 +3068,7 @@ $postauthor {$lang['textattachedimg']}<br /><img src="viewtopic.php?action=attac
 </tr>
 </table>
 
-|#*UBB TEMPLATE FILE*#|viewforum_thread_lastpost|#*UBB TEMPLATE*#|
+|#*GBB TEMPLATE FILE*#|viewforum_thread_lastpost|#*GBB TEMPLATE*#|
 <table cellpadding="0px" cellspacing="0px" border="0px" width="100%">
 <tr class="rghttablerow" bgcolor="{$THEME['altbg2']}">
 <td nowrap="nowrap"><font class="smalltxt">$lastpost</font></td>
@@ -3076,7 +3076,7 @@ $postauthor {$lang['textattachedimg']}<br /><img src="viewtopic.php?action=attac
 </tr>
 </table>
 
-|#*UBB TEMPLATE FILE*#|viewtopic_post_sig|#*UBB TEMPLATE*#|
+|#*GBB TEMPLATE FILE*#|viewtopic_post_sig|#*GBB TEMPLATE*#|
 </font>
 <br />
 <br />
@@ -3085,12 +3085,12 @@ $postauthor {$lang['textattachedimg']}<br /><img src="viewtopic.php?action=attac
 
 <div class="sig">$post[sig]</div>
 
-|#*UBB TEMPLATE FILE*#|search_nextlink|#*UBB TEMPLATE*#|
+|#*GBB TEMPLATE FILE*#|search_nextlink|#*GBB TEMPLATE*#|
 <tr align="$lang_nalign">
 <td bgcolor="{$THEME['altbg1']}" colspan="3" class="mediumtxt"><a href="search.php?page=$pagenum&amp;$ext&amp;filter_distinct=$filter_distinct&amp;searchsubmit=a">{$lang['nextsearch']}</a></td>
 </tr>
 
-|#*UBB TEMPLATE FILE*#|functions_bbcode|#*UBB TEMPLATE*#|
+|#*GBB TEMPLATE FILE*#|functions_bbcode|#*GBB TEMPLATE*#|
 <script language="JavaScript" type="text/javascript">
 var bbcode_helpmode = "{$lang['bbcode_helpmode']}";
 var bbcode_advmode = "{$lang['bbcode_advmode']}";
@@ -3151,30 +3151,30 @@ function loadEls() {
 </script>
 <script language="JavaScript" type="text/javascript" src="$js_path/js/$bbcode_js_sc"></script>
 
-|#*UBB TEMPLATE FILE*#|index_forum_nolastpost|#*UBB TEMPLATE*#|
+|#*GBB TEMPLATE FILE*#|index_forum_nolastpost|#*GBB TEMPLATE*#|
 <table cellpadding="0px" cellspacing="0px" border="0px" width="100%">
 <tr class="rghttablerow">
 <td bgcolor="{$THEME['altbg1']}" nowrap="nowrap"><font class="smalltxt">{$lang['textnever']}</font></td>
 </tr>
 </table>
 
-|#*UBB TEMPLATE FILE*#|viewforum_subforum_nolastpost|#*UBB TEMPLATE*#|
+|#*GBB TEMPLATE FILE*#|viewforum_subforum_nolastpost|#*GBB TEMPLATE*#|
 <table cellpadding="0px" cellspacing="0px" border="0px" width="100%">
 <tr class="rghttablerow">
 <td bgcolor="{$THEME['altbg1']}" nowrap="nowrap"><font class="smalltxt">{$lang['textnever']}</font></td>
 </tr>
 </table>
 
-|#*UBB TEMPLATE FILE*#|viewtopic_post_icq|#*UBB TEMPLATE*#|
+|#*GBB TEMPLATE FILE*#|viewtopic_post_icq|#*GBB TEMPLATE*#|
 <a href="http://web.icq.com/whitepages/about_me/1,,,00.html?Uin=$post[icq]" target="_blank"><img src="{$THEME['imgdir']}/icq_add.gif" alt="{$lang['ALT_ICQ']}" title="{$lang['ALT_ICQ']}" border="0px" /></a>
 
-|#*UBB TEMPLATE FILE*#|viewtopic_post_aim|#*UBB TEMPLATE*#|
+|#*GBB TEMPLATE FILE*#|viewtopic_post_aim|#*GBB TEMPLATE*#|
 <a href="aim:goim?screenname=$post[aim]&amp;message=Hi+$post[aim].+Are+you+there+I+got+your+aim+name+from+a+message+board."><img src="{$THEME['imgdir']}/aim.gif" alt="{$lang['ALT_AIM']}" title="{$lang['ALT_AIM']}" border="0px" /></a>
 
-|#*UBB TEMPLATE FILE*#|viewtopic_post_yahoo|#*UBB TEMPLATE*#|
+|#*GBB TEMPLATE FILE*#|viewtopic_post_yahoo|#*GBB TEMPLATE*#|
 <a href="http://profiles.yahoo.com/$post[yahoo]" target="_blank"><img src="{$THEME['imgdir']}/yahoo.gif" alt="{$lang['ALT_YIM']}" title="{$lang['ALT_YIM']}" border="0px" /></a>
 
-|#*UBB TEMPLATE FILE*#|viewforum_subforums|#*UBB TEMPLATE*#|
+|#*GBB TEMPLATE FILE*#|viewforum_subforums|#*GBB TEMPLATE*#|
 <table cellspacing="0px" cellpadding="0px" border="0px" width="{$THEME['tablewidth']}" align="center">
 <tr>
 <td bgcolor="{$THEME['bordercolor']}">
@@ -3195,7 +3195,7 @@ $forumlist
 $shadow
 <br />
 
-|#*UBB TEMPLATE FILE*#|topicadmin_delete|#*UBB TEMPLATE*#|
+|#*GBB TEMPLATE FILE*#|topicadmin_delete|#*GBB TEMPLATE*#|
 <form method="post" action="topicadmin.php?action=delete">
 <input type="hidden" name="token" value="$oToken->newToken" />
 <table cellspacing="0px" cellpadding="0px" border="0px" width="{$THEME['tablewidth']}" align="center">
@@ -3218,7 +3218,7 @@ $shadow
 $shadow
 </form>
 
-|#*UBB TEMPLATE FILE*#|topicadmin_empty|#*UBB TEMPLATE*#|
+|#*GBB TEMPLATE FILE*#|topicadmin_empty|#*GBB TEMPLATE*#|
 <form method="post" action="topicadmin.php?action=empty">
 <input type="hidden" name="token" value="$oToken->newToken" />
 <table cellspacing="0px" cellpadding="0px" border="0px" width="{$THEME['tablewidth']}" align="center">
@@ -3241,7 +3241,7 @@ $shadow
 $shadow
 </form>
 
-|#*UBB TEMPLATE FILE*#|post_edit_attachment|#*UBB TEMPLATE*#|
+|#*GBB TEMPLATE FILE*#|post_edit_attachment|#*GBB TEMPLATE*#|
 <tr class="tablerow">
 <td bgcolor="{$THEME['altbg1']}">
 {$lang['textfilename']} <em>$attach[filename]</em><br />
@@ -3263,19 +3263,19 @@ $shadow
 </td>
 </tr>
 
-|#*UBB TEMPLATE FILE*#|footer_load|#*UBB TEMPLATE*#|
+|#*GBB TEMPLATE FILE*#|footer_load|#*GBB TEMPLATE*#|
 [ {$lang['Server_Load']} <strong>$load[0]</strong> ]
 
-|#*UBB TEMPLATE FILE*#|footer_phpsql|#*UBB TEMPLATE*#|
+|#*GBB TEMPLATE FILE*#|footer_phpsql|#*GBB TEMPLATE*#|
 [ {$lang['PHP']} <strong>${php_duration}%</strong> - {$lang['SQL']} <strong>${db_duration}%</strong> ]
 
-|#*UBB TEMPLATE FILE*#|footer_querynum|#*UBB TEMPLATE*#|
+|#*GBB TEMPLATE FILE*#|footer_querynum|#*GBB TEMPLATE*#|
 [ {$lang['queries']} <strong>$querynum</strong> ]
 
-|#*UBB TEMPLATE FILE*#|footer_totaltime|#*UBB TEMPLATE*#|
+|#*GBB TEMPLATE FILE*#|footer_totaltime|#*GBB TEMPLATE*#|
 [ {$lang['timemsg']} <strong>$totaltime</strong> {$lang['textseconds']} ]
 
-|#*UBB TEMPLATE FILE*#|viewtopic_quickreply|#*UBB TEMPLATE*#|
+|#*GBB TEMPLATE FILE*#|viewtopic_quickreply|#*GBB TEMPLATE*#|
 <br />
 <form method="post" name="input" action="post.php?action=reply&amp;fid=$fid&amp;tid=$tid">
 <input type="hidden" name="token" value="$oToken->newToken" />
@@ -3324,14 +3324,14 @@ $captcha
 $shadow
 </form>
 
-|#*UBB TEMPLATE FILE*#|smilies|#*UBB TEMPLATE*#|
+|#*GBB TEMPLATE FILE*#|smilies|#*GBB TEMPLATE*#|
 <div align="center">
 <table border="0px">
 <div align="center">$smilies</div>
 </table>
 </div>
 
-|#*UBB TEMPLATE FILE*#|popup_header|#*UBB TEMPLATE*#|
+|#*GBB TEMPLATE FILE*#|popup_header|#*GBB TEMPLATE*#|
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="$lang_code" lang="$lang_code" dir="$lang_dir">
 <head>
@@ -3348,7 +3348,7 @@ $bbcodescript
 <div align="center">
 <br />
 
-|#*UBB TEMPLATE FILE*#|topicadmin_threadprune|#*UBB TEMPLATE*#|
+|#*GBB TEMPLATE FILE*#|topicadmin_threadprune|#*GBB TEMPLATE*#|
 <form method="post" action="topicadmin.php?action=threadprune">
 <input type="hidden" name="token" value="$oToken->newToken" />
 <table cellspacing="0px" cellpadding="0px" border="0px" width="{$THEME['tablewidth']}" align="center">
@@ -3377,13 +3377,13 @@ $posts
 $shadow
 </form>
 
-|#*UBB TEMPLATE FILE*#|topicadmin_threadprune_row|#*UBB TEMPLATE*#|
+|#*GBB TEMPLATE FILE*#|topicadmin_threadprune_row|#*GBB TEMPLATE*#|
 <tr class="tablerow">
 <td bgcolor="{$THEME['altbg1']}"><input type="checkbox" name="move$post[pid]" value="$post[pid]" /></td>
 <td bgcolor="{$THEME['altbg2']}"><font class="smalltxt"><strong>$post[author]</strong><br /><br />$post[message]</font></td>
 </tr>
 
-|#*UBB TEMPLATE FILE*#|address_pm|#*UBB TEMPLATE*#|
+|#*GBB TEMPLATE FILE*#|address_pm|#*GBB TEMPLATE*#|
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="$lang_code" lang="$lang_code" dir="$lang_dir">
 <head>
@@ -3428,25 +3428,25 @@ $shadow
 </body>
 </html>
 
-|#*UBB TEMPLATE FILE*#|address_pm_on|#*UBB TEMPLATE*#|
+|#*GBB TEMPLATE FILE*#|address_pm_on|#*GBB TEMPLATE*#|
 <tr class="tablerow">
 <td bgcolor="{$THEME['altbg1']}" width="75%"><input type="checkbox" name="users" value="$address[addressname]" /> $address[addressname]</td>
 <td bgcolor="{$THEME['altbg1']}">{$lang['textonline']}</td>
 </tr>
 
-|#*UBB TEMPLATE FILE*#|address_pm_inv|#*UBB TEMPLATE*#|
+|#*GBB TEMPLATE FILE*#|address_pm_inv|#*GBB TEMPLATE*#|
 <tr class="tablerow">
 <td bgcolor="{$THEME['altbg1']}" width="75%"><input type="checkbox" name="users" value="$address[addressname]" /> $address[addressname]</td>
 <td bgcolor="{$THEME['altbg1']}">{$lang['hidden']}</td>
 </tr>
 
-|#*UBB TEMPLATE FILE*#|address_pm_off|#*UBB TEMPLATE*#|
+|#*GBB TEMPLATE FILE*#|address_pm_off|#*GBB TEMPLATE*#|
 <tr class="tablerow">
 <td bgcolor="{$THEME['altbg1']}" width="75%"><input type="checkbox" name="users" value="$address[addressname]" /> $address[addressname]</td>
 <td bgcolor="{$THEME['altbg1']}">{$lang['textoffline']}</td>
 </tr>
 
-|#*UBB TEMPLATE FILE*#|usercp_home_layout|#*UBB TEMPLATE*#|
+|#*GBB TEMPLATE FILE*#|usercp_home_layout|#*GBB TEMPLATE*#|
 <table cellspacing="0px" cellpadding="0px" border="0px" width="{$THEME['tablewidth']}" align="center">
 <tr>
 <td valign="top">
@@ -3464,7 +3464,7 @@ $shadow2
 </tr>
 </table>
 
-|#*UBB TEMPLATE FILE*#|usercp_profile|#*UBB TEMPLATE*#|
+|#*GBB TEMPLATE FILE*#|usercp_profile|#*GBB TEMPLATE*#|
 <form method="post" action="usercp.php?action=profile" name="reg">
 <input type="hidden" name="token" value="$oToken->newToken" />
 <table cellspacing="0px" cellpadding="0px" border="0px" width="100%" align="center">
@@ -3553,7 +3553,7 @@ $customblock
 </form>
 $shadow2
 
-|#*UBB TEMPLATE FILE*#|usercp_password|#*UBB TEMPLATE*#|
+|#*GBB TEMPLATE FILE*#|usercp_password|#*GBB TEMPLATE*#|
 <form method="post" action="usercp.php?action=password" name="reg">
 <input type="hidden" name="token" value="$oToken->newToken" />
 <table cellspacing="0px" cellpadding="0px" border="0px" width="100%" align="center">
@@ -3585,7 +3585,7 @@ $shadow2
 </form>
 $shadow2
 
-|#*UBB TEMPLATE FILE*#|usercp_email|#*UBB TEMPLATE*#|
+|#*GBB TEMPLATE FILE*#|usercp_email|#*GBB TEMPLATE*#|
 <form method="post" action="usercp.php?action=email" name="reg">
 <input type="hidden" name="token" value="$oToken->newToken" />
 <table cellspacing="0px" cellpadding="0px" border="0px" width="100%" align="center">
@@ -3612,7 +3612,7 @@ $shadow2
 </form>
 $shadow2
 
-|#*UBB TEMPLATE FILE*#|usercp_favs|#*UBB TEMPLATE*#|
+|#*GBB TEMPLATE FILE*#|usercp_favs|#*GBB TEMPLATE*#|
 <form method="post" action="usercp.php?action=favorites">
 <input type="hidden" name="token" value="$oToken->newToken" />
 <table cellspacing="0px" cellpadding="0px" border="0px" width="100%" align="center">
@@ -3639,12 +3639,12 @@ $favsbtn
 </form>
 $shadow2
 
-|#*UBB TEMPLATE FILE*#|usercp_favs_none|#*UBB TEMPLATE*#|
+|#*GBB TEMPLATE FILE*#|usercp_favs_none|#*GBB TEMPLATE*#|
 <tr class="tablerow">
 <td bgcolor="{$THEME['altbg2']}" colspan="6">{$lang['nofavsmsg']}</td>
 </tr>
 
-|#*UBB TEMPLATE FILE*#|usercp_favs_row|#*UBB TEMPLATE*#|
+|#*GBB TEMPLATE FILE*#|usercp_favs_row|#*GBB TEMPLATE*#|
 <tr class="tablerow">
 <td class="ctrtablerow" bgcolor="{$THEME['altbg2']}" width="4%"><input type="checkbox" name="delete$fav[tid]" value="$fav[tid]" /></td>
 <td class="ctrtablerow" bgcolor="{$THEME['altbg1']}" width="4%">$fav[icon]</td>
@@ -3661,12 +3661,12 @@ $shadow2
 </td>
 </tr>
 
-|#*UBB TEMPLATE FILE*#|usercp_favs_button|#*UBB TEMPLATE*#|
+|#*GBB TEMPLATE FILE*#|usercp_favs_button|#*GBB TEMPLATE*#|
 <tr>
 <td bgcolor="{$THEME['altbg2']}" class="ctrtablerow" colspan="6"><input type="submit" class="submit" name="favsubmit" value="{$lang['textdeleteselectedfavs']}" /></td>
 </tr>
 
-|#*UBB TEMPLATE FILE*#|usercp_subscriptions_row|#*UBB TEMPLATE*#|
+|#*GBB TEMPLATE FILE*#|usercp_subscriptions_row|#*GBB TEMPLATE*#|
 <tr class="tablerow">
 <td class="ctrtablerow" bgcolor="{$THEME['altbg2']}" width="4%"><input type="checkbox" name="delete$fav[tid]" value="$fav[tid]" /></td>
 <td class="ctrtablerow" bgcolor="{$THEME['altbg1']}" width="4%">$fav[icon]</td>
@@ -3683,17 +3683,17 @@ $shadow2
 </td>
 </tr>
 
-|#*UBB TEMPLATE FILE*#|usercp_subscriptions_button|#*UBB TEMPLATE*#|
+|#*GBB TEMPLATE FILE*#|usercp_subscriptions_button|#*GBB TEMPLATE*#|
 <tr class="ctrtablerow">
 <td bgcolor="{$THEME['altbg2']}" colspan="6"><input type="submit" class="submit" name="subsubmit" value="{$lang['textdeleteselectedsubs']}" /></td>
 </tr>
 
-|#*UBB TEMPLATE FILE*#|usercp_subscriptions_none|#*UBB TEMPLATE*#|
+|#*GBB TEMPLATE FILE*#|usercp_subscriptions_none|#*GBB TEMPLATE*#|
 <tr class="tablerow">
 <td bgcolor="{$THEME['altbg2']}" colspan="6">{$lang['nosubmsg']}</td>
 </tr>
 
-|#*UBB TEMPLATE FILE*#|usercp_subscriptions|#*UBB TEMPLATE*#|
+|#*GBB TEMPLATE FILE*#|usercp_subscriptions|#*GBB TEMPLATE*#|
 <form method="post" action="usercp.php?action=subscriptions">
 <input type="hidden" name="token" value="$oToken->newToken" />
 <table cellspacing="0px" cellpadding="0px" border="0px" width="100%" align="center"><tr><td bgcolor="{$THEME['bordercolor']}">
@@ -3718,7 +3718,7 @@ $subsbtn
 </form>
 $shadow2
 
-|#*UBB TEMPLATE FILE*#|usercp_home_pm_row|#*UBB TEMPLATE*#|
+|#*GBB TEMPLATE FILE*#|usercp_home_pm_row|#*GBB TEMPLATE*#|
 <tr class="tablerow">
 <td bgcolor="{$THEME['altbg2']}" $mouseover><a href="pm.php?action=view&amp;pmid=$message[pmid]">$message[subject]</a></td>
 <td bgcolor="{$THEME['altbg1']}">$message[msgfrom]</td>
@@ -3726,12 +3726,12 @@ $shadow2
 <td bgcolor="{$THEME['altbg1']}">$read</td>
 </tr>
 
-|#*UBB TEMPLATE FILE*#|usercp_home_pm_none|#*UBB TEMPLATE*#|
+|#*GBB TEMPLATE FILE*#|usercp_home_pm_none|#*GBB TEMPLATE*#|
 <tr class="tablerow">
 <td bgcolor="{$THEME['altbg2']}" colspan="4">{$lang['nopmmsg']}</td>
 </tr>
 
-|#*UBB TEMPLATE FILE*#|usercp_home|#*UBB TEMPLATE*#|
+|#*GBB TEMPLATE FILE*#|usercp_home|#*GBB TEMPLATE*#|
 <table cellspacing="0px" cellpadding="0px" border="0px" width="100%" align="center">
 <tr>
 <td bgcolor="{$THEME['bordercolor']}">
@@ -3841,7 +3841,7 @@ $subscriptions
 </table>
 $shadow2
 
-|#*UBB TEMPLATE FILE*#|usercp_home_pm|#*UBB TEMPLATE*#|
+|#*GBB TEMPLATE FILE*#|usercp_home_pm|#*GBB TEMPLATE*#|
 <table cellspacing="0px" cellpadding="0px" border="0px" width="100%" align="center">
 <tr>
 <td bgcolor="{$THEME['bordercolor']}">
@@ -3866,12 +3866,12 @@ $messages
 $shadow2
 <br />
 
-|#*UBB TEMPLATE FILE*#|usercp_home_favs_none|#*UBB TEMPLATE*#|
+|#*GBB TEMPLATE FILE*#|usercp_home_favs_none|#*GBB TEMPLATE*#|
 <tr class="tablerow">
 <td bgcolor="{$THEME['altbg2']}" colspan="5">{$lang['nofavsmsg']}</td>
 </tr>
 
-|#*UBB TEMPLATE FILE*#|usercp_home_favs_row|#*UBB TEMPLATE*#|
+|#*GBB TEMPLATE FILE*#|usercp_home_favs_row|#*GBB TEMPLATE*#|
 <tr class="tablerow">
 <td class="ctrtablerow" bgcolor="{$THEME['altbg1']}" width="4%">$fav[icon]</td>
 <td bgcolor="{$THEME['altbg2']}" width="43%" $mouseover><a href="viewtopic.php?tid=$fav[tid]">$fav[subject]</a></td>
@@ -3887,7 +3887,7 @@ $shadow2
 </td>
 </tr>
 
-|#*UBB TEMPLATE FILE*#|usercp_home_subscriptions_row|#*UBB TEMPLATE*#|
+|#*GBB TEMPLATE FILE*#|usercp_home_subscriptions_row|#*GBB TEMPLATE*#|
 <tr class="tablerow">
 <td class="ctrtablerow" bgcolor="{$THEME['altbg1']}" width="4%">$fav[icon]</td>
 <td bgcolor="{$THEME['altbg2']}" width="43%" $mouseover><a href="viewtopic.php?tid=$fav[tid]">$fav[subject]</a></td>
@@ -3903,18 +3903,18 @@ $shadow2
 </td>
 </tr>
 
-|#*UBB TEMPLATE FILE*#|usercp_home_subscriptions_none|#*UBB TEMPLATE*#|
+|#*GBB TEMPLATE FILE*#|usercp_home_subscriptions_none|#*GBB TEMPLATE*#|
 <tr class="tablerow">
 <td bgcolor="{$THEME['altbg2']}" colspan="5">{$lang['nosubsmsg']}</td>
 </tr>
 
-|#*UBB TEMPLATE FILE*#|usercp_avatarurl|#*UBB TEMPLATE*#|
+|#*GBB TEMPLATE FILE*#|usercp_avatarurl|#*GBB TEMPLATE*#|
 <tr class="tablerow">
 <td bgcolor="{$THEME['altbg1']}" width="22%">{$lang['textavatarurl']}</td>
 <td bgcolor="{$THEME['altbg2']}"><input type="text" name="newavatar" size="40" value="$member[avatar]" /><br />{$lang['Avatar_Urlmsg']}$CONFIG[max_avatar_size]{$lang['Avatar_Pixels']}</td>
 </tr>
 
-|#*UBB TEMPLATE FILE*#|usercp_options|#*UBB TEMPLATE*#|
+|#*GBB TEMPLATE FILE*#|usercp_options|#*GBB TEMPLATE*#|
 <form method="post" action="usercp.php?action=options" name="reg">
 <input type="hidden" name="token" value="$oToken->newToken" />
 <table cellspacing="0px" cellpadding="0px" border="0px" width="100%" align="center">
@@ -4085,7 +4085,7 @@ $df
 </form>
 $shadow2
 
-|#*UBB TEMPLATE FILE*#|usercp_avatar|#*UBB TEMPLATE*#|
+|#*GBB TEMPLATE FILE*#|usercp_avatar|#*GBB TEMPLATE*#|
 <form method="post" action="usercp.php?action=avatar" name="reg" enctype="multipart/form-data">
 <input type="hidden" name="token" value="$oToken->newToken" />
 <table cellspacing="0px" cellpadding="0px" border="0px" width="100%" align="center">
@@ -4105,10 +4105,10 @@ $avatardelbtn
 </form>
 $shadow2
 
-|#*UBB TEMPLATE FILE*#|usercp_avataruser|#*UBB TEMPLATE*#|
+|#*GBB TEMPLATE FILE*#|usercp_avataruser|#*GBB TEMPLATE*#|
 <img src="$member[avatar]" border="0px" alt="{$lang['altavatar']}" title="{$lang['altavatar']}" />
 
-|#*UBB TEMPLATE FILE*#|usercp_avatarhidden|#*UBB TEMPLATE*#|
+|#*GBB TEMPLATE FILE*#|usercp_avatarhidden|#*GBB TEMPLATE*#|
 <tr class="tablerow">
 <td bgcolor="{$THEME['altbg1']}" class="ctrtablerow" width="22%" valign="top">{$lang['Avatar_Current']}<br />$useravatar$avdeletebutton</td>
 <td bgcolor="{$THEME['altbg2']}" valign="top">{$lang['Avatar_Info']}</td>
@@ -4118,17 +4118,17 @@ $shadow2
 <td bgcolor="{$THEME['altbg2']}" ><input type="file" name="avatarfile" size="20" /></td>
 </tr>
 
-|#*UBB TEMPLATE FILE*#|usercp_avatarsubmit|#*UBB TEMPLATE*#|
+|#*GBB TEMPLATE FILE*#|usercp_avatarsubmit|#*GBB TEMPLATE*#|
 <tr class="ctrtablerow">
 <td bgcolor="{$THEME['altbg2']}" colspan="2"><input type="submit" class="submit" name="avatarsubmit" value="{$lang['Edit_Avatar']}" /></td>
 </tr>
 
-|#*UBB TEMPLATE FILE*#|usercp_avatarnone|#*UBB TEMPLATE*#|
+|#*GBB TEMPLATE FILE*#|usercp_avatarnone|#*GBB TEMPLATE*#|
 <tr>
 <td class="ctrtablerow" bgcolor="{$THEME['altbg2']}" colspan="2">{$lang['Feature_Disabled']}</td>
 </tr>
 
-|#*UBB TEMPLATE FILE*#|topic_activity|#*UBB TEMPLATE*#|
+|#*GBB TEMPLATE FILE*#|topic_activity|#*GBB TEMPLATE*#|
 <form method="post" action="activity.php">
 <input type="hidden" name="token" value="$oToken->newToken" />
 <table cellspacing="0px" cellpadding="0px" border="0px" width="{$THEME['tablewidth']}" align="center">
@@ -4247,7 +4247,7 @@ $dotlegend
 </table>
 $shadow
 
-|#*UBB TEMPLATE FILE*#|topic_activity_dotfolders|#*UBB TEMPLATE*#|
+|#*GBB TEMPLATE FILE*#|topic_activity_dotfolders|#*GBB TEMPLATE*#|
 <tr>
 <td class="ctrtablerow" bgcolor="{$THEME['altbg1']}"><img src="{$THEME['imgdir']}/dot_red_folder.gif" border="0px" align="middle" alt="{$lang['topicopendotnewposts']}" title="{$lang['topicopendotnewposts']}" /></td>
 <td class="tablerow" bgcolor="{$THEME['altbg2']}">{$lang['topicopendotnewposts']}</td>
@@ -4267,12 +4267,12 @@ $shadow
 <td class="tablerow" bgcolor="{$THEME['altbg2']}">{$lang['opendotpollnonewposts']}</td>
 </tr>
 
-|#*UBB TEMPLATE FILE*#|topic_activity_none|#*UBB TEMPLATE*#|
+|#*GBB TEMPLATE FILE*#|topic_activity_none|#*GBB TEMPLATE*#|
 <tr class="ctrtablerow">
 <td bgcolor="{$THEME['altbg1']}" colspan="8">{$lang['topicactivityno']}</td>
 </tr>
 
-|#*UBB TEMPLATE FILE*#|topic_activity_threads|#*UBB TEMPLATE*#|
+|#*GBB TEMPLATE FILE*#|topic_activity_threads|#*GBB TEMPLATE*#|
 <tr class="tablerow">
 <td class="ctrtablerow" bgcolor="{$THEME['altbg2']}">$folder</td>
 <td class="ctrtablerow" bgcolor="{$THEME['altbg1']}">$posticon</td>
@@ -4291,12 +4291,12 @@ $shadow
 </td>
 </tr>
 
-|#*UBB TEMPLATE FILE*#|topic_activity_multipage|#*UBB TEMPLATE*#|
+|#*GBB TEMPLATE FILE*#|topic_activity_multipage|#*GBB TEMPLATE*#|
 <tr class="tablerow">
 <td class="multi" bgcolor="{$THEME['altbg1']}" colspan="8">&nbsp;$multipage</td>
 </tr>
 
-|#*UBB TEMPLATE FILE*#|usercp_signature|#*UBB TEMPLATE*#|
+|#*GBB TEMPLATE FILE*#|usercp_signature|#*GBB TEMPLATE*#|
 <form method="post" action="usercp.php?action=signature" name="reg">
 <input type="hidden" name="token" value="$oToken->newToken" />
 <table cellspacing="0px" cellpadding="0px" border="0px" width="100%" align="center">
@@ -4336,7 +4336,7 @@ $smilieinsert
 $shadow2
 $sigblock
 
-|#*UBB TEMPLATE FILE*#|usercp_gallery|#*UBB TEMPLATE*#|
+|#*GBB TEMPLATE FILE*#|usercp_gallery|#*GBB TEMPLATE*#|
 <form method="post" action="usercp.php?action=gallery">
 <input type="hidden" name="token" value="$oToken->newToken" />
 <table cellspacing="0px" cellpadding="0px" border="0px" width="100%" align="center">
@@ -4365,12 +4365,12 @@ $submitbutton
 </form>
 $shadow2
 
-|#*UBB TEMPLATE FILE*#|usercp_gallery_multipage|#*UBB TEMPLATE*#|
+|#*GBB TEMPLATE FILE*#|usercp_gallery_multipage|#*GBB TEMPLATE*#|
 <tr class="tablerow">
 <td bgcolor="{$THEME['altbg2']}" colspan="2">&nbsp;$multipage</td>
 </tr>
 
-|#*UBB TEMPLATE FILE*#|confirmmsg|#*UBB TEMPLATE*#|
+|#*GBB TEMPLATE FILE*#|confirmmsg|#*GBB TEMPLATE*#|
 <table cellspacing="0px" cellpadding="0px" border="0px" width="{$THEME['tablewidth']}" align="center" bgcolor="{$THEME['bordercolor']}">
 <tr>
 <td>
@@ -4387,7 +4387,7 @@ $shadow2
 </table>
 $shadow
 
-|#*UBB TEMPLATE FILE*#|viewforum_dotfolders|#*UBB TEMPLATE*#|
+|#*GBB TEMPLATE FILE*#|viewforum_dotfolders|#*GBB TEMPLATE*#|
 <tr>
 <td class="ctrtablerow" bgcolor="{$THEME['altbg1']}"><img src="{$THEME['imgdir']}/dot_red_folder.gif" border="0px" align="middle" alt="{$lang['topicopendotnewposts']}" title="{$lang['topicopendotnewposts']}" /></td>
 <td class="tablerow" bgcolor="{$THEME['altbg2']}">{$lang['topicopendotnewposts']}</td>
@@ -4407,7 +4407,7 @@ $shadow
 <td class="tablerow" bgcolor="{$THEME['altbg2']}">{$lang['opendotpollnonewposts']}</td>
 </tr>
 
-|#*UBB TEMPLATE FILE*#|cp_header|#*UBB TEMPLATE*#|
+|#*GBB TEMPLATE FILE*#|cp_header|#*GBB TEMPLATE*#|
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="$lang_code" lang="$lang_code" dir="$lang_dir">
 <head>
@@ -4481,7 +4481,7 @@ $shadow
 </table>
 <br />
 
-|#*UBB TEMPLATE FILE*#|cp_footer|#*UBB TEMPLATE*#|
+|#*GBB TEMPLATE FILE*#|cp_footer|#*GBB TEMPLATE*#|
 <br />
 <table cellspacing="{$THEME['borderwidth']}" cellpadding="0px" border="0px" width="{$THEME['tablewidth']}" align="center" bgcolor="{$THEME['bordercolor']}">
 <tr>
@@ -4515,25 +4515,25 @@ $bottomcorners
 </body>
 </html>
 
-|#*UBB TEMPLATE FILE*#|usercp_custom_none|#*UBB TEMPLATE*#|
+|#*GBB TEMPLATE FILE*#|usercp_custom_none|#*GBB TEMPLATE*#|
 <tr class="tablerow">
 <td bgcolor="{$THEME['altbg1']}" width="22%">{$lang['textcusstatus']}:</td><td bgcolor="{$THEME['altbg2']}" class="tablerow"><strong><span class="smalltxt">$CONFIG[customposts]{$lang['custom_no']}{$lang['textcusstatus']}.</span></strong></td>
 </tr>
 
-|#*UBB TEMPLATE FILE*#|usercp_custom|#*UBB TEMPLATE*#|
+|#*GBB TEMPLATE FILE*#|usercp_custom|#*GBB TEMPLATE*#|
 <tr class="tablerow">
 <td bgcolor="{$THEME['altbg1']}" width="22%">{$lang['textcusstatus']}:</td>
 <td bgcolor="{$THEME['altbg2']}"><input type="text" name="newcustomstatus" size="25" value="$member[customstatus]" /></td>
 </tr>
 
-|#*UBB TEMPLATE FILE*#|shadow|#*UBB TEMPLATE*#|
+|#*GBB TEMPLATE FILE*#|shadow|#*GBB TEMPLATE*#|
 <table cellspacing="0px" cellpadding="0px" border="0px" width="{$THEME['tablewidth']}" align="center">
 <tr>
 <td width="100%"><img src="{$THEME['imgdir']}/shadow.gif" border="0px" alt="" title="" /></td>
 </tr>
 </table>
 
-|#*UBB TEMPLATE FILE*#|usercp_options_aka|#*UBB TEMPLATE*#|
+|#*GBB TEMPLATE FILE*#|usercp_options_aka|#*GBB TEMPLATE*#|
 <tr class="tablerow">
 <td bgcolor="{$THEME['altbg1']}" width="22%">{$lang['showname']}</td>
 <td bgcolor="{$THEME['altbg2']}">
@@ -4544,11 +4544,11 @@ $bottomcorners
 </td>
 </tr>
 
-|#*UBB TEMPLATE FILE*#|meta_tags|#*UBB TEMPLATE*#|
+|#*GBB TEMPLATE FILE*#|meta_tags|#*GBB TEMPLATE*#|
 <meta name="keywords" content="$CONFIG[metatag_keywords]" />
 <meta name="description" content="$CONFIG[metatag_description]" />
 
-|#*UBB TEMPLATE FILE*#|usercp_notepad|#*UBB TEMPLATE*#|
+|#*GBB TEMPLATE FILE*#|usercp_notepad|#*GBB TEMPLATE*#|
 <form method="post" action="usercp.php?action=notepad">
 <input type="hidden" name="token" value="$oToken->newToken" />
 <table cellspacing="0px" cellpadding="0px" border="0px" width="100%" align="center">
@@ -4571,7 +4571,7 @@ $bottomcorners
 </form>
 $shadow2
 
-|#*UBB TEMPLATE FILE*#|usercp_sig_preview|#*UBB TEMPLATE*#|
+|#*GBB TEMPLATE FILE*#|usercp_sig_preview|#*GBB TEMPLATE*#|
 <br />
 <table cellspacing="0px" cellpadding="0px" border="0px" width="100%" align="center">
 <tr>
@@ -4589,7 +4589,7 @@ $shadow2
 </table>
 $shadow2
 
-|#*UBB TEMPLATE FILE*#|post_attach_edit_JS|#*UBB TEMPLATE*#|
+|#*GBB TEMPLATE FILE*#|post_attach_edit_JS|#*GBB TEMPLATE*#|
 <script language="JavaScript" type="text/javascript">
 var clicked = 0;
 var attachName = '';
@@ -4654,7 +4654,7 @@ function removeFile(container, item) {
 }
 </script>
 
-|#*UBB TEMPLATE FILE*#|post_edit_attach_JS|#*UBB TEMPLATE*#|
+|#*GBB TEMPLATE FILE*#|post_edit_attach_JS|#*GBB TEMPLATE*#|
 <script language="JavaScript" type="text/javascript">
 function attachChange(i) {
     var currentElement;
@@ -4700,7 +4700,7 @@ function attachChange(i) {
 }
 </script>
 
-|#*UBB TEMPLATE FILE*#|viewtopic_post_attachment_none|#*UBB TEMPLATE*#|
+|#*GBB TEMPLATE FILE*#|viewtopic_post_attachment_none|#*GBB TEMPLATE*#|
 <br />
 <br />
 <table cellspacing="0px" cellpadding="0px" border="0px" width="{$THEME['tablewidth']}" align="center" bgcolor="{$THEME['bordercolor']}">
@@ -4718,7 +4718,7 @@ function attachChange(i) {
 </tr>
 </table>
 
-|#*UBB TEMPLATE FILE*#|viewforum_rules|#*UBB TEMPLATE*#|
+|#*GBB TEMPLATE FILE*#|viewforum_rules|#*GBB TEMPLATE*#|
 <table cellspacing="0px" cellpadding="0px" border="0px" width="{$THEME['tablewidth']}" align="center">
 <tr>
 <td bgcolor="{$THEME['bordercolor']}">
@@ -4736,10 +4736,10 @@ function attachChange(i) {
 $shadow
 <br />
 
-|#*UBB TEMPLATE FILE*#|viewtopic_post_blog|#*UBB TEMPLATE*#|
+|#*GBB TEMPLATE FILE*#|viewtopic_post_blog|#*GBB TEMPLATE*#|
 <a href="$post[blog]" target="_blank"><img src="{$THEME['imgdir']}/blog.gif" border="0px" alt="{$lang['blogalt']}" title="{$lang['blogalt']}" /></a>
 
-|#*UBB TEMPLATE FILE*#|viewtopic_post_rpg|#*UBB TEMPLATE*#|
+|#*GBB TEMPLATE FILE*#|viewtopic_post_rpg|#*GBB TEMPLATE*#|
 <br />
 <br />
 <strong>{$lang['rpg_level']}</strong> $showlevel<br />
@@ -4756,13 +4756,13 @@ $shadow
 <img src="{$THEME['imgdir']}/bxg.gif" width="$ep%" height="9" border="0px" alt="" title="" /><img src="{$THEME['imgdir']}/bxb.gif" width="1" height="9" border="0px" alt="" title="" />
 </div>
 
-|#*UBB TEMPLATE FILE*#|editprofile_avatarurl|#*UBB TEMPLATE*#|
+|#*GBB TEMPLATE FILE*#|editprofile_avatarurl|#*GBB TEMPLATE*#|
 <tr class="tablerow">
 <td bgcolor="{$THEME['altbg1']}" width="22%">{$lang['textavatarurl']}</td>
 <td bgcolor="{$THEME['altbg2']}"><input type="text" name="newavatar" size="40" value="$member[avatar]" /><br />{$lang['Avatar_Urlmsg']}$CONFIG[max_avatar_size]{$lang['Avatar_Pixels']}</td>
 </tr>
 
-|#*UBB TEMPLATE FILE*#|editprofile_avatarhidden|#*UBB TEMPLATE*#|
+|#*GBB TEMPLATE FILE*#|editprofile_avatarhidden|#*GBB TEMPLATE*#|
 <tr class="category">
 <td class="title" colspan="2">{$lang['Avatar_Options']}</td>
 </tr>
@@ -4775,10 +4775,10 @@ $shadow
 <td bgcolor="{$THEME['altbg2']}"><input type="file" name="avatarfile" size="20" /></td>
 </tr>
 
-|#*UBB TEMPLATE FILE*#|editprofile_useravatar|#*UBB TEMPLATE*#|
+|#*GBB TEMPLATE FILE*#|editprofile_useravatar|#*GBB TEMPLATE*#|
 <img src="$member[avatar]" border="0px" alt="{$lang['altavatar']}" title="{$lang['altavatar']}" />
 
-|#*UBB TEMPLATE FILE*#|cp_confirmmsg|#*UBB TEMPLATE*#|
+|#*GBB TEMPLATE FILE*#|cp_confirmmsg|#*GBB TEMPLATE*#|
 <table cellspacing="0px" cellpadding="0px" border="0px" width="100%" align="center" bgcolor="{$THEME['bordercolor']}">
 <tr>
 <td>
@@ -4795,7 +4795,7 @@ $shadow
 </table>
 $shadow
 
-|#*UBB TEMPLATE FILE*#|cp_error|#*UBB TEMPLATE*#|
+|#*GBB TEMPLATE FILE*#|cp_error|#*GBB TEMPLATE*#|
 $header
 <table cellspacing="0px" cellpadding="0px" border="0px" width="100%" align="center" bgcolor="{$THEME['bordercolor']}">
 <tr>
@@ -4813,7 +4813,7 @@ $header
 </table>
 $shadow2
 
-|#*UBB TEMPLATE FILE*#|massmod_openclose|#*UBB TEMPLATE*#|
+|#*GBB TEMPLATE FILE*#|massmod_openclose|#*GBB TEMPLATE*#|
 <form method="post" action="viewforum.php?fid=$fid&amp;action=close">
 <input type="hidden" name="token" value="$oToken->newToken" />
 <table cellspacing="0px" cellpadding="0px" border="0px" width="{$THEME['tablewidth']}" align="center">
@@ -4837,7 +4837,7 @@ $shadow
 <br />
 </form>
 
-|#*UBB TEMPLATE FILE*#|massmod_topuntop|#*UBB TEMPLATE*#|
+|#*GBB TEMPLATE FILE*#|massmod_topuntop|#*GBB TEMPLATE*#|
 <form method="post" action="viewforum.php?fid=$fid&amp;action=top">
 <input type="hidden" name="token" value="$oToken->newToken" />
 <table cellspacing="0px" cellpadding="0px" border="0px" width="{$THEME['tablewidth']}" align="center">
@@ -4861,7 +4861,7 @@ $shadow
 <br />
 </form>
 
-|#*UBB TEMPLATE FILE*#|massmod_bump|#*UBB TEMPLATE*#|
+|#*GBB TEMPLATE FILE*#|massmod_bump|#*GBB TEMPLATE*#|
 <form method="post" action="viewforum.php?fid=$fid&amp;action=bump">
 <input type="hidden" name="token" value="$oToken->newToken" />
 <table cellspacing="0px" cellpadding="0px" border="0px" width="{$THEME['tablewidth']}" align="center">
@@ -4885,7 +4885,7 @@ $shadow
 <br />
 </form>
 
-|#*UBB TEMPLATE FILE*#|massmod_copy|#*UBB TEMPLATE*#|
+|#*GBB TEMPLATE FILE*#|massmod_copy|#*GBB TEMPLATE*#|
 <form method="post" action="viewforum.php?fid=$fid&amp;action=copy">
 <input type="hidden" name="token" value="$oToken->newToken" />
 <table cellspacing="0px" cellpadding="0px" border="0px" width="{$THEME['tablewidth']}" align="center">
@@ -4914,7 +4914,7 @@ $shadow
 <br />
 </form>
 
-|#*UBB TEMPLATE FILE*#|massmod_merge|#*UBB TEMPLATE*#|
+|#*GBB TEMPLATE FILE*#|massmod_merge|#*GBB TEMPLATE*#|
 <form method="post" action="viewforum.php?fid=$fid&amp;action=merge">
 <input type="hidden" name="token" value="$oToken->newToken" />
 <table cellspacing="0px" cellpadding="0px" border="0px" width="{$THEME['tablewidth']}" align="center">
@@ -4947,7 +4947,7 @@ $shadow
 <br />
 </form>
 
-|#*UBB TEMPLATE FILE*#|massmod_delete|#*UBB TEMPLATE*#|
+|#*GBB TEMPLATE FILE*#|massmod_delete|#*GBB TEMPLATE*#|
 <form method="post" action="viewforum.php?fid=$fid&amp;action=delete">
 <input type="hidden" name="token" value="$oToken->newToken" />
 <table cellspacing="0px" cellpadding="0px" border="0px" width="{$THEME['tablewidth']}" align="center">
@@ -4971,7 +4971,7 @@ $shadow
 <br />
 </form>
 
-|#*UBB TEMPLATE FILE*#|massmod_empty|#*UBB TEMPLATE*#|
+|#*GBB TEMPLATE FILE*#|massmod_empty|#*GBB TEMPLATE*#|
 <form method="post" action="viewforum.php?fid=$fid&amp;action=empty">
 <input type="hidden" name="token" value="$oToken->newToken" />
 <table cellspacing="0px" cellpadding="0px" border="0px" width="{$THEME['tablewidth']}" align="center">
@@ -4995,7 +4995,7 @@ $shadow
 <br />
 </form>
 
-|#*UBB TEMPLATE FILE*#|massmod_move|#*UBB TEMPLATE*#|
+|#*GBB TEMPLATE FILE*#|massmod_move|#*GBB TEMPLATE*#|
 <form method="post" action="viewforum.php?fid=$fid&amp;action=move">
 <input type="hidden" name="token" value="$oToken->newToken" />
 <table cellspacing="0px" cellpadding="0px" border="0px" width="{$THEME['tablewidth']}" align="center">
@@ -5028,10 +5028,10 @@ $shadow
 <br />
 </form>
 
-|#*UBB TEMPLATE FILE*#|post_edit_delete|#*UBB TEMPLATE*#|
+|#*GBB TEMPLATE FILE*#|post_edit_delete|#*GBB TEMPLATE*#|
 <br /><input type="checkbox" name="delete" value="yes" /> <strong>{$lang['textdelete']}</strong>
 
-|#*UBB TEMPLATE FILE*#|topicadmin_markthread|#*UBB TEMPLATE*#|
+|#*GBB TEMPLATE FILE*#|topicadmin_markthread|#*GBB TEMPLATE*#|
 <form method="post" action="topicadmin.php?action=markthread">
 <input type="hidden" name="token" value="$oToken->newToken" />
 <table cellspacing="0px" cellpadding="0px" border="0px" width="{$THEME['tablewidth']}" align="center">
@@ -5059,12 +5059,12 @@ $shadow
 $shadow
 </form>
 
-|#*UBB TEMPLATE FILE*#|memberlist_results_none|#*UBB TEMPLATE*#|
+|#*GBB TEMPLATE FILE*#|memberlist_results_none|#*GBB TEMPLATE*#|
 <tr class="ctrtablerow">
 <td class="mediumtxt" bgcolor="{$THEME['altbg1']}" colspan="8">{$lang['noresults']}</td>
 </tr>
 
-|#*UBB TEMPLATE FILE*#|memberlist_row|#*UBB TEMPLATE*#|
+|#*GBB TEMPLATE FILE*#|memberlist_row|#*GBB TEMPLATE*#|
 <tr class="tablerow">
 <td bgcolor="{$THEME['altbg2']}" $mouseover>$memurl</td>
 <td bgcolor="{$THEME['altbg1']}" class="ctrtablerow">$member[firstname]&nbsp;$member[lastname]</td>
@@ -5076,12 +5076,12 @@ $shadow
 <td bgcolor="{$THEME['altbg1']}" class="ctrtablerow">$member[postnum]</td>
 </tr>
 
-|#*UBB TEMPLATE FILE*#|memberlist_multipage|#*UBB TEMPLATE*#|
+|#*GBB TEMPLATE FILE*#|memberlist_multipage|#*GBB TEMPLATE*#|
 <tr class="tablerow">
 <td bgcolor="{$THEME['altbg2']}" colspan="9" align="$lang_align"  class="multi">&nbsp;$multipage</td>
 </tr>
 
-|#*UBB TEMPLATE FILE*#|memberlist|#*UBB TEMPLATE*#|
+|#*GBB TEMPLATE FILE*#|memberlist|#*GBB TEMPLATE*#|
 <table cellspacing="0px" cellpadding="0px" border="0px" width="{$THEME['tablewidth']}" align="center">
 <tr>
 <td bgcolor="{$THEME['bordercolor']}"><table border="0px" cellspacing="{$THEME['borderwidth']}" cellpadding="{$THEME['tablespace']}" width="100%">
@@ -5163,7 +5163,7 @@ $shadow
 $shadow
 </form>
 
-|#*UBB TEMPLATE FILE*#|memberlist_admin|#*UBB TEMPLATE*#|
+|#*GBB TEMPLATE FILE*#|memberlist_admin|#*GBB TEMPLATE*#|
 <table cellspacing="0px" cellpadding="0px" border="0px" width="{$THEME['tablewidth']}" align="center">
 <tr>
 <td bgcolor="{$THEME['bordercolor']}"><table border="0px" cellspacing="{$THEME['borderwidth']}" cellpadding="{$THEME['tablespace']}" width="100%">
@@ -5245,12 +5245,12 @@ $shadow
 $shadow
 </form>
 
-|#*UBB TEMPLATE FILE*#|memberlist_separator|#*UBB TEMPLATE*#|
+|#*GBB TEMPLATE FILE*#|memberlist_separator|#*GBB TEMPLATE*#|
 <tr class="category">
 <td class="title" colspan="8">&raquo;&nbsp;$separator_text</td>
 </tr>
 
-|#*UBB TEMPLATE FILE*#|contactus|#*UBB TEMPLATE*#|
+|#*GBB TEMPLATE FILE*#|contactus|#*GBB TEMPLATE*#|
 <form method="post" action="{$contactLink}">
 <table cellspacing="0px" cellpadding="0px" border="0px" width="{$THEME['tablewidth']}" align="center">
 <tr>
@@ -5285,7 +5285,7 @@ $shadow
 $shadow
 </form>
 
-|#*UBB TEMPLATE FILE*#|index_category_spacer|#*UBB TEMPLATE*#|
+|#*GBB TEMPLATE FILE*#|index_category_spacer|#*GBB TEMPLATE*#|
 </table>
 </td>
 </tr>
@@ -5297,7 +5297,7 @@ $shadow
 <td bgcolor="{$THEME['bordercolor']}">
 <table border="0px" cellspacing="{$THEME['borderwidth']}" cellpadding="{$THEME['tablespace']}" width="100%">
 
-|#*UBB TEMPLATE FILE*#|index_member|#*UBB TEMPLATE*#|
+|#*GBB TEMPLATE FILE*#|index_member|#*GBB TEMPLATE*#|
 <table cellspacing="0px" cellpadding="0px" border="0px" width="{$THEME['tablewidth']}" align="center">
 <tr>
 <td bgcolor="{$THEME['bordercolor']}">
@@ -5318,10 +5318,10 @@ $avatarblock
 </tr>
 </table>
 
-|#*UBB TEMPLATE FILE*#|index_member_avatar|#*UBB TEMPLATE*#|
+|#*GBB TEMPLATE FILE*#|index_member_avatar|#*GBB TEMPLATE*#|
 <td bgcolor="{$THEME['altbg2']}" width="15%" $gallover><a href="usercp.php?action=gallery"><strong>{$lang['avatargallery']}</strong></a></td>
 
-|#*UBB TEMPLATE FILE*#|massmod_markthread|#*UBB TEMPLATE*#|
+|#*GBB TEMPLATE FILE*#|massmod_markthread|#*GBB TEMPLATE*#|
 <form method="post" action="viewforum.php?fid=$fid&amp;action=markthread">
 <table cellspacing="0px" cellpadding="0px" border="0px" width="{$THEME['tablewidth']}" align="center">
 <tr>
@@ -5349,14 +5349,14 @@ $shadow
 <br />
 </form>
 
-|#*UBB TEMPLATE FILE*#|online_row|#*UBB TEMPLATE*#|
+|#*GBB TEMPLATE FILE*#|online_row|#*GBB TEMPLATE*#|
 <tr bgcolor="{$THEME['altbg1']}" class="tablerow">
 <td width="22%">$online[username]</td>
 <td width="28%">$onlinetime</td>
 <td>$online[location]</td>
 </tr>
 
-|#*UBB TEMPLATE FILE*#|viewprofile|#*UBB TEMPLATE*#|
+|#*GBB TEMPLATE FILE*#|viewprofile|#*GBB TEMPLATE*#|
 <table align="center" cellpadding="0" cellspacing="0" style="width:{$THEME['tablewidth']};border:0;">
 <tr>
 <td style="vertical-align:top;width: 49%;padding: 0px;">
@@ -5552,19 +5552,19 @@ $shadow2
 </table>
 $sigblock
 
-|#*UBB TEMPLATE FILE*#|viewprofile_pm|#*UBB TEMPLATE*#|
+|#*GBB TEMPLATE FILE*#|viewprofile_pm|#*GBB TEMPLATE*#|
 <tr class="tablerow">
 <td bgcolor="{$THEME['altbg1']}" nowrap="nowrap" style="font-weight:bold;width:15%;vertical-align:top;text-align:left;">{$lang['banpm']}:&nbsp;</td>
 <td bgcolor="{$THEME['altbg2']}" style="vertical-align:top;"><a href="pm.php?action=send&amp;memberid=$memberid">{$lang['textpm']}</a></td>
 </tr>
 
-|#*UBB TEMPLATE FILE*#|viewprofile_aka|#*UBB TEMPLATE*#|
+|#*GBB TEMPLATE FILE*#|viewprofile_aka|#*GBB TEMPLATE*#|
 <tr class="tablerow">
 <td bgcolor="{$THEME['altbg1']}" nowrap="nowrap" style="font-weight:bold;width:15%;vertical-align:top;text-align:left;">{$lang['aka']}&nbsp;</td>
 <td bgcolor="{$THEME['altbg2']}" style="vertical-align:top;">$memberinfo[firstname]&nbsp;$memberinfo[lastname]</td>
 </tr>
 
-|#*UBB TEMPLATE FILE*#|viewprofile_sig|#*UBB TEMPLATE*#|
+|#*GBB TEMPLATE FILE*#|viewprofile_sig|#*GBB TEMPLATE*#|
 <br />
 <table cellspacing="0px" cellpadding="0px" border="0px" width="{$THEME['tablewidth']}" align="center">
 <tr>
@@ -5582,13 +5582,13 @@ $sigblock
 </table>
 $shadow
 
-|#*UBB TEMPLATE FILE*#|viewprofile_email|#*UBB TEMPLATE*#|
+|#*GBB TEMPLATE FILE*#|viewprofile_email|#*GBB TEMPLATE*#|
 <tr class="tablerow">
 <td bgcolor="{$THEME['altbg1']}" nowrap="nowrap" style="font-weight:bold;width:15%;vertical-align:top;text-align:left;">{$lang['textemail']}:&nbsp;</td>
 <td bgcolor="{$THEME['altbg2']}" style="vertical-align:top;"><a href="email.php?memberid=$memberid">{$lang['emailmemsendpre']}</a></td>
 </tr>
 
-|#*UBB TEMPLATE FILE*#|email_member|#*UBB TEMPLATE*#|
+|#*GBB TEMPLATE FILE*#|email_member|#*GBB TEMPLATE*#|
 <form method="post" action="email.php?memberid=$memberid">
 <input type="hidden" name="token" value="$oToken->newToken" />
 <table cellspacing="0px" cellpadding="0px" border="0px" width="{$THEME['tablewidth']}" align="center">
@@ -5619,19 +5619,19 @@ $shadow
 </form>
 $shadow2
 
-|#*UBB TEMPLATE FILE*#|index_member_pm|#*UBB TEMPLATE*#|
+|#*GBB TEMPLATE FILE*#|index_member_pm|#*GBB TEMPLATE*#|
 <td bgcolor="{$THEME['altbg2']}" width="15%" $pmover><a href="pm.php"><strong>{$lang['textpmmessenger']}</strong></a></td>
 
-|#*UBB TEMPLATE FILE*#|usercp_photourl|#*UBB TEMPLATE*#|
+|#*GBB TEMPLATE FILE*#|usercp_photourl|#*GBB TEMPLATE*#|
 <tr class="tablerow">
 <td bgcolor="{$THEME['altbg1']}" width="22%">{$lang['textphotourl']}</td>
 <td bgcolor="{$THEME['altbg2']}"><input type="text" name="newphoto" size="40" value="$member[photo]" /><br />{$lang['photo_Urlmsg']}$CONFIG[max_photo_size]{$lang['photo_Pixels']}</td>
 </tr>
 
-|#*UBB TEMPLATE FILE*#|usercp_photouser|#*UBB TEMPLATE*#|
+|#*GBB TEMPLATE FILE*#|usercp_photouser|#*GBB TEMPLATE*#|
 <img src="$member[photo]" border="0px" alt="{$lang['photoalt']}" title="{$lang['photoalt']}" />
 
-|#*UBB TEMPLATE FILE*#|usercp_photohidden|#*UBB TEMPLATE*#|
+|#*GBB TEMPLATE FILE*#|usercp_photohidden|#*GBB TEMPLATE*#|
 <tr class="tablerow">
 <td bgcolor="{$THEME['altbg1']}" class="ctrtablerow" width="22%" valign="top">{$lang['photo_Current']}<br />$userphoto$photodeletebutton</td>
 <td bgcolor="{$THEME['altbg2']}" valign="top">{$lang['photo_Info']}</td>
@@ -5641,17 +5641,17 @@ $shadow2
 <td bgcolor="{$THEME['altbg2']}"><input type="file" name="photofile" size="20" /></td>
 </tr>
 
-|#*UBB TEMPLATE FILE*#|usercp_photosubmit|#*UBB TEMPLATE*#|
+|#*GBB TEMPLATE FILE*#|usercp_photosubmit|#*GBB TEMPLATE*#|
 <tr class="ctrtablerow">
 <td bgcolor="{$THEME['altbg2']}" colspan="2"><input type="submit" class="submit" name="photosubmit" value="{$lang['Edit_photo']}" /></td>
 </tr>
 
-|#*UBB TEMPLATE FILE*#|usercp_photonone|#*UBB TEMPLATE*#|
+|#*GBB TEMPLATE FILE*#|usercp_photonone|#*GBB TEMPLATE*#|
 <tr>
 <td class="ctrtablerow" bgcolor="{$THEME['altbg2']}" colspan="2">{$lang['Feature_Disabled']}</td>
 </tr>
 
-|#*UBB TEMPLATE FILE*#|usercp_photo|#*UBB TEMPLATE*#|
+|#*GBB TEMPLATE FILE*#|usercp_photo|#*GBB TEMPLATE*#|
 <form method="post" action="usercp.php?action=photo" name="reg" enctype="multipart/form-data">
 <input type="hidden" name="token" value="$oToken->newToken" />
 <table cellspacing="0px" cellpadding="0px" border="0px" width="100%" align="center">
@@ -5671,7 +5671,7 @@ $photodelbtn
 </form>
 $shadow2
 
-|#*UBB TEMPLATE FILE*#|pm|#*UBB TEMPLATE*#|
+|#*GBB TEMPLATE FILE*#|pm|#*GBB TEMPLATE*#|
 <table border="0px" cellspacing="0px" cellpadding="0px" width="{$THEME['tablewidth']}" align="center">
 <tr>
 <td width="19%" valign="top" align="center">
@@ -5698,7 +5698,7 @@ $pmquotabar
 </tr>
 </table>
 
-|#*UBB TEMPLATE FILE*#|pm_drafts|#*UBB TEMPLATE*#|
+|#*GBB TEMPLATE FILE*#|pm_drafts|#*GBB TEMPLATE*#|
 <table cellspacing="0px" cellpadding="0px" border="0px" width="100%" align="center">
 <tr>
 <td bgcolor="{$THEME['bordercolor']}"><table border="0px" cellspacing="{$THEME['borderwidth']}" cellpadding="{$THEME['tablespace']}" width="100%">
@@ -5721,13 +5721,13 @@ $multipage
 </table>
 $shadow2
 
-|#*UBB TEMPLATE FILE*#|pm_folderlink|#*UBB TEMPLATE*#|
+|#*GBB TEMPLATE FILE*#|pm_folderlink|#*GBB TEMPLATE*#|
 <tr class="tablerow">
 <td bgcolor="{$THEME['altbg1']}"><a href="pm.php?folder=$link">$value</a>$emptytrash</td>
 <td bgcolor="{$THEME['altbg2']}">($count)</td>
 </tr>
 
-|#*UBB TEMPLATE FILE*#|pm_folders|#*UBB TEMPLATE*#|
+|#*GBB TEMPLATE FILE*#|pm_folders|#*GBB TEMPLATE*#|
 <form method="post" action="pm.php?action=folders">
 <input type="hidden" name="token" value="$oToken->newToken" />
 <table cellspacing="0px" cellpadding="0px" border="0px" width="100%" align="center">
@@ -5750,7 +5750,7 @@ $shadow2
 $shadow2
 </form>
 
-|#*UBB TEMPLATE FILE*#|pm_nav|#*UBB TEMPLATE*#|
+|#*GBB TEMPLATE FILE*#|pm_nav|#*GBB TEMPLATE*#|
 <table cellspacing="0px" cellpadding="0px" border="0px" width="{$THEME['tablewidth']}" align="center">
 <tr>
 <td bgcolor="{$THEME['bordercolor']}">
@@ -5772,7 +5772,7 @@ $shadow2
 $shadow
 <br />
 
-|#*UBB TEMPLATE FILE*#|pm_ignore|#*UBB TEMPLATE*#|
+|#*GBB TEMPLATE FILE*#|pm_ignore|#*GBB TEMPLATE*#|
 <form method="post" action="pm.php?action=ignore">
 <input type="hidden" name="token" value="$oToken->newToken" />
 <table cellspacing="0px" cellpadding="0px" border="0px" width="100%" align="center">
@@ -5795,7 +5795,7 @@ $shadow
 $shadow2
 </form>
 
-|#*UBB TEMPLATE FILE*#|pm_inbox|#*UBB TEMPLATE*#|
+|#*GBB TEMPLATE FILE*#|pm_inbox|#*GBB TEMPLATE*#|
 <table cellspacing="0px" cellpadding="0px" border="0px" width="100%" align="center">
 <tr>
 <td bgcolor="{$THEME['bordercolor']}">
@@ -5819,7 +5819,7 @@ $multipage
 </table>
 $shadow2
 
-|#*UBB TEMPLATE FILE*#|pm_main|#*UBB TEMPLATE*#|
+|#*GBB TEMPLATE FILE*#|pm_main|#*GBB TEMPLATE*#|
 <form method="post" action="pm.php?action=mod&folder=$folder" name="pm_main">
 <input type="hidden" name="token" value="$oToken->newToken" />
 $pmlist
@@ -5855,7 +5855,7 @@ $pmlist
 $shadow2
 </form>
 
-|#*UBB TEMPLATE FILE*#|pm_outbox|#*UBB TEMPLATE*#|
+|#*GBB TEMPLATE FILE*#|pm_outbox|#*GBB TEMPLATE*#|
 <table cellspacing="0px" cellpadding="0px" border="0px" width="100%" align="center">
 <tr>
 <td bgcolor="{$THEME['bordercolor']}">
@@ -5879,7 +5879,7 @@ $multipage
 </table>
 $shadow2
 
-|#*UBB TEMPLATE FILE*#|pm_quotabar|#*UBB TEMPLATE*#|
+|#*GBB TEMPLATE FILE*#|pm_quotabar|#*GBB TEMPLATE*#|
 <br />
 <table cellspacing="0px" cellpadding="0px" border="0px" width="100%" align="center">
 <tr>
@@ -5900,7 +5900,7 @@ $shadow2
 </table>
 $shadow2
 
-|#*UBB TEMPLATE FILE*#|pm_row|#*UBB TEMPLATE*#|
+|#*GBB TEMPLATE FILE*#|pm_row|#*GBB TEMPLATE*#|
 <tr class="tablerow">
 <td class="ctrtablerow" bgcolor="{$THEME['altbg2']}"><input type="checkbox" name="pm_select[]" value="$pm[pmid]" /><input type="hidden" name="type$pm[pmid]" value="$pm[type]" /></td>
 <td class="ctrtablerow" bgcolor="{$THEME['altbg1']}">$pmreadstatus</td>
@@ -5909,12 +5909,12 @@ $shadow2
 <td class="ctrtablerow" bgcolor="{$THEME['altbg2']}">$pmdateline</td>
 </tr>
 
-|#*UBB TEMPLATE FILE*#|pm_row_none|#*UBB TEMPLATE*#|
+|#*GBB TEMPLATE FILE*#|pm_row_none|#*GBB TEMPLATE*#|
 <tr class="tablerow">
 <td colspan="5" bgcolor="{$THEME['altbg1']}">{$lang['textpmnonefound']}</td>
 </tr>
 
-|#*UBB TEMPLATE FILE*#|pm_send|#*UBB TEMPLATE*#|
+|#*GBB TEMPLATE FILE*#|pm_send|#*GBB TEMPLATE*#|
 <form method="post" name="input" action="pm.php?action=send" enctype="multipart/form-data">
 <input type="hidden" name="token" value="$oToken->newToken" />
 $pmpreview
@@ -5967,7 +5967,7 @@ $attachfile
 $shadow2
 </form>
 
-|#*UBB TEMPLATE FILE*#|pm_send_preview|#*UBB TEMPLATE*#|
+|#*GBB TEMPLATE FILE*#|pm_send_preview|#*GBB TEMPLATE*#|
 <table cellspacing="0px" cellpadding="0px" border="0px" width="100%" align="center">
 <tr>
 <td bgcolor="{$THEME['bordercolor']}"><table border="0px" cellspacing="{$THEME['borderwidth']}" cellpadding="{$THEME['tablespace']}" width="100%">
@@ -5984,7 +5984,7 @@ $shadow2
 $shadow2
 <br />
 
-|#*UBB TEMPLATE FILE*#|pm_view|#*UBB TEMPLATE*#|
+|#*GBB TEMPLATE FILE*#|pm_view|#*GBB TEMPLATE*#|
 <table cellspacing="0px" cellpadding="0px" border="0px" width="100%" align="center">
 <tr>
 <td bgcolor="{$THEME['bordercolor']}">
@@ -6052,7 +6052,7 @@ $sendoptions
 </table>
 $shadow2
 
-|#*UBB TEMPLATE FILE*#|pm_printable|#*UBB TEMPLATE*#|
+|#*GBB TEMPLATE FILE*#|pm_printable|#*GBB TEMPLATE*#|
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="$lang_code" lang="$lang_code" dir="$lang_dir">
 <head>
@@ -6093,19 +6093,19 @@ $logo
 </body>
 </html>
 
-|#*UBB TEMPLATE FILE*#|pm_sig|#*UBB TEMPLATE*#|
+|#*GBB TEMPLATE FILE*#|pm_sig|#*GBB TEMPLATE*#|
 <br />
 <br />
 <br />
 <div class="sig">$pmsig[sig]</div>
 
-|#*UBB TEMPLATE FILE*#|pm_send_preview_sig|#*UBB TEMPLATE*#|
+|#*GBB TEMPLATE FILE*#|pm_send_preview_sig|#*GBB TEMPLATE*#|
 <br />
 <br />
 <br />
 <div class="sig">$self[sig]</div>
 
-|#*UBB TEMPLATE FILE*#|pm_attachmentbox|#*UBB TEMPLATE*#|
+|#*GBB TEMPLATE FILE*#|pm_attachmentbox|#*GBB TEMPLATE*#|
 <tr class="tablerow">
 <td bgcolor="{$THEME['altbg1']}">{$lang['attachment']}</td>
 <td bgcolor="{$THEME['altbg2']}">
@@ -6113,7 +6113,7 @@ $logo
 <input type="hidden" name="MAX_FILE_SIZE" value="$CONFIG[max_attach_size]" /></td>
 </tr>
 
-|#*UBB TEMPLATE FILE*#|pm_attachment|#*UBB TEMPLATE*#|
+|#*GBB TEMPLATE FILE*#|pm_attachment|#*GBB TEMPLATE*#|
 <br />
 <br />
 <table cellspacing="0px" cellpadding="0px" border="0px" width="100%" align="center">
@@ -6136,13 +6136,13 @@ $logo
 </tr>
 </table>
 
-|#*UBB TEMPLATE FILE*#|pm_attachmentimage|#*UBB TEMPLATE*#|
+|#*GBB TEMPLATE FILE*#|pm_attachmentimage|#*GBB TEMPLATE*#|
 <br />
 <br />
 $pm[msgfrom]&nbsp;{$lang['textattachedimg']}<br /><a href="pm.php?action=attachment&amp;pmid=$pm[pmid]&amp;aid=$pm[aid]" target="_blank"><img src="pm.php?action=attachment&amp;pmid=$pm[pmid]&amp;aid=$pm[aid]" title="$pm[filename]" alt="$pm[filename]" border="0px" width="$n_width" height="$n_height" /></a>
 <br />
 
-|#*UBB TEMPLATE FILE*#|viewforum_search|#*UBB TEMPLATE*#|
+|#*GBB TEMPLATE FILE*#|viewforum_search|#*GBB TEMPLATE*#|
 <tr>
 <td colspan="8" bgcolor="{$THEME['altbg2']}" class="ctrtablerow">
 <form method="post" action="search.php">
@@ -6164,7 +6164,7 @@ $pm[msgfrom]&nbsp;{$lang['textattachedimg']}<br /><a href="pm.php?action=attachm
 </td>
 </tr>
 
-|#*UBB TEMPLATE FILE*#|index_whosonline_today|#*UBB TEMPLATE*#|
+|#*GBB TEMPLATE FILE*#|index_whosonline_today|#*GBB TEMPLATE*#|
 <tr class="category">
 <td colspan="2"><font color="{$THEME['cattext']}"><span class="smalltxt">{$lang['onlinetoday']}$memontoday$todayguests$todayrobots{$lang['onlinetoday2']}</span></font></td>
 </tr>
@@ -6173,15 +6173,15 @@ $pm[msgfrom]&nbsp;{$lang['textattachedimg']}<br /><a href="pm.php?action=attachm
 <td bgcolor="{$THEME['altbg2']}" class="mediumtxt">$todaymembers&nbsp;</td>
 </tr>
 
-|#*UBB TEMPLATE FILE*#|index_member_notepad|#*UBB TEMPLATE*#|
+|#*GBB TEMPLATE FILE*#|index_member_notepad|#*GBB TEMPLATE*#|
 <td bgcolor="{$THEME['altbg2']}" width="15%" $noteover><a href="usercp.php?action=notepad"><strong>{$lang['notepad']}</strong></a></td>
 
-|#*UBB TEMPLATE FILE*#|index_whosonline_key|#*UBB TEMPLATE*#|
+|#*GBB TEMPLATE FILE*#|index_whosonline_key|#*GBB TEMPLATE*#|
 <tr class="tablerow">
 <td bgcolor="{$THEME['altbg1']}" colspan="2">{$lang['key']}[ <span style="color:{$THEME['spacolor']}"><strong><u><em>{$lang['superadmin']}</em></u></strong></span> ] [ <span style="color:{$THEME['admcolor']}"><strong><u>{$lang['textsendadmin']}</u></strong></span> ] [ <span style="color:{$THEME['spmcolor']}"><em><strong>{$lang['textsendsupermod']}</strong></em></span> ] [ <span style="color:{$THEME['modcolor']}"><strong>{$lang['textsendmod']}</strong></span> ] [ <span style="color:{$THEME['memcolor']}">{$lang['textsendall']}</span> ]$guests$robotkey$hidden</td>
 </tr>
 
-|#*UBB TEMPLATE FILE*#|index_whosonline_iconkey|#*UBB TEMPLATE*#|
+|#*GBB TEMPLATE FILE*#|index_whosonline_iconkey|#*GBB TEMPLATE*#|
 <tr class="tablerow">
 <td bgcolor="{$THEME['altbg1']}" colspan="2">
 {$lang['key']}
@@ -6193,7 +6193,7 @@ $pm[msgfrom]&nbsp;{$lang['textattachedimg']}<br /><a href="pm.php?action=attachm
 $guests$robotkey$hidden</td>
 </tr>
 
-|#*UBB TEMPLATE FILE*#|editprofile_photohidden|#*UBB TEMPLATE*#|
+|#*GBB TEMPLATE FILE*#|editprofile_photohidden|#*GBB TEMPLATE*#|
 <tr class="category">
 <td class="title" colspan="2">{$lang['photo_Options']}</td>
 </tr>
@@ -6206,16 +6206,16 @@ $guests$robotkey$hidden</td>
 <td bgcolor="{$THEME['altbg2']}"><input type="file" name="photofile" size="20" /></td>
 </tr>
 
-|#*UBB TEMPLATE FILE*#|editprofile_photourl|#*UBB TEMPLATE*#|
+|#*GBB TEMPLATE FILE*#|editprofile_photourl|#*GBB TEMPLATE*#|
 <tr class="tablerow">
 <td bgcolor="{$THEME['altbg1']}" width="22%">{$lang['phototext']}</td>
 <td bgcolor="{$THEME['altbg2']}"><input type="text" name="newphoto" size="40" value="$member[photo]" /><br />{$lang['photo_Urlmsg']}$CONFIG[max_photo_size]{$lang['photo_Pixels']}</td>
 </tr>
 
-|#*UBB TEMPLATE FILE*#|editprofile_userphoto|#*UBB TEMPLATE*#|
+|#*GBB TEMPLATE FILE*#|editprofile_userphoto|#*GBB TEMPLATE*#|
 <img src="$member[photo]" border="0px" alt="{$lang['photoalt']}" title="{$lang['photoalt']}" />
 
-|#*UBB TEMPLATE FILE*#|message|#*UBB TEMPLATE*#|
+|#*GBB TEMPLATE FILE*#|message|#*GBB TEMPLATE*#|
 $header
 <table cellspacing="0px" cellpadding="0px" border="0px" width="{$THEME['tablewidth']}" align="center" bgcolor="{$THEME['bordercolor']}">
 <tr>
@@ -6233,7 +6233,7 @@ $header
 </table>
 $shadow
 
-|#*UBB TEMPLATE FILE*#|cp_message|#*UBB TEMPLATE*#|
+|#*GBB TEMPLATE FILE*#|cp_message|#*GBB TEMPLATE*#|
 $header
 <table cellspacing="0px" cellpadding="0px" border="0px" width="100%" align="center" bgcolor="{$THEME['bordercolor']}">
 <tr>
@@ -6251,7 +6251,7 @@ $header
 </table>
 $shadow2
 
-|#*UBB TEMPLATE FILE*#|viewforum_mpn_info|#*UBB TEMPLATE*#|
+|#*GBB TEMPLATE FILE*#|viewforum_mpn_info|#*GBB TEMPLATE*#|
 <table cellspacing="0px" cellpadding="0px" border="0px" width="{$THEME['tablewidth']}" align="center">
 <tr>
 <td bgcolor="{$THEME['bordercolor']}">
@@ -6269,12 +6269,12 @@ $shadow2
 $shadow
 <br />
 
-|#*UBB TEMPLATE FILE*#|viewforum_nothreads_admin|#*UBB TEMPLATE*#|
+|#*GBB TEMPLATE FILE*#|viewforum_nothreads_admin|#*GBB TEMPLATE*#|
 <tr class="ctrtablerow">
 <td colspan="8" bgcolor="{$THEME['altbg1']}">{$lang['noposts']}</td>
 </tr>
 
-|#*UBB TEMPLATE FILE*#|index_boardoffmsg|#*UBB TEMPLATE*#|
+|#*GBB TEMPLATE FILE*#|index_boardoffmsg|#*GBB TEMPLATE*#|
 <table cellspacing="0px" cellpadding="0px" border="0px" width="{$THEME['tablewidth']}" align="center" bgcolor="{$THEME['bordercolor']}">
 <tr>
 <td>
@@ -6292,7 +6292,7 @@ $shadow
 $shadow
 <br />
 
-|#*UBB TEMPLATE FILE*#|index_news|#*UBB TEMPLATE*#|
+|#*GBB TEMPLATE FILE*#|index_news|#*GBB TEMPLATE*#|
 <table cellspacing="0px" cellpadding="0px" border="0px" width="{$THEME['tablewidth']}" align="center">
 <tr>
 <td bgcolor="{$THEME['bordercolor']}">
@@ -6310,14 +6310,14 @@ $shadow
 $shadow
 <br />
 
-|#*UBB TEMPLATE FILE*#|shadow2|#*UBB TEMPLATE*#|
+|#*GBB TEMPLATE FILE*#|shadow2|#*GBB TEMPLATE*#|
 <table cellspacing="0px" cellpadding="0px" border="0px" width="100%" align="center">
 <tr>
 <td width="100%"><img src="{$THEME['imgdir']}/shadow.gif" border="0px" alt="" title="" /></td>
 </tr>
 </table>
 
-|#*UBB TEMPLATE FILE*#|register_captcha|#*UBB TEMPLATE*#|
+|#*GBB TEMPLATE FILE*#|register_captcha|#*GBB TEMPLATE*#|
 <tr class="category">
 <td class="title" colspan="2">{$lang['imageverification']} - {$lang['required']}</td>
 </tr>
@@ -6331,7 +6331,7 @@ $shadow
 </td>
 </tr>
 
-|#*UBB TEMPLATE FILE*#|register_captchajs|#*UBB TEMPLATE*#|
+|#*GBB TEMPLATE FILE*#|register_captchajs|#*GBB TEMPLATE*#|
 <script language="JavaScript" type="text/javascript">
 function new_captcha()
 {
@@ -6340,10 +6340,10 @@ function new_captcha()
 }
 </script>
 
-|#*UBB TEMPLATE FILE*#|viewtopic_post_delete|#*UBB TEMPLATE*#|
+|#*GBB TEMPLATE FILE*#|viewtopic_post_delete|#*GBB TEMPLATE*#|
 <a href="post.php?action=delete&amp;fid=$fid&amp;tid=$tid&amp;pid=$post[pid]"><img src="{$THEME['imgdir']}/delete.gif" border="0px" alt="{$lang['altdelpost']}" title="{$lang['altdelpost']}" /></a>
 
-|#*UBB TEMPLATE FILE*#|pm_trash|#*UBB TEMPLATE*#|
+|#*GBB TEMPLATE FILE*#|pm_trash|#*GBB TEMPLATE*#|
 <table cellspacing="0px" cellpadding="0px" border="0px" width="100%" align="center">
 <tr>
 <td bgcolor="{$THEME['bordercolor']}">
@@ -6367,12 +6367,12 @@ $multipage
 </table>
 $shadow2
 
-|#*UBB TEMPLATE FILE*#|pm_multipage|#*UBB TEMPLATE*#|
+|#*GBB TEMPLATE FILE*#|pm_multipage|#*GBB TEMPLATE*#|
 <tr class="tablerow" bgcolor="{$THEME['altbg1']}">
 <td colspan="5" class="multi">&nbsp;$multipage</td>
 </tr>
 
-|#*UBB TEMPLATE FILE*#|post_delete_confirm|#*UBB TEMPLATE*#|
+|#*GBB TEMPLATE FILE*#|post_delete_confirm|#*GBB TEMPLATE*#|
 <form method="post" action="post.php?action=delete&fid=$fid&tid=$tid&pid=$pid">
 <table cellspacing="0px" cellpadding="0px" border="0px" width="{$THEME['tablewidth']}" align="center">
 <tr>
@@ -6397,7 +6397,7 @@ $shadow2
 </table>
 $shadow
 
-|#*UBB TEMPLATE FILE*#|login_loginmaxmet|#*UBB TEMPLATE*#|
+|#*GBB TEMPLATE FILE*#|login_loginmaxmet|#*GBB TEMPLATE*#|
 <table cellspacing="0px" cellpadding="0px" border="0px" width="{$THEME['tablewidth']}" align="center">
 <tr>
 <td bgcolor="{$THEME['bordercolor']}">
@@ -6416,7 +6416,7 @@ $shadow
 $shadow
 <br />
 
-|#*UBB TEMPLATE FILE*#|login_time_met|#*UBB TEMPLATE*#|
+|#*GBB TEMPLATE FILE*#|login_time_met|#*GBB TEMPLATE*#|
 <table cellspacing="0px" cellpadding="0px" border="0px" width="{$THEME['tablewidth']}" align="center">
 <tr>
 <td bgcolor="{$THEME['bordercolor']}">
@@ -6435,4 +6435,4 @@ $shadow
 $shadow
 <br />
 
-|#*UBB TEMPLATE FILE*#|
+|#*GBB TEMPLATE FILE*#|
