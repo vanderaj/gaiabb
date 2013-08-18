@@ -96,7 +96,7 @@ function viewPanel()
     formHelper::formTextBox($lang['Smtp_Port_Number'], 'smtpportnew', $CONFIG['smtpport'], 4);
     formHelper::formTextBox($lang['Smtp_Timeout'], 'smtptimeoutnew', $CONFIG['smtptimeout'], 3);
     formHelper::formTextBox($lang['Smtp_Username'], 'smtpusernamenew', $CONFIG['smtpusername'], 50);
-    formHelper::formTextBox($lang['Smtp_Password'], 'smtppasswordnew', $CONFIG['smtppassword'], 50, true);
+    formHelper::formTextPassBox($lang['Smtp_Password'], 'smtppasswordnew', $CONFIG['smtppassword'], 50, true);
     formHelper::formTextBox($lang['Smtp_Host'], 'smtphostnew', $CONFIG['smtphost'], 50);
     ?>
     <tr>

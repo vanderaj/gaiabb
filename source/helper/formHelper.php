@@ -57,7 +57,18 @@ class formHelper
 	    <?php
 	}
 	
-	static public function formTextBox($setname, $varname, $value, $size, $pass = false)
+	static public function formTextBox($setname, $setrows, $setvarname, $setcols, $setvalue)
+	{
+		global $THEME, $CONFIG, $lang;
+		?>
+		    <tr class="tablerow">
+		    <td bgcolor="<?php echo $THEME['altbg1']?>" valign="top" width="50%"><?php echo $setname?></td>
+		    <td bgcolor="<?php echo $THEME['altbg2']?>" width="50%"><textarea rows="<?php echo $setrows?>" name="<?php echo $setvarname?>" cols="<?php echo $setcols?>"><?php echo $setvalue?></textarea></td>
+		    </tr>
+		    <?php
+	}
+	
+	static public function formTextPassBox($setname, $varname, $value, $size, $pass = false)
 	{
 	    global $THEME, $CONFIG, $lang;
 	    ?>
@@ -105,16 +116,7 @@ class formHelper
 	    <?php
 	}
 	
-	static public function formTextBox($setname, $setrows, $setvarname, $setcols, $setvalue)
-	{
-	    global $THEME, $CONFIG, $lang;
-	    ?>
-	    <tr class="tablerow">
-	    <td bgcolor="<?php echo $THEME['altbg1']?>" valign="top" width="50%"><?php echo $setname?></td>
-	    <td bgcolor="<?php echo $THEME['altbg2']?>" width="50%"><textarea rows="<?php echo $setrows?>" name="<?php echo $setvarname?>" cols="<?php echo $setcols?>"><?php echo $setvalue?></textarea></td>
-	    </tr>
-	    <?php
-	}
+
 	
 	static public function formSelectYesNo($setname, $varname, $check1, $check2)
 	{

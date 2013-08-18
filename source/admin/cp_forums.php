@@ -749,7 +749,7 @@ function viewDetailsPanel($fdetails)
     </tr>
     <?php
     formHelper::formTextBox($lang['textuserlist'], 5, 'userlistnew', 50, $forum['userlist']);
-    formHelper::formTextBox($lang['forumpw'], 'passwordnew', $forum['password'], 20);
+    formHelper::formTextPassBox($lang['forumpw'], 'passwordnew', $forum['password'], 20);
     ?>
     <tr class="tablerow">
     <td bgcolor="<?php echo $THEME['altbg1']?>"><?php echo $lang['textdeleteques']?></td>
