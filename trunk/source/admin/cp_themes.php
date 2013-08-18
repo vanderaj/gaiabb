@@ -68,7 +68,7 @@ if (X_ADMIN)
         }
         $name = str_replace(' ', '+', $themebits['name']);
         header("Content-Type: application/x-ms-download");
-        header("Content-Disposition: filename=${name}-theme.ubb");
+        header("Content-Disposition: filename=${name}-theme.gbb");
         echo implode("\r\n", $contents);
         exit;
     }

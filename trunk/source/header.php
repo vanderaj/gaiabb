@@ -110,7 +110,7 @@ if (!file_exists(ROOT.'config.php'))
 
 if (file_exists(ROOT.'install/'))
 {
-    die('Error: /install/ still exists in the root folder. Please remove it before continuing.');
+     redirect('install/index.php');
 }
 
 include(ROOT.'config.php');

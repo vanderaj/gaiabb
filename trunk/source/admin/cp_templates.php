@@ -61,10 +61,10 @@ if (X_SADMIN) {
             if ($template['name'] != '')
             {
                 $template['template'] = stripslashes($template['template']);
-                $code .= $template['name']."|#*UBB TEMPLATE*#|\r\n".$template['template']."\r\n\r\n|#*UBB TEMPLATE FILE*#|";
+                $code .= $template['name']."|#*GBB TEMPLATE*#|\r\n".$template['template']."\r\n\r\n|#*GBB TEMPLATE FILE*#|";
             }
         }
-        header("Content-disposition: attachment; filename=templates.ubb");
+        header("Content-disposition: attachment; filename=templates.gbb");
         header("Content-Length: ".strlen($code));
         header("Content-type: unknown/unknown");
         header("Pragma: no-cache");
@@ -196,19 +196,19 @@ if ($action == 'templates')
 
     if (onSubmit('restoresubmit'))
     {
-        if (!file_exists('./templates.ubb'))
+        if (!file_exists('./templates.gbb'))
         {
             cp_error($lang['no_templates'], false, '', '</td></tr></table>');
         }
         $db->query("TRUNCATE ".X_PREFIX."templates");
-        $filesize = filesize('./templates.ubb');
-        $fp = fopen('./templates.ubb','r');
+        $filesize = filesize('./templates.gbb');
+        $fp = fopen('./templates.gbb','r');
         $templatesfile = fread($fp, $filesize);
         fclose($fp);
-        $templates = explode("|#*UBB TEMPLATE FILE*#|", $templatesfile);
+        $templates = explode("|#*GBB TEMPLATE FILE*#|", $templatesfile);
         while (list($key,$val) = each($templates))
         {
-            $template = explode("|#*UBB TEMPLATE*#|", $val);
+            $template = explode("|#*GBB TEMPLATE*#|", $val);
             if (isset($template[1]))
             {
                 $template[1] = addslashes($template[1]);
@@ -432,8 +432,8 @@ if ($action == 'templates')
             {
                 $template['name'] = trim($template['name']);
                 $template['template'] = trim(stripslashes($template['template']));
-                $code .= $template['name']."|#*UBB TEMPLATE*#|\r\n".$template['template']."\r\n\r\n|#*UBB TEMPLATE FILE*#|";
-                $stream = @fopen('./templates/templates-current.ubb', 'w+');
+                $code .= $template['name']."|#*GBB TEMPLATE*#|\r\n".$template['template']."\r\n\r\n|#*GBB TEMPLATE FILE*#|";
+                $stream = @fopen('./templates/templates-current.gbb', 'w+');
                 fwrite($stream, $code, strlen($code));
                 fclose($stream);
             }
@@ -473,21 +473,21 @@ if ($action == 'templates')
 
     if (onSubmit('restore_curyes'))
     {
-        if (!file_exists('./templates/templates-current.ubb'))
+        if (!file_exists('./templates/templates-current.gbb'))
         {
             cp_error($lang['template_current_no'], false, '', '</td></tr></table>');
         }
         else
         {
             $db->query("TRUNCATE ".X_PREFIX."templates");
-            $filesize = filesize('./templates/templates-current.ubb');
-            $fp = fopen('./templates/templates-current.ubb','r');
+            $filesize = filesize('./templates/templates-current.gbb');
+            $fp = fopen('./templates/templates-current.gbb','r');
             $templatesfile = fread($fp,$filesize);
             fclose($fp);
-            $templates = explode("|#*UBB TEMPLATE FILE*#|", $templatesfile);
+            $templates = explode("|#*GBB TEMPLATE FILE*#|", $templatesfile);
             while (list($key,$val) = each($templates))
             {
-                $template = explode("|#*UBB TEMPLATE*#|", $val);
+                $template = explode("|#*GBB TEMPLATE*#|", $val);
                 if (isset($template[1]))
                 {
                     $template[1] = addslashes($template[1]);
@@ -503,8 +503,8 @@ if ($action == 'templates')
                 {
                     $template['name'] = trim($template['name']);
                     $template['template'] = trim(stripslashes($template['template']));
-                    $code .= $template['name']."|#*UBB TEMPLATE*#|\r\n".$template['template']."\r\n\r\n|#*UBB TEMPLATE FILE*#|";
-                    $stream = @fopen('./templates/templates-current.ubb', 'w+');
+                    $code .= $template['name']."|#*GBB TEMPLATE*#|\r\n".$template['template']."\r\n\r\n|#*GBB TEMPLATE FILE*#|";
+                    $stream = @fopen('./templates/templates-current.gbb', 'w+');
                     fwrite($stream, $code, strlen($code));
                     fclose($stream);
                 }
