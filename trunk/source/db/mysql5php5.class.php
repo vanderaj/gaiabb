@@ -32,7 +32,7 @@
 // check to ensure no direct viewing of page
 if (!defined('IN_PROGRAM') && (defined('DEBUG') && DEBUG == false))
 {
-    exit('This file is not designed to be called directly');
+    exit('mysql - This file is not designed to be called directly');
 }
 
 define('X_DBCLASSNAME', 'mysql5Php5');
@@ -92,18 +92,19 @@ class mysql5Php5 {
 
             $this->force = $force_db;
 
-            if ((version_compare(phpversion(), "5.2.6")) < 0)
+            if ((version_compare(phpversion(), "5.3.2")) < 0)
             {
                 throw new Exception("Unsupported PHP version");
             }
 
             $this->conn = new mysqli($dbhost, $dbuser, $dbpw);
-            if (mysqli_connect_errno())
+            
+            if ( $this->conn->connect_error )
             {
-                throw new Exception("Could not connect to the database server");
+                throw new Exception("Could not connect to the database server:" . $this->conn->connect_error . "(" . $this->conn->connect_errno . ")");
             }
 
-            if ((version_compare($this->getVersion(), "4.1.0")) == -1)
+            if ((version_compare($this->getVersion(), "5.1.0")) == -1)
             {
                 throw new Exception("Unsupported MySQL version");
             }
