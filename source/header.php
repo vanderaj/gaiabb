@@ -110,7 +110,7 @@ if (!file_exists(ROOT.'config.php'))
 
 if (file_exists(ROOT.'install/'))
 {
-     redirect('install/index.php');
+     die('Error: installer still available. Cannot proceed until it is deleted.');
 }
 
 include(ROOT.'config.php');
@@ -176,7 +176,7 @@ if (isset($_SERVER['REQUEST_URI']))
     $url = $_SERVER['REQUEST_URI'];
 }
 
-include(ROOT.'db/mysql5php5.php');
+include(ROOT.'db/mysql5php5.class.php');
 
 $oToken = new page_token();
 $oToken->init();

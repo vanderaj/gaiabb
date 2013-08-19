@@ -82,10 +82,10 @@ $versioncompany = 'The GaiaBB Group';
 $versionshort = 'GaiaBB';
 $versiongeneral = 'GaiaBB 1.0-HEAD';
 $versioncopyright = 'GaiaBB 1.0-HEAD, &copy; 2011-2013 The GaiaBB Group';
-$versionbuild = '2013041301';
+$versionbuild = '20130819';
 $alpha = '';
 $beta = '';
-$gamma = '1.0-HEAD dev sprint 2';
+$gamma = '1.0-HEAD dev sprint 3';
 $sp = '';
 
 // No user serviceable items below
