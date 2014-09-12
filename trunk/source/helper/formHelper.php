@@ -53,7 +53,7 @@ class formHelper
 <?php
     }
 
-    static public function formTextBox($setname, $setrows, $setvarname, $setcols, $setvalue)
+    static public function formTextBox($setname, $setrows, $setvarname, $setcols, $setvalue = '')
     {
         global $THEME, $CONFIG, $lang;
         ?>
