@@ -413,7 +413,7 @@ function convert_forum($path, $prgbar)
     setBar($prgbar, 0.15);
     
     $convertclass = X_CONVERT;
-    $convert = new $convertclass(&$prgbar, $db2, $db);
+    $convert = new $convertclass($prgbar, $db2, $db);
     $convert->init();
     return $warn;
 }
