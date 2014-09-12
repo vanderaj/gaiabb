@@ -589,7 +589,13 @@ function forum($forum, $template)
         echo "<!-- ";
         echo print_r($forum);
         echo " !>";
-        $mouseover = celloverfx('viewforum.php?fid=' . intval($forum['fid']));
+        
+        if ( isset($forum['fid']) ) {
+            $mouseover = celloverfx('viewforum.php?fid=' . intval($forum['fid']));
+        } else {
+            $forum['fid'] = 0;
+            $mouseover = '';
+        }
         
         eval('$foruminfo = stripslashes("' . template($template) . '");');
     }
