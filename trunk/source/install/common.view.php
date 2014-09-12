@@ -122,7 +122,7 @@ function view_config($path)
 												<br />Please choose the configuration method:<br />
 												<br /> <input type="radio" name="confMethod" value="create"
 													checked>Attempt to create config.php for me<br /> <input
-													type="radio" name="confMethod" value="display">Show the
+													type="radio" name="confMethod" value="view">Show the
 												proposed configuration on screen<br /> <input type="radio"
 													name="confMethod" value="download">Download the
 												configuration for manual upload<br />
