@@ -150,7 +150,7 @@ if ($gid == 0) {
     $onlineRobots = array();
     
     $q = $db->query("SELECT m.status, m.username, m.uid, m.invisible, w.* FROM " . X_PREFIX . "whosonline w LEFT JOIN " . X_PREFIX . "members m ON m.username = w.username ORDER BY w.username ASC");
-    while ($online = $db->fetch_array($q)) {
+    while (($online = $db->fetch_array($q)) != false) {
         switch ($online['username']) {
             case 'xguest123':
                 $guestcount ++;
@@ -375,7 +375,7 @@ if ($gid == 0) {
     $todaymembersnum = 0;
     $todaymembers = array();
     $pre = $suff = $icon = '';
-    while ($memberstoday = $db->fetch_array($q)) {
+    while (($memberstoday = $db->fetch_array($q)) != false) {
         switch ($memberstoday['status']) {
             case 'Super Administrator':
                 if ($THEME['riconstatus'] == 'on') {
@@ -509,8 +509,8 @@ if ($gid == 0) {
         eval('$newsblock = "' . template('index_news') . '";');
     }
     
-    // $gid is set to 0 here !
-    if ($gid = 0) {
+    // XXX - $gid was set to 0 here! (fixed?)
+    if ($gid == 0) {
         $cq = $db->query("SELECT f.name as cat_name, f.fid as cat_fid, l.uid as lp_uid, l.username as lp_user, l.pid as lp_pid, l.dateline as lp_dateline FROM " . X_PREFIX . "forums f LEFT JOIN " . X_PREFIX . "lastposts l ON l.tid = f.lastpost WHERE type = 'group' ORDER BY displayorder ASC");
     } else {
         $cq = $db->query("SELECT f.*, c.name as cat_name, c.fid as cat_fid, l.uid as lp_uid, l.username as lp_user, l.pid as lp_pid, l.dateline as lp_dateline FROM " . X_PREFIX . "forums f LEFT JOIN " . X_PREFIX . "forums c ON (f.fup = c.fid) LEFT JOIN " . X_PREFIX . "lastposts l ON l.tid = f.lastpost WHERE (c.type = 'group' AND f.type = 'forum' AND c.status = 'on' AND f.status = 'on') OR (f.type = 'forum' AND f.fup = '' AND f.status = 'on') ORDER BY c.displayorder ASC, f.displayorder ASC");
@@ -544,7 +544,7 @@ if ($CONFIG['showsubs'] == 'on') {
     $index_subforums = array();
     if ($gid == 0) {
         $query = $db->query("SELECT fid, fup, name, private, userlist FROM " . X_PREFIX . "forums WHERE status = 'on' AND type = 'sub' ORDER BY fup, displayorder");
-        while ($queryrow = $db->fetch_array($query)) {
+        while (($queryrow = $db->fetch_array($query)) != false) {
             $index_subforums[] = $queryrow;
         }
         $db->free_result($query);
@@ -553,7 +553,7 @@ if ($CONFIG['showsubs'] == 'on') {
 
 $lastcat = 0;
 $forumlist = $cforum = '';
-while ($row = $db->fetch_array($cq)) {
+while (($row = $db->fetch_array($cq)) != false) {
     $cforum = forum($row, 'index_forum');
     
     if ($lastcat != $row['cat_fid'] && ! empty($cforum)) {

@@ -147,7 +147,7 @@ if (noSubmit('searchsubmit')) {
     if ($filter_distinct == 'yes') {
         $temparray = array();
         $searchresults = '';
-        while ($post = $db->fetch_array($querysrch)) {
+        while (($post = $db->fetch_array($querysrch)) != false) {
             $fidpw = isset($_COOKIE['fidpw' . $post['fid']]) ? $_COOKIE['fidpw' . $post['fid']] : '';
             $authorization = privfcheck($post['fprivate'], $post['fuserlist']);
             if ((! empty($post['password']) && $post['password'] != $fidpw) && ! X_SADMIN) {
@@ -219,7 +219,7 @@ if (noSubmit('searchsubmit')) {
             }
         }
     } else {
-        while ($post = $db->fetch_array($querysrch)) {
+        while (($post = $db->fetch_array($querysrch)) != false) {
             $fidpw = isset($_COOKIE['fidpw' . $post['fid']]) ? $_COOKIE['fidpw' . $post['fid']] : '';
             $authorization = privfcheck($post['fprivate'], $post['fuserlist']);
             if (($post['password'] != $fidpw && ! empty($post['password'])) && ! X_SADMIN) {

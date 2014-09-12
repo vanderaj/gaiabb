@@ -88,7 +88,7 @@ function viewModLogPanel($page)
     $firstpage = $prevpage = $nextpage = $random_var = '';
     $query = $db->query("SELECT l.*, t.subject FROM " . X_PREFIX . "modlogs l LEFT JOIN " . X_PREFIX . "threads t ON l.tid = t.tid WHERE NOT (l.fid = '0' AND l.tid = '0') ORDER BY date ASC LIMIT $old, 25");
     $url = '';
-    while ($recordinfo = $db->fetch_array($query)) {
+    while (($recordinfo = $db->fetch_array($query)) != false) {
         $date = gmdate($self['dateformat'], $recordinfo['date'] + ($self['timeoffset'] * 3600) + $self['daylightsavings']);
         $time = gmdate($self['timecode'], $recordinfo['date'] + ($self['timeoffset'] * 3600) + $self['daylightsavings']);
         if ($recordinfo['tid'] > 0 && $recordinfo['action'] != 'delete' && trim($recordinfo['subject']) != '') {
@@ -219,7 +219,7 @@ function viewAdminLogPanel($page)
     
     $query = $db->query("SELECT l.*, t.subject FROM " . X_PREFIX . "adminlogs l LEFT JOIN " . X_PREFIX . "threads t ON l.tid = t.tid WHERE (l.fid = '0' AND l.tid = '0') ORDER BY date ASC LIMIT $old, 25");
     $url = '';
-    while ($recordinfo = $db->fetch_array($query)) {
+    while (($recordinfo = $db->fetch_array($query)) != false) {
         $date = gmdate($self['dateformat'], $recordinfo['date'] + ($self['timeoffset'] * 3600) + $self['daylightsavings']);
         $time = gmdate($self['timecode'], $recordinfo['date'] + ($self['timeoffset'] * 3600) + $self['daylightsavings']);
         $action = explode('|#|', $recordinfo['action']);

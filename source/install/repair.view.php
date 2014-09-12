@@ -187,7 +187,7 @@ function view_admins($db, $tablepre)
 <table border="0" cellspacing="1px" cellpadding="5px" width="100%">
     <?php
     if ($query !== false && $db->num_rows($query) > 0) {
-        while ($user = $db->fetch_array($query)) {
+        while (($user = $db->fetch_array($query)) != false) {
             echo "<tr><td class=\"tablerow\" bgcolor=\"#ffffff\" width=30%>$user[username]</td>";
             echo "<td class=\"tablerow\" bgcolor=\"#ffffff\" width=70%>$user[status]</td></tr>";
         }

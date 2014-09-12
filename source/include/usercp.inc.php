@@ -516,7 +516,7 @@ class userObj
         $themelist[] = '<select name="thememem">';
         $themelist[] = '<option value="0">' . $lang['textusedefault'] . '</option>';
         $query = $db->query("SELECT themeid, name FROM " . X_PREFIX . "themes WHERE themestatus = 'on' ORDER BY name ASC");
-        while ($themeinfo = $db->fetch_array($query)) {
+        while (($themeinfo = $db->fetch_array($query)) != false) {
             if ($themeinfo['themeid'] == $member['theme']) {
                 $themelist[] = '<option value="' . $themeinfo['themeid'] . '" ' . $selHTML . '>' . stripslashes($themeinfo['name']) . '</option>';
             } else {
@@ -554,7 +554,7 @@ class userObj
         
         $df .= "\t<td bgcolor=\"$THEME[altbg2]\" class=\"tablerow\"><select name=\"dateformatnew\">\n";
         $querydf = $db->query("SELECT * FROM " . X_PREFIX . "dateformats");
-        while ($dformats = $db->fetch_array($querydf)) {
+        while (($dformats = $db->fetch_array($querydf)) != false) {
             if ($CONFIG['predformat'] == 'on') {
                 $example = gmdate(formatDate($dformats['dateformat']), $ubblva + ($self['timeoffset'] * 3600) + $self['daylightsavings']);
             } else {
@@ -698,7 +698,7 @@ class userObj
         
         $efail = false;
         $query = $db->query("SELECT * FROM " . X_PREFIX . "restricted");
-        while ($erestrict = $db->fetch_array($query)) {
+        while (($erestrict = $db->fetch_array($query)) != false) {
             if ($erestrict['case_sensitivity'] == 1) {
                 if ($erestrict['partial'] == 1) {
                     if (strpos($email, $erestrict['name']) !== false) {
@@ -1005,7 +1005,7 @@ class userObj
                 $auditaction = substr($auditaction, $aapos + 1);
             }
             $auditaction = $db->escape("$onlineip|#|$auditaction");
-            audit($self['username'], $auditaction, 0, 0, "Potential XSS exploit using newpassword");
+            adminaudit($self['username'], $auditaction, 0, 0, "Potential XSS exploit using newpassword");
             die("Hack atttempt recorded in audit logs.");
         }
         
@@ -1128,8 +1128,8 @@ class userObj
         
         if (! empty($sig)) {
             $sig_patterns = array(
-                "#\[img\]((ht|f)tp://)([^\r\n\t<\"]*?)\[/img\]#sie",
-                "#\[url=([a-z0-9]+://)([\w\-]+\.([\w\-]+\.)*[\w]+(:[0-9]+)?(/[^ \"\n\r\t<]*?)?)\](.*?)\[/url\]#si"
+                '#[img]((ht|f)tp://)([^\r\n\t<"]*?)[/img]#sie',
+                '#[url=([a-z0-9]+://)([\w\-]+.([\w\-]+.)*[\w]+(:[0-9]+)?(/[^ "\n\r\t<]*?)?)](.*?)[/url]#si'
             );
             $sig_replacements = array(
                 "",
@@ -1604,7 +1604,7 @@ class userObj
         
         $query = $db->query("SELECT f.*, t.fid, t.icon, l.uid as lp_uid, l.username as lp_user, l.dateline as lp_dateline, t.subject, t.replies FROM " . X_PREFIX . "favorites f, " . X_PREFIX . "threads t LEFT JOIN " . X_PREFIX . "lastposts l ON l.tid = t.tid WHERE f.tid = t.tid AND f.username = '" . $self['username'] . "' AND f.type = 'favorite' ORDER BY l.dateline DESC");
         $favArray = array();
-        while ($row = $db->fetch_array($query)) {
+        while (($row = $db->fetch_array($query)) != false) {
             $favArray[] = $row;
         }
         $db->free_result($query);
@@ -1668,7 +1668,7 @@ class userObj
         
         $query = $db->query("SELECT f.*, t.fid, t.icon, l.uid as lp_uid, l.username as lp_user, l.dateline as lp_dateline, t.subject, t.replies FROM " . X_PREFIX . "subscriptions f, " . X_PREFIX . "threads t LEFT JOIN " . X_PREFIX . "lastposts l ON l.tid = t.tid WHERE f.tid = t.tid AND f.username = '" . $self['username'] . "' AND f.type = 'subscription' ORDER BY l.dateline DESC");
         $favArray = array();
-        while ($row = $db->fetch_array($query)) {
+        while (($row = $db->fetch_array($query)) != false) {
             $favArray[] = $row;
         }
         $db->free_result($query);
@@ -1905,7 +1905,7 @@ class userObj
         $listquickthemes = array();
         $query = $db->query("SELECT themeid, name FROM " . X_PREFIX . "themes WHERE themestatus = 'on' ORDER BY name ASC");
         $quickthemes = '';
-        while ($qt = $db->fetch_array($query)) {
+        while (($qt = $db->fetch_array($query)) != false) {
             if ($theme == $qt['themeid']) {
                 $listquickthemes[] = '<option value="' . $qt['themeid'] . '" ' . $selHTML . '>' . stripslashes($qt['name']) . '</option>';
             } else {
@@ -1920,7 +1920,7 @@ class userObj
         if (! ($CONFIG['pmstatus'] == 'off' && isset($self['status']) && $self['status'] == 'Member')) {
             $query = $db->query("SELECT * FROM " . X_PREFIX . "pm WHERE owner = '$self[username]' AND folder = 'Inbox' AND readstatus = 'no' ORDER BY dateline DESC LIMIT 0,5");
             $msgArray = array();
-            while ($row = $db->fetch_array($query)) {
+            while (($row = $db->fetch_array($query)) != false) {
                 $msgArray[] = $row;
             }
             $db->free_result($query);
@@ -1960,7 +1960,7 @@ class userObj
         
         $query = $db->query("SELECT f.*, t.*, p.*, l.uid as lp_uid, l.username as lp_user, l.dateline as lp_dateline FROM " . X_PREFIX . "favorites f, " . X_PREFIX . "threads t, " . X_PREFIX . "posts p, " . X_PREFIX . "lastposts l WHERE l.tid = t.tid AND f.tid = t.tid AND p.tid = t.tid AND p.subject = t.subject AND f.username = '" . $self['username'] . "' AND f.type = 'favorite' ORDER BY l.dateline DESC LIMIT 0,5");
         $favArray = array();
-        while ($row = $db->fetch_array($query)) {
+        while (($row = $db->fetch_array($query)) != false) {
             $favArray[] = $row;
         }
         $db->free_result($query);
@@ -1995,7 +1995,7 @@ class userObj
         
         $query = $db->query("SELECT f.*, t.fid, t.icon, l.uid as lp_uid, l.username as lp_user, l.dateline as lp_dateline, t.subject, t.replies FROM " . X_PREFIX . "subscriptions f, " . X_PREFIX . "threads t LEFT JOIN " . X_PREFIX . "lastposts l ON l.tid = t.tid WHERE f.tid = t.tid AND f.username = '" . $self['username'] . "' AND f.type = 'subscription' ORDER BY l.dateline DESC LIMIT 0,5");
         $favArray = array();
-        while ($row = $db->fetch_array($query)) {
+        while (($row = $db->fetch_array($query)) != false) {
             $favArray[] = $row;
         }
         $db->free_result($query);

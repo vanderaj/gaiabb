@@ -81,7 +81,7 @@ function viewPanel()
     <?php
     $query = $db->query("SELECT * FROM " . X_PREFIX . "restricted ORDER BY id");
     $rowsFound = $db->num_rows($query);
-    while ($restricted = $db->fetch_array($query)) {
+    while (($restricted = $db->fetch_array($query)) != false) {
         
         $case_check = $partial_check = '';
         if ($restricted['case_sensitivity'] == 1) {
@@ -169,7 +169,7 @@ function doPanel()
     $oToken->assert_token();
     
     $queryrestricted = $db->query("SELECT id FROM " . X_PREFIX . "restricted");
-    while ($restricted = $db->fetch_array($queryrestricted)) {
+    while (($restricted = $db->fetch_array($queryrestricted)) != false) {
         $name = $delete = $case = $partial = '';
         
         $name = $db->escape(formVar('name' . $restricted['id']));

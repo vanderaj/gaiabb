@@ -147,7 +147,7 @@ if (noSubmit('editsubmit')) {
     $themelist[] = '<select name="thememem">';
     $themelist[] = '<option value="0">' . $lang['textusedefault'] . '</option>';
     $query = $db->query("SELECT themeid, name FROM " . X_PREFIX . "themes WHERE themestatus = 'on' ORDER BY name ASC");
-    while ($themeinfo = $db->fetch_array($query)) {
+    while (($themeinfo = $db->fetch_array($query)) != false) {
         if ($themeinfo['themeid'] == $member['theme']) {
             $themelist[] = '<option value="' . $themeinfo['themeid'] . '" ' . $selHTML . '>' . stripslashes($themeinfo['name']) . '</option>';
         } else {
@@ -214,7 +214,7 @@ if (noSubmit('editsubmit')) {
     
     $df = $df . "\t<td bgcolor=\"$THEME[altbg2]\" class=\"tablerow\"><select name=\"dateformatnew\">\n";
     $querydf = $db->query("SELECT * FROM " . X_PREFIX . "dateformats");
-    while ($dformats = $db->fetch_array($querydf)) {
+    while (($dformats = $db->fetch_array($querydf)) != false) {
         if ($CONFIG['predformat'] == 'on') {
             $example = gmdate(formatDate($dformats['dateformat']), $ubblva + ($self['timeoffset'] * 3600) + $self['daylightsavings']);
         } else {

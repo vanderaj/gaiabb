@@ -66,6 +66,7 @@ $pollanswers = formVar('pollanswers');
 $repquote = getRequestInt('repquote');
 $captchaword = formVar('pollanswers');
 $subjectprefix = formVar('subjectprefix');
+$attach_edit_name = formArray('attach_edit_name');
 
 validatePpp();
 
@@ -160,7 +161,7 @@ $listed_icons = 0;
 $icons = '<input type="radio" name="posticon" value="" />&nbsp;' . $lang['textnone'];
 if ($action != 'edit') {
     $qsmilie = $db->query("SELECT url, code FROM " . X_PREFIX . "smilies WHERE type = 'picon'");
-    while ($smilie = $db->fetch_array($qsmilie)) {
+    while (($smilie = $db->fetch_array($qsmilie)) != false) {
         $icons .= '&nbsp;<input type="radio" name="posticon" value="' . $smilie['url'] . '" />&nbsp;<img src="' . $THEME['smdir'] . '/' . $smilie['url'] . '" alt="' . $smilie['url'] . '" title="' . $smilie['url'] . '" border="0px" />';
         $listed_icons += 1;
         if ($listed_icons == 10) {
@@ -591,7 +592,7 @@ switch ($action) {
             } else {
                 $thisbg = $THEME['altbg1'];
                 $query = $db->query("SELECT * FROM " . X_PREFIX . "posts WHERE tid = '$tid' ORDER BY dateline DESC");
-                while ($post = $db->fetch_array($query)) {
+                while (($post = $db->fetch_array($query)) != false) {
                     $date = gmdate($self['dateformat'], $post['dateline'] + ($self['timeoffset'] * 3600) + $self['daylightsavings']);
                     $time = gmdate($self['timecode'], $post['dateline'] + ($self['timeoffset'] * 3600) + $self['daylightsavings']);
                     $poston = $lang['textposton'] . ' ' . $date . ' ' . $lang['textat'] . ' ' . $time;
@@ -767,7 +768,7 @@ switch ($action) {
                 
                 $date = $db->result($db->query("SELECT dateline FROM " . X_PREFIX . "posts WHERE tid = '$tid' AND pid < '$pid' ORDER BY pid ASC LIMIT 1"), 0);
                 $subquery = $db->query("SELECT m.username, m.email, m.lastvisit, m.status FROM " . X_PREFIX . "subscriptions f LEFT JOIN " . X_PREFIX . "members m ON (m.username = f.username) WHERE f.type = 'subscription' AND f.tid = '$tid' AND f.username != '$username'");
-                while ($subs = $db->fetch_array($subquery)) {
+                while (($subs = $db->fetch_array($subquery)) != false) {
                     if ($subs['status'] == 'Banned' || $subs['lastvisit'] < $date) {
                         continue;
                     }
@@ -1002,7 +1003,7 @@ switch ($action) {
             }
             
             $querysmilie = $db->query("SELECT * FROM " . X_PREFIX . "smilies WHERE type = 'picon' ORDER BY id ASC");
-            while ($smilie = $db->fetch_array($querysmilie)) {
+            while (($smilie = $db->fetch_array($querysmilie)) != false) {
                 if ($postinfo['icon'] == $smilie['url']) {
                     $icons .= '&nbsp;<input type="radio" name="posticon" value="' . $smilie['url'] . '" ' . $cheHTML . ' />&nbsp;<img src="' . $THEME['smdir'] . '/' . $smilie['url'] . '" alt="' . $smilie['code'] . '" title="' . $smilie['code'] . '" border="0px" />';
                 } else {
@@ -1030,7 +1031,7 @@ switch ($action) {
             $q = $db->query("SELECT * FROM " . X_PREFIX . "attachments WHERE pid = '$pid'");
             $i = 0;
             if ($db->num_rows($q) > 0) {
-                while ($attach = $db->fetch_array($q)) {
+                while (($attach = $db->fetch_array($q)) != false) {
                     eval('$attachment[] = "' . template('post_edit_attachment') . '";');
                     $i ++;
                 }
@@ -1284,7 +1285,7 @@ switch ($action) {
                     if ($numrows == 1) {
                         if (isset($forums['postcount']) && $forums['postcount'] == 'on') {
                             $query = $db->query("SELECT author FROM " . X_PREFIX . "posts WHERE tid = '$tid'");
-                            while ($result = $db->fetch_array($query)) {
+                            while (($result = $db->fetch_array($query)) != false) {
                                 $db->query("UPDATE " . X_PREFIX . "members SET postnum = postnum-1 WHERE username = '" . $db->escape($result['author']) . "'");
                             }
                             $db->free_result($query);

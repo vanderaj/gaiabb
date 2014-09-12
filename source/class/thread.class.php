@@ -71,7 +71,7 @@ class thread
         global $db;
         
         $query = $db->query("SELECT tid, author, subject FROM " . X_PREFIX . "threads");
-        while ($thread = $db->fetch_array($query)) {
+        while (($thread = $db->fetch_array($query)) != false) {
             $postQuery = $db->query("SELECT author, subject FROM " . X_PREFIX . "posts WHERE tid='" . $thread['tid'] . "' ORDER BY dateline asc LIMIT 1");
             $post = $db->fetch_array($postQuery);
             if ($post['author'] != $thread['author'] || $post['subject'] != $thread['subject']) {
@@ -89,7 +89,7 @@ class thread
         
         // Forums
         $query = $db->query("SELECT fid FROM " . X_PREFIX . "forums ORDER BY fid DESC");
-        while ($forums = $db->fetch_array($query)) {
+        while (($forums = $db->fetch_array($query)) != false) {
             $posts = $db->query("SELECT tid FROM " . X_PREFIX . "posts WHERE fid = '$forums[fid]' ORDER BY pid DESC LIMIT 0,1");
             $lp2 = $db->fetch_array($posts);
             $lp = $lp2['tid'];
@@ -100,7 +100,7 @@ class thread
         
         // Threads
         $query = $db->query("SELECT tid FROM " . X_PREFIX . "threads ORDER BY tid DESC");
-        while ($threads = $db->fetch_array($query)) {
+        while (($threads = $db->fetch_array($query)) != false) {
             $posts = $db->query("SELECT p.author, m.uid, p.dateline, p.pid FROM " . X_PREFIX . "posts p, " . X_PREFIX . "members m WHERE p.author = m.username AND tid = '$threads[tid]' ORDER BY dateline DESC LIMIT 0,1");
             $lp = $db->fetch_array($posts);
             $db->free_result($posts);

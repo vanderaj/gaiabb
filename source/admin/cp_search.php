@@ -62,7 +62,7 @@ function viewPanel()
     $select = array();
     $select[] = '<select name="postword"><option value=""></option>';
     $query = $db->query("SELECT find FROM " . X_PREFIX . "words");
-    while ($censors = $db->fetch_array($query)) {
+    while (($censors = $db->fetch_array($query)) != false) {
         if (! empty($censors['find'])) {
             $select[] = '<option value="' . $censors['find'] . '">' . $censors['find'] . '</option>';
         }
@@ -135,7 +135,7 @@ function doPanel()
     
     if (! empty($userip) && is_ip($userip)) {
         $query = $db->query("SELECT * FROM " . X_PREFIX . "members WHERE regip LIKE '%$userip%'");
-        while ($users = $db->fetch_array($query)) {
+        while (($users = $db->fetch_array($query)) != false) {
             $link = '../viewprofile.php?member=' . $users['username'] . '';
             $list[] = '<a href="' . $link . '">' . stripslashes($users['username']) . '<br />';
             $found ++;
@@ -145,7 +145,7 @@ function doPanel()
     
     if (! empty($postip) && is_ip($postip)) {
         $query = $db->query("SELECT * FROM " . X_PREFIX . "posts WHERE useip LIKE '%$postip%'");
-        while ($users = $db->fetch_array($query)) {
+        while (($users = $db->fetch_array($query)) != false) {
             $link = '../viewtopic.php?tid=' . $users['tid'] . '#pid' . $users['pid'] . '';
             if (! empty($users['subject'])) {
                 $list[] = '<a href="' . $link . '">' . stripslashes($users['subject']) . '<br />';
@@ -159,7 +159,7 @@ function doPanel()
     
     if (! empty($profileword)) {
         $query = $db->query("SELECT * FROM " . X_PREFIX . "members WHERE bio LIKE '%$profileword%' OR sig LIKE '%$profileword%'");
-        while ($users = $db->fetch_array($query)) {
+        while (($users = $db->fetch_array($query)) != false) {
             $link = '../viewprofile.php?member=' . $users['username'] . '';
             $list[] = '<a href="' . $link . '">' . stripslashes($users['username']) . '<br />';
             $found ++;
@@ -169,7 +169,7 @@ function doPanel()
     
     if (! empty($postword)) {
         $query = $db->query("SELECT * FROM " . X_PREFIX . "posts WHERE subject LIKE '%$postword%' OR message LIKE '%$postword%'");
-        while ($users = $db->fetch_array($query)) {
+        while (($users = $db->fetch_array($query)) != false) {
             $link = '../viewtopic.php?tid=' . $users['tid'] . '#pid' . $users['pid'] . '';
             if (! empty($users['subject'])) {
                 $list[] = '<a href="' . $link . '">' . stripslashes($users['subject']) . '<br />';

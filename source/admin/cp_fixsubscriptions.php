@@ -105,7 +105,7 @@ function doPanel()
     
     $query = $db->query("SELECT tid, username FROM " . X_PREFIX . "subscriptions WHERE 1 ORDER BY tid ASC");
     $count = $count2 = 0;
-    while ($subs = $db->fetch_array($query)) {
+    while (($subs = $db->fetch_array($query)) != false) {
         $count2 ++;
         $query2 = $db->query("SELECT tid FROM " . X_PREFIX . "threads WHERE tid = $subs[tid]");
         $thread = $db->fetch_array($query2);

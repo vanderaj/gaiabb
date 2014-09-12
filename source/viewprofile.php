@@ -401,7 +401,7 @@ if ($memberinfo['uid'] == '') {
     }
     
     $query = $db->query("SELECT t.tid, t.subject, p.dateline FROM (" . X_PREFIX . "posts p, " . X_PREFIX . "threads t) LEFT JOIN " . X_PREFIX . "forums f ON p.fid=f.fid WHERE $restrict t.author='$member' AND p.tid=t.tid ORDER BY t.tid DESC LIMIT 1");
-    if ($thread = $db->fetch_array($query)) {
+    if (($thread = $db->fetch_array($query)) != false) {
         $lastthreaddate = gmdate($self['dateformat'], $thread['dateline'] + ($self['timeoffset'] * 3600) + $self['daylightsavings']);
         $lastthreadtime = gmdate($self['timecode'], $thread['dateline'] + ($self['timeoffset'] * 3600) + $self['daylightsavings']);
         $lastthreadtext = $lastthreaddate . ' ' . $lang['textat'] . ' ' . $lastthreadtime;
@@ -413,7 +413,7 @@ if ($memberinfo['uid'] == '') {
     $db->free_result($query);
     
     $query = $db->query("SELECT t.tid, t.subject, p.dateline, p.pid FROM (" . X_PREFIX . "posts p, " . X_PREFIX . "threads t) LEFT JOIN " . X_PREFIX . "forums f ON p.fid=f.fid WHERE $restrict p.author='$member' AND p.tid=t.tid ORDER BY p.dateline DESC LIMIT 1");
-    if ($post = $db->fetch_array($query)) {
+    if (($post = $db->fetch_array($query)) != false) {
         $posts = $db->result($db->query("SELECT COUNT(pid) FROM " . X_PREFIX . "posts WHERE tid = '$post[tid]' AND pid < '$post[pid]'"), 0) + 1;
         
         validatePpp();

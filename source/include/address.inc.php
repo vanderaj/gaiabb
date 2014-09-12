@@ -93,7 +93,7 @@ function address_edit()
     
     $addresses = array();
     $q = $db->query("SELECT addressname FROM " . X_PREFIX . "addresses WHERE username = '" . $self['username'] . "' ORDER BY addressname") or die($db->error());
-    while ($address = $db->fetch_array($q)) {
+    while (($address = $db->fetch_array($q)) != false) {
         eval('$addresses[] = "' . template('addresslist_edit_address') . '";');
     }
     if (count($addresses) > 0) {
@@ -134,7 +134,7 @@ function address_addpm()
     $addresses['offline'] = $addresses['online'] = '';
     
     $q = $db->query("SELECT a.addressname, w.invisible, w.username FROM " . X_PREFIX . "addresses a LEFT JOIN " . X_PREFIX . "whosonline w ON(a.addressname = w.username) WHERE a.username = '" . $self['username'] . "' ORDER BY a.addressname");
-    while ($address = $db->fetch_array($q)) {
+    while (($address = $db->fetch_array($q)) != false) {
         if ($address['invisible'] == 1) {
             if (! X_ADMIN) {
                 eval("\$addresses['offline'] .= \"" . template('address_pm_off') . "\";");
@@ -165,7 +165,7 @@ function address_display()
     $q = $db->query("SELECT a.addressname, w.invisible, w.username FROM " . X_PREFIX . "addresses a LEFT JOIN " . X_PREFIX . "whosonline w ON(a.addressname = w.username) WHERE a.username = '" . $self['username'] . "' ORDER BY a.addressname");
     $addresses = array();
     $addresses['offline'] = $addresses['online'] = '';
-    while ($address = $db->fetch_array($q)) {
+    while (($address = $db->fetch_array($q)) != false) {
         if (! empty($address['username'])) {
             if ($address['invisible'] == 1) {
                 if (! X_ADMIN) {

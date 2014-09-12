@@ -262,7 +262,7 @@ class member
         
         $fail = $efail = false;
         $query = $db->query("SELECT * FROM " . X_PREFIX . "restricted");
-        while ($restriction = $db->fetch_array($query)) {
+        while (($restriction = $db->fetch_array($query)) != false) {
             if ($restriction['case_sensitivity'] == 1) {
                 $username = strtolower($username);
                 $email = strtolower($email);
@@ -304,7 +304,7 @@ class member
         $query = $db->query("SELECT * FROM " . X_PREFIX . "restricted");
         
         if ($db->num_rows($query) > 0) {
-            while ($restriction = $db->fetch_array($query)) {
+            while (($restriction = $db->fetch_array($query)) != false) {
                 if ($restriction['case_sensitivity'] == 1) {
                     if ($restriction['partial'] == 1) {
                         if (strpos($userto, $restriction['name']) !== false) {
@@ -582,7 +582,7 @@ class member
         }
         
         // prevent malicious chars from being used when renaming users
-        if (preg_match("/[\]\['" . '",!@#~$%\^&*()+=\/\\\\:;?|.<>{}]/', $userto)) {
+        if (preg_match('/[][,!@#~$%\^&*()+=\/\\\\:;?|.<>{}]/', $userto)) {
             return $lang['badusername'];
         }
         
@@ -632,14 +632,14 @@ class member
         
         // update thread last posts
         $query = $db->query("SELECT tid FROM " . X_PREFIX . "lastposts WHERE username = '$userfrom'");
-        while ($result = $db->fetch_array($query)) {
+        while (($result = $db->fetch_array($query)) != false) {
             $db->query("UPDATE " . X_PREFIX . "lastposts SET username = '$userto' WHERE tid = '" . $result['tid'] . "'");
         }
         $db->free_result($query);
         
         // update ignorepm
         $query = $db->query("SELECT ignorepm, uid FROM " . X_PREFIX . "members WHERE (ignorepm REGEXP '(^|(,))()*$userfrom()*((,)|$)')");
-        while ($usr = $db->fetch_array($query)) {
+        while (($usr = $db->fetch_array($query)) != false) {
             $parts = explode(',', $usr['ignorepm']);
             $index = array_search($userfrom, $parts);
             $parts[$index] = $userto;
@@ -650,7 +650,7 @@ class member
         
         // update forum-accesslists
         $query = $db->query("SELECT userlist, fid FROM " . X_PREFIX . "forums WHERE (userlist REGEXP '(^|(,))()*$userfrom()*((,)|$)')");
-        while ($list = $db->fetch_array($query)) {
+        while (($list = $db->fetch_array($query)) != false) {
             $parts = array_unique(array_map('trim', explode(',', $list['userlist'])));
             $index = array_search($userfrom, $parts);
             $parts[$index] = $userto;
@@ -661,7 +661,7 @@ class member
         
         // Moderator column in forums
         $query = $db->query("SELECT moderator, fid FROM " . X_PREFIX . "forums WHERE (moderator REGEXP '(^|(,))()*$userfrom()*((,)|$)')");
-        while ($mod = $db->fetch_array($query)) {
+        while (($mod = $db->fetch_array($query)) != false) {
             $parts = explode(',', $mod['moderator']);
             $index = array_search($userfrom, $parts);
             $parts[$index] = $userto;
@@ -672,7 +672,7 @@ class member
         
         // update forum last posts
         $query = $db->query("SELECT fid, lastpost from " . X_PREFIX . "forums WHERE lastpost like '%$userfrom'");
-        while ($result = $db->fetch_array($query)) {
+        while (($result = $db->fetch_array($query)) != false) {
             list ($posttime, $lastauthor) = explode('|', $result['lastpost']);
             if ($lastauthor == $userfrom) {
                 $newlastpost = $posttime . '|' . $userto;
@@ -689,7 +689,7 @@ class member
         global $db;
         
         $query = $db->query("SELECT uid, username FROM " . X_PREFIX . "members");
-        while ($mem = $db->fetch_array($query)) {
+        while (($mem = $db->fetch_array($query)) != false) {
             $inner_query = $db->query("SELECT COUNT(pid) FROM " . X_PREFIX . "posts WHERE author = '" . $db->escape($mem['username']) . "'");
             $postsnum = $db->result($inner_query, 0);
             $db->free_result($inner_query);
@@ -703,7 +703,7 @@ class member
         global $db;
         
         $query = $db->query("SELECT uid, username FROM " . X_PREFIX . "members");
-        while ($mem = $db->fetch_array($query)) {
+        while (($mem = $db->fetch_array($query)) != false) {
             $inner_query = $db->query("SELECT COUNT(tid) FROM " . X_PREFIX . "threads WHERE author='" . $db->escape($mem['username']) . "'");
             $threadnum = $db->result($inner_query, 0);
             $db->free_result($inner_query);

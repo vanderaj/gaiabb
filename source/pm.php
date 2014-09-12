@@ -286,7 +286,7 @@ switch ($action) {
     case 'emptytrash':
         $in = '';
         $iquery = $db->query("SELECT pmid FROM " . X_PREFIX . "pm WHERE folder = 'Trash' AND owner = '$self[username]'");
-        while ($ids = $db->fetch_array($iquery)) {
+        while (($ids = $db->fetch_array($iquery)) != false) {
             $in .= (empty($in)) ? $ids['pmid'] : "," . $ids['pmid'];
         }
         $db->free_result($iquery);

@@ -667,7 +667,7 @@ class mysql5Php5
                 throw new Exception("No database tables can be found in the database.");
             }
             
-            while ($table = $result->fetch_array()) {
+            while (($table = $result->fetch_array()) != false) {
                 $tables[] = $table[0];
             }
             

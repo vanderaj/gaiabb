@@ -113,13 +113,13 @@ if ($action == 'themes') {
             0 => 0
         );
         $tq = $db->query("SELECT theme, COUNT(theme) as cnt FROM " . X_PREFIX . "members GROUP BY theme");
-        while ($t = $db->fetch_array($tq)) {
+        while (($t = $db->fetch_array($tq)) != false) {
             $themeMem[((int) $t['theme'])] = $t['cnt'];
         }
         $db->free_result($tq);
         
         $query = $db->query("SELECT name, themestatus, themeid FROM " . X_PREFIX . "themes ORDER BY name ASC");
-        while ($themeinfo = $db->fetch_array($query)) {
+        while (($themeinfo = $db->fetch_array($query)) != false) {
             $themeid = $themeinfo['themeid'];
             if (! isset($themeMem[$themeid])) {
                 $themeMem[$themeid] = 0;

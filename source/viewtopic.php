@@ -338,7 +338,7 @@ if (empty($action)) {
     $specialrank = array();
     $rankposts = array();
     $qranks = $db->query("SELECT id, title, posts, stars, allowavatars, avatarrank FROM " . X_PREFIX . "ranks");
-    while ($query = $db->fetch_array($qranks)) {
+    while (($query = $db->fetch_array($qranks)) != false) {
         $title = $query['title'];
         $rposts = $query['posts'];
         
@@ -374,7 +374,7 @@ if (empty($action)) {
     // Check if the Next-Thread-Link and Previous-Thread-Link should exist
     $next_prev_links = $npt_list = '';
     $threadController = new thread();
-    if ($npt_list = $threadController->PrevNextThreads()) {
+    if (($npt_list = $threadController->PrevNextThreads()) != false) {
         if (isset($npt_list['previous']) && isset($npt_list['next'])) {
             $npt_list['previous'] = '<td class="navtd" align="' . $lang_align . '" width="50%"><font class="smalltxt"><strong>&laquo;&nbsp;<a href="' . $npt_list['previous'] . '">' . $lang['prevthread'] . '</a></strong></font></td>';
             $npt_list['next'] = '<td class="navtd" align="' . $lang_nalign . '" width="50%"><font class="smalltxt"><strong><a href="' . $npt_list['next'] . '">' . $lang['nextthread'] . '</a>&nbsp;&raquo;</strong></font></td>';
@@ -421,7 +421,7 @@ if (empty($action)) {
             
             $num_votes = 0;
             $query = $db->query("SELECT vote_result, vote_option_text FROM " . X_PREFIX . "vote_results WHERE vote_id = '$vote_id'");
-            while ($result = $db->fetch_array($query)) {
+            while (($result = $db->fetch_array($query)) != false) {
                 $num_votes += $result['vote_result'];
                 $pollentry = array();
                 $pollentry['name'] = postify($result['vote_option_text']);
@@ -452,7 +452,7 @@ if (empty($action)) {
         } else {
             $results = ' - [ <a href="viewtopic.php?tid=' . $tid . '&amp;viewresults=yes"><font color="' . $THEME['cattext'] . '">' . $lang['viewresults'] . '</font></a> ]';
             $query = $db->query("SELECT vote_option_id, vote_option_text FROM " . X_PREFIX . "vote_results WHERE vote_id = '$vote_id'");
-            while ($result = $db->fetch_array($query)) {
+            while (($result = $db->fetch_array($query)) != false) {
                 $poll['id'] = (int) $result['vote_option_id'];
                 $poll['name'] = $result['vote_option_text'];
                 eval('$pollhtml .= "' . template('viewtopic_poll_options') . '";');
@@ -469,7 +469,7 @@ if (empty($action)) {
     $thisbg = $THEME['altbg2'];
     $querypost = $db->query("SELECT p.*, m.*,w.time FROM " . X_PREFIX . "posts p LEFT JOIN " . X_PREFIX . "members m ON m.username = p.author LEFT JOIN " . X_PREFIX . "whosonline w ON p.author = w.username WHERE p.fid = '$fid' AND p.tid = '$tid' ORDER BY p.pid $self[psorting] LIMIT $start_limit, " . $self['ppp']);
     $tmoffset = ($self['timeoffset'] * 3600) + $self['daylightsavings'];
-    while ($post = $db->fetch_array($querypost)) {
+    while (($post = $db->fetch_array($querypost)) != false) {
         $onlinenow = $lang['memberisoff'];
         if (! empty($post['time']) && $post['author'] != 'xguest123') {
             switch ($post['invisible']) {
@@ -965,7 +965,7 @@ if (empty($action)) {
             $querypost = $db->query("SELECT p.*, m.*,w.time FROM " . X_PREFIX . "posts p LEFT JOIN " . X_PREFIX . "members m ON m.username = p.author LEFT JOIN " . X_PREFIX . "whosonline w ON p.author = w.username WHERE p.fid = '$fid' AND p.tid = '$tid' ORDER BY p.pid $self[psorting] LIMIT $start_limit, " . $self['ppp']);
             $posts = '';
             $tmoffset = ($self['timeoffset'] * 3600) + $self['daylightsavings'];
-            while ($post = $db->fetch_array($querypost)) {
+            while (($post = $db->fetch_array($querypost)) != false) {
                 if ($post['status'] == 'Banned') {
                     $post['message'] = $lang['bannedpostmsg'];
                 } else {

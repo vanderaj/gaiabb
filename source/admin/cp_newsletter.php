@@ -172,7 +172,7 @@ function doPanel()
     $_ubbuser = $db->escape(trim($self['username']));
     
     if ($sendvia == 'pm') {
-        while ($memnews = $db->fetch_array($query)) {
+        while (($memnews = $db->fetch_array($query)) != false) {
             $db->query("INSERT INTO " . X_PREFIX . "pm (msgto, msgfrom, type, owner, folder, subject, message, dateline, readstatus, sentstatus, usesig) VALUES ('" . $db->escape($memnews['username']) . "', '" . $_ubbuser . "', 'incoming', '" . $db->escape($memnews['username']) . "', 'Inbox', '$newssubject', '$newsmessage', '" . time() . "', 'no', 'yes', 'no')");
         }
         $db->free_result($query);
@@ -193,7 +193,7 @@ function doPanel()
         $mailsys->setSubject('[' . $CONFIG['bbname'] . '] ' . stripslashes($newssubject));
         $mailsys->setMessage(stripslashes($newsmessage));
         
-        while ($memnews = $db->fetch_array($query)) {
+        while (($memnews = $db->fetch_array($query)) != false) {
             $mailsys->addBCC($memnews['email']);
             $i ++;
             

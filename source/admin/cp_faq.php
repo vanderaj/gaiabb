@@ -76,7 +76,7 @@ function viewPanel()
     $itemlist = array();
     $i = 0;
     $query = $db->query("SELECT fid, type, name, displayorder, status, fup, code, view FROM " . X_PREFIX . "faq ORDER BY fup ASC, displayorder ASC");
-    while ($selItems = $db->fetch_array($query)) {
+    while (($selItems = $db->fetch_array($query)) != false) {
         if ($selItems['type'] == 'group') {
             $groups[$i]['fid'] = $selItems['fid'];
             $groups[$i]['name'] = $selItems['name'];
@@ -532,7 +532,7 @@ function faqSubmit($fdetails)
         $db->query("DELETE FROM " . X_PREFIX . "faq WHERE name = ''");
         
         $queryforum = $db->query("SELECT fid, type FROM " . X_PREFIX . "faq WHERE type = 'item'");
-        while ($item = $db->fetch_array($queryforum)) {
+        while (($item = $db->fetch_array($queryforum)) != false) {
             $displayorder = "displayorder$item[fid]";
             $displayorder = formInt($displayorder);
             $name = "name$item[fid]";
@@ -553,12 +553,12 @@ function faqSubmit($fdetails)
         $db->free_result($queryforum);
         
         $querygroup = $db->query("SELECT fid FROM " . X_PREFIX . "faq WHERE type='group'");
-        while ($group = $db->fetch_array($querygroup)) {
+        while (($group = $db->fetch_array($querygroup)) != false) {
             $delete = "delete$group[fid]";
             $delete = formInt($delete);
             if ($delete > 0) {
                 $query = $db->query("SELECT fid FROM " . X_PREFIX . "faq WHERE type = 'item' AND fup = '$delete'");
-                while ($item = $db->fetch_array($query)) {
+                while (($item = $db->fetch_array($query)) != false) {
                     $db->query("UPDATE " . X_PREFIX . "faq SET fup = '' WHERE type = 'item' AND fup = '$delete'");
                 }
                 

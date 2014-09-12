@@ -137,7 +137,7 @@ if ($members > 0) {
 
 $viewmost = array();
 $query = $db->query("SELECT t.views, t.tid, t.subject FROM " . X_PREFIX . "threads t, " . X_PREFIX . "forums f $restrict f.fid = t.fid AND f.status = 'on' ORDER BY views DESC LIMIT 0,5");
-while ($views = $db->fetch_array($query)) {
+while (($views = $db->fetch_array($query)) != false) {
     $views['subject'] = shortenString(censor($views['subject']), 80, X_SHORTEN_SOFT | X_SHORTEN_HARD, '...');
     $viewmost[] = '<a href="viewtopic.php?tid=' . intval($views['tid']) . '">' . $views['subject'] . '</a> (' . $views['views'] . ')<br />';
 }
@@ -146,7 +146,7 @@ $db->free_result($query);
 
 $replymost = array();
 $query = $db->query("SELECT t.replies, t.tid, t.subject FROM " . X_PREFIX . "threads t, " . X_PREFIX . "forums f $restrict f.fid = t.fid AND f.status = 'on' ORDER BY replies DESC LIMIT 0,5");
-while ($reply = $db->fetch_array($query)) {
+while (($reply = $db->fetch_array($query)) != false) {
     $reply['subject'] = shortenString(censor($reply['subject']), 80, X_SHORTEN_SOFT | X_SHORTEN_HARD, '...');
     $replymost[] = '<a href="viewtopic.php?tid=' . intval($reply['tid']) . '">' . $reply['subject'] . '</a> (' . $reply['replies'] . ')<br />';
 }
@@ -156,7 +156,7 @@ $db->free_result($query);
 $latest = array();
 $query = $db->query("SELECT l.dateline as lp_dateline, l.pid as lp_pid, t.tid, t.subject FROM " . X_PREFIX . "threads t, " . X_PREFIX . "forums f, " . X_PREFIX . "lastposts l $restrict l.tid = t.tid AND f.fid = t.fid AND f.status = 'on' ORDER BY l.dateline DESC LIMIT 0,5");
 $adjTime = ($self['timeoffset'] * 3600) + $self['daylightsavings'];
-while ($last = $db->fetch_array($query)) {
+while (($last = $db->fetch_array($query)) != false) {
     $lpdate = gmdate($self['dateformat'], $last['lp_dateline'] + $adjTime);
     $lptime = gmdate($self['timecode'], $last['lp_dateline'] + $adjTime);
     $thislast = $lang['lpoststats'] . ' ' . $lang['lastreply1'] . ' ' . $lpdate . ' ' . $lang['textat'] . ' ' . $lptime;

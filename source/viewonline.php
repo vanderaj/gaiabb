@@ -65,7 +65,7 @@ if (X_ADMIN) {
 }
 
 $onlineusers = '';
-while ($online = $db->fetch_array($q)) {
+while (($online = $db->fetch_array($q)) != false) {
     $array = url_to_text($online['location']);
     $onlinetime = gmdate($self['timecode'], $online['time'] + ($self['timeoffset'] * 3600) + $self['daylightsavings']);
     $username = str_replace('xguest123', $lang['textguest1'], $online['username']);

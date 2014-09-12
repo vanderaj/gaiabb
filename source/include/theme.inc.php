@@ -35,7 +35,7 @@ if (! defined('IN_PROGRAM') && (defined('DEBUG') && DEBUG == false)) {
 }
 
 $query = $db->query("SELECT themeid, name FROM " . X_PREFIX . "themes");
-while ($theme = $db->fetch_array($query)) {
+while (($theme = $db->fetch_array($query)) != false) {
     ${'theme' . $theme['themeid']} = stripslashes($theme['name']);
 }
 $db->free_result($query);

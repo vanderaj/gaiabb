@@ -77,7 +77,7 @@ function viewPanel($queryd)
 						<td class="title"><?php echo $lang['exdateformat']?></td>
 					</tr>
     <?php
-    while ($dformat = $db->fetch_array($queryd)) {
+    while (($dformat = $db->fetch_array($queryd)) != false) {
         if ($dformat['did'] != 1) {
             ?>
             <tr bgcolor="<?php echo $THEME['altbg2']?>">
@@ -123,7 +123,7 @@ function doPanel($querydate)
     
     $oToken->assert_token();
     
-    while ($dformat = $db->fetch_array($querydate)) {
+    while (($dformat = $db->fetch_array($querydate)) != false) {
         $find = "find" . $dformat['did'];
         $find = $db->escape(formVar($find));
         $delete = "delete" . $dformat['did'];

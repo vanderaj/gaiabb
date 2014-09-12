@@ -127,7 +127,7 @@ class pmModel
         
         $msgto = $db->escape(checkInput($msgto), - 1, true);
         $query = $db->query("SELECT username, uid, email, ignorepm, emailonpm, langfile, status FROM " . X_PREFIX . "members WHERE username = '$msgto'");
-        if ($rcpt = $db->fetch_array($query)) {
+        if (($rcpt = $db->fetch_array($query)) != false) {
             $ilist = array_map('trim', explode(',', $rcpt['ignorepm']));
             if (! in_array($self['username'], $ilist) || X_ADMIN) {
                 $username = $rcpt['username'];
@@ -259,7 +259,7 @@ class pmModel
             // create address book drop down
             $addresses = array();
             $query = $db->query("SELECT * FROM " . X_PREFIX . "addresses WHERE username = '$self[username]' ORDER BY addressname ASC");
-            while ($address = $db->fetch_array($query)) {
+            while (($address = $db->fetch_array($query)) != false) {
                 $addresses[] = '<option value="' . $address['addressname'] . '">' . stripslashes($address['addressname']) . '</option>';
             }
             $addresses = implode("\n", $addresses);
@@ -732,7 +732,7 @@ class pmModel
         
         $start_limit = ($page > 1) ? (($page - 1) * $self['tpp']) : 0;
         $query = $db->query("SELECT u.*, w.username, w.invisible FROM " . X_PREFIX . "pm u LEFT JOIN " . X_PREFIX . "whosonline w ON (u.msgto = w.username OR u.msgfrom = w.username) AND w.username != '$self[username]' WHERE u.folder = '$folder' AND u.owner = '$self[username]' ORDER BY dateline DESC LIMIT $start_limit, " . $self['tpp']);
-        while ($pm = $db->fetch_array($query)) {
+        while (($pm = $db->fetch_array($query)) != false) {
             if ($pm['readstatus'] == 'yes') {
                 $pmreadstatus = $lang['textread'];
             } else {
@@ -907,7 +907,7 @@ class pmModel
         
         $query = $db->query("SELECT folder, count(pmid) as count FROM " . X_PREFIX . "pm WHERE owner = '$self[username]' GROUP BY folder ORDER BY folder ASC");
         $farray = array();
-        while ($flist = $db->fetch_array($query)) {
+        while (($flist = $db->fetch_array($query)) != false) {
             $farray[$flist['folder']] = $flist['count'];
             $pmcount += $flist['count'];
         }
