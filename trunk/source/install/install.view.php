@@ -51,7 +51,7 @@ function view_install_index()
 			<table border="0" cellspacing="1px" cellpadding="5px" width="100%">
 				<tr>
 					<td class="category"><font color="#000000"><strong>Installing
-								UltimaBB</strong></font></td>
+								GaiaBB</strong></font></td>
 				</tr>
 				<tr>
 					<td class="tablerow" bgcolor="#ffffff">

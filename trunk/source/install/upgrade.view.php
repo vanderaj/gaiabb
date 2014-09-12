@@ -141,7 +141,7 @@ function view_upgrade_action()
 function view_upgrade_complete()
 {
     $_SESSION = array();
-    print_error('Upgrade Complete', 'UltimaBB upgrade has completed. You should login and change the settings in the <a href="../admin/index.php">Admin Control Panel</a><p>Remove the install directory for additional safety.');
+    print_error('Upgrade Complete', 'GaiaBB upgrade has completed. You should login and change the settings in the <a href="../admin/index.php">Admin Control Panel</a><p>Remove the install directory for additional safety.');
 }
 
 /**
@@ -157,6 +157,6 @@ function view_upgrade_complete()
 function view_upgrade_warncomplete()
 {
     $_SESSION = array();
-    print_error('Install Complete', 'UltimaBB upgrade has finished, but with warnings. We strongly recommend you attend to the warnings before continuing.');
+    print_error('Install Complete', 'GaiaBB upgrade has finished, but with warnings. We strongly recommend you attend to the warnings before continuing.');
 }
 ?>

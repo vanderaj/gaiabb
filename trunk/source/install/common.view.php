@@ -120,20 +120,20 @@ function view_config($path)
 									<tr>
 										<td width="101%" colspan="2"><p>
 												<br />Please choose the configuration method:<br />
-												<br /> <input type="radio" name="confMethod" value="create"
-													checked>Attempt to create config.php for me<br /> <input
-													type="radio" name="confMethod" value="view">Show the
-												proposed configuration on screen<br /> <input type="radio"
-													name="confMethod" value="download">Download the
-												configuration for manual upload<br />
-												<br /></td>
+												<br /> 
+												<input type="radio" name="confMethod" value="create"checked>Attempt to create config.php for me<br /> 
+												<input type="radio" name="confMethod" value="view">Show the proposed configuration on screen<br />
+												<input type="radio" name="confMethod" value="download">Download the configuration for manual upload<br />
+												<br />
+									    </td>
 									</tr>
 									<tr>
-										<td width="101%" colspan="2"><input type="hidden" name="path"
-											value="<?php echo $path?>"> <input type="hidden" name="step"
-											value="conf"> <input type="submit" value="Configure &gt;"
-											name="submit">
-											</form></td>
+										<td width="101%" colspan="2">
+										    <input type="hidden" name="path" value="<?php echo $path?>">
+											<input type="hidden" name="step" value="conf">
+											<input type="submit" value="Configure &gt;" name="submit">
+										</form>
+										</td>
 									</tr>
 								</table>
 							</center>
@@ -171,8 +171,10 @@ function view_config_screen($path, $config)
 <tr>
 	<td>
 		<form action="index.php" method="post">
-			<input type="hidden" name="step" value="conf" /> <input type="hidden"
-				name="path" value="<?php echo $path?>" /> <input type="submit"
+			<input type="hidden" name="step" value="conf" /> 
+			<input type="hidden"
+				name="path" value="<?php echo $path?>" /> 
+			<input type="submit"
 				value="Continue &gt;" />
 		</form>
     <?php
