@@ -567,7 +567,7 @@ function process_config($path)
     $confMethod = formVar('confMethod');
     if ($confMethod == '') {
         view_header('Configuration', $path);
-        print_error('Configuration Error', 'Invalid configuration option supplied.');
+        print_error('Configuration Error', 'Invalid configuration option supplied:' . $confMethod);
     }
     
     if ($confMethod == 'skip') {
@@ -611,7 +611,7 @@ function process_config($path)
             break;
         default:
             view_header('Configuration', $path);
-            print_error('Configuration Error', 'Invalid configuration option supplied.');
+            print_error('Configuration Error', 'Invalid configuration option supplied: '. $confMethod);
             break;
     }
 }
