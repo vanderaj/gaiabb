@@ -586,10 +586,6 @@ function forum($forum, $template)
             $subforums = '';
         }
         
-        echo "<!-- ";
-        echo print_r($forum);
-        echo " !>";
-        
         if ( isset($forum['fid']) ) {
             $mouseover = celloverfx('viewforum.php?fid=' . intval($forum['fid']));
         } else {
