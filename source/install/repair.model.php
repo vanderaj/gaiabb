@@ -95,7 +95,7 @@ function repair_forum($path, $prgbar)
     $error = check_folders();
     if ($error !== true) {
         setCol($prgbar, '#ff0000');
-        print_error('Configuration error', "Cannot find $error. Please upload UltimaBB correctly and start again.");
+        print_error('Configuration error', "Cannot find $error. Please upload GaiaBB correctly and start again.");
     }
     
     setBar($prgbar, 0.15);
@@ -103,7 +103,7 @@ function repair_forum($path, $prgbar)
     $error = check_files();
     if ($error !== true) {
         setCol($prgbar, '#ff0000');
-        print_error('Configuration error', "Cannot find $error. Please upload UltimaBB correctly and start again.");
+        print_error('Configuration error', "Cannot find $error. Please upload GaiaBB correctly and start again.");
     }
     
     setBar($prgbar, 0.2);
@@ -127,7 +127,7 @@ function repair_forum($path, $prgbar)
     
     if (! check_db_api($database)) {
         setCol($prgbar, '#ff0000');
-        print_error('Database connection', 'UltimaBB does not support the configured type of database.');
+        print_error('Database connection', 'GaiaBB does not support the configured type of database.');
     }
     
     setBar($prgbar, 0.35);
@@ -147,7 +147,7 @@ function repair_forum($path, $prgbar)
     $version = $db->getVersion();
     if (version_compare($version, "5.1.0", "<")) {
         setCol($prgbar, '#ffff00');
-        print_error('Database warning', 'UltimaBB requires MariaDB 5.1 or later and prefers the latest version.', false);
+        print_error('Database warning', 'GaiaBB requires MariaDB 5.1 or later and prefers the latest version.', false);
         $warn = true;
     }
     
