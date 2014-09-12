@@ -488,6 +488,7 @@ $shadow2
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="$lang_code" lang="$lang_code" dir="$lang_dir">
 <head>
+<link href='http://fonts.googleapis.com/css?family=Roboto' rel='stylesheet' type='text/css'>
 <meta http-equiv="Content-Type" content="text/html; charset=$charset" />
 $meta
 <link rel="shortcut icon" href="./images/favicon.ico" type="image/x-icon" />
@@ -496,12 +497,6 @@ $css
 <script language="JavaScript" type="text/javascript" src="./js/header.js"></script>
 </head>
 <body $background text="{$THEME['text']}">
-<script src="http://www.google-analytics.com/urchin.js" type="text/javascript">
-</script>
-<script type="text/javascript">
-_uacct = "UA-2059274-1";
-urchinTracker();
-</script>
 $bbcodescript
 $attachscript
 <a name="top"></a>
@@ -3335,6 +3330,7 @@ $shadow
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="$lang_code" lang="$lang_code" dir="$lang_dir">
 <head>
+<link href='http://fonts.googleapis.com/css?family=Roboto' rel='stylesheet' type='text/css'>
 <meta http-equiv="Content-Type" content="text/html; charset=$charset" />
 $css
 <script language="JavaScript" type="text/javascript">
@@ -4411,6 +4407,7 @@ $shadow
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="$lang_code" lang="$lang_code" dir="$lang_dir">
 <head>
+<link href='http://fonts.googleapis.com/css?family=Roboto' rel='stylesheet' type='text/css'>
 <meta http-equiv="Content-Type" content="text/html; charset=$charset" />
 $meta
 <link rel="shortcut icon" href="../images/favicon.ico" type="image/x-icon" />
@@ -4419,12 +4416,6 @@ $css
 <script language="JavaScript" type="text/javascript" src="../js/header.js"></script>
 </head>
 <body $background text="{$THEME['text']}">
-<script src="http://www.google-analytics.com/urchin.js" type="text/javascript">
-</script>
-<script type="text/javascript">
-_uacct = "UA-2059274-1";
-urchinTracker();
-</script>
 $bbcodescript
 $attachscript
 <a name="top"></a>
