@@ -586,6 +586,9 @@ function forum($forum, $template)
             $subforums = '';
         }
         
+        echo "<!-- ";
+        echo print_r($forum);
+        echo " !>";
         $mouseover = celloverfx('viewforum.php?fid=' . intval($forum['fid']));
         
         eval('$foruminfo = stripslashes("' . template($template) . '");');
