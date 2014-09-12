@@ -433,10 +433,6 @@ while ($thread = $db->fetch_array($querytop))
     {
         $folder = 'red_folder.gif';
     }
-    else
-    {
-        $folder = $folder;
-    }
 
     if ($CONFIG['dotfolders'] == 'on' && isset($thread['dotauthor']) == $self['username'] && X_MEMBER)
     {

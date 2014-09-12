@@ -53,11 +53,7 @@ $othertid = formInt('othertid');
 $newfid = getRequestInt('newfid');
 $moveto = formInt('moveto');
 
-if ($action)
-{
-    $action = $action;
-}
-else if ($mass_mod)
+if ($mass_mod)
 {
     $action = $mass_mod;
 }
