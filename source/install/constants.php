@@ -43,8 +43,8 @@ define('X_REDIRECT_JS', 2);
 
 define('SCHEMAVER', 41);
 
-require_once (ROOT . 'include/validate.inc.php');
-require_once (ROOT . 'include/functions.inc.php');
+require_once ('../include/validate.inc.php');
+require_once ('../include/functions.inc.php');
 
 // DEBUG flag, useful for tracking down serious technical issues.
 
