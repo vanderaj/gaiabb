@@ -213,7 +213,7 @@ class upgrade_ultimaBB extends Upgrade
      *            what it does
      * @return type, what the return does
      */
-    function migrate_settings()
+    function migrate_settings($prg)
     {
         return true;
     }
