@@ -223,10 +223,11 @@ function check_image_size($matches)
 
 function decode_entities($text)
 {
-    if (! empty($text)) {
-        $text = html_entity_decode($text, ENT_QUOTES, "ISO-8859-1"); // NOTE: UTF-8 does not work!
-        $text = preg_replace('/&#(\d+);/me', "chr(\\1)", $text); // decimal notation
-        $text = preg_replace('/&#x([a-f0-9]+);/mei', "chr(0x\\1)", $text); // hex notation
+    if (!empty($text)) {
+        $text = html_entity_decode($text, ENT_HTML5, "UTF-8"); // Requires PHP 5.4 and later
+       
+        $text = preg_replace_callback("/(&#[0-9]+;)/", function($md) { return mb_convert_encoding($md[1], "UTF-8", "HTML-ENTITIES"); }, $text);
+        $text = preg_replace_callback("/&#x([a-f0-9]+);/", function($mh) { return mb_convert_encoding($mh[1], "UTF-8", "HTML-ENTITIES"); }, $text);
     }
     return $text;
 }

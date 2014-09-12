@@ -51,7 +51,7 @@ if (! defined('IN_PROGRAM') && (defined('DEBUG') && DEBUG == false)) {
  */
 
 // Development
-define('DEBUG', false);
+define('DEBUG', true);
 
 // Production
 if (! defined('DEBUG')) {
