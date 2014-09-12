@@ -211,7 +211,8 @@ function doPanel()
             }
         }
         closedir($dir);
-        cp_confirmmsg($newsmilies_count . ' / ' . $smilies_count . ' ' . $lang['smiliesadded'], 'cp_posticons.php');
+
+        cp_message($newsmilies_count . ' / ' . $smilies_count . ' ' . $lang['smiliesadded'], false, '', '</td></tr></table>', 'cp_smilies.php', true, false, true);
         echo '<br />';
     }
     cp_message($lang['smilieupdate'], false, '', '</td></tr></table>', 'cp_smilies.php', true, false, true);
