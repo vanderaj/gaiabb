@@ -114,7 +114,7 @@ class Upgrade
      *            what it does
      * @return type, what the return does
      */
-    function rename_tables()
+    function rename_tables($prg)
     {
         return true;
     }
@@ -128,7 +128,7 @@ class Upgrade
      *            what it does
      * @return type, what the return does
      */
-    function add_tables()
+    function add_tables($prg)
     {
         return true;
     }
@@ -142,7 +142,7 @@ class Upgrade
      *            what it does
      * @return type, what the return does
      */
-    function delete_tables()
+    function delete_tables($prg)
     {
         return true;
     }
@@ -156,7 +156,7 @@ class Upgrade
      *            what it does
      * @return type, what the return does
      */
-    function alter_tables()
+    function alter_tables($prg)
     {
         return true;
     }
@@ -170,7 +170,7 @@ class Upgrade
      *            what it does
      * @return type, what the return does
      */
-    function migrate_data()
+    function migrate_data($prg)
     {
         return true;
     }
@@ -184,7 +184,7 @@ class Upgrade
      *            what it does
      * @return type, what the return does
      */
-    function migrate_settings()
+    function migrate_settings($prg)
     {
         return true;
     }
