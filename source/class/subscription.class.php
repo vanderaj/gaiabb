@@ -28,35 +28,33 @@
  *    along with GaiaBB.  If not, see <http://www.gnu.org/licenses/>.
  *
  **/
-
-if (!defined('IN_PROGRAM') && (defined('DEBUG') && DEBUG == false))
-{
+if (! defined('IN_PROGRAM') && (defined('DEBUG') && DEBUG == false)) {
     exit('This file is not designed to be called directly');
 }
 
 class subscription
 {
+
     public $tid;
+
     public $dirty;
 
     function subscription($tid = 0)
     {
-        if ($tid === 0)
-        {
+        if ($tid === 0) {
             $this->dirty = false;
             $this->tid = 0;
             return;
         }
-
+        
         $this->findById($tid);
     }
 
     function findById($tid)
     {
         global $db, $self;
-
-        if ($this->exists($tid))
-        {
+        
+        if ($this->exists($tid)) {
             $this->tid = $tid;
             $this->dirty = true;
             return true;
@@ -67,16 +65,15 @@ class subscription
     function exists($tid)
     {
         global $db, $self;
-
+        
         $retval = false;
-
-        $query = $db->query("SELECT tid FROM ".X_PREFIX."subscriptions WHERE tid = '$tid' AND username = '".$self['username']."' AND type = 'subscription'");
-        if ($query && $db->num_rows($query) == 1)
-        {
+        
+        $query = $db->query("SELECT tid FROM " . X_PREFIX . "subscriptions WHERE tid = '$tid' AND username = '" . $self['username'] . "' AND type = 'subscription'");
+        if ($query && $db->num_rows($query) == 1) {
             $this->tid = $tid;
             $retval = true;
         }
-
+        
         $db->free_result($query);
         return $retval;
     }
@@ -84,74 +81,68 @@ class subscription
     function update()
     {
         global $db, $self;
-
-        if ($this->dirty)
-        {
-            $db->query("INSERT INTO ".X_PREFIX."subscriptions (tid, username, type) VALUES ('".intval($this->tid)."', '".$db->escape($self['username'])."', 'subscription')");
+        
+        if ($this->dirty) {
+            $db->query("INSERT INTO " . X_PREFIX . "subscriptions (tid, username, type) VALUES ('" . intval($this->tid) . "', '" . $db->escape($self['username']) . "', 'subscription')");
             $this->dirty = false;
-
+            
             return true;
         }
-
+        
         return false;
     }
 
     function delete()
     {
-        if ($this->dirty && $this->tid > 0)
-        {
+        if ($this->dirty && $this->tid > 0) {
             $this->deleteByTid($this->tid);
             $this->tid = 0;
             $this->dirty = false;
             return true;
         }
-
+        
         return false;
     }
 
     function deleteByTid($tid)
     {
         global $db, $self;
-
-        return $db->query("DELETE FROM ".X_PREFIX."subscriptions WHERE username = '".$self['username']."' AND type='subscription' AND tid = '".intval($tid)."'");
+        
+        return $db->query("DELETE FROM " . X_PREFIX . "subscriptions WHERE username = '" . $self['username'] . "' AND type='subscription' AND tid = '" . intval($tid) . "'");
     }
 
     function deleteByFormTids()
     {
         global $db, $self;
-
+        
         $toDelete = array();
-
-        $query = $db->query("SELECT tid FROM ".X_PREFIX."subscriptions WHERE username = '".$self['username']."' AND type='subscription'");
-        while ($sub = $db->fetch_array($query))
-        {
-            $delete = formInt("delete" .$sub['tid']. "");
-            if (is_numeric($delete))
-            {
+        
+        $query = $db->query("SELECT tid FROM " . X_PREFIX . "subscriptions WHERE username = '" . $self['username'] . "' AND type='subscription'");
+        while ($sub = $db->fetch_array($query)) {
+            $delete = formInt("delete" . $sub['tid'] . "");
+            if (is_numeric($delete)) {
                 $toDelete[] = $delete;
             }
         }
         $db->free_result($query);
-
-        if (!empty($toDelete))
-        {
+        
+        if (! empty($toDelete)) {
             $in = implode(' ,', $toDelete);
-            $db->query("DELETE FROM ".X_PREFIX."subscriptions WHERE username = '".$self['username']."' AND type='subscription' AND tid in (".$in.")");
+            $db->query("DELETE FROM " . X_PREFIX . "subscriptions WHERE username = '" . $self['username'] . "' AND type='subscription' AND tid in (" . $in . ")");
         }
     }
 
     function deleteByUid($uid = 0)
     {
         global $db;
-
-        if ($uid === 0)
-        {
+        
+        if ($uid === 0) {
             return false;
         }
-
+        
         $owner = $db->escape(member::findUsernameByUid($uid));
-
-        $db->query("DELETE FROM ".X_PREFIX."subscriptions WHERE username = '$owner'");
+        
+        $db->query("DELETE FROM " . X_PREFIX . "subscriptions WHERE username = '$owner'");
     }
 }
 ?>

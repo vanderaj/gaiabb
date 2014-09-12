@@ -32,15 +32,9 @@
 define('DEBUG_REG', true);
 define('ROOT', './');
 
-require_once(ROOT.'header.php');
+require_once (ROOT . 'header.php');
 
-loadtpl(
-'popup_footer',
-'popup_header',
-'smilies',
-'functions_smilieinsert',
-'functions_smilieinsert_smilie'
-);
+loadtpl('popup_footer', 'popup_header', 'smilies', 'functions_smilieinsert', 'functions_smilieinsert_smilie');
 
 $shadow = shadowfx();
 $meta = metaTags();
@@ -50,20 +44,19 @@ smcwcache();
 nav($lang['smiliesnav']);
 btitle($lang['smiliesnav']);
 
-if (X_GUEST)
-{
+if (X_GUEST) {
     error($lang['textnoaction']);
 }
 
 $header = '';
-eval('$css = "'.template('css').'";');
-eval('$header = "'.template('popup_header').'";');
-eval('$footer = "'.template('popup_footer').'";');
+eval('$css = "' . template('css') . '";');
+eval('$header = "' . template('popup_header') . '";');
+eval('$footer = "' . template('popup_footer') . '";');
 $CONFIG['smtotal'] = 0;
 $smilies = smilieinsert();
-eval('$misc = "'.template('smilies').'";');
+eval('$misc = "' . template('smilies') . '";');
 echo $header;
 echo $misc;
 echo $footer;
-exit;
+exit();
 ?>

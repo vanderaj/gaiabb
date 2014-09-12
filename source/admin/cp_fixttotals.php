@@ -28,37 +28,30 @@
  *    along with GaiaBB.  If not, see <http://www.gnu.org/licenses/>.
  *
  **/
-
 define('DEBUG_REG', true);
 define('ROOT', '../');
 define('ROOTINC', '../include/');
 define('ROOTCLASS', '../class/');
 
-require_once(ROOT.'header.php');
-require_once(ROOTINC.'admincp.inc.php');
+require_once (ROOT . 'header.php');
+require_once (ROOTINC . 'admincp.inc.php');
 
-loadtpl(
-'cp_header',
-'cp_footer',
-'cp_message',
-'cp_error'
-);
+loadtpl('cp_header', 'cp_footer', 'cp_message', 'cp_error');
 
 $shadow = shadowfx();
 $shadow2 = shadowfx2();
 $meta = metaTags();
 
-eval('$css = "'.template('css').'";');
+eval('$css = "' . template('css') . '";');
 
-nav('<a href="index.php">'.$lang['textcp'].'</a>');
+nav('<a href="index.php">' . $lang['textcp'] . '</a>');
 nav($lang['textfixposts']);
 btitle($lang['textcp']);
 btitle($lang['textfixposts']);
 
-eval('echo "'.template('cp_header').'";');
+eval('echo "' . template('cp_header') . '";');
 
-if (!X_ADMIN)
-{
+if (! X_ADMIN) {
     adminaudit($self['username'], '', 0, 0, 'Authorization failed');
     error($lang['adminonly'], false);
 }
@@ -70,46 +63,50 @@ function viewPanel()
 {
     global $THEME, $lang, $shadow2, $oToken, $db, $CONFIG;
     ?>
-    <form method="post" action="cp_fixttotals.php">
-    <input type="hidden" name="token" value="<?php echo $oToken->get_new_token()?>" />
-    <table cellspacing="0px" cellpadding="0px" border="0px" width="100%" align="center">
-    <tr>
-    <td bgcolor="<?php echo $THEME['bordercolor']?>">
-    <table border="0px" cellspacing="<?php echo $THEME['borderwidth']?>" cellpadding="<?php echo $THEME['tablespace']?>" width="100%">
-    <tr class="category">
-    <td colspan="2" class="title"><?php echo $lang['textfixthread']?></td>
-    </tr>
-    <tr class="ctrtablerow" bgcolor="<?php echo $THEME['altbg1']?>">
-    <td colspan="2"><?php echo $lang['fixttotals_confirm']?></td>
-    </tr>
-    <tr class="ctrtablerow" bgcolor="<?php echo $THEME['altbg2']?>">
-    <td colspan="2"><input class="submit" type="submit" name="yessubmit" value="<?php echo $lang['textyes']?>" />&nbsp;-&nbsp;<input class="submit" type="submit" name="nosubmit" value="<?php echo $lang['textno']?>" /></td>
-    </tr>
-    </table>
-    </td>
-    </tr>
-    </table>
+<form method="post" action="cp_fixttotals.php">
+	<input type="hidden" name="token"
+		value="<?php echo $oToken->get_new_token()?>" />
+	<table cellspacing="0px" cellpadding="0px" border="0px" width="100%"
+		align="center">
+		<tr>
+			<td bgcolor="<?php echo $THEME['bordercolor']?>">
+				<table border="0px" cellspacing="<?php echo $THEME['borderwidth']?>"
+					cellpadding="<?php echo $THEME['tablespace']?>" width="100%">
+					<tr class="category">
+						<td colspan="2" class="title"><?php echo $lang['textfixthread']?></td>
+					</tr>
+					<tr class="ctrtablerow" bgcolor="<?php echo $THEME['altbg1']?>">
+						<td colspan="2"><?php echo $lang['fixttotals_confirm']?></td>
+					</tr>
+					<tr class="ctrtablerow" bgcolor="<?php echo $THEME['altbg2']?>">
+						<td colspan="2"><input class="submit" type="submit"
+							name="yessubmit" value="<?php echo $lang['textyes']?>" />&nbsp;-&nbsp;<input
+							class="submit" type="submit" name="nosubmit"
+							value="<?php echo $lang['textno']?>" /></td>
+					</tr>
+				</table>
+			</td>
+		</tr>
+	</table>
     <?php echo $shadow2?>
     </form>
-    </td>
-    </tr>
-    </table>
-    <?php
-
+</td>
+</tr>
+</table>
+<?php
 }
 
 function doPanel()
 {
     global $THEME, $lang, $shadow2, $oToken, $db, $CONFIG;
-
+    
     $oToken->assert_token();
-
-    $queryt = $db->query("SELECT tid, fid FROM ".X_PREFIX."threads");
-    while ($threads = $db->fetch_array($queryt))
-    {
-        $query = $db->query("SELECT count(*) FROM ".X_PREFIX."posts WHERE tid = '$threads[tid]' AND fid = '$threads[fid]'");
+    
+    $queryt = $db->query("SELECT tid, fid FROM " . X_PREFIX . "threads");
+    while ($threads = $db->fetch_array($queryt)) {
+        $query = $db->query("SELECT count(*) FROM " . X_PREFIX . "posts WHERE tid = '$threads[tid]' AND fid = '$threads[fid]'");
         $replynum = $db->result($query, 0) - 1;
-        $db->query("UPDATE ".X_PREFIX."threads SET replies = '$replynum' WHERE tid = '$threads[tid]'");
+        $db->query("UPDATE " . X_PREFIX . "threads SET replies = '$replynum' WHERE tid = '$threads[tid]'");
     }
     $db->free_result($queryt);
     cp_message($lang['tool_threadtotal'], false, '', '</td></tr></table>', 'index.php', true, false, true);
@@ -117,21 +114,18 @@ function doPanel()
 
 displayAdminPanel();
 
-if (noSubmit('yessubmit') && noSubmit('nosubmit'))
-{
+if (noSubmit('yessubmit') && noSubmit('nosubmit')) {
     viewPanel();
 }
 
-if (onSubmit('yessubmit') && noSubmit('nosubmit'))
-{
+if (onSubmit('yessubmit') && noSubmit('nosubmit')) {
     doPanel();
 }
 
-if (onSubmit('nosubmit') && noSubmit('yessubmit'))
-{
+if (onSubmit('nosubmit') && noSubmit('yessubmit')) {
     redirect('index.php', 0);
 }
 
 loadtime();
-eval('echo "'.template('cp_footer').'";');
+eval('echo "' . template('cp_footer') . '";');
 ?>

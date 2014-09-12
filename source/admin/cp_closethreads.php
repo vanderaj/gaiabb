@@ -28,37 +28,30 @@
  *    along with GaiaBB.  If not, see <http://www.gnu.org/licenses/>.
  *
  **/
-
 define('DEBUG_REG', true);
 define('ROOT', '../');
 define('ROOTINC', '../include/');
 define('ROOTCLASS', '../class/');
 
-require_once(ROOT.'header.php');
-require_once(ROOTINC.'admincp.inc.php');
+require_once (ROOT . 'header.php');
+require_once (ROOTINC . 'admincp.inc.php');
 
-loadtpl(
-'cp_header',
-'cp_footer',
-'cp_message',
-'cp_error'
-);
+loadtpl('cp_header', 'cp_footer', 'cp_message', 'cp_error');
 
 $shadow = shadowfx();
 $shadow2 = shadowfx2();
 $meta = metaTags();
 
-eval('$css = "'.template('css').'";');
+eval('$css = "' . template('css') . '";');
 
-nav('<a href="index.php">'.$lang['textcp'].'</a>');
+nav('<a href="index.php">' . $lang['textcp'] . '</a>');
 nav($lang['inactivethreads']);
 btitle($lang['textcp']);
 btitle($lang['inactivethreads']);
 
-eval('echo "'.template('cp_header').'";');
+eval('echo "' . template('cp_header') . '";');
 
-if (!X_ADMIN)
-{
+if (! X_ADMIN) {
     adminaudit($self['username'], '', 0, 0, 'Authorization failed');
     error($lang['adminonly'], false);
 }
@@ -69,93 +62,93 @@ smcwcache();
 function viewPanel()
 {
     global $oToken, $CONFIG, $THEME, $lang, $shadow2;
-
+    
     ?>
-    <form method="post" action="cp_closethreads.php">
-    <input type="hidden" name="token" value="<?php echo $oToken->get_new_token()?>" />
-    <table cellspacing="0px" cellpadding="0px" border="0px" width="100%" align="center">
-    <tr>
-    <td bgcolor="<?php echo $THEME['bordercolor']?>">
-    <table border="0px" cellspacing="<?php echo $THEME['borderwidth']?>" cellpadding="<?php echo $THEME['tablespace']?>" width="100%">
-    <tr class="category">
-    <td class="title" colspan="2"><?php echo $lang['inactivethreads']?></td>
-    </tr>
-    <tr class="tablerow">
-    <td bgcolor="<?php echo $THEME['altbg2']?>" colspan="2"><?php echo $lang['fid_to_close_note']?></td>
-    </tr>
-    <tr class="tablerow">
-    <td bgcolor="<?php echo $THEME['altbg1']?>" width="40%"><?php echo $lang['fid_to_close']?></td>
-    <td bgcolor="<?php echo $THEME['altbg2']?>"><input type="text" name="fid" size="10" /></td>
-    </tr>
-    <tr class="tablerow">
-    <td bgcolor="<?php echo $THEME['altbg1']?>" width="40%"><?php echo $lang['num_days_forthreads']?></td>
-    <td bgcolor="<?php echo $THEME['altbg2']?>"><input type="text" name="num_days" size="10" /></td>
-    </tr>
-    <tr bgcolor="<?php echo $THEME['altbg2']?>" class="ctrtablerow">
-    <td colspan="2"><input class="submit" type="submit" name="closesubmit" value="<?php echo $lang['textsubmitchanges']?>" /></td>
-    </tr>
-    </table>
-    </td>
-    </tr>
-    </table>
+<form method="post" action="cp_closethreads.php">
+	<input type="hidden" name="token"
+		value="<?php echo $oToken->get_new_token()?>" />
+	<table cellspacing="0px" cellpadding="0px" border="0px" width="100%"
+		align="center">
+		<tr>
+			<td bgcolor="<?php echo $THEME['bordercolor']?>">
+				<table border="0px" cellspacing="<?php echo $THEME['borderwidth']?>"
+					cellpadding="<?php echo $THEME['tablespace']?>" width="100%">
+					<tr class="category">
+						<td class="title" colspan="2"><?php echo $lang['inactivethreads']?></td>
+					</tr>
+					<tr class="tablerow">
+						<td bgcolor="<?php echo $THEME['altbg2']?>" colspan="2"><?php echo $lang['fid_to_close_note']?></td>
+					</tr>
+					<tr class="tablerow">
+						<td bgcolor="<?php echo $THEME['altbg1']?>" width="40%"><?php echo $lang['fid_to_close']?></td>
+						<td bgcolor="<?php echo $THEME['altbg2']?>"><input type="text"
+							name="fid" size="10" /></td>
+					</tr>
+					<tr class="tablerow">
+						<td bgcolor="<?php echo $THEME['altbg1']?>" width="40%"><?php echo $lang['num_days_forthreads']?></td>
+						<td bgcolor="<?php echo $THEME['altbg2']?>"><input type="text"
+							name="num_days" size="10" /></td>
+					</tr>
+					<tr bgcolor="<?php echo $THEME['altbg2']?>" class="ctrtablerow">
+						<td colspan="2"><input class="submit" type="submit"
+							name="closesubmit"
+							value="<?php echo $lang['textsubmitchanges']?>" /></td>
+					</tr>
+				</table>
+			</td>
+		</tr>
+	</table>
     <?php echo $shadow2?>
     </form>
-    </td>
-    </tr>
-    </table>
-    <?php
+</td>
+</tr>
+</table>
+<?php
 }
 
 function doPanel()
 {
     global $onlinetime, $oToken, $CONFIG, $THEME, $lang, $shadow2, $db;
-
+    
     $oToken->assert_token();
-
+    
     $fid = formVar('fid');
-    if (empty($fid))
-    {
+    if (empty($fid)) {
         cp_error($lang['fid_forthreads_not_there'], false, '', '</td></tr></table>');
     }
-
+    
     $num_days = formInt('num_days');
-    if ($num_days < 1)
-    {
+    if ($num_days < 1) {
         cp_error($lang['num_days_forthreads_not_there'], false, '', '</td></tr></table>');
     }
-
-    $old = $onlinetime - (60*60*24*$num_days);
-
-    $fid_array = explode(',',$fid);
+    
+    $old = $onlinetime - (60 * 60 * 24 * $num_days);
+    
+    $fid_array = explode(',', $fid);
     $clean_array = array();
-    foreach ($fid_array as $key=>$val)
-    {
-        if (is_numeric($val) && $val > 0)
-        {
+    foreach ($fid_array as $key => $val) {
+        if (is_numeric($val) && $val > 0) {
             $clean_array[] = intval($val);
         }
     }
     $clean_str = implode(',', $clean_array);
     
-    if (!empty($clean_str))
-    {
-        $db->query("UPDATE ".X_PREFIX."threads t, ".X_PREFIX."lastposts l SET t.closed = 'yes' WHERE t.fid IN (".$clean_str.") AND t.tid=l.tid AND l.dateline < " . $old);
+    if (! empty($clean_str)) {
+        $db->query("UPDATE " . X_PREFIX . "threads t, " . X_PREFIX . "lastposts l SET t.closed = 'yes' WHERE t.fid IN (" . $clean_str . ") AND t.tid=l.tid AND l.dateline < " . $old);
     }
     cp_message($lang['tool_inactivethreads'], false, '', '</td></tr></table>', 'index.php', true, false, true);
 }
 
 displayAdminPanel();
 
-if (noSubmit('closesubmit'))
-{
+if (noSubmit('closesubmit')) {
     viewPanel();
 }
 
-if (onSubmit('closesubmit'))
-{
+if (onSubmit('closesubmit')) {
     doPanel();
 }
 
 loadtime();
-eval('echo "'.template('cp_footer').'";');
+eval('echo "' . template('cp_footer').'";');
 ?>

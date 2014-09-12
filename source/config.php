@@ -30,17 +30,16 @@
  **/
 
 // check to ensure no direct viewing of page
-if (!defined('IN_PROGRAM') && (defined('DEBUG') && DEBUG == false))
-{
+if (! defined('IN_PROGRAM') && (defined('DEBUG') && DEBUG == false)) {
     exit('This file is not designed to be called directly');
 }
 
 // Database connection settings
-$dbname = 'DBNAME';                   // Name of your database
-$dbuser = 'DBUSER';                   // Username used to access it
-$dbpw = 'DBPW';                       // Password used to access it
-$dbhost = 'localhost';                // Database host, usually 'localhost'
-$database = 'mysql5php5.class';       // Database type. mysql5php5.class
-$pconnect = 0;                        // Persistent connection, 1 = on, 0 = off, use if 'too many connections'-errors appear
-$tablepre = 'gaiabb_';                // Used in case you want to host multiple forums in the one database
+$dbname = 'DBNAME'; // Name of your database
+$dbuser = 'DBUSER'; // Username used to access it
+$dbpw = 'DBPW'; // Password used to access it
+$dbhost = 'localhost'; // Database host, usually 'localhost'
+$database = 'mysql5php5.class'; // Database type. mysql5php5.class
+$pconnect = 0; // Persistent connection, 1 = on, 0 = off, use if 'too many connections'-errors appear
+$tablepre = 'gaiabb_'; // Used in case you want to host multiple forums in the one database
 ?>

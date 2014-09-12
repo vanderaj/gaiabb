@@ -28,70 +28,52 @@
  *    along with GaiaBB.  If not, see <http://www.gnu.org/licenses/>.
  *
  **/
-
 define('DEBUG_REG', true);
 define('ROOT', './');
 define('CACHECONTROL', 'nocache');
 
-require_once(ROOT.'header.php');
-require_once(ROOTCLASS.'member.class.php');
+require_once (ROOT . 'header.php');
+require_once (ROOTCLASS . 'member.class.php');
 
-loadtpl(
-'register',
-'register_coppa',
-'register_password',
-'register_rules',
-'register_captcha',
-'register_captchajs'
-);
+loadtpl('register', 'register_coppa', 'register_password', 'register_rules', 'register_captcha', 'register_captchajs');
 
-function viewRegister() 
+function viewRegister()
 {
     global $CONFIG, $lang, $self, $THEME, $ubblva;
     global $selHTML, $db, $onlinetime, $dformatorig;
     global $oToken, $shadow;
-
-    if ($CONFIG['bbrules'] == 'on' && noSubmit('rulesubmit'))
-    {
+    
+    if ($CONFIG['bbrules'] == 'on' && noSubmit('rulesubmit')) {
         $CONFIG['bbrulestxt'] = postify($CONFIG['bbrulestxt']);
-        eval('echo stripslashes("'.template('register_rules').'");');
-    }
-    else
-    {
+        eval('echo stripslashes("' . template('register_rules') . '");');
+    } else {
         $langfileselect = langSelect();
-
+        
         $currdate = gmdate($self['timecode'], $onlinetime);
         eval($lang['evaloffset']);
-
+        
         $dstyes = $dstno = '';
-        if ($CONFIG['daylightsavings'] == 3600)
-        {
+        if ($CONFIG['daylightsavings'] == 3600) {
             $dstyes = $selHTML;
-        }
-        else
-        {
+        } else {
             $dstno = $selHTML;
         }
-
-        if ($CONFIG['timeformat'] == 24)
-        {
+        
+        if ($CONFIG['timeformat'] == 24) {
             $timeFormat12Selected = '';
             $timeFormat24Selected = $selHTML;
-        }
-        else
-        {
+        } else {
             $timeFormat12Selected = $selHTML;
             $timeFormat24Selected = '';
         }
-
+        
         $timezone1 = $timezone2 = $timezone3 = $timezone4 = $timezone5 = $timezone6 = '';
         $timezone7 = $timezone8 = $timezone9 = $timezone10 = $timezone11 = $timezone12 = '';
         $timezone13 = $timezone14 = $timezone15 = $timezone16 = $timezone17 = $timezone18 = '';
         $timezone19 = $timezone20 = $timezone21 = $timezone22 = $timezone23 = $timezone24 = '';
         $timezone25 = $timezone26 = $timezone27 = $timezone28 = $timezone29 = $timezone30 = '';
         $timezone31 = $timezone32 = $timezone33 = '';
-        switch ($CONFIG['def_tz'])
-        {
+        switch ($CONFIG['def_tz']) {
             case '-12.00':
                 $timezone1 = $selHTML;
                 break;
@@ -193,74 +175,61 @@ function viewRegister()
                 $timezone14 = $selHTML;
                 break;
         }
-
+        
         $themelist = array();
         $themelist[] = '<select name="thememem">';
-        $themelist[] = '<option value="0">'.$lang['textusedefault'].'</option>';
-        $query = $db->query("SELECT themeid, name FROM ".X_PREFIX."themes WHERE themestatus = 'on' ORDER BY name ASC");
-        while ($themeinfo = $db->fetch_array($query))
-        {
-            $themelist[] = '<option value="'.intval($themeinfo['themeid']).'">'.stripslashes($themeinfo['name']).'</option>';
+        $themelist[] = '<option value="0">' . $lang['textusedefault'] . '</option>';
+        $query = $db->query("SELECT themeid, name FROM " . X_PREFIX . "themes WHERE themestatus = 'on' ORDER BY name ASC");
+        while ($themeinfo = $db->fetch_array($query)) {
+            $themelist[] = '<option value="' . intval($themeinfo['themeid']) . '">' . stripslashes($themeinfo['name']) . '</option>';
         }
         $themelist[] = '</select>';
         $themelist = implode("\n", $themelist);
         $db->free_result($query);
-
-        if ($CONFIG['predformat'] == 'on')
-        {
+        
+        if ($CONFIG['predformat'] == 'on') {
             $df = "<tr>\n\t<td bgcolor=\"$THEME[altbg1]\" class=\"tablerow\" width=\"22%\">$lang[dateformat1]</td>\n";
-        }
-        else
-        {
+        } else {
             $df = "<tr>\n\t<td bgcolor=\"$THEME[altbg1]\" class=\"tablerow\" width=\"22%\">$lang[dateformat2]</td>\n";
         }
-
-        $df = $df."\t<td bgcolor=\"$THEME[altbg2]\" class=\"tablerow\"><select name=\"dateformat1\">\n";
-        $querydf = $db->query("SELECT * FROM ".X_PREFIX."dateformats");
-        while ($dformats = $db->fetch_array($querydf))
-        {
-            if ($CONFIG['predformat'] == 'on')
-            {
+        
+        $df = $df . "\t<td bgcolor=\"$THEME[altbg2]\" class=\"tablerow\"><select name=\"dateformat1\">\n";
+        $querydf = $db->query("SELECT * FROM " . X_PREFIX . "dateformats");
+        while ($dformats = $db->fetch_array($querydf)) {
+            if ($CONFIG['predformat'] == 'on') {
                 $example = gmdate(formatDate($dformats['dateformat']), $ubblva + ($self['timeoffset'] * 3600) + $self['daylightsavings']);
-            }
-            else
-            {
+            } else {
                 $example = $dformats['dateformat'];
             }
-
-            if ($dformatorig == $dformats['dateformat'])
-            {
-                $df = $df."\t<option value=\"$dformats[dateformat]\" selected=\"selected\">$example</option>\n";
-            }
-            else
-            {
-                $df = $df."\t<option value=\"$dformats[dateformat]\">$example</option>\n";
+            
+            if ($dformatorig == $dformats['dateformat']) {
+                $df = $df . "\t<option value=\"$dformats[dateformat]\" selected=\"selected\">$example</option>\n";
+            } else {
+                $df = $df . "\t<option value=\"$dformats[dateformat]\">$example</option>\n";
             }
         }
-        $df = $df."\t</select>\n\t</td>\n</tr>";
+        $df = $df . "\t</select>\n\t</td>\n</tr>";
         $db->free_result($querydf);
-
+        
         $timeformatlist = array();
         $timeformatlist[] = '<select name="timeformat1">';
-        $timeformatlist[] = '<option value="12" '.$timeFormat12Selected.'>'.gmdate("h:i A", $onlinetime + ($self['timeoffset'] * 3600) + $self['daylightsavings']).'</option>';
-        $timeformatlist[] = '<option value="24" '.$timeFormat24Selected.'>'.gmdate("H:i", $onlinetime + ($self['timeoffset'] * 3600) + $self['daylightsavings']).'</option>';
+        $timeformatlist[] = '<option value="12" ' . $timeFormat12Selected . '>' . gmdate("h:i A", $onlinetime + ($self['timeoffset'] * 3600) + $self['daylightsavings']) . '</option>';
+        $timeformatlist[] = '<option value="24" ' . $timeFormat24Selected . '>' . gmdate("H:i", $onlinetime + ($self['timeoffset'] * 3600) + $self['daylightsavings']) . '</option>';
         $timeformatlist[] = '</select>';
         $timeformatlist = implode("\n", $timeformatlist);
-
+        
         $pwtd = '';
-        if ($CONFIG['emailcheck'] == 'off')
-        {
-            eval('$pwtd = "'.template('register_password').'";');
+        if ($CONFIG['emailcheck'] == 'off') {
+            eval('$pwtd = "' . template('register_password') . '";');
         }
-
+        
         $captcha = $captcha_js = '';
-        if ($CONFIG['captcha_status'] == 'on' && function_exists('ImageCreate'))
-        {
-            eval('$captcha = "'.template('register_captcha').'";');
-            eval('$captcha_js = "'.template('register_captchajs').'";');
+        if ($CONFIG['captcha_status'] == 'on' && function_exists('ImageCreate')) {
+            eval('$captcha = "' . template('register_captcha') . '";');
+            eval('$captcha_js = "' . template('register_captchajs') . '";');
         }
-
-        eval('echo stripslashes("'.template('register').'");');
+        
+        eval('echo stripslashes("' . template('register') . '");');
     }
 }
 
@@ -279,8 +248,7 @@ function doRegister()
     $captchaword = formVar('captchaword');
     $thememem = formInt('thememem');
     $psorting = formVar('psorting');
-    if ($psorting != 'ASC')
-    {
+    if ($psorting != 'ASC') {
         $psorting = 'DESC';
     }
     $showemail = formYesNo('showemail');
@@ -297,104 +265,85 @@ function doRegister()
     
     $member = new member();
     
-    if (preg_match('/[\]\[.,!@#~$%\^&*()+=\/\\\\:;?|.<>{}]/', $username))
-    {
+    if (preg_match('/[\]\[.,!@#~$%\^&*()+=\/\\\\:;?|.<>{}]/', $username)) {
         error($lang['badusername'], false, '', '', 'register.php?action=reg', true, false, true);
     }
-
-    if (empty($username) || strlen($username) < 4 || strlen($username) > 25)
-    {
+    
+    if (empty($username) || strlen($username) < 4 || strlen($username) > 25) {
         error($lang['usernamelimits'], false, '', '', 'register.php?action=reg', true, false, true);
     }
-
-    if ($CONFIG['ipreg'] == 'on')
-    {
+    
+    if ($CONFIG['ipreg'] == 'on') {
         $time = $onlinetime - 86400;
-        $query = $db->query("SELECT uid FROM ".X_PREFIX."members WHERE regip = '$onlineip' AND regdate >= '$time'");
-        if ($db->num_rows($query) >= 1)
-        {
+        $query = $db->query("SELECT uid FROM " . X_PREFIX . "members WHERE regip = '$onlineip' AND regdate >= '$time'");
+        if ($db->num_rows($query) >= 1) {
             $db->free_result($query);
             error($lang['reg_today'], false, '', '', 'register.php?action=reg', true, false, true);
         }
     }
-
-    if ($member->exists($username))
-    {
+    
+    if ($member->exists($username)) {
         error($lang['alreadyreg'], false, '', '', 'register.php?action=reg', true, false, true);
     }
-
-    if ($member->exists('', $email) && $CONFIG['doublee'] == 'off')
-    {
+    
+    if ($member->exists('', $email) && $CONFIG['doublee'] == 'off') {
         error($lang['alreadyreg'], false, '', '', 'register.php?action=reg', true, false, true);
     }
-
-    if ($CONFIG['emailcheck'] == 'on')
-    {
+    
+    if ($CONFIG['emailcheck'] == 'on') {
         $password = '';
         $chars = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789abcdefghjkmnopqrstuvwxyz";
-        mt_srand((double)microtime() * 1000000);
-        $clen = strlen($chars)-1;
-        for ($i = 0; $i < 8; $i++)
-        {
+        mt_srand((double) microtime() * 1000000);
+        $clen = strlen($chars) - 1;
+        for ($i = 0; $i < 8; $i ++) {
             $password .= $chars[mt_rand(0, $clen)];
         }
         $password2 = $password3 = $password;
     }
-
+    
     $password = md5(trim($password));
     $password2 = md5(trim($password2));
-
-    if ($password != $password2)
-    {
+    
+    if ($password != $password2) {
         error($lang['pwnomatch'], false, '', '', 'register.php?action=reg', true, false, true);
     }
-
-    if (strlen($password) < 5)
-    {
+    
+    if (strlen($password) < 5) {
         error($lang['passwordlimits'], false, '', '', 'register.php?action=reg', true, false, true);
     }
-
+    
     $fail = $efail = false;
     $member->isRestricted($username, $email, $fail, $efail);
-
-    if ($fail)
-    {
+    
+    if ($fail) {
         error($lang['restricted'], false, '', '', 'register.php?action=reg', true, false, true);
     }
-
-    if ($efail)
-    {
+    
+    if ($efail) {
         error($lang['emailrestricted'], false, '', '', 'register.php?action=reg', true, false, true);
     }
-
-    if (empty($email) || isValidEmail($email) == false)
-    {
+    
+    if (empty($email) || isValidEmail($email) == false) {
         error($lang['bademail'], false, '', '', 'register.php?action=reg', true, false, true);
     }
-
-    if (empty($password) || strpos($password, '"') !== false || strpos($password, "'") !== false)
-    {
+    
+    if (empty($password) || strpos($password, '"') !== false || strpos($password, "'") !== false) {
         error($lang['textpw1'], false, '', '', 'register.php?action=reg', true, false, true);
     }
-
-    if ($CONFIG['captcha_status'] == 'on' && function_exists('ImageCreate'))
-    {
-        if (!empty($_SESSION['word_hash']) && !empty($captchaword) && md5(strtolower($captchaword)) == $_SESSION['word_hash'])
-        {
+    
+    if ($CONFIG['captcha_status'] == 'on' && function_exists('ImageCreate')) {
+        if (! empty($_SESSION['word_hash']) && ! empty($captchaword) && md5(strtolower($captchaword)) == $_SESSION['word_hash']) {
             $_SESSION['captcha_attempts'] = 0;
             $_SESSION['word_hash'] = false;
-        }
-        else
-        {
+        } else {
             error($lang['captcha_wrong'], false, '', '', 'register.php?action=reg', true, false, true);
         }
     }
-
-    if ($timeoffset1 < -12 || $timeoffset1 > 13)
-    {
+    
+    if ($timeoffset1 < - 12 || $timeoffset1 > 13) {
         $timeoffset1 = $CONFIG['def_tz'];
     }
-
+    
     // Create the new user record
     $member->record['username'] = $username;
     $member->record['email'] = $email;
@@ -418,19 +367,18 @@ function doRegister()
     $member->record['expview'] = $expview;
     $member->record['viewavatars'] = $viewavatars;
     $member->record['timeoffset'] = $timeoffset1;
-
+    
     $member->update();
-
+    
     $config_cache->expire('settings');
     $moderators_cache->expire('moderators');
     $config_cache->expire('theme');
     $config_cache->expire('pluglinks');
     $config_cache->expire('whosonline');
     $config_cache->expire('forumjump');
-
+    
     // If set, alert the admins that a new member has signed up
-    switch ($CONFIG['notifyonreg'])
-    {
+    switch ($CONFIG['notifyonreg']) {
         case 'pm':
             notifyViapm($username);
             break;
@@ -439,77 +387,68 @@ function doRegister()
             break;
         default:
     }
-
-    if ($CONFIG['pmwelcomestatus'] == 'on')
-    {
-        if (!empty($CONFIG['pmwelcomefrom']) && !empty($CONFIG['pmwelcomesubject']) && !empty($CONFIG['pmwelcomemessage']))
-        {
-            $db->query("INSERT INTO ".X_PREFIX."pm (pmid, msgto, msgfrom, type, owner, folder, subject, message, dateline, readstatus, sentstatus, usesig) VALUES ('', '$username', '$CONFIG[pmwelcomefrom]', 'incoming', '$username', 'Inbox', '$CONFIG[pmwelcomesubject]', '$CONFIG[pmwelcomemessage]', '$onlinetime', 'no', 'yes', 'no')");
+    
+    if ($CONFIG['pmwelcomestatus'] == 'on') {
+        if (! empty($CONFIG['pmwelcomefrom']) && ! empty($CONFIG['pmwelcomesubject']) && ! empty($CONFIG['pmwelcomemessage'])) {
+            $db->query("INSERT INTO " . X_PREFIX . "pm (pmid, msgto, msgfrom, type, owner, folder, subject, message, dateline, readstatus, sentstatus, usesig) VALUES ('', '$username', '$CONFIG[pmwelcomefrom]', 'incoming', '$username', 'Inbox', '$CONFIG[pmwelcomesubject]', '$CONFIG[pmwelcomemessage]', '$onlinetime', 'no', 'yes', 'no')");
         }
     }
-
-    if ($CONFIG['emailcheck'] == 'on')
-    {
-        if (empty($CONFIG['adminemail'])) // The mail class can handle this error, but it'll describe it vaguely
-        {
+    
+    if ($CONFIG['emailcheck'] == 'on') {
+        if (empty($CONFIG['adminemail']))         // The mail class can handle this error, but it'll describe it vaguely
+{
             error($lang['noadminemail'], false, '', '', 'cp_board.php', true, false, true);
         }
-        if (empty($CONFIG['bbname'])) // The mail class can handle this error, but it'll describe it vaguely
-        {
+        if (empty($CONFIG['bbname']))         // The mail class can handle this error, but it'll describe it vaguely
+{
             error($lang['nobbname'], false, '', '', 'cp_board.php', true, false, true);
         }
-
-        $messagebody = $lang['Thanks_You_Register']." \n$username\n$password3\n$CONFIG[boardurl]";
-
+        
+        $messagebody = $lang['Thanks_You_Register'] . " \n$username\n$password3\n$CONFIG[boardurl]";
+        
         $mailsys->setTo($email);
         $mailsys->setFrom($CONFIG['adminemail'], $CONFIG['bbname']);
         $mailsys->setSubject($lang['textyourpw']);
         $mailsys->setMessage($messagebody);
         $mailsys->Send();
-    }
-    else
-    {
+    } else {
         $uid = $member->findUidByUsername($username);
-
-        $currtime = $onlinetime + (86400*30);
-
+        
+        $currtime = $onlinetime + (86400 * 30);
+        
         $authState->ubbuid = $uid;
         $authState->ubbuser = $username;
         $authState->ubbpw = $password;
         $authState->update();
     }
-
-    if ($CONFIG['emailcheck'] == 'on')
-    {
+    
+    if ($CONFIG['emailcheck'] == 'on') {
         message($lang['Register_Thanks'], false, '', '', 'index.php', true, false, true);
-    }
-    else
-    {
+    } else {
         message($lang['regged'], false, '', '', 'index.php', true, false, true);
     }
 }
 
 /**
-* function() - short description of function
-*
-* Long description of function
-*
-* @param    $varname    type, what it does
-* @return   type, what the return does
-*/
+ * function() - short description of function
+ *
+ * Long description of function
+ *
+ * @param $varname type,
+ *            what it does
+ * @return type, what the return does
+ *        
+ */
 function notifyViapm($username)
 {
     global $db, $CONFIG, $lang, $onlinetime;
-    if (!empty($CONFIG['usernamenotify']))
-    {
+    if (! empty($CONFIG['usernamenotify'])) {
         $member = explode(',', $CONFIG['usernamenotify']);
-        for ($i = 0; $i < count($member); $i++)
-        {
+        for ($i = 0; $i < count($member); $i ++) {
             $member[$i] = trim($member[$i]);
-            $mailquery = $db->query("SELECT * FROM ".X_PREFIX."members WHERE username = '$member[$i]'");
-            while ($admin = $db->fetch_array($mailquery))
-            {
-                $db->query("INSERT INTO ".X_PREFIX."pm (pmid, msgto, msgfrom, type, owner, folder, subject, message, dateline, readstatus, sentstatus, usesig) VALUES ('', '$admin[username]', '$admin[username]', 'incoming', '$admin[username]', 'Inbox', '$lang[newmember] ".$db->escape($CONFIG['bbname'])."', '$lang[newmember3]\n\n$username', '$onlinetime', 'no', 'yes', 'no')");
+            $mailquery = $db->query("SELECT * FROM " . X_PREFIX . "members WHERE username = '$member[$i]'");
+            while ($admin = $db->fetch_array($mailquery)) {
+                $db->query("INSERT INTO " . X_PREFIX . "pm (pmid, msgto, msgfrom, type, owner, folder, subject, message, dateline, readstatus, sentstatus, usesig) VALUES ('', '$admin[username]', '$admin[username]', 'incoming', '$admin[username]', 'Inbox', '$lang[newmember] " . $db->escape($CONFIG['bbname']) . "', '$lang[newmember3]\n\n$username', '$onlinetime', 'no', 'yes', 'no')");
             }
             $db->free_result($mailquery);
         }
@@ -517,27 +456,26 @@ function notifyViapm($username)
 }
 
 /**
-* function() - short description of function
-*
-* Long description of function
-*
-* @param    $varname    type, what it does
-* @return   type, what the return does
-*/
+ * function() - short description of function
+ *
+ * Long description of function
+ *
+ * @param $varname type,
+ *            what it does
+ * @return type, what the return does
+ *        
+ */
 function notifyViaEmail($username)
 {
     global $db, $mailsys, $CONFIG, $lang, $charset;
-
-    if (!empty($CONFIG['usernamenotify']))
-    {
-
+    
+    if (! empty($CONFIG['usernamenotify'])) {
+        
         $member = explode(',', $CONFIG['usernamenotify']);
-        for ($i = 0; $i < count($member); $i++)
-        {
+        for ($i = 0; $i < count($member); $i ++) {
             $member[$i] = trim($member[$i]);
-            $mailquery = $db->query("SELECT * FROM ".X_PREFIX."members WHERE username = '$member[$i]'");
-            while ($notify = $db->fetch_array($mailquery))
-            {
+            $mailquery = $db->query("SELECT * FROM " . X_PREFIX . "members WHERE username = '$member[$i]'");
+            while ($notify = $db->fetch_array($mailquery)) {
                 $mailsys->setTo($notify['email']);
                 $mailsys->setFrom($CONFIG['adminemail'], $CONFIG['bbname']);
                 $mailsys->setSubject($lang['textnewmember']);
@@ -554,83 +492,74 @@ $meta = metaTags();
 
 smcwcache();
 
-eval('$css = "'.template('css').'";');
+eval('$css = "' . template('css') . '";');
 
-if (X_MEMBER)
-{
+if (X_MEMBER) {
     nav($lang['textregister']);
     btitle($lang['textregister']);
-    eval('echo "'.template('header').'";');
+    eval('echo "' . template('header') . '";');
     error($lang['plogtuf'], false);
 }
 
-if ($CONFIG['regstatus'] == 'off')
-{
+if ($CONFIG['regstatus'] == 'off') {
     nav($lang['textregister']);
     btitle($lang['textregister']);
-    eval('echo "'.template('header').'";');
+    eval('echo "' . template('header') . '";');
     error($lang['fnasorry'], false);
 }
 
 $time = $onlinetime - 86400;
-$query = $db->query("SELECT COUNT(uid) FROM ".X_PREFIX."members WHERE regdate > '$time'");
-if ($db->result($query, 0) > $CONFIG['max_reg_day'])
-{
+$query = $db->query("SELECT COUNT(uid) FROM " . X_PREFIX . "members WHERE regdate > '$time'");
+if ($db->result($query, 0) > $CONFIG['max_reg_day']) {
     $db->free_result($query);
     nav($lang['textregister']);
     btitle($lang['textregister']);
-    eval('echo "'.template('header').'";');
+    eval('echo "' . template('header') . '";');
     error($lang['max_regs'], false, '', '', 'index.php', true, false, true);
 }
 
-switch ($action)
-{
+switch ($action) {
     case 'captcha':
-        require_once(ROOTCLASS.'captcha.class.php');
+        require_once (ROOTCLASS . 'captcha.class.php');
         $captcha = new captcha();
         nav($lang['textregister']);
         btitle($lang['textregister']);
         break;
     case 'coppa':
         
-        if ($CONFIG['coppa'] == 'off')
-        {
+        if ($CONFIG['coppa'] == 'off') {
             redirect('register.php?action=reg', 0);
         }
-
-        if (onSubmit('coppasubmit'))
-        {
+        
+        if (onSubmit('coppasubmit')) {
             redirect('register.php?action=reg', 0);
         }
         
         nav($lang['textcoppa']);
         btitle($lang['textcoppa']);
-        eval('echo "'.template('header').'";');
-        eval('echo "'.template('register_coppa').'";');
+        eval('echo "' . template('header') . '";');
+        eval('echo "' . template('register_coppa') . '";');
         break;
     case 'reg':
         nav($lang['textregister']);
         btitle($lang['textregister']);
-        eval('echo "'.template('header').'";');
+        eval('echo "' . template('header') . '";');
         
-        if (noSubmit('regsubmit'))
-        {
+        if (noSubmit('regsubmit')) {
             viewRegister();
-        }
-        else
-        {
+        } else {
             doRegister();
         }
         break;
     default:
         nav($lang['error']);
         btitle($lang['error']);
-        eval('echo "'.template('header').'";');
+        eval('echo "' . template('header') . '";');
         
         error($lang['textnoaction'], false, '', '', 'index.php', true, false, true);
         break;
 }
 
 loadtime();
-eval('echo "'.template('footer').'";');
+eval('echo "' . template('footer') . '";');
 ?>

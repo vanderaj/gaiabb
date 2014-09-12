@@ -34,10 +34,9 @@ define('DEBUG_REG', true);
 define('CACHECONTROL', 'nocache');
 define('ROOT', './');
 
-require_once(ROOT.'header.php');
+require_once (ROOT . 'header.php');
 
-if (X_GUEST)
-{
+if (X_GUEST) {
     redirect('index.php', 0);
 }
 
@@ -47,12 +46,12 @@ $shadow = shadowfx();
 $shadow2 = shadowfx2();
 $meta = metaTags();
 
-eval('$css = "'.template('css').'";');
+eval('$css = "' . template('css') . '";');
 
 nav($lang['textlogout']);
 btitle($lang['textlogout']);
 
-eval('echo "'.template('header').'";');
+eval('echo "' . template('header') . '";');
 
 $oToken->assert_token();
 $authC->logout();

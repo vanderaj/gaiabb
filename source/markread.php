@@ -33,15 +33,14 @@
 define('DEBUG_REG', true);
 define('ROOT', './');
 
-require_once(ROOT.'header.php');
+require_once (ROOT . 'header.php');
 
 loadtpl('');
 
 nav();
 btitle();
 
-if (X_GUEST)
-{
+if (X_GUEST) {
     error($lang['textnoaction']);
 }
 

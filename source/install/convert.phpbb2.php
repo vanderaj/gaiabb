@@ -24,9 +24,7 @@
  *    along with GaiaBB.  If not, see <http://www.gnu.org/licenses/>.
  *
  **/
-
-if (!defined('IN_PROGRAM') && (defined('DEBUG') && DEBUG == false))
-{
+if (! defined('IN_PROGRAM') && (defined('DEBUG') && DEBUG == false)) {
     exit('This file is not designed to be called directly');
 }
 
@@ -34,118 +32,112 @@ require_once "convert.model.php";
 
 class phpbb2 extends convert
 {
+
     /**
-    * function() - short description of function
-    *
-    * Long description of function
-    *
-    * @param    $varname    type, what it does
-    * @return   type, what the return does
-    */
+     * function() - short description of function
+     *
+     * Long description of function
+     *
+     * @param $varname type,
+     *            what it does
+     * @return type, what the return does
+     */
     function disableBoards()
-    {
-
-    }
+    {}
 
     /**
-    * function() - short description of function
-    *
-    * Long description of function
-    *
-    * @param    $varname    type, what it does
-    * @return   type, what the return does
-    */
+     * function() - short description of function
+     *
+     * Long description of function
+     *
+     * @param $varname type,
+     *            what it does
+     * @return type, what the return does
+     */
     function isAuth()
-    {
-
-    }
+    {}
 
     /**
-    * function() - short description of function
-    *
-    * Long description of function
-    *
-    * @param    $varname    type, what it does
-    * @return   type, what the return does
-    */
+     * function() - short description of function
+     *
+     * Long description of function
+     *
+     * @param $varname type,
+     *            what it does
+     * @return type, what the return does
+     */
     function members()
-    {
-
-    }
+    {}
 
     /**
-    * function() - short description of function
-    *
-    * Long description of function
-    *
-    * @param    $varname    type, what it does
-    * @return   type, what the return does
-    */
+     * function() - short description of function
+     *
+     * Long description of function
+     *
+     * @param $varname type,
+     *            what it does
+     * @return type, what the return does
+     */
     function posts()
-    {
-
-    }
+    {}
 
     /**
-    * function() - short description of function
-    *
-    * Long description of function
-    *
-    * @param    $varname    type, what it does
-    * @return   type, what the return does
-    */
+     * function() - short description of function
+     *
+     * Long description of function
+     *
+     * @param $varname type,
+     *            what it does
+     * @return type, what the return does
+     */
     function polls()
-    {
-
-    }
+    {}
 
     /**
-    * function() - short description of function
-    *
-    * Long description of function
-    *
-    * @param    $varname    type, what it does
-    * @return   type, what the return does
-    */
+     * function() - short description of function
+     *
+     * Long description of function
+     *
+     * @param $varname type,
+     *            what it does
+     * @return type, what the return does
+     */
     function ranks()
-    {
-
-    }
+    {}
 
     /**
-    * function() - short description of function
-    *
-    * Long description of function
-    *
-    * @param    $varname    type, what it does
-    * @return   type, what the return does
-    */
+     * function() - short description of function
+     *
+     * Long description of function
+     *
+     * @param $varname type,
+     *            what it does
+     * @return type, what the return does
+     */
     function threads()
-    {
-
-    }
+    {}
 
     /**
-    * function() - short description of function
-    *
-    * Long description of function
-    *
-    * @param    $varname    type, what it does
-    * @return   type, what the return does
-    */
+     * function() - short description of function
+     *
+     * Long description of function
+     *
+     * @param $varname type,
+     *            what it does
+     * @return type, what the return does
+     */
     function forums()
-    {
-
-    }
+    {}
 
     /**
-    * function() - short description of function
-    *
-    * Long description of function
-    *
-    * @param    $varname    type, what it does
-    * @return   type, what the return does
-    */
+     * function() - short description of function
+     *
+     * Long description of function
+     *
+     * @param $varname type,
+     *            what it does
+     * @return type, what the return does
+     */
     // phpBB 2.x does not have attachments. Nothing to do here
     function attachments()
     {
@@ -153,94 +145,87 @@ class phpbb2 extends convert
     }
 
     /**
-    * function() - short description of function
-    *
-    * Long description of function
-    *
-    * @param    $varname    type, what it does
-    * @return   type, what the return does
-    */
+     * function() - short description of function
+     *
+     * Long description of function
+     *
+     * @param $varname type,
+     *            what it does
+     * @return type, what the return does
+     */
     function addresses()
-    {
-
-    }
+    {}
 
     /**
-    * function() - short description of function
-    *
-    * Long description of function
-    *
-    * @param    $varname    type, what it does
-    * @return   type, what the return does
-    */
+     * function() - short description of function
+     *
+     * Long description of function
+     *
+     * @param $varname type,
+     *            what it does
+     * @return type, what the return does
+     */
     function favorites()
-    {
-
-    }
+    {}
 
     /**
-    * function() - short description of function
-    *
-    * Long description of function
-    *
-    * @param    $varname    type, what it does
-    * @return   type, what the return does
-    */
+     * function() - short description of function
+     *
+     * Long description of function
+     *
+     * @param $varname type,
+     *            what it does
+     * @return type, what the return does
+     */
     function subscriptions()
-    {
-
-    }
+    {}
 
     /**
-    * function() - short description of function
-    *
-    * Long description of function
-    *
-    * @param    $varname    type, what it does
-    * @return   type, what the return does
-    */
+     * function() - short description of function
+     *
+     * Long description of function
+     *
+     * @param $varname type,
+     *            what it does
+     * @return type, what the return does
+     */
     function censors()
-    {
-
-    }
+    {}
 
     /**
-    * function() - short description of function
-    *
-    * Long description of function
-    *
-    * @param    $varname    type, what it does
-    * @return   type, what the return does
-    */
+     * function() - short description of function
+     *
+     * Long description of function
+     *
+     * @param $varname type,
+     *            what it does
+     * @return type, what the return does
+     */
     function banned()
-    {
-
-    }
+    {}
 
     /**
-    * function() - short description of function
-    *
-    * Long description of function
-    *
-    * @param    $varname    type, what it does
-    * @return   type, what the return does
-    */
+     * function() - short description of function
+     *
+     * Long description of function
+     *
+     * @param $varname type,
+     *            what it does
+     * @return type, what the return does
+     */
     function settings()
-    {
-
-    }
+    {}
 
     /**
-    * function() - short description of function
-    *
-    * Long description of function
-    *
-    * @param    $varname    type, what it does
-    * @return   type, what the return does
-    */
+     * function() - short description of function
+     *
+     * Long description of function
+     *
+     * @param $varname type,
+     *            what it does
+     * @return type, what the return does
+     */
     function messages()
-    {
-
-    }
+    {}
 }
 ?>

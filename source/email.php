@@ -33,7 +33,7 @@
 define('DEBUG_REG', true);
 define('ROOT', './');
 
-require_once(ROOT.'header.php');
+require_once (ROOT . 'header.php');
 
 loadtpl('email_member');
 
@@ -42,99 +42,95 @@ $meta = metaTags();
 
 smcwcache();
 
-eval('$css = "'.template('css').'";');
+eval('$css = "' . template('css') . '";');
 
 nav($lang['emailmemnav']);
 btitle($lang['emailmemnav']);
 
-eval('echo "'.template('header').'";');
+eval('echo "' . template('header') . '";');
 
-if (X_GUEST)
-{
+if (X_GUEST) {
     error($lang['emailmemerror'], false);
 }
 
 $memberid = getInt('memberid');
 
-if (noSubmit('emailsubmit'))
-{
-    if ($memberid == '')
-    {
+if (noSubmit('emailsubmit')) {
+    if ($memberid == '') {
         error($lang['emailmemnomem'], false);
     }
-
-    $query = $db->query("SELECT uid, email, username, showemail FROM ".X_PREFIX."members WHERE uid = '$memberid' AND status != 'Banned'");
+    
+    $query = $db->query("SELECT uid, email, username, showemail FROM " . X_PREFIX . "members WHERE uid = '$memberid' AND status != 'Banned'");
     $sendto = $db->fetch_array($query);
     $db->free_result($query);
-
-    if (empty($sendto))
-    {
+    
+    if (empty($sendto)) {
         error($lang['emailmemnoexist'], false);
     }
-
-    if ($sendto['showemail'] != 'yes')
-    {
+    
+    if ($sendto['showemail'] != 'yes') {
         error($lang['emailmemerror'], false);
     }
-
+    
     $member = trim($sendto['username']);
-
-    eval('echo stripslashes("'.template('email_member').'");');
+    
+    eval('echo stripslashes("' . template('email_member') . '");');
 }
 
-if (onSubmit('emailsubmit'))
-{
-    $query = $db->query("SELECT uid, email, username, showemail FROM ".X_PREFIX."members WHERE uid = '$memberid' AND status != 'Banned'");
+if (onSubmit('emailsubmit')) {
+    $query = $db->query("SELECT uid, email, username, showemail FROM " . X_PREFIX . "members WHERE uid = '$memberid' AND status != 'Banned'");
     $sendto = $db->fetch_array($query);
     $db->free_result($query);
-
-    if (empty($sendto))
-    {
+    
+    if (empty($sendto)) {
         error($lang['emailmemnoexist'], false);
     }
-
-    if ($sendto['showemail'] != 'yes')
-    {
+    
+    if ($sendto['showemail'] != 'yes') {
         error($lang['emailmemerror'], false);
     }
-
+    
     $name = stripslashes(formVar('name'));
     $email = stripslashes(formVar('email'));
     $subject = stripslashes(formVar('subject'));
     $message = stripslashes(formVar('message'));
-
-    if ($name == '')
-    {
+    
+    if ($name == '') {
         error($lang['emailmemnoname'], false);
     }
-    if($email == '')
-    {
+    if ($email == '') {
         error($lang['emailmemnoemail'], false);
     }
-    if($subject == '')
-    {
+    if ($subject == '') {
         error($lang['emailmemnosubject'], false);
     }
-    if($message == '')
-    {
+    if ($message == '') {
         error($lang['emailmemnomessage'], false);
     }
-
-    $emailmsgurl = $CONFIG['boardurl'].'index.php';
-
-    $tpl_keys = array ('{TO}', '{FROM}', '{MSG}');
-    $tpl_values = array ($sendto['username'], $name, $message);
+    
+    $emailmsgurl = $CONFIG['boardurl'] . 'index.php';
+    
+    $tpl_keys = array(
+        '{TO}',
+        '{FROM}',
+        '{MSG}'
+    );
+    $tpl_values = array(
+        $sendto['username'],
+        $name,
+        $message
+    );
     $msgbody = str_replace($tpl_keys, $tpl_values, $lang['emailmemmsg']);
     
     $mailsys->setTo($sendto['email']);
     $mailsys->setFrom($email, $name);
-    $mailsys->setSubject('['.$CONFIG['bbname'].'] '.$subject);
+    $mailsys->setSubject('[' . $CONFIG['bbname'] . '] ' . $subject);
     $mailsys->setMessage($msgbody);
     $mailsys->Send();
     
-    message($lang['emailmemsubmitted'], false, '', '', 'viewprofile.php?memberid='.intval($sendto['uid']), true, false, true);
+    message($lang['emailmemsubmitted'], false, '', '', 'viewprofile.php?memberid=' . intval($sendto['uid']), true, false, true);
 }
 
 loadtime();
-eval('echo "'.template('footer').'";');
+eval('echo "' . template('footer') . '";');
 ?>

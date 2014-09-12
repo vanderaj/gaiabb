@@ -28,31 +28,29 @@
  *    along with GaiaBB.  If not, see <http://www.gnu.org/licenses/>.
  *
  **/
-
-if (!defined('IN_PROGRAM') && (defined('DEBUG') && DEBUG == false))
-{
+if (! defined('IN_PROGRAM') && (defined('DEBUG') && DEBUG == false)) {
     exit('This file is not designed to be called directly');
 }
 
 class cacheable
 {
+
     public $maxlife;
+
     public $prefix;
+
     public $expiry;
 
     function cacheable($prefix, $maxlife)
     {
         global $onlinetime;
-
+        
         $this->maxlife = $maxlife;
         $this->prefix = $prefix;
-
-        if (isset($_SESSION[$prefix . '__expiry']))
-        {
+        
+        if (isset($_SESSION[$prefix . '__expiry'])) {
             $this->expiry = $_SESSION[$prefix . '__expiry'];
-        }
-        else
-        {
+        } else {
             $this->expiry = array();
             $_SESSION[$prefix . '__expiry'] = $this->expiry;
         }
@@ -61,9 +59,8 @@ class cacheable
     function isStale($name)
     {
         global $onlinetime;
-
-        if (isset($this->expiry[$name]))
-        {
+        
+        if (isset($this->expiry[$name])) {
             return ($onlinetime > $this->expiry[$name]) ? true : false;
         }
         return true;
@@ -72,30 +69,26 @@ class cacheable
     function getWorkDir($reset = 'no')
     {
         $full = dirname($_SERVER['PHP_SELF']);
-        $pos = strrpos($full,'/');
-        $pos++;
-        $workdir = substr($full,$pos);
-        if (isset($reset) && $reset == 'yes')
-        {
+        $pos = strrpos($full, '/');
+        $pos ++;
+        $workdir = substr($full, $pos);
+        if (isset($reset) && $reset == 'yes') {
             $this->setData('workdir', $workdir);
         }
         return $workdir;
     }
 
     function refresh()
-    {
-    }
+    {}
 
     function getData($name)
     {
-        if ($this->isStale($name))
-        {
+        if ($this->isStale($name)) {
             $this->expire($name);
             return false;
         }
-
-        if (isset($_SESSION[$this->prefix . $name]))
-        {
+        
+        if (isset($_SESSION[$this->prefix . $name])) {
             return unserialize($_SESSION[$this->prefix . $name]);
         }
         return false;
@@ -104,7 +97,7 @@ class cacheable
     function setData($name, $object)
     {
         global $onlinetime;
-
+        
         $_SESSION[$this->prefix . $name] = serialize($object);
         $this->expiry[$name] = $onlinetime + $this->maxlife;
         $_SESSION[$this->prefix . '__expiry'] = $this->expiry;
@@ -112,8 +105,7 @@ class cacheable
 
     function expire($name)
     {
-        if (isset($_SESSION[$this->prefix . $name]))
-        {
+        if (isset($_SESSION[$this->prefix . $name])) {
             unset($_SESSION[$this->prefix . $name]);
             unset($this->expiry[$name]);
             $_SESSION[$this->prefix . '__expiry'] = $this->expiry;

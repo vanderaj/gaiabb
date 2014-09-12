@@ -33,52 +33,41 @@
 define('DEBUG_REG', true);
 define('ROOT', './');
 
-require_once(ROOT.'header.php');
-require_once(ROOTINC.'address.inc.php');
+require_once (ROOT . 'header.php');
+require_once (ROOTINC . 'address.inc.php');
 
-loadtpl(
-'addresslist_edit_address',
-'addresslist_edit',
-'addresslist_address_online',
-'addresslist_address_offline',
-'addresslist',
-'address_pm_inv',
-'address_pm_on',
-'address_pm_off',
-'address_pm',
-'addresslist_message'
-);
+loadtpl('addresslist_edit_address', 'addresslist_edit', 'addresslist_address_online', 'addresslist_address_offline', 'addresslist', 'address_pm_inv', 'address_pm_on', 'address_pm_off', 'address_pm', 'addresslist_message');
 
 $shadow = shadowfx();
 $meta = metaTags();
 
-eval('$css = "'.template('css').'";');
+eval('$css = "' . template('css') . '";');
 
 nav($lang['textaddresslist']);
 btitle($lang['textaddresslist']);
 
-if (X_GUEST || isset($self['status']) && $self['status'] == 'Banned')
-{
+if (X_GUEST || isset($self['status']) && $self['status'] == 'Banned') {
     error($lang['pmnotloggedin']);
 }
 
-$addresses = formArray('addresses', true , false, 'string');
+$addresses = formArray('addresses', true, false, 'string');
 $delete = formArray('delete', true, false, 'string');
 
-if (empty($addresses) && isset($_GET['addresses']))
-{
+if (empty($addresses) && isset($_GET['addresses'])) {
     $addresses = $db->escape($_GET['addresses']);
-    $addresses = array($addresses);
+    $addresses = array(
+        $addresses
+    );
 }
 
-if (empty($delete) && isset($_GET['delete']))
-{
+if (empty($delete) && isset($_GET['delete'])) {
     $addresses = $db->escape($_GET['delete']);
-    $addresses = array($delete);
+    $addresses = array(
+        $delete
+    );
 }
 
-switch($action)
-{
+switch ($action) {
     case 'add':
         address_add($addresses);
         break;
@@ -86,12 +75,9 @@ switch($action)
         address_edit();
         break;
     case 'delete':
-        if (count($delete) > 0)
-        {
+        if (count($delete) > 0) {
             address_delete($delete);
-        }
-        else
-        {
+        } else {
             blistmsg($lang['nomember']);
         }
         break;

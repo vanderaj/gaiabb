@@ -33,89 +33,80 @@
 define('DEBUG_REG', true);
 define('ROOT', './');
 
-require_once(ROOT.'header.php');
-require_once(ROOT.'include/validate.inc.php');
+require_once (ROOT . 'header.php');
+require_once (ROOT . 'include/validate.inc.php');
 
 loadtpl('contactus');
 
 $shadow = shadowfx();
 $meta = metaTags();
 
-eval('$css = "'.template('css').'";');
+eval('$css = "' . template('css') . '";');
 
 nav($lang['contactus']);
 btitle($lang['contactus']);
 
-eval('echo "'.template('header').'";');
+eval('echo "' . template('header') . '";');
 
 $oToken->assert_token(false);
 
-if ($CONFIG['contactus'] == 'off')
-{
+if ($CONFIG['contactus'] == 'off') {
     error($lang['fnasorry'], false);
 }
 
-if (noSubmit('contactsubmit'))
-{
+if (noSubmit('contactsubmit')) {
     $self['username'] = (isset($self['username']) ? $self['username'] : '');
     $self['email'] = (isset($self['email']) ? $self['email'] : '');
-    eval('echo stripslashes("'.template('contactus').'");');
+    eval('echo stripslashes("' . template('contactus') . '");');
 }
 
-if (onSubmit('contactsubmit'))
-{
+if (onSubmit('contactsubmit')) {
     $name = stripslashes(formVar('name'));
     $email = stripslashes(formVar('email'));
     $subject = stripslashes(formVar('subject'));
     $message = stripslashes(formVar('message'));
-
-    if (X_GUEST)
-    {
+    
+    if (X_GUEST) {
         $name = $name . " (Guest)";
     }
-
-    if ( empty($name) )
-    {
+    
+    if (empty($name)) {
         error($lang['contactnonamefrom'], false, '', '', $contactLink, true, false, true);
     }
     
-    if( empty($email) )
-    {
+    if (empty($email)) {
         error($lang['contactnoemailfrom'], false, '', '', $contactLink, true, false, true);
     }
     
-    if( empty($message) )
-    {
+    if (empty($message)) {
         error($lang['contactnomessage'], false, '', '', $contactLink, true, false, true);
     }
     
-    if( empty ($subject) )
-    {
+    if (empty($subject)) {
         error($lang['contactnosubject'], false, '', '', $contactLink, true, false, true);
     }
-
-    if ( empty($CONFIG['adminemail']) ) // The mail class can handle this error, but it'll describe it vaguely
-    {
+    
+    if (empty($CONFIG['adminemail']))     // The mail class can handle this error, but it'll describe it vaguely
+{
         error($lang['noadminemail'], false, '', '', 'cp_board.php', true, false, true);
     }
-
-    if ( empty($CONFIG['bbname']) ) // The mail class can handle this error, but it'll describe it vaguely
-    {
+    
+    if (empty($CONFIG['bbname']))     // The mail class can handle this error, but it'll describe it vaguely
+{
         error($lang['nobbname'], false, '', '', 'cp_board.php', true, false, true);
     }
     
-    if( !empty($name) && !empty($email) && !empty($CONFIG['adminemail']) && !empty($CONFIG['bbname']) )
-    {
+    if (! empty($name) && ! empty($email) && ! empty($CONFIG['adminemail']) && ! empty($CONFIG['bbname'])) {
         $mailsys->setTo($CONFIG['adminemail']);
         $mailsys->setFrom($email, $name);
-        $mailsys->setSubject('['.$CONFIG['bbname'].'] '.$subject);
+        $mailsys->setSubject('[' . $CONFIG['bbname'] . '] ' . $subject);
         $mailsys->setMessage($message);
         $mailsys->Send();
-    
+        
         message($lang['contactsubmitted'], false, '', '', 'index.php', true, false, true);
     }
 }
 
 loadtime();
-eval('echo "'.template('footer').'";');
+eval('echo "' . template('footer') . '";');
 ?>

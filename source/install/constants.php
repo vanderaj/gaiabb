@@ -24,9 +24,7 @@
  *    along with GaiaBB.  If not, see <http://www.gnu.org/licenses/>.
  *
  **/
-
-if (!defined('IN_PROGRAM') && (defined('DEBUG') && DEBUG == false))
-{
+if (! defined('IN_PROGRAM') && (defined('DEBUG') && DEBUG == false)) {
     exit('This file is not designed to be called directly');
 }
 
@@ -45,22 +43,22 @@ define('X_REDIRECT_JS', 2);
 
 define('SCHEMAVER', 41);
 
-require_once(ROOT.'include/validate.inc.php');
-require_once(ROOT.'include/functions.inc.php');
+require_once (ROOT . 'include/validate.inc.php');
+require_once (ROOT . 'include/functions.inc.php');
 
-// DEBUG flag, useful for tracking down serious technical issues. 
+// DEBUG flag, useful for tracking down serious technical issues.
 
 // To enable, change define('DEBUG', false) to define('DEBUG', true)
- 
-// This debug mode can help if you are having difficulty during 
-// *installation/upgrade/conversion* only. 
+
+// This debug mode can help if you are having difficulty during
+// *installation/upgrade/conversion* only.
 
 // If you need to see what is happening after installation, you need to
-// change the same flag in the include/constants.inc.php file, not this 
+// change the same flag in the include/constants.inc.php file, not this
 // file.
 
 // Installation DEBUG mode grants installation users super admin rights.
-// This should be reasonably safe as you must know a super admin password 
+// This should be reasonably safe as you must know a super admin password
 // to do anything, but just in case, here are the warnings:
 
 // 1. DO NOT LEAVE DEBUG MODE ENABLED
@@ -69,15 +67,12 @@ require_once(ROOT.'include/functions.inc.php');
 
 define('DEBUG', false);
 
-if (DEBUG)
-{
+if (DEBUG) {
     error_reporting(E_ALL || E_STRICT || E_DEPRECATED);
-    define('X_SADMIN', 1);				// Danger Will Robinson!
+    define('X_SADMIN', 1); // Danger Will Robinson!
     $debug_log = array();
-}
-else
-{
+} else {
     // Production
-    error_reporting(E_ALL&~E_NOTICE);
+    error_reporting(E_ALL & ~ E_NOTICE);
 }
 ?>

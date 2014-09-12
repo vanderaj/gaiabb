@@ -28,48 +28,38 @@
  *    along with GaiaBB.  If not, see <http://www.gnu.org/licenses/>.
  *
  **/
-
-if (!defined('IN_PROGRAM') && (defined('DEBUG') && DEBUG == false))
-{
+if (! defined('IN_PROGRAM') && (defined('DEBUG') && DEBUG == false)) {
     exit('This file is not designed to be called directly');
 }
 
 class post
 {
+
     function post()
-    {
-    }
+    {}
 
     function init()
-    {
-    }
+    {}
 
     function findById()
-    {
-    }
+    {}
 
     function exists()
-    {
-    }
+    {}
 
     function update()
-    {
-    }
+    {}
 
     function delete()
-    {
-    }
+    {}
 
     function addAttachment()
-    {
-    }
+    {}
 
     function replaceAttachment()
-    {
-    }
+    {}
 
     function deleteAttachment()
-    {
-    }
+    {}
 }
 ?>

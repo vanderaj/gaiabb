@@ -30,15 +30,13 @@
  **/
 
 // check to ensure no direct viewing of page
-if (!defined('IN_PROGRAM') && (defined('DEBUG') && DEBUG == false))
-{
+if (! defined('IN_PROGRAM') && (defined('DEBUG') && DEBUG == false)) {
     exit('This file is not designed to be called directly');
 }
 
-$query = $db->query("SELECT themeid, name FROM ".X_PREFIX."themes");
-while ($theme = $db->fetch_array($query))
-{
-    ${'theme'.$theme['themeid']} = stripslashes($theme['name']);
+$query = $db->query("SELECT themeid, name FROM " . X_PREFIX . "themes");
+while ($theme = $db->fetch_array($query)) {
+    ${'theme' . $theme['themeid']} = stripslashes($theme['name']);
 }
 $db->free_result($query);
 ?>
