@@ -28,34 +28,27 @@
  *    along with GaiaBB.  If not, see <http://www.gnu.org/licenses/>.
  *
  **/
-
 define('DEBUG_REG', true);
 define('ROOT', '../');
 define('ROOTINC', '../include/');
 define('ROOTCLASS', '../class/');
 
-require_once(ROOT.'header.php');
-require_once(ROOTINC.'admincp.inc.php');
-require_once(ROOTCLASS.'member.class.php');
+require_once (ROOT . 'header.php');
+require_once (ROOTINC . 'admincp.inc.php');
+require_once (ROOTCLASS . 'member.class.php');
 
-loadtpl(
-'cp_header',
-'cp_footer',
-'cp_message',
-'cp_error'
-);
+loadtpl('cp_header', 'cp_footer', 'cp_message', 'cp_error');
 
 $shadow = shadowfx();
 $shadow2 = shadowfx2();
 $meta = metaTags();
 
-nav('<a href="index.php">'.$lang['textcp'].'</a>');
+nav('<a href="index.php">' . $lang['textcp'] . '</a>');
 
-eval('$css = "'.template('css').'";');
-eval('echo "'.template('cp_header').'";');
+eval('$css = "' . template('css') . '";');
+eval('echo "' . template('cp_header') . '";');
 
-if (!X_SADMIN)
-{
+if (! X_SADMIN) {
     adminaudit($self['username'], '', 0, 0, 'Authorization failed');
     error($lang['superadminonly'], false);
 }
@@ -68,47 +61,55 @@ function viewPaneL()
     global $THEME, $lang, $shadow2, $oToken, $db, $CONFIG;
     global $selHTML, $cheHTML;
     ?>
-    <form method="post" action="cp_rename.php">
-    <input type="hidden" name="token" value="<?php echo $oToken->get_new_token()?>" />
-    <table cellspacing="0px" cellpadding="0px" border="0px" width="100%" align="center">
-    <tr>
-    <td bgcolor="<?php echo $THEME['bordercolor']?>">
-    <table border="0px" cellspacing="<?php echo $THEME['borderwidth']?>" cellpadding="<?php echo $THEME['tablespace']?>" width="100%">
-    <tr class="category">
-    <td colspan="2"><strong><font color="<?php echo $THEME['cattext']?>"><?php echo $lang['admin_rename_txt']?></font></strong></td>
-    </tr>
-    <tr class="tablerow">
-    <td bgcolor="<?php echo $THEME['altbg1']?>" width="22%"><?php echo $lang['admin_rename_userfrom']?></td>
-    <td bgcolor="<?php echo $THEME['altbg2']?>"><input type="text" name="frmUserFrom" size="25" /></td>
-    </tr>
-    <tr class="tablerow">
-    <td bgcolor="<?php echo $THEME['altbg1']?>" width="22%"><?php echo $lang['admin_rename_userto']?></td>
-    <td bgcolor="<?php echo $THEME['altbg2']?>"><input type="text" name="frmUserTo" size="25" /></td>
-    </tr>
-    <tr class="ctrtablerow">
-    <td bgcolor="<?php echo $THEME['altbg2']?>" colspan="2"><input type="submit" class="submit" name="renamesubmit" value="<?php echo $lang['admin_rename_txt']?>" /></td>
-    </tr>
-    </table>
-    </td>
-    </tr>
-    </table>
+<form method="post" action="cp_rename.php">
+	<input type="hidden" name="token"
+		value="<?php echo $oToken->get_new_token()?>" />
+	<table cellspacing="0px" cellpadding="0px" border="0px" width="100%"
+		align="center">
+		<tr>
+			<td bgcolor="<?php echo $THEME['bordercolor']?>">
+				<table border="0px" cellspacing="<?php echo $THEME['borderwidth']?>"
+					cellpadding="<?php echo $THEME['tablespace']?>" width="100%">
+					<tr class="category">
+						<td colspan="2"><strong><font
+								color="<?php echo $THEME['cattext']?>"><?php echo $lang['admin_rename_txt']?></font></strong></td>
+					</tr>
+					<tr class="tablerow">
+						<td bgcolor="<?php echo $THEME['altbg1']?>" width="22%"><?php echo $lang['admin_rename_userfrom']?></td>
+						<td bgcolor="<?php echo $THEME['altbg2']?>"><input type="text"
+							name="frmUserFrom" size="25" /></td>
+					</tr>
+					<tr class="tablerow">
+						<td bgcolor="<?php echo $THEME['altbg1']?>" width="22%"><?php echo $lang['admin_rename_userto']?></td>
+						<td bgcolor="<?php echo $THEME['altbg2']?>"><input type="text"
+							name="frmUserTo" size="25" /></td>
+					</tr>
+					<tr class="ctrtablerow">
+						<td bgcolor="<?php echo $THEME['altbg2']?>" colspan="2"><input
+							type="submit" class="submit" name="renamesubmit"
+							value="<?php echo $lang['admin_rename_txt']?>" /></td>
+					</tr>
+				</table>
+			</td>
+		</tr>
+	</table>
     <?php echo $shadow2?>
     </form>
-    </td>
-    </tr>
-    </table>
-    <?php
+</td>
+</tr>
+</table>
+<?php
 }
 
 function doPanel()
 {
     global $THEME, $lang, $shadow2, $oToken, $db, $CONFIG, $onlinetime;
-
+    
     $oToken->assert_token();
-
+    
     $frmUserForm = formVar('frmUserFrom');
     $frmUserTo = formVar('frmUserTo');
-
+    
     $adm = new member();
     $myErr = $adm->rename($frmUserForm, $frmUserTo);
     cp_message($myErr, false, '', '</td></tr></table>', 'cp_rename.php', true, false, true);
@@ -116,16 +117,14 @@ function doPanel()
 
 displayAdminPanel();
 
-if (noSubmit('renamesubmit'))
-{
+if (noSubmit('renamesubmit')) {
     viewPanel();
 }
 
-if (onSubmit('renamesubmit'))
-{
+if (onSubmit('renamesubmit')) {
     doPanel();
 }
 
 loadtime();
-eval('echo "'.template('cp_footer').'";');
+eval('echo "' . template('cp_footer').'";');
 ?>

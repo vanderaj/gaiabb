@@ -28,23 +28,17 @@
  *    along with GaiaBB.  If not, see <http://www.gnu.org/licenses/>.
  *
  **/
-
 define('DEBUG_REG', true);
 define('ROOT', '../');
 define('ROOTINC', '../include/');
 define('ROOTCLASS', '../class/');
 define('ROOTHELPER', '../helper/');
 
-require_once(ROOT.'header.php');
-require_once(ROOTINC.'admincp.inc.php');
-require_once(ROOTHELPER.'formHelper.php');
+require_once (ROOT . 'header.php');
+require_once (ROOTINC . 'admincp.inc.php');
+require_once (ROOTHELPER . 'formHelper.php');
 
-loadtpl(
-'cp_header',
-'cp_footer',
-'cp_message',
-'cp_error'
-);
+loadtpl('cp_header', 'cp_footer', 'cp_message', 'cp_error');
 
 $shadow = shadowfx();
 $shadow2 = shadowfx2();
@@ -55,11 +49,10 @@ nav($lang['General_Settings']);
 btitle($lang['textcp']);
 btitle($lang['General_Settings']);
 
-eval('$css = "'.template('css').'";');
-eval('echo "'.template('cp_header').'";');
+eval('$css = "' . template('css') . '";');
+eval('echo "' . template('cp_header') . '";');
 
-if (!X_ADMIN)
-{
+if (! X_ADMIN) {
     adminaudit($self['username'], '', 0, 0, 'Authorization failed');
     error($lang['adminonly'], false);
 }
@@ -71,7 +64,7 @@ function viewPanel()
 {
     global $THEME, $lang, $shadow2, $oToken, $db, $CONFIG;
     global $selHTML;
-
+    
     $whosonlineon = $whosonlineoff = '';
     formHelper::getSettingOnOffHtml('whosonlinestatus', $whosonlineon, $whosonlineoff);
     $whosonlinetodayon = $whosonlinetodayoff = '';
@@ -147,61 +140,70 @@ function viewPanel()
     $rpgyes = $rpgno = '';
     formHelper::getSettingYesNoHtml('rpg_status', $rpgyes, $rpgno);
     $notifycheck[0] = $notifycheck[1] = $notifycheck[2] = false;
-    switch ($CONFIG['notifyonreg'])
-    {
-        case 'off' :
+    switch ($CONFIG['notifyonreg']) {
+        case 'off':
             $notifycheck[0] = true;
             break;
-        case 'pm' :
+        case 'pm':
             $notifycheck[1] = true;
             break;
-        default :
+        default:
             $notifycheck[2] = true;
             break;
     }
     $footer_options = explode('-', $CONFIG['footer_options']);
-    if (in_array('serverload', $footer_options))
-    {
+    if (in_array('serverload', $footer_options)) {
         $sel_serverload = true;
-    } else
-    {
+    } else {
         $sel_serverload = false;
     }
-    if (in_array('queries', $footer_options))
-    {
+    if (in_array('queries', $footer_options)) {
         $sel_queries = true;
-    } else
-    {
+    } else {
         $sel_queries = false;
     }
-    if (in_array('phpsql', $footer_options))
-    {
+    if (in_array('phpsql', $footer_options)) {
         $sel_phpsql = true;
-    } else
-    {
+    } else {
         $sel_phpsql = false;
     }
-    if (in_array('loadtimes', $footer_options))
-    {
+    if (in_array('loadtimes', $footer_options)) {
         $sel_loadtimes = true;
-    } else
-    {
+    } else {
         $sel_loadtimes = false;
     }
-    $values = array ('serverload', 'queries', 'phpsql', 'loadtimes');
-    $names = array ($lang['Enable_Server_Load'], $lang['Enable_Queries'], $lang['Enable_PHP_SQL_Calculation'], $lang['Enable_Page_loadtimes']);
-    $checked = array ($sel_serverload, $sel_queries, $sel_phpsql, $sel_loadtimes);
+    $values = array(
+        'serverload',
+        'queries',
+        'phpsql',
+        'loadtimes'
+    );
+    $names = array(
+        $lang['Enable_Server_Load'],
+        $lang['Enable_Queries'],
+        $lang['Enable_PHP_SQL_Calculation'],
+        $lang['Enable_Page_loadtimes']
+    );
+    $checked = array(
+        $sel_serverload,
+        $sel_queries,
+        $sel_phpsql,
+        $sel_loadtimes
+    );
     $CONFIG['usernamenotify'] = stripslashes($CONFIG['usernamenotify']);
     ?>
-    <form method="post" action="cp_general.php">
-    <input type="hidden" name="token" value="<?php echo $oToken->get_new_token()?>" />
-    <table cellspacing="0px" cellpadding="0px" border="0px" width="100%" align="center">
-    <tr>
-    <td bgcolor="<?php echo $THEME['bordercolor']?>">
-    <table border="0px" cellspacing="<?php echo $THEME['borderwidth']?>" cellpadding="<?php echo $THEME['tablespace']?>" width="100%">
-    <tr class="category">
-    <td class="title" colspan="2"><?php echo $lang['admin_main_settings3']?></td>
-    </tr>
+<form method="post" action="cp_general.php">
+	<input type="hidden" name="token"
+		value="<?php echo $oToken->get_new_token()?>" />
+	<table cellspacing="0px" cellpadding="0px" border="0px" width="100%"
+		align="center">
+		<tr>
+			<td bgcolor="<?php echo $THEME['bordercolor']?>">
+				<table border="0px" cellspacing="<?php echo $THEME['borderwidth']?>"
+					cellpadding="<?php echo $THEME['tablespace']?>" width="100%">
+					<tr class="category">
+						<td class="title" colspan="2"><?php echo $lang['admin_main_settings3']?></td>
+					</tr>
     <?php
     formHelper::formSelectOnOff($lang['textsearchstatus'], 'searchstatusnew', $searchon, $searchoff);
     formHelper::formSelectOnOff($lang['textfaqstatus'], 'faqstatusnew', $faqon, $faqoff);
@@ -221,8 +223,8 @@ function viewPanel()
     formHelper::formSelectOnOff($lang['notepadstatus'], 'notepadstatusnew', $notepadon, $notepadoff);
     ?>
     <tr class="category">
-    <td class="title" colspan="2"><?php echo $lang['admin_main_settings4']?></td>
-    </tr>
+						<td class="title" colspan="2"><?php echo $lang['admin_main_settings4']?></td>
+					</tr>
     <?php
     formHelper::formSelectOnOff($lang['whosonline_on'], 'whosonlinestatusnew', $whosonlineon, $whosonlineoff);
     formHelper::formSelectOnOff($lang['whosonlinetoday'], 'whosonlinetodaynew', $whosonlinetodayon, $whosonlinetodayoff);
@@ -241,11 +243,19 @@ function viewPanel()
     formHelper::formSelectOnOff($lang['showsubs'], 'showsubsnew', $showsubson, $showsubsoff);
     ?>
     <tr class="category">
-    <td class="title" colspan="2"><?php echo $lang['admin_main_settings5']?></td>
-    </tr>
+						<td class="title" colspan="2"><?php echo $lang['admin_main_settings5']?></td>
+					</tr>
     <?php
     formHelper::formSelectOnOff($lang['reg_on'], 'regstatusnew', $regon, $regoff);
-    formHelper::formSelectList($lang['notifyonreg'], 'notifyonregnew', array ($lang['textoff'], $lang['viapm'], $lang['viaemail']), array ('off', 'pm', 'email'), $notifycheck, false);
+    formHelper::formSelectList($lang['notifyonreg'], 'notifyonregnew', array(
+        $lang['textoff'],
+        $lang['viapm'],
+        $lang['viaemail']
+    ), array(
+        'off',
+        'pm',
+        'email'
+    ), $notifycheck, false);
     formHelper::formTextBox($lang['notify'], 5, 'usernamenotifynew', 50, $CONFIG['usernamenotify']);
     formHelper::formSelectOnOff($lang['textreggedonly'], 'regviewonlynew', $regonlyon, $regonlyoff);
     formHelper::formSelectOnOff($lang['texthidepriv'], 'hideprivatenew', $hideon, $hideoff);
@@ -257,8 +267,8 @@ function viewPanel()
     formHelper::formSelectOnOff($lang['doublee'], 'doubleenew', $doubleeon, $doubleeoff);
     ?>
     <tr class="category">
-    <td class="title" colspan="2"><?php echo $lang['admin_main_settings6']?></td>
-    </tr>
+						<td class="title" colspan="2"><?php echo $lang['admin_main_settings6']?></td>
+					</tr>
     <?php
     formHelper::formTextBox($lang['texthottopic'], 'hottopicnew', $CONFIG['hottopic'], 3);
     formHelper::formSelectOnOff($lang['bbinsert'], 'bbinsertnew', $bbinserton, $bbinsertoff);
@@ -267,26 +277,28 @@ function viewPanel()
     formHelper::formSelectOnOff($lang['sigbbcode'], 'sigbbcodenew', $sigbbcodeon, $sigbbcodeoff);
     ?>
     <tr class="ctrtablerow" bgcolor="<?php echo $THEME['altbg2']?>">
-    <td colspan="2"><input class="submit" type="submit" name="generalsubmit" value="<?php echo $lang['textsubmitchanges']?>" /></td>
-    </tr>
-    </table>
-    </td>
-    </tr>
-    </table>
+						<td colspan="2"><input class="submit" type="submit"
+							name="generalsubmit"
+							value="<?php echo $lang['textsubmitchanges']?>" /></td>
+					</tr>
+				</table>
+			</td>
+		</tr>
+	</table>
     <?php echo $shadow2?>
     </form>
-    </td>
-    </tr>
-    </table>
-    <?php
+</td>
+</tr>
+</table>
+<?php
 }
 
 function doPanel()
 {
     global $THEME, $lang, $shadow2, $oToken, $db, $CONFIG;
-
+    
     $oToken->assert_token();
-
+    
     $searchstatusnew = formOnOff('searchstatusnew');
     $faqstatusnew = formOnOff('faqstatusnew');
     $topicactivity_statusnew = formOnOff('topicactivity_statusnew');
@@ -335,13 +347,12 @@ function doPanel()
     $inactiveusersnew = formInt('inactiveusersnew');
     $footer_options = '';
     $new_footer_options = formArray('new_footer_options');
-    if (!empty($new_footer_options))
-    {
+    if (! empty($new_footer_options)) {
         $footer_options = implode('-', $new_footer_options);
     }
     $sigbbcodenew = formOnOff('sigbbcodenew');
-
-    $config_array = array (
+    
+    $config_array = array(
         'hottopic' => $hottopicnew,
         'whosonlinestatus' => $whosonlinestatusnew,
         'regstatus' => $regstatusnew,
@@ -382,7 +393,7 @@ function doPanel()
         'rpg_status' => $rpg_statusnew,
         'viewlocation' => $viewlocationnew,
         'contactus' => $contactusnew,
-        'mod_status' => 'off',    // Disabled as of 20100411
+        'mod_status' => 'off', // Disabled as of 20100411
         'attachicon_status' => $attachicon_statusnew,
         'whosonlinetoday' => $whosonlinetodaynew,
         'resetsig' => $resetsignew,
@@ -391,28 +402,25 @@ function doPanel()
         'login_max_attempts' => $loginattemptsnew,
         'inactiveusers' => $inactiveusersnew
     );
-
+    
     // execute query
-    foreach ($config_array as $key => $value)
-    {
-        $db->query("UPDATE ".X_PREFIX."settings SET config_value = '$value' WHERE config_name = '$key' LIMIT 1");
+    foreach ($config_array as $key => $value) {
+        $db->query("UPDATE " . X_PREFIX . "settings SET config_value = '$value' WHERE config_name = '$key' LIMIT 1");
     }
-
+    
     cp_message($lang['textsettingsupdate'], false, '', '</td></tr></table>', 'index.php', true, false, true);
 }
 
 displayAdminPanel();
 
-if (noSubmit('generalsubmit'))
-{
+if (noSubmit('generalsubmit')) {
     viewPanel();
 }
 
-if (onSubmit('generalsubmit'))
-{
-        doPanel();
+if (onSubmit('generalsubmit')) {
+    doPanel();
 }
 
 loadtime();
-eval('echo "'.template('cp_footer').'";');
+eval('echo "' . template('cp_footer') . '";');
 ?>

@@ -34,7 +34,7 @@ define('DEBUG_REG', true);
 define('CACHECONTROL', 'nocache');
 define('ROOT', './');
 
-require_once(ROOT.'header.php');
+require_once (ROOT . 'header.php');
 
 loadtpl('lostpw');
 
@@ -43,78 +43,69 @@ $meta = metaTags();
 
 smcwcache();
 
-eval('$css = "'.template('css').'";');
+eval('$css = "' . template('css') . '";');
 
 nav($lang['textlostpw']);
 btitle($lang['textlostpw']);
 
-eval('echo "'.template('header').'";');
+eval('echo "' . template('header') . '";');
 
-if (X_MEMBER)
-{
+if (X_MEMBER) {
     error($lang['plogtuf'], false, '', '', 'index.php', true);
 }
 
-if (noSubmit('lostpwsubmit'))
-{
-    eval('echo stripslashes("'.template('lostpw').'");');
-}
-else
-{
+if (noSubmit('lostpwsubmit')) {
+    eval('echo stripslashes("' . template('lostpw') . '");');
+} else {
     $username = $db->escape(formVar('username'));
     $email = formVar('email');
-
-    $query = $db->query("SELECT username, email, pwdate FROM ".X_PREFIX."members WHERE (username = '$username' and status != 'Banned')");
+    
+    $query = $db->query("SELECT username, email, pwdate FROM " . X_PREFIX . "members WHERE (username = '$username' and status != 'Banned')");
     $member = $db->fetch_array($query);
     $rows = $db->num_rows($query);
     $db->free_result($query);
-
-    if ($rows == 1 && strtolower($email) === strtolower(stripslashes($member['email'])))
-    {
+    
+    if ($rows == 1 && strtolower($email) === strtolower(stripslashes($member['email']))) {
         $time = $onlinetime - 86400;
-        if ($member['pwdate'] > $time)
-        {
+        if ($member['pwdate'] > $time) {
             error($lang['badinfo'], false, '', '', 'index.php', true);
         }
-    }
-    else
-    {
+    } else {
         error($lang['badinfo'], false, '', '', 'lostpw.php', true);
     }
-
+    
     $email = stripslashes($member['email']); // SMTP functions cannot handle database escaped e-mail addresses
-
+    
     $chars = '23456789abcdefghjkmnpqrstuvwxyz';
     $newpass = '';
-    mt_srand((double)microtime() * 1000000);
+    mt_srand((double) microtime() * 1000000);
     $max = mt_rand(8, 12);
-    for ($get = strlen($chars), $i = 0; $i < $max; $i++)
-    {
+    for ($get = strlen($chars), $i = 0; $i < $max; $i ++) {
         $newpass .= $chars[mt_rand(0, $get)];
     }
     $newmd5pass = md5(trim($newpass));
-
+    
     $config_cache->expire('settings');
     $moderators_cache->expire('moderators');
     $config_cache->expire('theme');
     $config_cache->expire('pluglinks');
     $config_cache->expire('whosonline');
     $config_cache->expire('forumjump');
-
-    $db->query("UPDATE ".X_PREFIX."members SET password = '$newmd5pass', pwdate = '$onlinetime' WHERE username = '$member[username]' AND email = '$member[email]'");
-
-    $messagebody = $lang['textyourpwis']."\n\n".$member['username']."\n".$newpass;
-
-    if (empty($CONFIG['adminemail'])) // The mail class can handle this error, but it'll describe it vaguely
-    {
+    
+    $db->query("UPDATE " . X_PREFIX . "members SET password = '$newmd5pass', pwdate = '$onlinetime' WHERE username = '$member[username]' AND email = '$member[email]'");
+    
+    $messagebody = $lang['textyourpwis'] . "\n\n" . $member['username'] . "\n" . $newpass;
+    
+    if (empty($CONFIG['adminemail']))     // The mail class can handle this error, but it'll describe it vaguely
+{
         error($lang['noadminemail'], false, '', '', 'admin/cp_board.php', true, false, true);
     }
-
-    if (empty($CONFIG['bbname'])) // The mail class can handle this error, but it'll describe it vaguely
-    {
+    
+    if (empty($CONFIG['bbname']))     // The mail class can handle this error, but it'll describe it vaguely
+{
         error($lang['nobbname'], false, '', '', 'admin/cp_board.php', true, false, true);
     }
-
+    
     $mailsys->setTo($email);
     $mailsys->setFrom($CONFIG['adminemail'], $CONFIG['bbname']);
     $mailsys->setSubject($lang['textyourpw']);
@@ -122,9 +113,8 @@ else
     $mailsys->Send();
     
     message($lang['emailpw'], false, '', '', 'index.php', true, false, true);
-
 }
 
 loadtime();
-eval('echo "'.template('footer').'";');
+eval('echo "' . template('footer') . '";');
 ?>

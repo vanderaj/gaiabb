@@ -30,8 +30,7 @@
  **/
 
 // check to ensure no direct viewing of page
-if (!defined('IN_PROGRAM') && (defined('DEBUG') && DEBUG == false))
-{
+if (! defined('IN_PROGRAM') && (defined('DEBUG') && DEBUG == false)) {
     exit('This file is not designed to be called directly');
 }
 
@@ -49,13 +48,13 @@ if (!defined('IN_PROGRAM') && (defined('DEBUG') && DEBUG == false))
  * - Slows performance by about 5% for all users
  *
  * Turn DEBUG on by changing define('DEBUG', false); to define('DEBUG', true);
-*/
+ */
 
 // Development
 define('DEBUG', false);
 
 // Production
-if (!defined('DEBUG')) {
+if (! defined('DEBUG')) {
     define('DEBUG', false);
 }
 
@@ -66,17 +65,18 @@ if (!defined('DEBUG')) {
 define('DEBUGLEVEL', 1);
 
 // Production
-if (!defined('DEBUGLEVEL')) {
+if (! defined('DEBUGLEVEL')) {
     define('DEBUGLEVEL', 0);
 }
 
 // Change this if you want additional security in your installation
 define('GAIABB_MASTERKEY', 'sq^%L4Ld/<*C~WG)');
 
-/* Product name and version
+/*
+ * Product name and version
  *
  * Change these as necessary.
-*/
+ */
 $versionpowered = ' - Powered by GaiaBB';
 $versioncompany = 'The GaiaBB Group';
 $versionshort = 'GaiaBB';
@@ -142,8 +142,7 @@ define('GAIABB_BUILD', $versionbuild);
 define('GAIABB_COPYRIGHT', $versioncopyright);
 
 // Cache-control
-if (!defined('CACHECONTROL'))
-{
+if (! defined('CACHECONTROL')) {
     define('CACHECONTROL', 'public');
 }
 
@@ -154,8 +153,7 @@ if (!defined('CACHECONTROL'))
 define('X_GZIP', true);
 
 // leave this alone unless you know what you are doing
-if (!defined('X_GZIP'))
-{
+if (! defined('X_GZIP')) {
     define('X_GZIP', false);
 }
 ?>

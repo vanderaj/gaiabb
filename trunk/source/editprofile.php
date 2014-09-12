@@ -33,23 +33,10 @@
 define('DEBUG_REG', true);
 define('ROOT', './');
 
-require_once(ROOT.'header.php');
-require_once(ROOTINC.'usercp.inc.php');
+require_once (ROOT . 'header.php');
+require_once (ROOTINC . 'usercp.inc.php');
 
-loadtpl(
-'error_nologinsession',
-'usercp_avatarurl',
-'admintool_editprofile',
-'usercp_photourl',
-'usercp_avatarhidden',
-'usercp_useravatar',
-'editprofile_avatarurl',
-'editprofile_avatarhidden',
-'editprofile_useravatar',
-'editprofile_photourl',
-'editprofile_photohidden',
-'editprofile_userphoto'
-);
+loadtpl('error_nologinsession', 'usercp_avatarurl', 'admintool_editprofile', 'usercp_photourl', 'usercp_avatarhidden', 'usercp_useravatar', 'editprofile_avatarurl', 'editprofile_avatarhidden', 'editprofile_useravatar', 'editprofile_photourl', 'editprofile_photohidden', 'editprofile_userphoto');
 
 $shadow = shadowfx();
 $meta = metaTags();
@@ -57,12 +44,11 @@ $meta = metaTags();
 nav($lang['texteditpro']);
 btitle($lang['texteditpro']);
 
-eval('$css = "'.template('css').'";');
+eval('$css = "' . template('css') . '";');
 
-eval('echo "'.template('header').'";');
+eval('echo "' . template('header') . '";');
 
-if (!X_SADMIN)
-{
+if (! X_SADMIN) {
     error($lang['superadminonly'], false);
 }
 
@@ -75,8 +61,7 @@ $config_cache->expire('forumjump');
 
 $auditaction = $_SERVER['REQUEST_URI'];
 $aapos = strpos($auditaction, "?");
-if ($aapos !== false)
-{
+if ($aapos !== false) {
     $auditaction = substr($auditaction, $aapos + 1);
 }
 
@@ -84,49 +69,44 @@ $auditaction = addslashes("$onlineip|#|$auditaction");
 adminaudit($self['username'], $auditaction, 0, 0);
 
 $memberid = getInt('memberid');
-$userid = $db->fetch_array($db->query("SELECT username FROM ".X_PREFIX."members WHERE uid = '$memberid'"));
-if (empty($userid['username']))
-{
+$userid = $db->fetch_array($db->query("SELECT username FROM " . X_PREFIX . "members WHERE uid = '$memberid'"));
+if (empty($userid['username'])) {
     error($lang['nomember'], false);
-}
-else
-{
+} else {
     $user = $userid['username'];
 }
 
-if (noSubmit('editsubmit'))
-{
-    $query = $db->query("SELECT * FROM ".X_PREFIX."members WHERE uid = '$memberid'");
+if (noSubmit('editsubmit')) {
+    $query = $db->query("SELECT * FROM " . X_PREFIX . "members WHERE uid = '$memberid'");
     $member = $db->fetch_array($query);
     $db->free_result($query);
-
+    
     $showemailyes = $showemailno = '';
     memberYesNo('showemail', $showemailyes, $showemailno);
-
+    
     $newsletteryes = $newsletterno = '';
     memberYesNo('newsletter', $newsletteryes, $newsletterno);
-
+    
     $saveogpmyes = $saveogpmno = '';
     memberYesNo('saveogpm', $saveogpmyes, $saveogpmno);
-
+    
     $emailonpmyes = $emailonpmno = '';
     memberYesNo('emailonpm', $emailonpmyes, $emailonpmno);
-
+    
     $viewavatarsyes = $viewavatarsno = '';
     memberYesNo('viewavatars', $viewavatarsyes, $viewavatarsno);
-
+    
     $viewsigsyes = $viewsigsno = '';
     memberYesNo('viewsigs', $viewsigsyes, $viewsigsno);
-
+    
     $shownameyes = $shownameno = '';
     memberYesNo('showname', $shownameyes, $shownameno);
-
+    
     $expviewyes = $expviewno = '';
     memberYesNo('expview', $expviewyes, $expviewno);
-
+    
     $invisibleyes = $invisibleno = '';
-    switch ($member['invisible'])
-    {
+    switch ($member['invisible']) {
         case '1':
             $invisibleyes = $selHTML;
             break;
@@ -134,10 +114,9 @@ if (noSubmit('editsubmit'))
             $invisibleno = $selHTML;
             break;
     }
-
+    
     $dstyes = $dstno = '';
-    switch ($member['daylightsavings'])
-    {
+    switch ($member['daylightsavings']) {
         case '3600':
             $dstyes = $selHTML;
             break;
@@ -145,10 +124,9 @@ if (noSubmit('editsubmit'))
             $dstno = $selHTML;
             break;
     }
-
+    
     $selectasc = $selectdesc = '';
-    switch ($member['psorting'])
-    {
+    switch ($member['psorting']) {
         case 'ASC':
             $selectasc = $selHTML;
             break;
@@ -156,41 +134,36 @@ if (noSubmit('editsubmit'))
             $selectdesc = $selHTML;
             break;
     }
-
+    
     $registerdate = gmdate($self['dateformat'], $member['regdate'] + ($self['timeoffset'] * 3600) + $self['daylightsavings']);
     $lastlogdate = gmdate($self['dateformat'], $member['lastvisit'] + ($self['timeoffset'] * 3600) + $self['daylightsavings']);
-
+    
     $currdate = gmdate($self['timecode'], $onlinetime);
     eval($lang['evaloffset']);
-
+    
     TimeOffsetDisplay();
-
+    
     $themelist = array();
     $themelist[] = '<select name="thememem">';
-    $themelist[] = '<option value="0">'.$lang['textusedefault'].'</option>';
-    $query = $db->query("SELECT themeid, name FROM ".X_PREFIX."themes WHERE themestatus = 'on' ORDER BY name ASC");
-    while ($themeinfo = $db->fetch_array($query))
-    {
-        if ($themeinfo['themeid'] == $member['theme'])
-        {
-            $themelist[] = '<option value="'.$themeinfo['themeid'].'" '.$selHTML.'>'.stripslashes($themeinfo['name']).'</option>';
-        }
-        else
-        {
-            $themelist[] = '<option value="'.$themeinfo['themeid'].'">'.stripslashes($themeinfo['name']).'</option>';
+    $themelist[] = '<option value="0">' . $lang['textusedefault'] . '</option>';
+    $query = $db->query("SELECT themeid, name FROM " . X_PREFIX . "themes WHERE themestatus = 'on' ORDER BY name ASC");
+    while ($themeinfo = $db->fetch_array($query)) {
+        if ($themeinfo['themeid'] == $member['theme']) {
+            $themelist[] = '<option value="' . $themeinfo['themeid'] . '" ' . $selHTML . '>' . stripslashes($themeinfo['name']) . '</option>';
+        } else {
+            $themelist[] = '<option value="' . $themeinfo['themeid'] . '">' . stripslashes($themeinfo['name']) . '</option>';
         }
     }
     $themelist[] = '</select>';
     $themelist = implode("\n", $themelist);
     $db->free_result($query);
-
+    
     $langfileselect = langSelect();
-
+    
     BDayDisplay();
-
+    
     $check12 = $check24 = '';
-    switch ($member['timeformat'])
-    {
+    switch ($member['timeformat']) {
         case '24':
             $check24 = $selHTML;
             break;
@@ -198,96 +171,79 @@ if (noSubmit('editsubmit'))
             $check12 = $selHTML;
             break;
     }
-
+    
     $timeformatlist = array();
     $timeformatlist[] = '<select name="timeformatnew">';
-    $timeformatlist[] = '<option value="24"'.$check24.'>'.gmdate("H:i", $onlinetime + ($self['timeoffset'] * 3600) + $self['daylightsavings']).'</option>';
-    $timeformatlist[] = '<option value="12"'.$check12.'>'.gmdate("h:i A", $onlinetime + ($self['timeoffset'] * 3600) + $self['daylightsavings']).'</option>';
+    $timeformatlist[] = '<option value="24"' . $check24 . '>' . gmdate("H:i", $onlinetime + ($self['timeoffset'] * 3600) + $self['daylightsavings']) . '</option>';
+    $timeformatlist[] = '<option value="12"' . $check12 . '>' . gmdate("h:i A", $onlinetime + ($self['timeoffset'] * 3600) + $self['daylightsavings']) . '</option>';
     $timeformatlist[] = '</select>';
     $timeformatlist = implode("\n", $timeformatlist);
-
-    if ($CONFIG['sigbbcode'] == 'on')
-    {
+    
+    if ($CONFIG['sigbbcode'] == 'on') {
         $bbcodeis = $lang['texton'];
-    }
-    else
-    {
+    } else {
         $bbcodeis = $lang['textoff'];
     }
-
-    eval('$avatar = "'.template('editprofile_avatarurl').'";');
-
+    
+    eval('$avatar = "' . template('editprofile_avatarurl') . '";');
+    
     $useravatar = $avdeletebutton = '';
-    if (!empty($member['avatar']))
-    {
-        eval('$useravatar = "'.template('editprofile_useravatar').'";');
-        $avdeletebutton = '<br /><input type="checkbox" name="avatardel" value="1" />'.$lang['Avatar_Delete'].'';
+    if (! empty($member['avatar'])) {
+        eval('$useravatar = "' . template('editprofile_useravatar') . '";');
+        $avdeletebutton = '<br /><input type="checkbox" name="avatardel" value="1" />' . $lang['Avatar_Delete'] . '';
     }
-
-    eval('$avatarhidden = "'.template('editprofile_avatarhidden').'";');
-
+    
+    eval('$avatarhidden = "' . template('editprofile_avatarhidden') . '";');
+    
     $photo = '';
-    eval('$photo = "'.template('editprofile_photourl').'";');
-
+    eval('$photo = "' . template('editprofile_photourl') . '";');
+    
     $userphoto = $photodeletebutton = '';
-    if (!empty($member['photo']))
-    {
-        eval('$userphoto = "'.template('editprofile_userphoto').'";');
-        $photodeletebutton = '<br /><input type="checkbox" name="photodel" value="1" />'.$lang['photo_Delete'].'';
+    if (! empty($member['photo'])) {
+        eval('$userphoto = "' . template('editprofile_userphoto') . '";');
+        $photodeletebutton = '<br /><input type="checkbox" name="photodel" value="1" />' . $lang['photo_Delete'] . '';
     }
-
-    eval('$photohidden = "'.template('editprofile_photohidden').'";');
-
-    if ($CONFIG['predformat'] == 'on')
-    {
+    
+    eval('$photohidden = "' . template('editprofile_photohidden') . '";');
+    
+    if ($CONFIG['predformat'] == 'on') {
         $df = "<tr>\n\t<td bgcolor=\"$THEME[altbg1]\" class=\"tablerow\" width=\"22%\">$lang[dateformat1]</td>\n";
-    }
-    else
-    {
+    } else {
         $df = "<tr>\n\t<td bgcolor=\"$THEME[altbg1]\" class=\"tablerow\" width=\"22%\">$lang[dateformat2]</td>\n";
     }
-
-    $df = $df."\t<td bgcolor=\"$THEME[altbg2]\" class=\"tablerow\"><select name=\"dateformatnew\">\n";
-    $querydf = $db->query("SELECT * FROM ".X_PREFIX."dateformats");
-    while ($dformats = $db->fetch_array($querydf))
-    {
-        if ($CONFIG['predformat'] == 'on')
-        {
+    
+    $df = $df . "\t<td bgcolor=\"$THEME[altbg2]\" class=\"tablerow\"><select name=\"dateformatnew\">\n";
+    $querydf = $db->query("SELECT * FROM " . X_PREFIX . "dateformats");
+    while ($dformats = $db->fetch_array($querydf)) {
+        if ($CONFIG['predformat'] == 'on') {
             $example = gmdate(formatDate($dformats['dateformat']), $ubblva + ($self['timeoffset'] * 3600) + $self['daylightsavings']);
-        }
-        else
-        {
+        } else {
             $example = $dformats['dateformat'];
         }
-
-        if ($member['dateformat'] == $dformats['dateformat'])
-        {
-            $df = $df."\t<option value=\"$dformats[dateformat]\" selected=\"selected\">$example</option>\n";
-        }
-        else
-        {
-            $df = $df."\t<option value=\"$dformats[dateformat]\">$example</option>\n";
+        
+        if ($member['dateformat'] == $dformats['dateformat']) {
+            $df = $df . "\t<option value=\"$dformats[dateformat]\" selected=\"selected\">$example</option>\n";
+        } else {
+            $df = $df . "\t<option value=\"$dformats[dateformat]\">$example</option>\n";
         }
     }
-    $df = $df."\t</select>\n\t</td>\n</tr>";
+    $df = $df . "\t</select>\n\t</td>\n</tr>";
     $db->free_result($querydf);
-
+    
     $lang['searchusermsg'] = str_replace('*USER*', $user, $lang['searchusermsg']);
-
-    eval('echo stripslashes("'.template('admintool_editprofile').'");');
+    
+    eval('echo stripslashes("' . template('admintool_editprofile') . '");');
 }
 
-if (onSubmit('editsubmit'))
-{
-    $query  = $db->query("SELECT * FROM ".X_PREFIX."members WHERE uid = '$memberid'");
+if (onSubmit('editsubmit')) {
+    $query = $db->query("SELECT * FROM " . X_PREFIX . "members WHERE uid = '$memberid'");
     $member = $db->fetch_array($query);
     $db->free_result($query);
-
-    if (empty($member['username']))
-    {
+    
+    if (empty($member['username'])) {
         error($lang['badname'], false);
     }
-
+    
     $showemail = formYesNo('newshowemail');
     $newsletter = formYesNo('newnewsletter');
     $saveogpm = formYesNo('saveogpm');
@@ -300,59 +256,45 @@ if (onSubmit('editsubmit'))
     $daylightsavings1 = form3600('daylightsavings1');
     $thememem = formInt('thememem');
     $psorting = formVar('psorting');
-    if ($psorting != 'ASC')
-    {
+    if ($psorting != 'ASC') {
         $psorting = 'DESC';
     }
     $tppnew = formInt('tppnew');
-    if ($tppnew < 5)
-    {
+    if ($tppnew < 5) {
         $tppnew = $CONFIG['topicperpage'];
     }
     $pppnew = formInt('pppnew');
-    if ($pppnew < 5)
-    {
+    if ($pppnew < 5) {
         $pppnew = $CONFIG['postperpage'];
     }
-
+    
     $month = addslashes(formVar('month'));
     $day = formInt('day', false);
     $year = formInt('year', false);
-    if ($year == '' || $year == 0)
-    {
+    if ($year == '' || $year == 0) {
         $comma = '';
-    }
-    else
-    {
+    } else {
         $comma = ', ';
     }
-    $bday = $month.' '.$day.$comma.$year;
-
-    if (isset($_POST['newavatar']))
-    {
-        if ('http' == substr($_POST['newavatar'], 0, 4))
-        {
+    $bday = $month . ' ' . $day . $comma . $year;
+    
+    if (isset($_POST['newavatar'])) {
+        if ('http' == substr($_POST['newavatar'], 0, 4)) {
             $_POST['newavatar'] = ereg_replace(' ', '%20', $_POST['newavatar']);
         }
-    }
-    else
-    {
+    } else {
         $_POST['newavatar'] = '';
     }
-
-    if (isset($_POST['newphoto']))
-    {
-        if ('http' == substr($_POST['newphoto'], 0, 4))
-        {
+    
+    if (isset($_POST['newphoto'])) {
+        if ('http' == substr($_POST['newphoto'], 0, 4)) {
             $_POST['newphoto'] = ereg_replace(' ', '%20', $_POST['newphoto']);
         }
-    }
-    else
-    {
+    } else {
         $_POST['newphoto'] = '';
     }
-
-    $avatar = $db->escape(formVar('newavatar'), -1, true);
+    
+    $avatar = $db->escape(formVar('newavatar'), - 1, true);
     $location = addslashes(formVar('newlocation'));
     $icq = addslashes(formVar('newicq'));
     $yahoo = addslashes(formVar('newyahoo'));
@@ -363,104 +305,89 @@ if (onSubmit('editsubmit'))
     $bio = addslashes(formVar('newbio'));
     $mood = addslashes(formVar('newmood'));
     $sig = addslashes(formVar('newsig'));
-    $photo = $db->escape(formVar('newphoto'), -1, true);
+    $photo = $db->escape(formVar('newphoto'), - 1, true);
     $firstname = addslashes(formVar('firstname'));
     $lastname = addslashes(formVar('lastname'));
     $customstatus = addslashes(formVar('newcustomstatus'));
     $occupation = addslashes(formVar('newoccupation'));
     $blog = addslashes(formVar('newblog'));
     $timeoffset1 = formInt('timeoffset1');
-    if ($timeoffset1 < -12 || $timeoffset1 > 13)
-    {
+    if ($timeoffset1 < - 12 || $timeoffset1 > 13) {
         $timeoffset1 = $CONFIG['def_tz'];
     }
     $timeformatnew = addslashes(formVar('timeformatnew'));
     $dateformatnew = addslashes(formVar('dateformatnew'));
     $langfilenew = $db->escape(findLangName(formInt('langfilenew')));
-
+    
     $max_size = explode('x', $CONFIG['max_avatar_size']);
-    if ($max_size[0] > 0 && $max_size[1] > 0 && substr_count($avatar, ',') < 2)
-    {
+    if ($max_size[0] > 0 && $max_size[1] > 0 && substr_count($avatar, ',') < 2) {
         $size = getimagesize($avatar);
-        if ($size === false)
-        {
+        if ($size === false) {
             $avatar = '';
-        }
-        else if (($size[0] > $max_size[0] && $max_size[0] > 0) || ($size[1] > $max_size[1] && $max_size[1] > 0) && !X_ADMIN)
-        {
-            error($lang['avatar_too_big'] . $CONFIG['max_avatar_size'] . $lang['Avatar_Pixels'], false);
-        }
+        } else 
+            if (($size[0] > $max_size[0] && $max_size[0] > 0) || ($size[1] > $max_size[1] && $max_size[1] > 0) && ! X_ADMIN) {
+                error($lang['avatar_too_big'] . $CONFIG['max_avatar_size'] . $lang['Avatar_Pixels'], false);
+            }
     }
-
-    if (isset($_COOKIE['avatarfile']) || isset($_POST['avatarfile']) || isset($_GET['avatarfile']))
-    {
+    
+    if (isset($_COOKIE['avatarfile']) || isset($_POST['avatarfile']) || isset($_GET['avatarfile'])) {
         die('Action Halted Due To Illegal Acivity!!');
-        exit;
+        exit();
     }
-
-    if (isset($_FILES['avatarfile']['name']) && $_FILES['avatarfile']['tmp_name'] && !empty($_FILES['avatarfile']['name']))
-    {
-        $avatarext = substr($_FILES['avatarfile']['name'], strlen($_FILES['avatarfile']['name'])-3, 3);
-        $newavatarname = $member['uid'].'.'.$onlinetime.'.'.$avatarext;
+    
+    if (isset($_FILES['avatarfile']['name']) && $_FILES['avatarfile']['tmp_name'] && ! empty($_FILES['avatarfile']['name'])) {
+        $avatarext = substr($_FILES['avatarfile']['name'], strlen($_FILES['avatarfile']['name']) - 3, 3);
+        $newavatarname = $member['uid'] . '.' . $onlinetime . '.' . $avatarext;
         $check = $_FILES['avatarfile'];
-
+        
         $CONFIG['avatar_filesize'] = (int) $CONFIG['avatar_filesize'];
-        if (($check['size'] > $CONFIG['avatar_filesize']) && !X_ADMIN)
-        {
+        if (($check['size'] > $CONFIG['avatar_filesize']) && ! X_ADMIN) {
             error($lang['avatar_too_big'] . $CONFIG['avatar_filesize'] . $lang['Avatar_Bytes'], false);
         }
-
-        $avatarpath = $CONFIG['avatar_path'].'/'.$newavatarname;
+        
+        $avatarpath = $CONFIG['avatar_path'] . '/' . $newavatarname;
         $tmppath = $check['tmp_name'];
-
-        if (!eregi('gif|jpeg|png|jpg|bmp', $avatarext))
-        {
+        
+        if (! eregi('gif|jpeg|png|jpg|bmp', $avatarext)) {
             error($lang['avatar_invalid_ext'], false);
         }
-
-        if (!is_writable($CONFIG['avatar_path']))
-        {
+        
+        if (! is_writable($CONFIG['avatar_path'])) {
             error($lang['avatar_nowrite'], false);
         }
-
+        
         $size = getimagesize($tmppath);
         $width = $size[0];
         $height = $size[1];
         $type = $size[2];
-
-        if (!((bool) ini_get('safe_mode')))
-        {
+        
+        if (! ((bool) ini_get('safe_mode'))) {
             set_time_limit(30);
         }
         $imginfo = getimagesize($tmppath);
         $type = $imginfo[2];
-
-        switch ($type)
-        {
+        
+        switch ($type) {
             case IMAGETYPE_GIF:
-                if (!function_exists('imagecreatefromgif'))
-                {
+                if (! function_exists('imagecreatefromgif')) {
                     return $tmppath;
                 }
-                $srcImage = imagecreatefromgif ($tmppath);
+                $srcImage = imagecreatefromgif($tmppath);
                 break;
             case IMAGETYPE_JPEG:
-                if (!function_exists('imagecreatefromjpeg'))
-                {
+                if (! function_exists('imagecreatefromjpeg')) {
                     return $tmppath;
                 }
                 $srcImage = imagecreatefromjpeg($tmppath);
                 break;
             case IMAGETYPE_PNG:
-                if (!function_exists('imagecreatefrompng'))
-                {
+                if (! function_exists('imagecreatefrompng')) {
                     return $tmppath;
                 }
                 $srcImage = imagecreatefrompng($tmppath);
                 break;
             case IMAGETYPE_WBMP:
-                if (!function_exists('imagecreatefromwbmp'))
-                {
+                if (! function_exists('imagecreatefromwbmp')) {
                     return $tmppath;
                 }
                 $srcImage = imagecreatefromwbmp($tmppath);
@@ -468,27 +395,23 @@ if (onSubmit('editsubmit'))
             default:
                 return $tmppath;
         }
-
-        if ($width > $CONFIG['avatar_max_width'])
-        {
+        
+        if ($width > $CONFIG['avatar_max_width']) {
             $newwidth = $CONFIG['avatar_new_width'];
             $newheight = ($newwidth / $width) * $height;
-        }
-        else if ($height > $CONFIG['avatar_max_height'])
-        {
-            $newheight = $CONFIG['avatar_new_height'];
-            $newwidth = ($newheight / $height) * $width;
-        }
-
-        if (isset($newwidth))
-        {
+        } else 
+            if ($height > $CONFIG['avatar_max_height']) {
+                $newheight = $CONFIG['avatar_new_height'];
+                $newwidth = ($newheight / $height) * $width;
+            }
+        
+        if (isset($newwidth)) {
             $destImage = imagecreatetruecolor($newwidth, $newheight);
             imagecopyresampled($destImage, $srcImage, 0, 0, 0, 0, $newwidth, $newheight, $width, $height);
-
-            switch ($type)
-            {
+            
+            switch ($type) {
                 case IMAGETYPE_GIF:
-                    imagegif ($destImage, $tmppath);
+                    imagegif($destImage, $tmppath);
                     break;
                 case IMAGETYPE_JPEG:
                     imagejpeg($destImage, $tmppath);
@@ -503,114 +426,96 @@ if (onSubmit('editsubmit'))
                     imagedestroy($destImage);
             }
         }
-
+        
         copy($tmppath, $avatarpath);
-        $db->query("UPDATE ".X_PREFIX."members SET avatar = '$avatarpath' WHERE uid = '$memberid'");
+        $db->query("UPDATE " . X_PREFIX . "members SET avatar = '$avatarpath' WHERE uid = '$memberid'");
     }
-
-    if (isset($_POST['newavatar']) && empty($_FILES['avatarfile']['name']))
-    {
-        $db->query("UPDATE ".X_PREFIX."members SET avatar = '$avatar' WHERE uid = '$memberid'");
+    
+    if (isset($_POST['newavatar']) && empty($_FILES['avatarfile']['name'])) {
+        $db->query("UPDATE " . X_PREFIX . "members SET avatar = '$avatar' WHERE uid = '$memberid'");
     }
-
-    if (onSubmit('editsubmit') && isset($_POST['avatardel']) != 1 && !empty($member['avatar']) && empty($_POST['newavatar']) && empty($_FILES['avatarfile']['name']))
-    {
-        $db->query("UPDATE ".X_PREFIX."members SET avatar = '$member[avatar]' WHERE uid = '$memberid'");
+    
+    if (onSubmit('editsubmit') && isset($_POST['avatardel']) != 1 && ! empty($member['avatar']) && empty($_POST['newavatar']) && empty($_FILES['avatarfile']['name'])) {
+        $db->query("UPDATE " . X_PREFIX . "members SET avatar = '$member[avatar]' WHERE uid = '$memberid'");
     }
-
-    if (isset($_POST['avatardel']) && isset($_POST['avatardel']) == 1 && empty($_FILES['avatarfile']['name']))
-    {
-        if (file_exists($member['avatar']))
-        {
+    
+    if (isset($_POST['avatardel']) && isset($_POST['avatardel']) == 1 && empty($_FILES['avatarfile']['name'])) {
+        if (file_exists($member['avatar'])) {
             unlink($member['avatar']);
         }
-        $db->query("UPDATE ".X_PREFIX."members SET avatar = '' WHERE uid = '$memberid'");
+        $db->query("UPDATE " . X_PREFIX . "members SET avatar = '' WHERE uid = '$memberid'");
     }
-
+    
     $max_size = explode('x', $CONFIG['max_photo_size']);
-    if ($max_size[0] > 0 && $max_size[1] > 0 && substr_count($photo, ',') < 2)
-    {
+    if ($max_size[0] > 0 && $max_size[1] > 0 && substr_count($photo, ',') < 2) {
         $size = getimagesize($photo);
-        if ($size === false)
-        {
+        if ($size === false) {
             $photo = '';
-        }
-        else if (($size[0] > $max_size[0] && $max_size[0] > 0) || ($size[1] > $max_size[1] && $max_size[1] > 0) && !X_ADMIN)
-        {
-            error($lang['photo_too_big'] . $CONFIG['max_photo_size'] . $lang['photo_Pixels'], false);
-        }
+        } else 
+            if (($size[0] > $max_size[0] && $max_size[0] > 0) || ($size[1] > $max_size[1] && $max_size[1] > 0) && ! X_ADMIN) {
+                error($lang['photo_too_big'] . $CONFIG['max_photo_size'] . $lang['photo_Pixels'], false);
+            }
     }
-
-    if (isset($_COOKIE['photofile']) || isset($_POST['photofile']) || isset($_GET['photofile']))
-    {
+    
+    if (isset($_COOKIE['photofile']) || isset($_POST['photofile']) || isset($_GET['photofile'])) {
         die('Action Halted Due To Illegal Acivity!!');
-        exit;
+        exit();
     }
-
-    if (isset($_FILES['photofile']['name']) && $_FILES['photofile']['tmp_name'] && !empty($_FILES['photofile']['name']))
-    {
-        $photoext = substr($_FILES['photofile']['name'], strlen($_FILES['photofile']['name'])-3, 3);
-        $newphotoname = $member['uid'].'.'.$onlinetime.'.'.$photoext;
+    
+    if (isset($_FILES['photofile']['name']) && $_FILES['photofile']['tmp_name'] && ! empty($_FILES['photofile']['name'])) {
+        $photoext = substr($_FILES['photofile']['name'], strlen($_FILES['photofile']['name']) - 3, 3);
+        $newphotoname = $member['uid'] . '.' . $onlinetime . '.' . $photoext;
         $check = $_FILES['photofile'];
-
+        
         $CONFIG['photo_filesize'] = (int) $CONFIG['photo_filesize'];
-        if (($check['size'] > $CONFIG['photo_filesize']) && !X_ADMIN)
-        {
+        if (($check['size'] > $CONFIG['photo_filesize']) && ! X_ADMIN) {
             error($lang['photo_too_big'] . $CONFIG['photo_filesize'] . $lang['photo_Bytes'], false);
         }
-
-        $photopath = $CONFIG['photo_path'].'/'.$newphotoname;
+        
+        $photopath = $CONFIG['photo_path'] . '/' . $newphotoname;
         $tmppath = $check['tmp_name'];
-
-        if (!eregi('gif|jpeg|png|jpg|bmp', $photoext))
-        {
+        
+        if (! eregi('gif|jpeg|png|jpg|bmp', $photoext)) {
             error($lang['photo_invalid_ext'], false);
         }
-
-        if (!is_writable($CONFIG['photo_path']))
-        {
+        
+        if (! is_writable($CONFIG['photo_path'])) {
             error($lang['photo_nowrite'], false);
         }
-
+        
         $size = getimagesize($tmppath);
         $width = $size[0];
         $height = $size[1];
         $type = $size[2];
-
-        if (!((bool) ini_get('safe_mode')))
-        {
+        
+        if (! ((bool) ini_get('safe_mode'))) {
             set_time_limit(30);
         }
-
+        
         $imginfo = getimagesize($tmppath);
-		$type = $imginfo[2];
-
-        switch ($type)
-        {
+        $type = $imginfo[2];
+        
+        switch ($type) {
             case IMAGETYPE_GIF:
-                if (!function_exists('imagecreatefromgif'))
-                {
+                if (! function_exists('imagecreatefromgif')) {
                     return $tmppath;
                 }
-                $srcImage = imagecreatefromgif ($tmppath);
+                $srcImage = imagecreatefromgif($tmppath);
                 break;
             case IMAGETYPE_JPEG:
-                if (!function_exists('imagecreatefromjpeg'))
-                {
+                if (! function_exists('imagecreatefromjpeg')) {
                     return $tmppath;
                 }
                 $srcImage = imagecreatefromjpeg($tmppath);
                 break;
             case IMAGETYPE_PNG:
-                if (!function_exists('imagecreatefrompng'))
-                {
+                if (! function_exists('imagecreatefrompng')) {
                     return $tmppath;
                 }
                 $srcImage = imagecreatefrompng($tmppath);
                 break;
             case IMAGETYPE_WBMP:
-                if (!function_exists('imagecreatefromwbmp'))
-                {
+                if (! function_exists('imagecreatefromwbmp')) {
                     return $tmppath;
                 }
                 $srcImage = imagecreatefromwbmp($tmppath);
@@ -618,27 +523,23 @@ if (onSubmit('editsubmit'))
             default:
                 return $tmppath;
         }
-
-        if ($width > $CONFIG['photo_max_width'])
-        {
+        
+        if ($width > $CONFIG['photo_max_width']) {
             $newwidth = $CONFIG['photo_new_width'];
             $newheight = ($newwidth / $width) * $height;
-        }
-        else if ($height > $CONFIG['photo_max_height'])
-        {
-            $newheight = $CONFIG['photo_new_height'];
-            $newwidth = ($newheight / $height) * $width;
-        }
-
-        if (isset($newwidth))
-        {
+        } else 
+            if ($height > $CONFIG['photo_max_height']) {
+                $newheight = $CONFIG['photo_new_height'];
+                $newwidth = ($newheight / $height) * $width;
+            }
+        
+        if (isset($newwidth)) {
             $destImage = imagecreatetruecolor($newwidth, $newheight);
             imagecopyresampled($destImage, $srcImage, 0, 0, 0, 0, $newwidth, $newheight, $width, $height);
-
-            switch ($type)
-            {
+            
+            switch ($type) {
                 case IMAGETYPE_GIF:
-                    imagegif ($destImage, $tmppath);
+                    imagegif($destImage, $tmppath);
                     break;
                 case IMAGETYPE_JPEG:
                     imagejpeg($destImage, $tmppath);
@@ -653,31 +554,27 @@ if (onSubmit('editsubmit'))
                     imagedestroy($destImage);
             }
         }
-
+        
         copy($tmppath, $photopath);
-        $db->query("UPDATE ".X_PREFIX."members SET photo = '$photopath' WHERE uid = '$memberid'");
+        $db->query("UPDATE " . X_PREFIX . "members SET photo = '$photopath' WHERE uid = '$memberid'");
     }
-
-    if (isset($_POST['newphoto']) && empty($_FILES['photofile']['name']))
-    {
-        $db->query("UPDATE ".X_PREFIX."members SET photo = '$photo' WHERE uid = '$memberid'");
+    
+    if (isset($_POST['newphoto']) && empty($_FILES['photofile']['name'])) {
+        $db->query("UPDATE " . X_PREFIX . "members SET photo = '$photo' WHERE uid = '$memberid'");
     }
-
-    if (onSubmit('editsubmit') && isset($_POST['photodel']) != 1 && !empty($member['photo']) && empty($_POST['newphoto']) && empty($_FILES['photofile']['name']))
-    {
-        $db->query("UPDATE ".X_PREFIX."members SET photo = '$member[photo]' WHERE uid = '$memberid'");
+    
+    if (onSubmit('editsubmit') && isset($_POST['photodel']) != 1 && ! empty($member['photo']) && empty($_POST['newphoto']) && empty($_FILES['photofile']['name'])) {
+        $db->query("UPDATE " . X_PREFIX . "members SET photo = '$member[photo]' WHERE uid = '$memberid'");
     }
-
-    if (isset($_POST['photodel']) && isset($_POST['photodel']) == 1 && empty($_FILES['photofile']['name']))
-    {
-        if (file_exists($member['photo']))
-        {
+    
+    if (isset($_POST['photodel']) && isset($_POST['photodel']) == 1 && empty($_FILES['photofile']['name'])) {
+        if (file_exists($member['photo'])) {
             unlink($member['photo']);
         }
-        $db->query("UPDATE ".X_PREFIX."members SET photo = '' WHERE uid = '$memberid'");
+        $db->query("UPDATE " . X_PREFIX . "members SET photo = '' WHERE uid = '$memberid'");
     }
-
-    $db->query("UPDATE ".X_PREFIX."members SET
+    
+    $db->query("UPDATE " . X_PREFIX . "members SET
         email = '$email',
         site = '$site',
         aim = '$aim',
@@ -714,22 +611,20 @@ if (onSubmit('editsubmit'))
         expview = '$expview'
         WHERE uid = '$memberid'
     ");
-
+    
     $newpassword = trim(formVar('newpassword'));
     $newpasswordcf = trim(formVar('newpasswordcf'));
-    if (!empty($newpassword) != '' && !empty($newpasswordcf))
-    {
-        if ($newpassword != $newpasswordcf)
-        {
+    if (! empty($newpassword) != '' && ! empty($newpasswordcf)) {
+        if ($newpassword != $newpasswordcf) {
             error($lang['pwnomatch'], false);
         }
         $newpassword = md5(trim($newpassword));
-
-        $db->query("UPDATE ".X_PREFIX."members SET password = '$newpassword' WHERE uid = '$memberid'");
+        
+        $db->query("UPDATE " . X_PREFIX . "members SET password = '$newpassword' WHERE uid = '$memberid'");
     }
-    message($lang['textsettingsupdate'], false, '', '', ''.ROOT.'admin/index.php', true, false, true);
+    message($lang['textsettingsupdate'], false, '', '', '' . ROOT . 'admin/index.php', true, false, true);
 }
 
 loadtime();
-eval('echo "'.template('footer').'";');
+eval('echo "' . template('footer') . '";');
 ?>

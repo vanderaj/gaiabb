@@ -30,20 +30,22 @@
  **/
 
 // check to ensure no direct viewing of page
-if (!defined('IN_PROGRAM') && (defined('DEBUG') && DEBUG == false))
-{
+if (! defined('IN_PROGRAM') && (defined('DEBUG') && DEBUG == false)) {
     exit('This file is not designed to be called directly');
 }
 
 /**
-* Class thread - provides generic business logic for thread management
-*
-* thread routines
-* Static initialization allowed, does not require instantiation before first use.
-* @package GaiaBB
-*/
+ * Class thread - provides generic business logic for thread management
+ *
+ * thread routines
+ * Static initialization allowed, does not require instantiation before first use.
+ * 
+ * @package GaiaBB
+ *         
+ */
 class pm
 {
+
     public $uid;
 
     function pm()
@@ -52,42 +54,35 @@ class pm
     }
 
     function init()
-    {
-    }
+    {}
 
     function findById()
-    {
-    }
+    {}
 
     function save()
-    {
-    }
+    {}
 
     function exists()
-    {
-    }
+    {}
 
     function update()
-    {
-    }
+    {}
 
     function delete()
-    {
-    }
+    {}
 
     function deleteByUid($uid = 0)
     {
         global $db;
-
-        if ($uid === 0)
-        {
+        
+        if ($uid === 0) {
             return false;
         }
-
+        
         $owner = $db->escape(member::findUsernameByUid($uid));
-
-        $db->query("DELETE FROM ".X_PREFIX."pm_attachments WHERE owner = '$owner'");
-        $db->query("DELETE FROM ".X_PREFIX."pm WHERE owner = '$owner'");
+        
+        $db->query("DELETE FROM " . X_PREFIX . "pm_attachments WHERE owner = '$owner'");
+        $db->query("DELETE FROM " . X_PREFIX . "pm WHERE owner = '$owner'");
     }
 }
 ?>

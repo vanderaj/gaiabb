@@ -28,21 +28,20 @@
  *    along with GaiaBB.  If not, see <http://www.gnu.org/licenses/>.
  *
  **/
-
-if (!defined('IN_PROGRAM') && (defined('DEBUG') && DEBUG == false))
-{
+if (! defined('IN_PROGRAM') && (defined('DEBUG') && DEBUG == false)) {
     exit('This file is not designed to be called directly');
 }
 
 class favorite
 {
+
     public $tid;
+
     public $dirty;
 
     function favorite($tid = 0)
     {
-        if ($tid === 0)
-        {
+        if ($tid === 0) {
             $this->dirty = false;
             $this->tid = 0;
             return;
@@ -52,8 +51,7 @@ class favorite
 
     function findById($tid)
     {
-        if ($this->exists($tid))
-        {
+        if ($this->exists($tid)) {
             $this->tid = $tid;
             $this->dirty = true;
             return true;
@@ -64,34 +62,31 @@ class favorite
     function exists($tid)
     {
         global $db, $self;
-
+        
         $retval = false;
-
-        if ($tid == 0)
-        {
+        
+        if ($tid == 0) {
             return false;
         }
-
-        $query = $db->query("SELECT tid FROM ".X_PREFIX."favorites WHERE tid = '".intval($tid)."' AND username = '".$db->escape($self['username'])."' AND type = 'favorite'");
-        if ($query && $db->num_rows($query) == 1)
-        {
+        
+        $query = $db->query("SELECT tid FROM " . X_PREFIX . "favorites WHERE tid = '" . intval($tid) . "' AND username = '" . $db->escape($self['username']) . "' AND type = 'favorite'");
+        if ($query && $db->num_rows($query) == 1) {
             $this->tid = $tid;
             $retval = true;
         }
         $db->free_result($query);
-
+        
         return $retval;
     }
 
     function update()
     {
         global $db, $self;
-
-        if ($this->dirty)
-        {
-            $db->query("INSERT INTO ".X_PREFIX."favorites (tid, username, type) VALUES ('".intval($this->tid)."', '".$db->escape($self['username'])."', 'favorite')");
+        
+        if ($this->dirty) {
+            $db->query("INSERT INTO " . X_PREFIX . "favorites (tid, username, type) VALUES ('" . intval($this->tid) . "', '" . $db->escape($self['username']) . "', 'favorite')");
             $this->dirty = false;
-
+            
             return true;
         }
         return false;
@@ -99,8 +94,7 @@ class favorite
 
     function delete()
     {
-        if ($this->dirty && $this->tid > 0)
-        {
+        if ($this->dirty && $this->tid > 0) {
             $this->deleteByTid($this->tid);
             $this->tid = 0;
             $this->dirty = false;
@@ -112,49 +106,44 @@ class favorite
     function deleteByTid($tid)
     {
         global $db, $self;
-
-        if ($tid === 0)
-        {
+        
+        if ($tid === 0) {
             return false;
         }
-        return $db->query("DELETE FROM ".X_PREFIX."favorites WHERE username = '".$self['username']."' AND type='favorite' AND tid = '".intval($tid)."'");
+        return $db->query("DELETE FROM " . X_PREFIX . "favorites WHERE username = '" . $self['username'] . "' AND type='favorite' AND tid = '" . intval($tid) . "'");
     }
 
     function deleteByUid($uid)
     {
         global $db;
-
-        if ($uid === 0)
-        {
+        
+        if ($uid === 0) {
             return false;
         }
-
+        
         $owner = $db->escape(member::findUsernameByUid($uid));
-
-        $db->query("DELETE FROM ".X_PREFIX."favorites WHERE username = '$owner'");
+        
+        $db->query("DELETE FROM " . X_PREFIX . "favorites WHERE username = '$owner'");
     }
 
     function deleteByFormTids()
     {
         global $db, $self;
-
+        
         $toDelete = array();
-
-        $query = $db->query("SELECT tid FROM ".X_PREFIX."favorites WHERE username = '".$self['username']."' AND type='favorite'");
-        while ($sub = $db->fetch_array($query))
-        {
-            $delete = formInt("delete" .$sub['tid']. "");
-            if (is_numeric($delete))
-            {
+        
+        $query = $db->query("SELECT tid FROM " . X_PREFIX . "favorites WHERE username = '" . $self['username'] . "' AND type='favorite'");
+        while ($sub = $db->fetch_array($query)) {
+            $delete = formInt("delete" . $sub['tid'] . "");
+            if (is_numeric($delete)) {
                 $toDelete[] = $delete;
             }
         }
         $db->free_result($query);
-
-        if (!empty($toDelete))
-        {
+        
+        if (! empty($toDelete)) {
             $in = implode(' ,', $toDelete);
-            $db->query("DELETE FROM ".X_PREFIX."favorites WHERE username = '".$db->escape($self['username'])."' AND type='favorite' AND tid in (".$in.")");
+            $db->query("DELETE FROM " . X_PREFIX . "favorites WHERE username = '" . $db->escape($self['username']) . "' AND type='favorite' AND tid in (" . $in . ")");
         }
     }
 }

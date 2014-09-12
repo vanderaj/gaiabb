@@ -33,58 +33,48 @@
 define('DEBUG_REG', true);
 define('ROOT', './');
 
-require_once(ROOT.'header.php');
+require_once ('header.php');
 
-loadtpl(
-'topic_activity',
-'topic_activity_dotfolders',
-'topic_activity_multipage',
-'topic_activity_none',
-'topic_activity_threads'
-);
+loadtpl('topic_activity', 'topic_activity_dotfolders', 'topic_activity_multipage', 'topic_activity_none', 'topic_activity_threads');
 
 $shadow = shadowfx();
 $meta = metaTags();
 
-eval('$css = "'.template('css').'";');
+eval('$css = "' . template('css') . '";');
 
 nav($lang['topicactivity']);
 btitle($lang['topicactivity']);
 
-eval('echo "'.template('header').'";');
+eval('echo "' . template('header') . '";');
 
-if ($CONFIG['topicactivity_status'] == 'off')
-{
+if ($CONFIG['topicactivity_status'] == 'off') {
     error($lang['fnasorry'], false);
 }
 
 smcwcache();
 
 $t_extension = get_extension($lang['toppedprefix']);
-switch ($t_extension)
-{
+switch ($t_extension) {
     case 'gif':
     case 'jpg':
     case 'jpeg':
     case 'png':
-        $lang['toppedprefix'] = '<img src="'.$THEME['imgdir'].'/'.$lang['toppedprefix'].'" alt="'.$lang['toppedprefix'].'" title="'.$lang['toppedprefix'].'" border="0px" />';
+        $lang['toppedprefix'] = '<img src="' . $THEME['imgdir'] . '/' . $lang['toppedprefix'] . '" alt="' . $lang['toppedprefix'] . '" title="' . $lang['toppedprefix'] . '" border="0px" />';
         break;
 }
 
 $p_extension = get_extension($lang['pollprefix']);
-switch ($p_extension)
-{
+switch ($p_extension) {
     case 'gif':
     case 'jpg':
     case 'jpeg':
     case 'png':
-        $lang['pollprefix'] = '<img src="'.$THEME['imgdir'].'/'.$lang['pollprefix'].'" alt="'.$lang['pollprefix'].'" title="'.$lang['pollprefix'].'" border="0px" />';
+        $lang['pollprefix'] = '<img src="' . $THEME['imgdir'] . '/' . $lang['pollprefix'] . '" alt="' . $lang['pollprefix'] . '" title="' . $lang['pollprefix'] . '" border="0px" />';
         break;
 }
 
 $days = getRequestInt('days');
-if ($days < 1)
-{
+if ($days < 1) {
     $days = 1;
 }
 
@@ -92,8 +82,7 @@ $srchfrom = $onlinetime - (86400 * $days);
 
 $type = getRequestVar('type');
 $srchtype = '';
-switch ($type)
-{
+switch ($type) {
     case 'unanswered':
         $srchtype = "t.replies = 0 AND";
         break;
@@ -119,8 +108,7 @@ switch ($type)
 
 $sort = getRequestVar('sort');
 $srchsort = '';
-switch ($sort)
-{
+switch ($sort) {
     case 'subject':
         $srchsort = "t.subject";
         break;
@@ -146,8 +134,7 @@ switch ($sort)
 
 $order = getRequestVar('order');
 $srchorder = '';
-switch ($order)
-{
+switch ($order) {
     case 'asc':
         $srchorder = "ASC";
         break;
@@ -157,195 +144,154 @@ switch ($order)
 }
 
 $page = getRequestInt('page');
-if ($page < 1)
-{
+if ($page < 1) {
     $page = 1;
 }
-$start_limit = ($page-1) * $self['tpp'];
+$start_limit = ($page - 1) * $self['tpp'];
 
 $threadcount = 0;
 $threads = '';
 
 $dotadd1 = $dotadd2 = '';
-if ($CONFIG['dotfolders'] == 'on' && X_MEMBER)
-{
+if ($CONFIG['dotfolders'] == 'on' && X_MEMBER) {
     $dotadd1 = "DISTINCT p.author AS dotauthor, ";
-    $dotadd2 = "LEFT JOIN ".X_PREFIX."posts p ON (t.tid = p.tid AND p.author = '$self[username]')";
+    $dotadd2 = "LEFT JOIN " . X_PREFIX . "posts p ON (t.tid = p.tid AND p.author = '$self[username]')";
 }
 
 $threadcount = 0;
 $threads = '';
 $fidarray = array();
-$query = $db->query("SELECT DISTINCT f.fid, f.password, f.private, f.userlist FROM (".X_PREFIX."threads t, ".X_PREFIX."forums f) LEFT JOIN ".X_PREFIX."lastposts l ON t.tid = l.tid WHERE l.dateline >= '$srchfrom' AND t.fid = f.fid");
-while ($forums = $db->fetch_array($query))
-{
+$query = $db->query("SELECT DISTINCT f.fid, f.password, f.private, f.userlist FROM (" . X_PREFIX . "threads t, " . X_PREFIX . "forums f) LEFT JOIN " . X_PREFIX . "lastposts l ON t.tid = l.tid WHERE l.dateline >= '$srchfrom' AND t.fid = f.fid");
+while ($forums = $db->fetch_array($query)) {
     $authorization = privfcheck($forums['private'], $forums['userlist']);
-    if ($authorization == true || X_SADMIN)
-    {
-        $fidpw = isset($_COOKIE['fidpw'.$forums['fid']]) ? $_COOKIE['fidpw'.$forums['fid']] : '';
-        if ((($forums['password'] == $fidpw) || $forums['password'] == '') || X_SADMIN)
-        {
+    if ($authorization == true || X_SADMIN) {
+        $fidpw = isset($_COOKIE['fidpw' . $forums['fid']]) ? $_COOKIE['fidpw' . $forums['fid']] : '';
+        if ((($forums['password'] == $fidpw) || $forums['password'] == '') || X_SADMIN) {
             array_push($fidarray, $forums['fid']);
         }
     }
 }
 $db->free_result($query);
 
-$fidlist = "'".implode("', '", $fidarray)."'";
-$query = $db->query("SELECT $dotadd1 t.*, m.uid as authorid, f.name, l.uid as lp_uid, l.username as lp_user, l.dateline as lp_dateline, l.pid as lp_pid FROM (".X_PREFIX."threads t, ".X_PREFIX."forums f) $dotadd2 LEFT JOIN ".X_PREFIX."members m ON t.author = m.username LEFT JOIN ".X_PREFIX."lastposts l ON (t.tid = l.tid) WHERE $srchtype l.dateline >= '$srchfrom' AND t.fid = f.fid AND f.fid IN ($fidlist) ORDER BY $srchsort $srchorder LIMIT $start_limit, ".$self['tpp']);
-while ($thread = $db->fetch_array($query))
-{
-    $thread['subject'] = shortenString(censor($thread['subject']), 80, X_SHORTEN_SOFT|X_SHORTEN_HARD, '...');
+$fidlist = "'" . implode("', '", $fidarray) . "'";
+$query = $db->query("SELECT $dotadd1 t.*, m.uid as authorid, f.name, l.uid as lp_uid, l.username as lp_user, l.dateline as lp_dateline, l.pid as lp_pid FROM (" . X_PREFIX . "threads t, " . X_PREFIX . "forums f) $dotadd2 LEFT JOIN " . X_PREFIX . "members m ON t.author = m.username LEFT JOIN " . X_PREFIX . "lastposts l ON (t.tid = l.tid) WHERE $srchtype l.dateline >= '$srchfrom' AND t.fid = f.fid AND f.fid IN ($fidlist) ORDER BY $srchsort $srchorder LIMIT $start_limit, " . $self['tpp']);
+while ($thread = $db->fetch_array($query)) {
+    $thread['subject'] = shortenString(censor($thread['subject']), 80, X_SHORTEN_SOFT | X_SHORTEN_HARD, '...');
     $tmOffset = ($self['timeoffset'] * 3600) + $self['daylightsavings'];
-
-    if ($thread['author'] != $lang['textanonymous'])
-    {
-        if (X_MEMBER)
-        {
-            $author = '<a href="viewprofile.php?memberid='.intval($thread['authorid']).'"><strong>'.trim($thread['author']).'</strong></a>';
+    
+    if ($thread['author'] != $lang['textanonymous']) {
+        if (X_MEMBER) {
+            $author = '<a href="viewprofile.php?memberid=' . intval($thread['authorid']) . '"><strong>' . trim($thread['author']) . '</strong></a>';
+        } else {
+            $author = '<strong>' . trim($thread['author']) . '</strong>';
         }
-        else
-        {
-            $author = '<strong>'.trim($thread['author']).'</strong>';
-        }
-    }
-    else
-    {
+    } else {
         $author = $lang['textanonymous'];
     }
-
+    
     $dalast = trim($thread['lp_dateline']);
-
-    if ($thread['lp_user'] != $lang['textanonymous'] && $thread['lp_user'] != '')
-    {
-
-        if (X_MEMBER)
-        {
-            $lastpostauthor = '<a href="viewprofile.php?memberid='.intval($thread['lp_uid']).'"><strong>'.trim($thread['lp_user']).'</strong></a>';
+    
+    if ($thread['lp_user'] != $lang['textanonymous'] && $thread['lp_user'] != '') {
+        
+        if (X_MEMBER) {
+            $lastpostauthor = '<a href="viewprofile.php?memberid=' . intval($thread['lp_uid']) . '"><strong>' . trim($thread['lp_user']) . '</strong></a>';
+        } else {
+            $lastpostauthor = '<strong>' . trim($thread['lp_user']) . '</strong>';
         }
-        else
-        {
-            $lastpostauthor = '<strong>'.trim($thread['lp_user']).'</strong>';
-        }
-    }
-    else
-    {
+    } else {
         $lastpostauthor = $lang['textanonymous'];
     }
-
+    
     $lastPid = isset($thread['lp_pid']) ? $thread['lp_pid'] : 0;
     $lastpostdate = gmdate($self['dateformat'], $thread['lp_dateline'] + $tmOffset);
     $lastposttime = gmdate($self['timecode'], $thread['lp_dateline'] + $tmOffset);
-    $lastpost = $lang['lastreply1'].' '.$lastpostdate.' '.$lang['textat'].' '.$lastposttime.'<br />'.$lang['textby'].' '.$lastpostauthor;
-
-    if (!empty($thread['icon']) && file_exists($THEME['smdir'].'/'.$thread['icon']))
-    {
-        $posticon = '<img src="'.$THEME['smdir'].'/'.$thread['icon'].'" alt="'.$thread['icon'].'" title="'.$thread['icon'].'" border="0px" />';
-    }
-    else
-    {
+    $lastpost = $lang['lastreply1'] . ' ' . $lastpostdate . ' ' . $lang['textat'] . ' ' . $lastposttime . '<br />' . $lang['textby'] . ' ' . $lastpostauthor;
+    
+    if (! empty($thread['icon']) && file_exists($THEME['smdir'] . '/' . $thread['icon'])) {
+        $posticon = '<img src="' . $THEME['smdir'] . '/' . $thread['icon'] . '" alt="' . $thread['icon'] . '" title="' . $thread['icon'] . '" border="0px" />';
+    } else {
         $posticon = '';
     }
-
-    if ($thread['replies'] >= $CONFIG['hottopic'])
-    {
+    
+    if ($thread['replies'] >= $CONFIG['hottopic']) {
         $folder = 'hot_folder.gif';
-    }
-    else if ($thread['pollopts'] == 1)
-    {
-        $folder = 'folder_poll.gif';
-    }
-    else
-    {
-        $folder = 'folder.gif';
-    }
-
+    } else 
+        if ($thread['pollopts'] == 1) {
+            $folder = 'folder_poll.gif';
+        } else {
+            $folder = 'folder.gif';
+        }
+    
     $oldtopics = isset($_COOKIE['oldtopics']) ? $_COOKIE['oldtopics'] : '';
-
-    if (($oT = strpos($oldtopics, '|'.$lastPid.'|')) === false && $thread['replies'] >= $CONFIG['hottopic'] && $lastvisit < $dalast)
-    {
+    
+    if (($oT = strpos($oldtopics, '|' . $lastPid . '|')) === false && $thread['replies'] >= $CONFIG['hottopic'] && $lastvisit < $dalast) {
         $folder = 'hot_red_folder.gif';
+    } else 
+        if ($lastvisit < $dalast && $oT === false && $thread['pollopts'] == 1) {
+            $folder = 'folder_new_poll.gif';
+        } else 
+            if ($lastvisit < $dalast && $oT === false) {
+                $folder = 'red_folder.gif';
+            }
+    
+    if ($CONFIG['dotfolders'] == 'on' && isset($thread['dotauthor']) == $self['username'] && X_MEMBER) {
+        $folder = 'dot_' . $folder;
     }
-    else if ($lastvisit < $dalast && $oT === false && $thread['pollopts'] == 1)
-    {
-        $folder = 'folder_new_poll.gif';
+    
+    $folder = '<img src="' . $THEME['imgdir'] . '/' . $folder . '" alt="' . $lang['altfolder'] . '" title="' . $lang['altfolder'] . '" border="0px" />';
+    
+    if ($thread['closed'] == 'yes') {
+        $folder = '<img src="' . $THEME['imgdir'] . '/lock_folder.gif" alt="' . $lang['altclosedtopic'] . '" title="' . $lang['altclosedtopic'] . '" border="0px" />';
     }
-    else if ($lastvisit < $dalast && $oT === false)
-    {
-        $folder = 'red_folder.gif';
-    }
-
-    if ($CONFIG['dotfolders'] == 'on' && isset($thread['dotauthor']) == $self['username'] && X_MEMBER)
-    {
-        $folder = 'dot_'.$folder;
-    }
-
-    $folder = '<img src="'.$THEME['imgdir'].'/'.$folder.'" alt="'.$lang['altfolder'].'" title="'.$lang['altfolder'].'" border="0px" />';
-
-    if ($thread['closed'] == 'yes')
-    {
-        $folder = '<img src="'.$THEME['imgdir'].'/lock_folder.gif" alt="'.$lang['altclosedtopic'].'" title="'.$lang['altclosedtopic'].'" border="0px" />';
-    }
-
+    
     $prefix = '';
     $moved = explode('|', $thread['closed']);
-    if ($moved[0] == 'moved')
-    {
-        $prefix = $lang['moved'].' ';
+    if ($moved[0] == 'moved') {
+        $prefix = $lang['moved'] . ' ';
         $thread['realtid'] = intval($thread['tid']);
         $thread['tid'] = $moved[1];
         $thread['replies'] = '-';
         $thread['views'] = '-';
-        $folder = '<img src="'.$THEME['imgdir'].'/lock_folder.gif" alt="'.$lang['altclosedtopic'].'" title="'.$lang['altclosedtopic'].'" border="0px" />';
-        $query = $db->query("SELECT COUNT(pid) FROM ".X_PREFIX."posts WHERE tid = '$thread[tid]'");
+        $folder = '<img src="' . $THEME['imgdir'] . '/lock_folder.gif" alt="' . $lang['altclosedtopic'] . '" title="' . $lang['altclosedtopic'] . '" border="0px" />';
+        $query = $db->query("SELECT COUNT(pid) FROM " . X_PREFIX . "posts WHERE tid = '$thread[tid]'");
         $postnum = 0;
-        if ($query !== false)
-        {
+        if ($query !== false) {
             $postnum = $db->result($query, 0);
         }
-    }
-    else
-    {
+    } else {
         $thread['realtid'] = intval($thread['tid']);
     }
-
-    if ($thread['pollopts'] == 1)
-    {
-        $prefix = $lang['pollprefix'].' ';
+    
+    if ($thread['pollopts'] == 1) {
+        $prefix = $lang['pollprefix'] . ' ';
     }
-
-    if ($thread['topped'] == 1)
-    {
-        $prefix = $lang['toppedprefix'].' ';
+    
+    if ($thread['topped'] == 1) {
+        $prefix = $lang['toppedprefix'] . ' ';
     }
-
-    $postnum = $thread['replies']+1;
-    if ($postnum > $self['ppp'])
-    {
-        $pagelinks = multi($postnum, $self['ppp'], 0, 'viewtopic.php?tid='.intval($thread['tid']));
-        $pages = '(<span class="smalltxt">'.$pagelinks.'</span>)';
-    }
-    else
-    {
+    
+    $postnum = $thread['replies'] + 1;
+    if ($postnum > $self['ppp']) {
+        $pagelinks = multi($postnum, $self['ppp'], 0, 'viewtopic.php?tid=' . intval($thread['tid']));
+        $pages = '(<span class="smalltxt">' . $pagelinks . '</span>)';
+    } else {
         $pagelinks = $pages = '';
     }
-
-    $mouseover = celloverfx('viewtopic.php?tid='.intval($thread['tid'].''));
-    eval('$threads .= "'.template('topic_activity_threads').'";');
+    
+    $mouseover = celloverfx('viewtopic.php?tid=' . intval($thread['tid'] . ''));
+    eval('$threads .= "' . template('topic_activity_threads') . '";');
     $prefix = '';
-    $threadcount++;
+    $threadcount ++;
 }
 $db->free_result($query);
 
-if ($threadcount == 0)
-{
-    eval('$threads = "'.template('topic_activity_none').'";');
+if ($threadcount == 0) {
+    eval('$threads = "' . template('topic_activity_none') . '";');
 }
 
 $type_unanswered = $type_hot = $type_closed = '';
 $type_moved = $type_topped = $type_poll = $type_active = '';
-switch ($type)
-{
+switch ($type) {
     case 'unanswered':
         $type_unanswered = $selHTML;
         break;
@@ -371,8 +317,7 @@ switch ($type)
 
 $sort_subject = $sort_author = $sort_forum = '';
 $sort_replies = $sort_views = $sort_lastpost = '';
-switch ($sort)
-{
+switch ($sort) {
     case 'subject':
         $sort_subject = $selHTML;
         break;
@@ -397,8 +342,7 @@ switch ($sort)
 }
 
 $order_asc = $order_desc = '';
-switch ($order)
-{
+switch ($order) {
     case 'asc':
         $order_asc = $selHTML;
         break;
@@ -409,8 +353,7 @@ switch ($order)
 
 $days1 = $days5 = $days10 = $days20 = '';
 $days30 = $days60 = $days90 = $daysyear = '';
-switch ($days)
-{
+switch ($days) {
     case '1':
         $days1 = $selHTML;
         break;
@@ -441,24 +384,22 @@ switch ($days)
 }
 
 $dotlegend = '';
-if ($CONFIG['dotfolders'] == 'on' && X_MEMBER)
-{
-    eval('$dotlegend = "'.template('topic_activity_dotfolders').'";');
+if ($CONFIG['dotfolders'] == 'on' && X_MEMBER) {
+    eval('$dotlegend = "' . template('topic_activity_dotfolders') . '";');
 }
 
-$totalquery = $db->query("SELECT $dotadd1 t.*, f.password, f.private, f.userlist, f.name FROM ".X_PREFIX."threads t $dotadd2, ".X_PREFIX."forums f, ".X_PREFIX."lastposts l WHERE l.tid = t.tid AND $srchtype l.dateline >= '$srchfrom' AND t.fid = f.fid AND f.fid IN ($fidlist)");
+$totalquery = $db->query("SELECT $dotadd1 t.*, f.password, f.private, f.userlist, f.name FROM " . X_PREFIX . "threads t $dotadd2, " . X_PREFIX . "forums f, " . X_PREFIX . "lastposts l WHERE l.tid = t.tid AND $srchtype l.dateline >= '$srchfrom' AND t.fid = f.fid AND f.fid IN ($fidlist)");
 $total = $db->num_rows($totalquery);
 $db->free_result($totalquery);
 
-$mpurl = 'activity.php?type='.$type.'&amp;days='.$days.'&amp;sort='.$sort.'&amp;order='.$order;
+$mpurl = 'activity.php?type=' . $type . '&amp;days=' . $days . '&amp;sort=' . $sort . '&amp;order=' . $order;
 $multipage = '';
-if (($multipage = multi($total, $self['tpp'], $page, $mpurl)) !== false)
-{
-    eval('$multipage = "'.template('topic_activity_multipage').'";');
+if (($multipage = multi($total, $self['tpp'], $page, $mpurl)) !== false) {
+    eval('$multipage = "' . template('topic_activity_multipage') . '";');
 }
 
-eval('echo stripslashes("'.template('topic_activity').'");');
+eval('echo stripslashes("' . template('topic_activity') . '");');
 
 loadtime();
-eval('echo "'.template('footer').'";');
+eval('echo "' . template('footer') . '";');
 ?>

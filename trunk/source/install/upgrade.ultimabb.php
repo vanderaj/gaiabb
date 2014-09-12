@@ -24,9 +24,7 @@
  *    along with GaiaBB.  If not, see <http://www.gnu.org/licenses/>.
  *
  **/
-
-if (!defined('IN_PROGRAM') && (defined('DEBUG') && DEBUG == false))
-{
+if (! defined('IN_PROGRAM') && (defined('DEBUG') && DEBUG == false)) {
     exit('This file is not designed to be called directly');
 }
 
@@ -34,189 +32,187 @@ require_once "upgrade.model.php";
 
 class upgrade_ultimaBB extends Upgrade
 {
+
     /**
-    * function() - short description of function
-    *
-    * Long description of function
-    *
-    * @param    $varname    type, what it does
-    * @return   type, what the return does
-    */
+     * function() - short description of function
+     *
+     * Long description of function
+     *
+     * @param $varname type,
+     *            what it does
+     * @return type, what the return does
+     */
     function rename_tables($prg)
     {
         setBar($this->prgbar, $prg);
-
+        
         return true;
     }
 
     /**
-    * function() - short description of function
-    *
-    * Long description of function
-    *
-    * @param    $varname    type, what it does
-    * @return   type, what the return does
-    */
+     * function() - short description of function
+     *
+     * Long description of function
+     *
+     * @param $varname type,
+     *            what it does
+     * @return type, what the return does
+     */
     function add_tables($prg)
     {
         setBar($this->prgbar, $prg);
         $prg += 0.01;
-
-        if (!$this->table_exists('faq'))
-        {
+        
+        if (! $this->table_exists('faq')) {
             schema_create_faq($this->db, X_PREFIX);
             schema_insert_faq($this->db, X_PREFIX);
         }
         setBar($this->prgbar, $prg);
         $prg += 0.01;
-
-        if (!$this->table_exists('guestcount'))
-        {
+        
+        if (! $this->table_exists('guestcount')) {
             schema_create_guestcount($this->db, X_PREFIX);
         }
         setBar($this->prgbar, $prg);
         $prg += 0.01;
-
-        if (!$this->table_exists('pluglinks'))
-        {
+        
+        if (! $this->table_exists('pluglinks')) {
             schema_create_pluglinks($this->db, X_PREFIX);
         }
         setBar($this->prgbar, $prg);
         $prg += 0.01;
-
-        if (!$this->table_exists('robotcount'))
-        {
+        
+        if (! $this->table_exists('robotcount')) {
             schema_create_robotcount($this->db, X_PREFIX);
         }
         setBar($this->prgbar, $prg);
         $prg += 0.01;
-
-        if (!$this->table_exists('subscriptions'))
-        {
+        
+        if (! $this->table_exists('subscriptions')) {
             schema_create_subscriptions($this->db, X_PREFIX);
         }
         setBar($this->prgbar, $prg);
         $prg += 0.01;
-
+        
         return true;
     }
 
     /**
-    * function() - short description of function
-    *
-    * Long description of function
-    *
-    * @param    $varname    type, what it does
-    * @return   type, what the return does
-    */
+     * function() - short description of function
+     *
+     * Long description of function
+     *
+     * @param $varname type,
+     *            what it does
+     * @return type, what the return does
+     */
     function delete_tables($prg)
     {
         setBar($this->prgbar, $prg);
         $prg += 0.01;
-
-        if ($this->table_exists('calendar'))
-        {
-            $this->db->query("DROP TABLE `".X_PREFIX."calendar`");
+        
+        if ($this->table_exists('calendar')) {
+            $this->db->query("DROP TABLE `" . X_PREFIX . "calendar`");
         }
         setBar($this->prgbar, $prg);
         $prg += 0.01;
-
-        if ($this->table_exists('events'))
-        {
-            $this->db->query("DROP TABLE `".X_PREFIX."events`");
+        
+        if ($this->table_exists('events')) {
+            $this->db->query("DROP TABLE `" . X_PREFIX . "events`");
         }
         setBar($this->prgbar, $prg);
         $prg += 0.01;
-
-        if ($this->table_exists('holidays'))
-        {
-            $this->db->query("DROP TABLE `".X_PREFIX."holidays`");
+        
+        if ($this->table_exists('holidays')) {
+            $this->db->query("DROP TABLE `" . X_PREFIX . "holidays`");
         }
         setBar($this->prgbar, $prg);
         $prg += 0.01;
-
+        
         return true;
     }
 
     /**
-    * function() - short description of function
-    *
-    * Long description of function
-    *
-    * @param    $varname    type, what it does
-    * @return   type, what the return does
-    */
+     * function() - short description of function
+     *
+     * Long description of function
+     *
+     * @param $varname type,
+     *            what it does
+     * @return type, what the return does
+     */
     function alter_tables($prg)
     {
         setBar($this->prgbar, $prg);
         $prg += 0.05;
-
-        switch ($this->schemaver )
-        {
+        
+        switch ($this->schemaver) {
             case 34:
-                $query = "ALTER TABLE `".X_PREFIX."forums` ";
+                $query = "ALTER TABLE `" . X_PREFIX . "forums` ";
                 $query .= "CHANGE `postperm` `postperm` varchar(7) NOT NULL DEFAULT ''";
                 $this->db->query($query);
-
+                
                 setBar($this->prgbar, $prg);
                 $prg += 0.05;
-
-                $query = "ALTER TABLE `".X_PREFIX."settings` ";
+                
+                $query = "ALTER TABLE `" . X_PREFIX . "settings` ";
                 $query .= "ADD `login_max_attempts` smallint(2) NOT NULL DEFAULT '5'";
-
+                
                 $this->db->query($query);
-
+                
                 setBar($this->prgbar, $prg);
                 $prg += 0.05;
                 break;
             case 35:
-                $query = "ALTER TABLE `".X_PREFIX."members` ";
+                $query = "ALTER TABLE `" . X_PREFIX . "members` ";
                 $query .= "ADD `forcelogout` set('yes','no') NOT NULL DEFAULT 'no'";
-
+                
                 $this->db->query($query);
-
+                
                 setBar($this->prgbar, $prg);
                 $prg += 0.05;
             default:
                 break;
         }
-
-        $query = "UPDATE `".X_PREFIX."settings` SET schemaver='36'";
+        
+        $query = "UPDATE `" . X_PREFIX . "settings` SET schemaver='36'";
         $this->db->query($query);
-
+        
         setBar($this->prgbar, $prg);
-
+        
         return true;
     }
 
     /**
-    * function() - short description of function
-    *
-    * Long description of function
-    *
-    * @param    $varname    type, what it does
-    * @return   type, what the return does
-    */
+     * function() - short description of function
+     *
+     * Long description of function
+     *
+     * @param $varname type,
+     *            what it does
+     * @return type, what the return does
+     */
     function migrate_data($prg)
     {
         setBar($this->prgbar, $prg);
         $prg += 0.1;
-
+        
         reset_templates($this->db, X_PREFIX);
-
+        
         setBar($this->prgbar, $prg);
-
+        
         return true;
     }
 
     /**
-    * function() - short description of function
-    *
-    * Long description of function
-    *
-    * @param    $varname    type, what it does
-    * @return   type, what the return does
-    */
+     * function() - short description of function
+     *
+     * Long description of function
+     *
+     * @param $varname type,
+     *            what it does
+     * @return type, what the return does
+     */
     function migrate_settings()
     {
         return true;

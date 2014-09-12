@@ -34,16 +34,11 @@ define('ROOTINC', '../include/');
 define('ROOTCLASS', '../class/');
 define('ROOTHELPER', '../helper/');
 
-require_once(ROOT.'header.php');
-require_once(ROOTINC.'admincp.inc.php');
-require_once(ROOTHELPER.'formHelper.php');
+require_once (ROOT . 'header.php');
+require_once (ROOTINC . 'admincp.inc.php');
+require_once (ROOTHELPER . 'formHelper.php');
 
-loadtpl(
-'cp_header',
-'cp_footer',
-'cp_message',
-'cp_error'
-);
+loadtpl('cp_header', 'cp_footer', 'cp_message', 'cp_error');
 
 $shadow = shadowfx();
 $shadow2 = shadowfx2();
@@ -54,11 +49,10 @@ nav($lang['textforums']);
 btitle($lang['textcp']);
 btitle($lang['textforums']);
 
-eval('$css = "'.template('css').'";');
-eval('echo "'.template('cp_header').'";');
+eval('$css = "' . template('css') . '";');
+eval('echo "' . template('cp_header') . '";');
 
-if (!X_ADMIN)
-{
+if (! X_ADMIN) {
     adminaudit($self['username'], '', 0, 0, 'Authorization failed');
     error($lang['adminonly'], false);
 }
@@ -70,26 +64,23 @@ function viewPanel()
 {
     global $THEME, $lang, $shadow2, $oToken, $db, $CONFIG;
     global $selHTML;
-
+    
     $groups = array();
     $forums = array();
     $forums[0] = array();
     $forumlist = array();
     $subs = array();
     $i = 0;
-    $query = $db->query("SELECT fid, type, name, displayorder, status, fup FROM ".X_PREFIX."forums ORDER BY fup ASC, displayorder ASC");
-    while ($selForums = $db->fetch_array($query))
-    {
-        if ($selForums['type'] == 'group')
-        {
+    $query = $db->query("SELECT fid, type, name, displayorder, status, fup FROM " . X_PREFIX . "forums ORDER BY fup ASC, displayorder ASC");
+    while ($selForums = $db->fetch_array($query)) {
+        if ($selForums['type'] == 'group') {
             $groups[$i]['fid'] = $selForums['fid'];
             $groups[$i]['name'] = htmlspecialchars($selForums['name']);
             $groups[$i]['displayorder'] = $selForums['displayorder'];
             $groups[$i]['status'] = $selForums['status'];
             $groups[$i]['fup'] = $selForums['fup'];
-        } else
-            if ($selForums['type'] == 'forum')
-            {
+        } else 
+            if ($selForums['type'] == 'forum') {
                 $id = ($selForums['fup'] == '') ? 0 : $selForums['fup'];
                 $forums[$id][$i]['fid'] = $selForums['fid'];
                 $forums[$id][$i]['name'] = htmlspecialchars($selForums['name']);
@@ -98,222 +89,224 @@ function viewPanel()
                 $forums[$id][$i]['fup'] = $selForums['fup'];
                 $forumlist[$i]['fid'] = $selForums['fid'];
                 $forumlist[$i]['name'] = $selForums['name'];
-            } else
-                if ($selForums['type'] == 'sub')
-                {
+            } else 
+                if ($selForums['type'] == 'sub') {
                     $subs[$selForums['fup']][$i]['fid'] = $selForums['fid'];
                     $subs[$selForums['fup']][$i]['name'] = htmlspecialchars($selForums['name']);
                     $subs[$selForums['fup']][$i]['displayorder'] = $selForums['displayorder'];
                     $subs[$selForums['fup']][$i]['status'] = $selForums['status'];
                     $subs[$selForums['fup']][$i]['fup'] = $selForums['fup'];
                 }
-        $i++;
+        $i ++;
     }
     $db->free_result($query);
     ?>
-    <form method="post" action="cp_forums.php">
-    <input type="hidden" name="token" value="<?php echo $oToken->get_new_token()?>" />
-    <table cellspacing="0px" cellpadding="0px" border="0px" width="100%" align="center">
-    <tr>
-    <td bgcolor="<?php echo $THEME['bordercolor']?>">
-    <table border="0px" cellspacing="<?php echo $THEME['borderwidth']?>" cellpadding="<?php echo $THEME['tablespace']?>" width="100%">
-    <tr>
-    <td class="category"><font color="<?php echo $THEME['cattext']?>"><strong><?php echo $lang['textforumopts']?></strong></font></td>
-    </tr>
+<form method="post" action="cp_forums.php">
+	<input type="hidden" name="token"
+		value="<?php echo $oToken->get_new_token()?>" />
+	<table cellspacing="0px" cellpadding="0px" border="0px" width="100%"
+		align="center">
+		<tr>
+			<td bgcolor="<?php echo $THEME['bordercolor']?>">
+				<table border="0px" cellspacing="<?php echo $THEME['borderwidth']?>"
+					cellpadding="<?php echo $THEME['tablespace']?>" width="100%">
+					<tr>
+						<td class="category"><font color="<?php echo $THEME['cattext']?>"><strong><?php echo $lang['textforumopts']?></strong></font></td>
+					</tr>
     <?php
-    foreach ($forums[0] as $forum)
-    {
+    foreach ($forums[0] as $forum) {
         $on = $off = '';
-        switch ($forum['status'])
-        {
-            case 'on' :
+        switch ($forum['status']) {
+            case 'on':
                 $on = $selHTML;
                 break;
-            default :
+            default:
                 $off = $selHTML;
                 break;
         }
         ?>
         <tr bgcolor="<?php echo $THEME['altbg2']?>" class="tablerow">
-        <td class="smalltxt">
-        <input type="checkbox" name="delete<?php echo $forum['fid']?>" value="<?php echo $forum['fid']?>" />
-        <input type="text" name="name<?php echo $forum['fid']?>" value="<?php echo stripslashes($forum['name'])?>" /> &nbsp; <?php echo $lang['textorder']?>
-        <input type="text" name="displayorder<?php echo $forum['fid']?>" size="2" value="<?php echo $forum['displayorder']?>" />&nbsp;
-        <select name="status<?php echo $forum['fid']?>">
-        <option value="on" <?php echo $on?>><?php echo $lang['texton']?></option>
-        <option value="off" <?php echo $off?>><?php echo $lang['textoff']?></option>
-        </select>&nbsp;
-        <select name="moveto<?php echo $forum['fid']?>">
+						<td class="smalltxt"><input type="checkbox"
+							name="delete<?php echo $forum['fid']?>"
+							value="<?php echo $forum['fid']?>" /> <input type="text"
+							name="name<?php echo $forum['fid']?>"
+							value="<?php echo stripslashes($forum['name'])?>" /> &nbsp; <?php echo $lang['textorder']?>
+        <input type="text" name="displayorder<?php echo $forum['fid']?>"
+							size="2" value="<?php echo $forum['displayorder']?>" />&nbsp; <select
+							name="status<?php echo $forum['fid']?>">
+								<option value="on" <?php echo $on?>><?php echo $lang['texton']?></option>
+								<option value="off" <?php echo $off?>><?php echo $lang['textoff']?></option>
+						</select>&nbsp; <select name="moveto<?php echo $forum['fid']?>">
         <?php
-
-        foreach ($groups as $moveforum)
-        {
+        
+        foreach ($groups as $moveforum) {
             echo '<option value="' . $moveforum['fid'] . '">' . stripslashes($moveforum['name']) . '</option>';
         }
         ?>
-        </select>
-        <a href="cp_forums.php?fdetails=<?php echo $forum['fid']?>"><?php echo $lang['textmoreopts']?></a></td>
-        </tr>
+        </select> <a
+							href="cp_forums.php?fdetails=<?php echo $forum['fid']?>"><?php echo $lang['textmoreopts']?></a></td>
+					</tr>
         <?php
-        if (array_key_exists($forum['fid'], $subs))
-        {
-            foreach ($subs[$forum['fid']] as $subforum)
-            {
+        if (array_key_exists($forum['fid'], $subs)) {
+            foreach ($subs[$forum['fid']] as $subforum) {
                 $on = $off = '';
-                switch ($subforum['status'])
-                {
-                    case 'on' :
+                switch ($subforum['status']) {
+                    case 'on':
                         $on = $selHTML;
                         break;
-                    default :
+                    default:
                         $off = $selHTML;
                         break;
                 }
                 ?>
-                <tr bgcolor="<?php echo $THEME['altbg2']?>" class="tablerow">
-                <td class="smalltxt"> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
-                <input type="checkbox" name="delete<?php echo $subforum['fid']?>" value="<?php echo $subforum['fid']?>" /> &nbsp;
-                <input type="text" name="name<?php echo $subforum['fid']?>" value="<?php echo stripslashes($subforum['name'])?>" /> &nbsp; <?php echo $lang['textorder']?>
-                <input type="text" name="displayorder<?php echo $subforum['fid']?>" size="2" value="<?php echo $subforum['displayorder']?>" /> &nbsp;
-                <select name="status<?php echo $subforum['fid']?>">
-                <option value="on" <?php echo $on?>><?php echo $lang['texton']?></option>
-                <option value="off" <?php echo $off?>><?php echo $lang['textoff']?></option>
-                </select> &nbsp;
-                <select name="moveto<?php echo $subforum['fid']?>">
+                <tr bgcolor="<?php echo $THEME['altbg2']?>"
+						class="tablerow">
+						<td class="smalltxt">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <input
+							type="checkbox" name="delete<?php echo $subforum['fid']?>"
+							value="<?php echo $subforum['fid']?>" /> &nbsp; <input
+							type="text" name="name<?php echo $subforum['fid']?>"
+							value="<?php echo stripslashes($subforum['name'])?>" /> &nbsp; <?php echo $lang['textorder']?>
+                <input type="text"
+							name="displayorder<?php echo $subforum['fid']?>" size="2"
+							value="<?php echo $subforum['displayorder']?>" /> &nbsp; <select
+							name="status<?php echo $subforum['fid']?>">
+								<option value="on" <?php echo $on?>><?php echo $lang['texton']?></option>
+								<option value="off" <?php echo $off?>><?php echo $lang['textoff']?></option>
+						</select> &nbsp; <select
+							name="moveto<?php echo $subforum['fid']?>">
                 <?php
-                foreach ($forumlist as $moveforum)
-                {
-                    if ($subforum['fup'] == $moveforum['fid'])
-                    {
+                foreach ($forumlist as $moveforum) {
+                    if ($subforum['fup'] == $moveforum['fid']) {
                         echo '<option value="' . $moveforum['fid'] . '" selected="selected">' . stripslashes($moveforum['name']) . '</option>';
-                    } else
-                    {
+                    } else {
                         echo '<option value="' . $moveforum['fid'] . '">' . stripslashes($moveforum['name']) . '</option>';
                     }
                 }
                 ?>
-                </select>
-                <a href="cp_forums.php?fdetails=<?php echo $subforum['fid']?>"><?php echo $lang['textmoreopts']?></a></td>
-                </tr>
+                </select> <a
+							href="cp_forums.php?fdetails=<?php echo $subforum['fid']?>"><?php echo $lang['textmoreopts']?></a></td>
+					</tr>
                 <?php
             }
         }
     }
-    foreach ($groups as $group)
-    {
+    foreach ($groups as $group) {
         $on = $off = '';
-        switch ($group['status'])
-        {
-            case 'on' :
+        switch ($group['status']) {
+            case 'on':
                 $on = $selHTML;
                 break;
-            default :
+            default:
                 $off = $selHTML;
                 break;
         }
         ?>
         <tr bgcolor="<?php echo $THEME['altbg2']?>" class="tablerow">
-        <td>&nbsp;</td>
-        </tr>
-        <tr bgcolor="<?php echo $THEME['altbg1']?>" class="tablerow">
-        <td class="smalltxt">
+						<td>&nbsp;</td>
+					</tr>
+					<tr bgcolor="<?php echo $THEME['altbg1']?>" class="tablerow">
+						<td class="smalltxt">
         <?php
-        if (count($groups) != '1')
-        {
-        ?>
-            <input type="checkbox" name="delete<?php echo $group['fid']?>" value="<?php echo $group['fid']?>" />                     <?php
-
+        if (count($groups) != '1') {
+            ?>
+            <input type="checkbox"
+							name="delete<?php echo $group['fid']?>"
+							value="<?php echo $group['fid']?>" />                     <?php
         }
         ?>
-        <input type="text" name="name<?php echo $group['fid']?>" value="<?php echo stripslashes($group['name'])?>" />
-        &nbsp; <?php echo $lang['textorder']?> <input type="text" name="displayorder<?php echo $group['fid']?>" size="2" value="<?php echo $group['displayorder']?>" />
-        &nbsp; <select name="status<?php echo $group['fid']?>">
-        <option value="on" <?php echo $on?>><?php echo $lang['texton']?></option>
-        <option value="off" <?php echo $off?>><?php echo $lang['textoff']?></option>
-        </select>
-        </td>
-        </tr>
+        <input type="text" name="name<?php echo $group['fid']?>"
+							value="<?php echo stripslashes($group['name'])?>" />
+        &nbsp; <?php echo $lang['textorder']?> <input type="text"
+							name="displayorder<?php echo $group['fid']?>" size="2"
+							value="<?php echo $group['displayorder']?>" /> &nbsp; <select
+							name="status<?php echo $group['fid']?>">
+								<option value="on" <?php echo $on?>><?php echo $lang['texton']?></option>
+								<option value="off" <?php echo $off?>><?php echo $lang['textoff']?></option>
+						</select>
+						</td>
+					</tr>
         <?php
-        if (array_key_exists($group['fid'], $forums))
-        {
-            foreach ($forums[$group['fid']] as $forum)
-            {
+        if (array_key_exists($group['fid'], $forums)) {
+            foreach ($forums[$group['fid']] as $forum) {
                 $on = $off = '';
-                switch ($forum['status'])
-                {
-                    case 'on' :
+                switch ($forum['status']) {
+                    case 'on':
                         $on = $selHTML;
                         break;
-                    default :
+                    default:
                         $off = $selHTML;
                         break;
                 }
                 ?>
-                <tr bgcolor="<?php echo $THEME['altbg2']?>" class="tablerow">
-                <td class="smalltxt"> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <input type="checkbox" name="delete<?php echo $forum['fid']?>" value="<?php echo $forum['fid']?>" />
-                &nbsp;<input type="text" name="name<?php echo $forum['fid']?>" value="<?php echo stripslashes($forum['name'])?>" />
-                &nbsp; <?php echo $lang['textorder']?> <input type="text" name="displayorder<?php echo $forum['fid']?>" size="2" value="<?php echo $forum['displayorder']?>" />
-                &nbsp; <select name="status<?php echo $forum['fid']?>">
-                <option value="on" <?php echo $on?>><?php echo $lang['texton']?></option><option value="off" <?php echo $off?>><?php echo $lang['textoff']?></option></select>
-                &nbsp; <select name="moveto<?php echo $forum['fid']?>">
+                <tr bgcolor="<?php echo $THEME['altbg2']?>"
+						class="tablerow">
+						<td class="smalltxt">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <input
+							type="checkbox" name="delete<?php echo $forum['fid']?>"
+							value="<?php echo $forum['fid']?>" /> &nbsp;<input type="text"
+							name="name<?php echo $forum['fid']?>"
+							value="<?php echo stripslashes($forum['name'])?>" />
+                &nbsp; <?php echo $lang['textorder']?> <input
+							type="text" name="displayorder<?php echo $forum['fid']?>"
+							size="2" value="<?php echo $forum['displayorder']?>" /> &nbsp; <select
+							name="status<?php echo $forum['fid']?>">
+								<option value="on" <?php echo $on?>><?php echo $lang['texton']?></option>
+								<option value="off" <?php echo $off?>><?php echo $lang['textoff']?></option>
+						</select> &nbsp; <select name="moveto<?php echo $forum['fid']?>">
                 <?php
-                foreach ($groups as $moveforum)
-                {
-                    if ($moveforum['fid'] == $forum['fup'])
-                    {
+                foreach ($groups as $moveforum) {
+                    if ($moveforum['fid'] == $forum['fup']) {
                         $curgroup = $selHTML;
-                    } else
-                    {
+                    } else {
                         $curgroup = '';
                     }
                     echo '<option value="' . $moveforum['fid'] . '" ' . $curgroup . '>' . stripslashes($moveforum['name']) . '</option>';
                 }
                 ?>
-                </select>
-                <a href="cp_forums.php?fdetails=<?php echo $forum['fid']?>"><?php echo $lang['textmoreopts']?></a></td>
-                </tr>
+                </select> <a
+							href="cp_forums.php?fdetails=<?php echo $forum['fid']?>"><?php echo $lang['textmoreopts']?></a></td>
+					</tr>
                 <?php
-                if (array_key_exists($forum['fid'], $subs))
-                {
-                    foreach ($subs[$forum['fid']] as $forum)
-                    {
+                if (array_key_exists($forum['fid'], $subs)) {
+                    foreach ($subs[$forum['fid']] as $forum) {
                         $on = $off = '';
-                        switch ($forum['status'])
-                        {
-                            case 'on' :
+                        switch ($forum['status']) {
+                            case 'on':
                                 $on = $selHTML;
                                 break;
-                            default :
+                            default:
                                 $off = $selHTML;
                                 break;
                         }
                         ?>
-                        <tr bgcolor="<?php echo $THEME['altbg2']?>" class="tablerow">
-                        <td class="smalltxt"> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<input type="checkbox" name="delete<?php echo $forum['fid']?>" value="<?php echo $forum['fid']?>" />
-                        &nbsp;<input type="text" name="name<?php echo $forum['fid']?>" value="<?php echo stripslashes($forum['name'])?>" />
-                        &nbsp; <?php echo $lang['textorder']?> <input type="text" name="displayorder<?php echo $forum['fid']?>" size="2" value="<?php echo $forum['displayorder']?>" />
-                        &nbsp; <select name="status<?php echo $forum['fid']?>">
-                        <option value="on" <?php echo $on?>><?php echo $lang['texton']?></option>
-                        <option value="off" <?php echo $off?>><?php echo $lang['textoff']?></option>
-                        </select>
-                        &nbsp; <select name="moveto<?php echo $forum['fid']?>">
+                        <tr bgcolor="<?php echo $THEME['altbg2']?>"
+						class="tablerow">
+						<td class="smalltxt">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+							&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<input
+							type="checkbox" name="delete<?php echo $forum['fid']?>"
+							value="<?php echo $forum['fid']?>" /> &nbsp;<input type="text"
+							name="name<?php echo $forum['fid']?>"
+							value="<?php echo stripslashes($forum['name'])?>" />
+                        &nbsp; <?php echo $lang['textorder']?> <input
+							type="text" name="displayorder<?php echo $forum['fid']?>"
+							size="2" value="<?php echo $forum['displayorder']?>" /> &nbsp; <select
+							name="status<?php echo $forum['fid']?>">
+								<option value="on" <?php echo $on?>><?php echo $lang['texton']?></option>
+								<option value="off" <?php echo $off?>><?php echo $lang['textoff']?></option>
+						</select> &nbsp; <select name="moveto<?php echo $forum['fid']?>">
                         <?php
-                        foreach ($forumlist as $moveforum)
-                        {
-                            if ($moveforum['fid'] == $forum['fup'])
-                            {
+                        foreach ($forumlist as $moveforum) {
+                            if ($moveforum['fid'] == $forum['fup']) {
                                 echo '<option value="' . $moveforum['fid'] . '" selected="selected">' . stripslashes($moveforum['name']) . '</option>';
-                            } else
-                            {
+                            } else {
                                 echo '<option value="' . $moveforum['fid'] . '">' . stripslashes($moveforum['name']) . '</option>';
                             }
                         }
                         ?>
-                        </select>
-                        <a href="cp_forums.php?fdetails=<?php echo $forum['fid']?>"><?php echo $lang['textmoreopts']?></a></td>
-                        </tr>
+                        </select> <a
+							href="cp_forums.php?fdetails=<?php echo $forum['fid']?>"><?php echo $lang['textmoreopts']?></a>
+						</td>
+					</tr>
                         <?php
-
                     }
                 }
             }
@@ -321,53 +314,52 @@ function viewPanel()
     }
     ?>
     <tr bgcolor="<?php echo $THEME['altbg1']?>" class="tablerow">
-    <td>&nbsp;</td>
-    </tr>
-    <tr bgcolor="<?php echo $THEME['altbg2']?>" class="tablerow">
-    <td class="smalltxt"><input type="text" name="newgname" value="<?php echo $lang['textnewgroup']?>" />
-    &nbsp; <?php echo $lang['textorder']?> <input type="text" name="newgorder" size="2" />
-    &nbsp; <select name="newgstatus">
-    <option value="on"><?php echo $lang['texton']?></option>
-    <option value="off"><?php echo $lang['textoff']?></option>
-    </select>
-    </td>
-    </tr>
-    <tr class="tablerow">
-    <td bgcolor="<?php echo $THEME['altbg2']?>" class="smalltxt"><input type="text" name="newfname" value="<?php echo $lang['textnewforum']?>" />
-    &nbsp; <?php echo $lang['textorder']?> <input type="text" name="newforder" size="2" />
-    &nbsp; <select name="newfstatus">
-    <option value="on"><?php echo $lang['texton']?></option>
-    <option value="off"><?php echo $lang['textoff']?></option>
-    </select>
+						<td>&nbsp;</td>
+					</tr>
+					<tr bgcolor="<?php echo $THEME['altbg2']?>" class="tablerow">
+						<td class="smalltxt"><input type="text" name="newgname"
+							value="<?php echo $lang['textnewgroup']?>" />
+    &nbsp; <?php echo $lang['textorder']?> <input type="text"
+							name="newgorder" size="2" /> &nbsp; <select name="newgstatus">
+								<option value="on"><?php echo $lang['texton']?></option>
+								<option value="off"><?php echo $lang['textoff']?></option>
+						</select></td>
+					</tr>
+					<tr class="tablerow">
+						<td bgcolor="<?php echo $THEME['altbg2']?>" class="smalltxt"><input
+							type="text" name="newfname"
+							value="<?php echo $lang['textnewforum']?>" />
+    &nbsp; <?php echo $lang['textorder']?> <input type="text"
+							name="newforder" size="2" /> &nbsp; <select name="newfstatus">
+								<option value="on"><?php echo $lang['texton']?></option>
+								<option value="off"><?php echo $lang['textoff']?></option>
+						</select>
     <?php
-    if (!empty ($groups))
-    {
+    if (! empty($groups)) {
         ?>
         &nbsp; <select name="newffup">
         <?php
-        foreach ($groups as $group)
-        {
+        foreach ($groups as $group) {
             echo '<option value="' . $group['fid'] . '">' . stripslashes($group['name']) . '</option>';
         }
     }
     ?>
-    </select>
-    </td>
-    </tr>
-    <tr bgcolor="<?php echo $THEME['altbg2']?>" class="tablerow">
-    <td class="smalltxt"><input type="text" name="newsubname" value="<?php echo $lang['textnewsubf']?>" />
-    &nbsp; <?php echo $lang['textorder']?> <input type="text" name="newsuborder" size="2" />
-    &nbsp; <select name="newsubstatus"><option value="on"><?php echo $lang['texton']?></option>
-    <option value="off"><?php echo $lang['textoff']?></option>
-    </select>
+    </select></td>
+					</tr>
+					<tr bgcolor="<?php echo $THEME['altbg2']?>" class="tablerow">
+						<td class="smalltxt"><input type="text" name="newsubname"
+							value="<?php echo $lang['textnewsubf']?>" />
+    &nbsp; <?php echo $lang['textorder']?> <input type="text"
+							name="newsuborder" size="2" /> &nbsp; <select name="newsubstatus"><option
+									value="on"><?php echo $lang['texton']?></option>
+								<option value="off"><?php echo $lang['textoff']?></option>
+						</select>
     <?php
-    if (!empty ($forumlist))
-    {
+    if (! empty($forumlist)) {
         ?>
         &nbsp; <select name="newsubfup">
         <?php
-        foreach ($forumlist as $group)
-        {
+        foreach ($forumlist as $group) {
             echo '<option value="' . $group['fid'] . '">' . stripslashes($group['name']) . '</option>';
         }
         ?>
@@ -376,20 +368,22 @@ function viewPanel()
     }
     ?>
     </td>
-    </tr>
-    <tr>
-    <td bgcolor="<?php echo $THEME['altbg2']?>" class="ctrtablerow"><input type="submit" name="forumsubmit" value="<?php echo $lang['textsubmitchanges']?>" class="submit" /></td>
-    </tr>
-    </table>
-    </td>
-    </tr>
-    </table>
+					</tr>
+					<tr>
+						<td bgcolor="<?php echo $THEME['altbg2']?>" class="ctrtablerow"><input
+							type="submit" name="forumsubmit"
+							value="<?php echo $lang['textsubmitchanges']?>" class="submit" /></td>
+					</tr>
+				</table>
+			</td>
+		</tr>
+	</table>
     <?php echo $shadow2?>
     </form>
-    </td>
-    </tr>
-    </table>
-    <?php
+</td>
+</tr>
+</table>
+<?php
 }
 
 function viewDetailsPanel($fdetails)
@@ -397,30 +391,32 @@ function viewDetailsPanel($fdetails)
     global $THEME, $lang, $shadow2, $oToken, $db, $CONFIG;
     global $selHTML, $cheHTML;
     ?>
-    <form method="post" action="cp_forums.php?fdetails=<?php echo $fdetails?>">
-    <input type="hidden" name="token" value="<?php echo $oToken->get_new_token()?>" />
-    <table cellspacing="0px" cellpadding="0px" border="0px" width="100%" align="center">
-    <tr>
-    <td bgcolor="<?php echo $THEME['bordercolor']?>">
-    <table border="0px" cellspacing="<?php echo $THEME['borderwidth']?>" cellpadding="<?php echo $THEME['tablespace']?>" width="100%">
-    <tr>
-    <td class="category" colspan="2"><font color="<?php echo $THEME['cattext']?>"><strong><?php echo $lang['textforumopts']?></strong></font></td>
-    </tr>
+<form method="post"
+	action="cp_forums.php?fdetails=<?php echo $fdetails?>">
+	<input type="hidden" name="token"
+		value="<?php echo $oToken->get_new_token()?>" />
+	<table cellspacing="0px" cellpadding="0px" border="0px" width="100%"
+		align="center">
+		<tr>
+			<td bgcolor="<?php echo $THEME['bordercolor']?>">
+				<table border="0px" cellspacing="<?php echo $THEME['borderwidth']?>"
+					cellpadding="<?php echo $THEME['tablespace']?>" width="100%">
+					<tr>
+						<td class="category" colspan="2"><font
+							color="<?php echo $THEME['cattext']?>"><strong><?php echo $lang['textforumopts']?></strong></font></td>
+					</tr>
     <?php
-    $queryg = $db->query("SELECT * FROM ".X_PREFIX."forums WHERE fid = '$fdetails'");
+    $queryg = $db->query("SELECT * FROM " . X_PREFIX . "forums WHERE fid = '$fdetails'");
     $forum = $db->fetch_array($queryg);
     $db->free_result($queryg);
     $themelist = array();
     $themelist[] = '<select name="themeforumnew">';
     $themelist[] = '<option value="0">' . $lang['textusedefault'] . '</option>';
-    $query = $db->query("SELECT themeid, name FROM ".X_PREFIX."themes WHERE themestatus = 'on' ORDER BY name ASC");
-    while ($themeinfo = $db->fetch_array($query))
-    {
-        if ($themeinfo['themeid'] == $forum['theme'])
-        {
+    $query = $db->query("SELECT themeid, name FROM " . X_PREFIX . "themes WHERE themestatus = 'on' ORDER BY name ASC");
+    while ($themeinfo = $db->fetch_array($query)) {
+        if ($themeinfo['themeid'] == $forum['theme']) {
             $themelist[] = '<option value="' . $themeinfo['themeid'] . '" selected="selected">' . stripslashes($themeinfo['name']) . '</option>';
-        } else
-        {
+        } else {
             $themelist[] = '<option value="' . $themeinfo['themeid'] . '">' . stripslashes($themeinfo['name']) . '</option>';
         }
     }
@@ -428,8 +424,7 @@ function viewDetailsPanel($fdetails)
     $themelist = implode("\n", $themelist);
     $db->free_result($query);
     $checked1 = '';
-    switch ($forum['allowsmilies'])
-    {
+    switch ($forum['allowsmilies']) {
         case 'yes':
             $checked1 = $cheHTML;
             break;
@@ -438,8 +433,7 @@ function viewDetailsPanel($fdetails)
             break;
     }
     $checked2 = '';
-    switch ($forum['allowbbcode'])
-    {
+    switch ($forum['allowbbcode']) {
         case 'yes':
             $checked2 = $cheHTML;
             break;
@@ -448,8 +442,7 @@ function viewDetailsPanel($fdetails)
             break;
     }
     $checked3 = '';
-    switch ($forum['allowimgcode'])
-    {
+    switch ($forum['allowimgcode']) {
         case 'yes':
             $checked3 = $cheHTML;
             break;
@@ -458,8 +451,7 @@ function viewDetailsPanel($fdetails)
             break;
     }
     $checked4 = '';
-    switch ($forum['attachstatus'])
-    {
+    switch ($forum['attachstatus']) {
         case 'on':
             $checked4 = $cheHTML;
             break;
@@ -468,8 +460,7 @@ function viewDetailsPanel($fdetails)
             break;
     }
     $checked5 = '';
-    switch ($forum['pollstatus'])
-    {
+    switch ($forum['pollstatus']) {
         case 'on':
             $checked5 = $cheHTML;
             break;
@@ -478,8 +469,7 @@ function viewDetailsPanel($fdetails)
             break;
     }
     $checked6 = '';
-    switch ($forum['guestposting'])
-    {
+    switch ($forum['guestposting']) {
         case 'on':
             $checked6 = $cheHTML;
             break;
@@ -489,8 +479,7 @@ function viewDetailsPanel($fdetails)
     }
     $pperm = explode('|', $forum['postperm']);
     $type11 = $type12 = $type13 = $type14 = $type15 = '';
-    switch ($pperm[0])
-    {
+    switch ($pperm[0]) {
         case '2':
             $type12 = $selHTML;
             break;
@@ -508,8 +497,7 @@ function viewDetailsPanel($fdetails)
             break;
     }
     $type21 = $type22 = $type23 = $type24 = $type25 = '';
-    switch ($pperm[1])
-    {
+    switch ($pperm[1]) {
         case '2':
             $type22 = $selHTML;
             break;
@@ -527,8 +515,7 @@ function viewDetailsPanel($fdetails)
             break;
     }
     $type31 = $type32 = $type33 = $type34 = $type35 = '';
-    switch ($forum['private'])
-    {
+    switch ($forum['private']) {
         case '2':
             $type32 = $selHTML;
             break;
@@ -546,9 +533,8 @@ function viewDetailsPanel($fdetails)
             break;
     }
     $type41 = $type42 = $type43 = $type44 = $type45 = '';
-    $pperm[2] = isset ($pperm[2]) ? $pperm[2] : 0;
-    switch ($pperm[2])
-    {
+    $pperm[2] = isset($pperm[2]) ? $pperm[2] : 0;
+    switch ($pperm[2]) {
         case '2':
             $type42 = $selHTML;
             break;
@@ -566,9 +552,8 @@ function viewDetailsPanel($fdetails)
             break;
     }
     $type51 = $type52 = $type53 = $type54 = $type55 = '';
-    $pperm[3] = isset ($pperm[3]) ? $pperm[3] : 0;
-    switch ($pperm[3])
-    {
+    $pperm[3] = isset($pperm[3]) ? $pperm[3] : 0;
+    switch ($pperm[3]) {
         case '2':
             $type52 = $selHTML;
             break;
@@ -586,8 +571,7 @@ function viewDetailsPanel($fdetails)
             break;
     }
     $fruleson = $frulesoff = '';
-    switch ($forum['frules_status'])
-    {
+    switch ($forum['frules_status']) {
         case 'on':
             $fruleson = $selHTML;
             break;
@@ -596,8 +580,7 @@ function viewDetailsPanel($fdetails)
             break;
     }
     $markthreadson = $markthreadsoff = '';
-    switch ($forum['mt_status'])
-    {
+    switch ($forum['mt_status']) {
         case 'on':
             $markthreadson = $selHTML;
             break;
@@ -606,8 +589,7 @@ function viewDetailsPanel($fdetails)
             break;
     }
     $closethreadson = $closethreadsoff = '';
-    switch ($forum['closethreads'])
-    {
+    switch ($forum['closethreads']) {
         case 'on':
             $closethreadson = $selHTML;
             break;
@@ -616,8 +598,7 @@ function viewDetailsPanel($fdetails)
             break;
     }
     $quickreplyon = $quickreplyoff = '';
-    switch ($forum['quickreply'])
-    {
+    switch ($forum['quickreply']) {
         case 'on':
             $quickreplyon = $selHTML;
             break;
@@ -626,8 +607,7 @@ function viewDetailsPanel($fdetails)
             break;
     }
     $postcounton = $postcountoff = '';
-    switch ($forum['postcount'])
-    {
+    switch ($forum['postcount']) {
         case 'on':
             $postcounton = $selHTML;
             break;
@@ -661,12 +641,14 @@ function viewDetailsPanel($fdetails)
     formHelper::formTextBox($lang['mpnt'], 'mpntnew', $forum['mpnt'], 2);
     ?>
     <tr class="tablerow">
-    <td bgcolor="<?php echo $THEME['altbg1']?>"><?php echo $lang['multiattach']?></td>
-    <td bgcolor="<?php echo $THEME['altbg2']?>"><input type="text" name="attachnumnew" size="2" value="<?php echo ($forum['attachnum'] > 0 ? $forum['attachnum'] : $CONFIG['attach_num_default'])?>" /></td>
-    </tr>
-    <tr class="tablerow">
-    <td bgcolor="<?php echo $THEME['altbg1']?>" valign="top"><?php echo $lang['textallow']?></td>
-    <td bgcolor="<?php echo $THEME['altbg2']?>" class="smalltxt">
+						<td bgcolor="<?php echo $THEME['altbg1']?>"><?php echo $lang['multiattach']?></td>
+						<td bgcolor="<?php echo $THEME['altbg2']?>"><input type="text"
+							name="attachnumnew" size="2"
+							value="<?php echo ($forum['attachnum'] > 0 ? $forum['attachnum'] : $CONFIG['attach_num_default'])?>" /></td>
+					</tr>
+					<tr class="tablerow">
+						<td bgcolor="<?php echo $THEME['altbg1']?>" valign="top"><?php echo $lang['textallow']?></td>
+						<td bgcolor="<?php echo $THEME['altbg2']?>" class="smalltxt">
     <?php
     formHelper::formCheckBox('allowsmiliesnew', 'yes', $checked1, $lang['textsmilies']);
     formHelper::formCheckBox('allowbbcodenew', 'yes', $checked2, $lang['textbbcode']);
@@ -676,11 +658,11 @@ function viewDetailsPanel($fdetails)
     formHelper::formCheckBox('guestpostingnew', 'on', $checked6, $lang['textanonymousposting']);
     ?>
     </td>
-    </tr>
-    <tr class="tablerow">
-    <td bgcolor="<?php echo $THEME['altbg1']?>"><?php echo $lang['texttheme']?></td>
-    <td bgcolor="<?php echo $THEME['altbg2']?>"><?php echo $themelist?></td>
-    </tr>
+					</tr>
+					<tr class="tablerow">
+						<td bgcolor="<?php echo $THEME['altbg1']?>"><?php echo $lang['texttheme']?></td>
+						<td bgcolor="<?php echo $THEME['altbg2']?>"><?php echo $themelist?></td>
+					</tr>
     <?php
     formHelper::formSelectOnOff($lang['markthreadstatus'], 'mt_statusnew', $markthreadson, $markthreadsoff);
     formHelper::formTextBox($lang['markthreadopen'], 4, 'mt_opennew', 50, $forum['mt_open']);
@@ -688,100 +670,95 @@ function viewDetailsPanel($fdetails)
     formHelper::formTextBox($lang['topicsubjectprefixes'], 5, 'subjectprefixesnew', 50, $forum['subjectprefixes']);
     ?>
     <tr class="tablerow">
-    <td bgcolor="<?php echo $THEME['altbg1']?>"><?php echo $lang['whopostop1']?></td>
-    <td bgcolor="<?php echo $THEME['altbg2']?>">
-    <select name="postperm1">
-    <option value="1" <?php echo $type11?>><?php echo $lang['textpermission1']?></option>
-    <option value="5" <?php echo $type15?>><?php echo $lang['textpermission5']?></option>
-    <option value="2" <?php echo $type12?>><?php echo $lang['textpermission2']?></option>
-    <option value="3" <?php echo $type13?>><?php echo $lang['textpermission3']?></option>
-    <option value="4" <?php echo $type14?>><?php echo $lang['textpermission41']?></option>
-    </select>
-    </td>
-    </tr>
-    <tr class="tablerow">
-    <td bgcolor="<?php echo $THEME['altbg1']?>"><?php echo $lang['whopostop2']?></td>
-    <td bgcolor="<?php echo $THEME['altbg2']?>">
-    <select name="postperm2">
-    <option value="1" <?php echo $type21?>><?php echo $lang['textpermission1']?></option>
-    <option value="5" <?php echo $type25?>><?php echo $lang['textpermission5']?></option>
-    <option value="2" <?php echo $type22?>><?php echo $lang['textpermission2']?></option>
-    <option value="3" <?php echo $type23?>><?php echo $lang['textpermission3']?></option>
-    <option value="4" <?php echo $type24?>><?php echo $lang['textpermission41']?></option>
-    </select>
-    </td>
-    </tr>
-    <tr class="tablerow">
-    <td bgcolor="<?php echo $THEME['altbg1']?>"><?php echo $lang['whopostop3']?></td>
-    <td bgcolor="<?php echo $THEME['altbg2']?>">
-    <select name="postperm3">
-    <option value="1" <?php echo $type41?>><?php echo $lang['textpermission1']?></option>
-    <option value="5" <?php echo $type45?>><?php echo $lang['textpermission5']?></option>
-    <option value="2" <?php echo $type42?>><?php echo $lang['textpermission2']?></option>
-    <option value="3" <?php echo $type43?>><?php echo $lang['textpermission3']?></option>
-    <option value="4" <?php echo $type44?>><?php echo $lang['textpermission41']?></option>
-    </select>
-    </td>
-    </tr>
-    <tr class="tablerow">
-    <td bgcolor="<?php echo $THEME['altbg1']?>"><?php echo $lang['whopostop4']?></td>
-    <td bgcolor="<?php echo $THEME['altbg2']?>">
-    <select name="postperm4">
-    <option value="1" <?php echo $type51?>><?php echo $lang['textpermission1']?></option>
-    <option value="5" <?php echo $type55?>><?php echo $lang['textpermission5']?></option>
-    <option value="2" <?php echo $type52?>><?php echo $lang['textpermission2']?></option>
-    <option value="3" <?php echo $type53?>><?php echo $lang['textpermission3']?></option>
-    <option value="4" <?php echo $type54?>><?php echo $lang['textpermission41']?></option>
-    </select>
-    </td>
-    </tr>
-    <tr class="tablerow">
-    <td bgcolor="<?php echo $THEME['altbg1']?>"><?php echo $lang['whoview']?></td>
-    <td bgcolor="<?php echo $THEME['altbg2']?>">
-    <select name="privatenew">
-    <option value="1" <?php echo $type31?>><?php echo $lang['textpermission1']?></option>
-    <option value="5" <?php echo $type35?>><?php echo $lang['textpermission5']?></option>
-    <option value="2" <?php echo $type32?>><?php echo $lang['textpermission2']?></option>
-    <option value="3" <?php echo $type33?>><?php echo $lang['textpermission3']?></option>
-    <option value="4" <?php echo $type34?>><?php echo $lang['textpermission42']?></option>
-    </select>
-    </td>
-    </tr>
+						<td bgcolor="<?php echo $THEME['altbg1']?>"><?php echo $lang['whopostop1']?></td>
+						<td bgcolor="<?php echo $THEME['altbg2']?>"><select
+							name="postperm1">
+								<option value="1" <?php echo $type11?>><?php echo $lang['textpermission1']?></option>
+								<option value="5" <?php echo $type15?>><?php echo $lang['textpermission5']?></option>
+								<option value="2" <?php echo $type12?>><?php echo $lang['textpermission2']?></option>
+								<option value="3" <?php echo $type13?>><?php echo $lang['textpermission3']?></option>
+								<option value="4" <?php echo $type14?>><?php echo $lang['textpermission41']?></option>
+						</select></td>
+					</tr>
+					<tr class="tablerow">
+						<td bgcolor="<?php echo $THEME['altbg1']?>"><?php echo $lang['whopostop2']?></td>
+						<td bgcolor="<?php echo $THEME['altbg2']?>"><select
+							name="postperm2">
+								<option value="1" <?php echo $type21?>><?php echo $lang['textpermission1']?></option>
+								<option value="5" <?php echo $type25?>><?php echo $lang['textpermission5']?></option>
+								<option value="2" <?php echo $type22?>><?php echo $lang['textpermission2']?></option>
+								<option value="3" <?php echo $type23?>><?php echo $lang['textpermission3']?></option>
+								<option value="4" <?php echo $type24?>><?php echo $lang['textpermission41']?></option>
+						</select></td>
+					</tr>
+					<tr class="tablerow">
+						<td bgcolor="<?php echo $THEME['altbg1']?>"><?php echo $lang['whopostop3']?></td>
+						<td bgcolor="<?php echo $THEME['altbg2']?>"><select
+							name="postperm3">
+								<option value="1" <?php echo $type41?>><?php echo $lang['textpermission1']?></option>
+								<option value="5" <?php echo $type45?>><?php echo $lang['textpermission5']?></option>
+								<option value="2" <?php echo $type42?>><?php echo $lang['textpermission2']?></option>
+								<option value="3" <?php echo $type43?>><?php echo $lang['textpermission3']?></option>
+								<option value="4" <?php echo $type44?>><?php echo $lang['textpermission41']?></option>
+						</select></td>
+					</tr>
+					<tr class="tablerow">
+						<td bgcolor="<?php echo $THEME['altbg1']?>"><?php echo $lang['whopostop4']?></td>
+						<td bgcolor="<?php echo $THEME['altbg2']?>"><select
+							name="postperm4">
+								<option value="1" <?php echo $type51?>><?php echo $lang['textpermission1']?></option>
+								<option value="5" <?php echo $type55?>><?php echo $lang['textpermission5']?></option>
+								<option value="2" <?php echo $type52?>><?php echo $lang['textpermission2']?></option>
+								<option value="3" <?php echo $type53?>><?php echo $lang['textpermission3']?></option>
+								<option value="4" <?php echo $type54?>><?php echo $lang['textpermission41']?></option>
+						</select></td>
+					</tr>
+					<tr class="tablerow">
+						<td bgcolor="<?php echo $THEME['altbg1']?>"><?php echo $lang['whoview']?></td>
+						<td bgcolor="<?php echo $THEME['altbg2']?>"><select
+							name="privatenew">
+								<option value="1" <?php echo $type31?>><?php echo $lang['textpermission1']?></option>
+								<option value="5" <?php echo $type35?>><?php echo $lang['textpermission5']?></option>
+								<option value="2" <?php echo $type32?>><?php echo $lang['textpermission2']?></option>
+								<option value="3" <?php echo $type33?>><?php echo $lang['textpermission3']?></option>
+								<option value="4" <?php echo $type34?>><?php echo $lang['textpermission42']?></option>
+						</select></td>
+					</tr>
     <?php
     formHelper::formTextBox($lang['textuserlist'], 5, 'userlistnew', 50, $forum['userlist']);
     formHelper::formTextPassBox($lang['forumpw'], 'passwordnew', $forum['password'], 20);
     ?>
     <tr class="tablerow">
-    <td bgcolor="<?php echo $THEME['altbg1']?>"><?php echo $lang['textdeleteques']?></td>
-    <td bgcolor="<?php echo $THEME['altbg2']?>"><input type="checkbox" name="delete" value="<?php echo $forum['fid']?>" /></td>
-    </tr>
-    <tr bgcolor="<?php echo $THEME['altbg2']?>" class="ctrtablerow">
-    <td colspan="2"><input type="submit" name="forumsubmit" value="<?php echo $lang['textsubmitchanges']?>" class="submit" /></td>
-    </tr>
-    </table>
-    </td>
-    </tr>
-    </table>
+						<td bgcolor="<?php echo $THEME['altbg1']?>"><?php echo $lang['textdeleteques']?></td>
+						<td bgcolor="<?php echo $THEME['altbg2']?>"><input type="checkbox"
+							name="delete" value="<?php echo $forum['fid']?>" /></td>
+					</tr>
+					<tr bgcolor="<?php echo $THEME['altbg2']?>" class="ctrtablerow">
+						<td colspan="2"><input type="submit" name="forumsubmit"
+							value="<?php echo $lang['textsubmitchanges']?>" class="submit" /></td>
+					</tr>
+				</table>
+			</td>
+		</tr>
+	</table>
     <?php echo $shadow2?>
     </form>
-    </td>
-    </tr>
-    </table>
-    <?php
+</td>
+</tr>
+</table>
+<?php
 }
 
 function doPanel($fdetails)
 {
     global $THEME, $lang, $shadow2, $oToken, $db, $CONFIG;
-
+    
     $oToken->assert_token();
-
-    if ($fdetails == 0)
-    {
-        $queryforum = $db->query("SELECT fid, type FROM ".X_PREFIX."forums WHERE type = 'forum' OR type = 'sub'");
-        $db->query("DELETE FROM ".X_PREFIX."forums WHERE name = ''");
-        while ($forum = $db->fetch_array($queryforum))
-        {
+    
+    if ($fdetails == 0) {
+        $queryforum = $db->query("SELECT fid, type FROM " . X_PREFIX . "forums WHERE type = 'forum' OR type = 'sub'");
+        $db->query("DELETE FROM " . X_PREFIX . "forums WHERE name = ''");
+        while ($forum = $db->fetch_array($queryforum)) {
             $displayorder = "displayorder$forum[fid]";
             $displayorder = formInt($displayorder);
             $name = "name$forum[fid]";
@@ -792,49 +769,42 @@ function doPanel($fdetails)
             $delete = formInt($delete);
             $moveto = "moveto$forum[fid]";
             $moveto = formInt($moveto);
-            if ($delete > 0)
-            {
-                $db->query("DELETE FROM ".X_PREFIX."forums WHERE (type = 'forum' OR type = 'sub') AND fid = '$delete'");
-                $querythread = $db->query("SELECT tid, author FROM ".X_PREFIX."threads WHERE fid = '$delete'");
-                while ($thread = $db->fetch_array($querythread))
-                {
-                    $db->query("DELETE FROM ".X_PREFIX."threads WHERE tid = '$thread[tid]'");
-                    $db->query("DELETE FROM ".X_PREFIX."favorites WHERE tid = '$thread[tid]'");
-                    $db->query("DELETE FROM ".X_PREFIX."subscriptions WHERE tid = '$thread[tid]'");
-                    $db->query("UPDATE ".X_PREFIX."members SET postnum = postnum-1 WHERE username = '$thread[author]'");
-                    $querypost = $db->query("SELECT pid, author FROM ".X_PREFIX."posts WHERE tid = '$thread[tid]'");
-                    while ($post = $db->fetch_array($querypost))
-                    {
-                        $db->query("DELETE FROM ".X_PREFIX."posts WHERE pid = '$post[pid]'");
-                        $db->query("UPDATE ".X_PREFIX."members SET postnum = postnum-1 WHERE username = '$post[author]'");
+            if ($delete > 0) {
+                $db->query("DELETE FROM " . X_PREFIX . "forums WHERE (type = 'forum' OR type = 'sub') AND fid = '$delete'");
+                $querythread = $db->query("SELECT tid, author FROM " . X_PREFIX . "threads WHERE fid = '$delete'");
+                while ($thread = $db->fetch_array($querythread)) {
+                    $db->query("DELETE FROM " . X_PREFIX . "threads WHERE tid = '$thread[tid]'");
+                    $db->query("DELETE FROM " . X_PREFIX . "favorites WHERE tid = '$thread[tid]'");
+                    $db->query("DELETE FROM " . X_PREFIX . "subscriptions WHERE tid = '$thread[tid]'");
+                    $db->query("UPDATE " . X_PREFIX . "members SET postnum = postnum-1 WHERE username = '$thread[author]'");
+                    $querypost = $db->query("SELECT pid, author FROM " . X_PREFIX . "posts WHERE tid = '$thread[tid]'");
+                    while ($post = $db->fetch_array($querypost)) {
+                        $db->query("DELETE FROM " . X_PREFIX . "posts WHERE pid = '$post[pid]'");
+                        $db->query("UPDATE " . X_PREFIX . "members SET postnum = postnum-1 WHERE username = '$post[author]'");
                     }
                     $db->free_result($querypost);
                 }
                 $db->free_result($querythread);
             }
-
-            $db->query("UPDATE ".X_PREFIX."forums SET name = '$name', displayorder = " . $displayorder . ", status = '$self[status]', fup = " . $moveto . " WHERE fid = '$forum[fid]'");
+            
+            $db->query("UPDATE " . X_PREFIX . "forums SET name = '$name', displayorder = " . $displayorder . ", status = '$self[status]', fup = " . $moveto . " WHERE fid = '$forum[fid]'");
         }
         $db->free_result($queryforum);
-        $querygroup = $db->query("SELECT fid FROM ".X_PREFIX."forums WHERE type = 'group'");
+        $querygroup = $db->query("SELECT fid FROM " . X_PREFIX . "forums WHERE type = 'group'");
         $deleter = array();
-        while ($group2 = $db->fetch_array($querygroup))
-        {
+        while ($group2 = $db->fetch_array($querygroup)) {
             $delete2 = "delete$group2[fid]";
-            if (isset (${$delete2}))
-            {
+            if (isset(${$delete2})) {
                 $deleter[] = ${$delete2};
             }
         }
         $numgroups = $db->num_rows($querygroup);
-        if (count($deleter) == $numgroups)
-        {
+        if (count($deleter) == $numgroups) {
             cp_error($lang['forumnodeleteall'], false, '', '</td></tr></table>', 'cp_forums.php', true);
         }
         $db->free_result($querygroup);
-        $querygroup2 = $db->query("SELECT fid FROM ".X_PREFIX."forums WHERE type = 'group'");
-        while ($group = $db->fetch_array($querygroup2))
-        {
+        $querygroup2 = $db->query("SELECT fid FROM " . X_PREFIX . "forums WHERE type = 'group'");
+        while ($group = $db->fetch_array($querygroup2)) {
             $name = "name$group[fid]";
             $name = $db->escape(decode_entities(formVar($name)));
             $displayorder = "displayorder$group[fid]";
@@ -843,49 +813,42 @@ function doPanel($fdetails)
             $self['status'] = $db->escape(decode_entities(formVar($self['status'])));
             $delete = "delete$group[fid]";
             $delete = formInt($delete);
-            if ($delete > 0)
-            {
-                $query = $db->query("SELECT fid FROM ".X_PREFIX."forums WHERE type = 'forum' AND fup = '$delete'");
-                while ($forum = $db->fetch_array($query))
-                {
-                    $db->query("UPDATE ".X_PREFIX."forums SET fup = '' WHERE type = 'forum' AND fup = '$delete'");
+            if ($delete > 0) {
+                $query = $db->query("SELECT fid FROM " . X_PREFIX . "forums WHERE type = 'forum' AND fup = '$delete'");
+                while ($forum = $db->fetch_array($query)) {
+                    $db->query("UPDATE " . X_PREFIX . "forums SET fup = '' WHERE type = 'forum' AND fup = '$delete'");
                 }
-                $db->query("DELETE FROM ".X_PREFIX."forums WHERE type = 'group' AND fid = '$delete'");
+                $db->query("DELETE FROM " . X_PREFIX . "forums WHERE type = 'group' AND fid = '$delete'");
             }
-            $db->query("UPDATE ".X_PREFIX."forums SET name = '$name', displayorder = " . (int) $displayorder . ", status = '$self[status]' WHERE fid = '$group[fid]'");
+            $db->query("UPDATE " . X_PREFIX . "forums SET name = '$name', displayorder = " . (int) $displayorder . ", status = '$self[status]' WHERE fid = '$group[fid]'");
         }
-
+        
         $newfname = $db->escape(decode_entities(formVar('newfname')));
         $newforder = formInt('newforder');
-        $newffup  = formInt('newffup');
+        $newffup = formInt('newffup');
         $newfstatus = $db->escape(decode_entities(formVar('newfstatus')));
-
+        
         $db->free_result($querygroup2);
-        if ($newfname != $lang['textnewforum'])
-        {
-            $db->query("INSERT INTO ".X_PREFIX."forums (type, name, status, moderator, displayorder, private, description, allowsmilies, allowbbcode, userlist, posts, threads, fup, postperm, allowimgcode, attachstatus, pollstatus, password, guestposting, minchars, attachnum, frules_status, frules, mt_status, mt_open, mt_close, closethreads, quickreply, subjectprefixes, mpnt, mpnp, mpfa, postcount) VALUES ('forum', '$newfname', '$newfstatus', '', " . $newforder . ", '1', '', 'yes', 'yes', '', 0, 0, " . $newffup . ", '1|1|1', 'yes', 'on', 'on', '', 'off', 0, $CONFIG[attach_num_default], 'off', '', 'off', '', '', 'off', 'on', '', 0, 0, 0, 'on')");
+        if ($newfname != $lang['textnewforum']) {
+            $db->query("INSERT INTO " . X_PREFIX . "forums (type, name, status, moderator, displayorder, private, description, allowsmilies, allowbbcode, userlist, posts, threads, fup, postperm, allowimgcode, attachstatus, pollstatus, password, guestposting, minchars, attachnum, frules_status, frules, mt_status, mt_open, mt_close, closethreads, quickreply, subjectprefixes, mpnt, mpnp, mpfa, postcount) VALUES ('forum', '$newfname', '$newfstatus', '', " . $newforder . ", '1', '', 'yes', 'yes', '', 0, 0, " . $newffup . ", '1|1|1', 'yes', 'on', 'on', '', 'off', 0, $CONFIG[attach_num_default], 'off', '', 'off', '', '', 'off', 'on', '', 0, 0, 0, 'on')");
         }
-
+        
         $newgname = $db->escape(decode_entities(formVar('newgname')));
         $newgorder = formInt('newgorder');
         $newgstatus = $db->escape(decode_entities(formVar('newgstatus')));
-        if ($newgname != $lang['textnewgroup'])
-        {
-            $db->query("INSERT INTO ".X_PREFIX."forums (type, name, status, moderator, displayorder, private, description, allowsmilies, allowbbcode, userlist, posts, threads, fup, postperm, allowimgcode, attachstatus, pollstatus, password, guestposting, minchars, attachnum, frules_status, frules, mt_status, mt_open, mt_close, closethreads, quickreply, subjectprefixes, mpnt, mpnp, mpfa, postcount) VALUES ('group', '$newgname', '$newgstatus', '', " . $newgorder . ", '', '', '', '', '', 0, 0, '', '', '', '', '', '', 'off', 0, $CONFIG[attach_num_default], 'off', '', 'off', '', '', 'off', 'on', '', 0, 0, '0, 'on')");
+        if ($newgname != $lang['textnewgroup']) {
+            $db->query("INSERT INTO " . X_PREFIX . "forums (type, name, status, moderator, displayorder, private, description, allowsmilies, allowbbcode, userlist, posts, threads, fup, postperm, allowimgcode, attachstatus, pollstatus, password, guestposting, minchars, attachnum, frules_status, frules, mt_status, mt_open, mt_close, closethreads, quickreply, subjectprefixes, mpnt, mpnp, mpfa, postcount) VALUES ('group', '$newgname', '$newgstatus', '', " . $newgorder . ", '', '', '', '', '', 0, 0, '', '', '', '', '', '', 'off', 0, $CONFIG[attach_num_default], 'off', '', 'off', '', '', 'off', 'on', '', 0, 0, '0, 'on')");
         }
-
+        
         $newsubname = $db->escape(decode_entities(formVar('newsubname')));
         $newsuborder = formInt('newsuborder');
         $newsubfup = formInt('newsubfup');
-        $newsubstatus  = $db->escape(decode_entities(formVar('newsubstatus')));
-        if ($newsubname != $lang['textnewsubf'])
-        {
-            $db->query("INSERT INTO ".X_PREFIX."forums (type, name, status, moderator, displayorder, private, description, allowsmilies, allowbbcode, userlist, posts, threads, fup, postperm, allowimgcode, attachstatus, pollstatus, password, guestposting, minchars, attachnum, frules_status, frules, mt_status, mt_open, mt_close, closethreads, quickreply, subjectprefixes, mpnt, mpnp, mpfa, postcount) VALUES ('sub', '$newsubname', '$newsubstatus', '', " . $newsuborder . ", 1, '', 'yes', 'yes', '', 0, 0, " . $newsubfup . ", '1|1|1', 'yes', 'on', 'on', '', 'off', 0, $CONFIG[attach_num_default], 'off', '', 'off', '', '', 'off', 'on', '', 0, 0, 0, 'on')");
+        $newsubstatus = $db->escape(decode_entities(formVar('newsubstatus')));
+        if ($newsubname != $lang['textnewsubf']) {
+            $db->query("INSERT INTO " . X_PREFIX . "forums (type, name, status, moderator, displayorder, private, description, allowsmilies, allowbbcode, userlist, posts, threads, fup, postperm, allowimgcode, attachstatus, pollstatus, password, guestposting, minchars, attachnum, frules_status, frules, mt_status, mt_open, mt_close, closethreads, quickreply, subjectprefixes, mpnt, mpnp, mpfa, postcount) VALUES ('sub', '$newsubname', '$newsubstatus', '', " . $newsuborder . ", 1, '', 'yes', 'yes', '', 0, 0, " . $newsubfup . ", '1|1|1', 'yes', 'on', 'on', '', 'off', 0, $CONFIG[attach_num_default], 'off', '', 'off', '', '', 'off', 'on', '', 0, 0, 0, 'on')");
         }
         cp_message($lang['textforumupdate'], false, '', '</td></tr></table>', 'cp_forums.php', true, false, true);
-    }
-    else
-    {
+    } else {
         $allowsmiliesnew = formYesNo('allowsmiliesnew');
         $allowbbcodenew = formYesNo('allowbbcodenew');
         $allowimgcodenew = formYesNo('allowimgcodenew');
@@ -915,9 +878,9 @@ function doPanel($fdetails)
         $postperm2 = formInt('postperm2');
         $postperm3 = formInt('postperm3');
         $postperm4 = formInt('postperm4');
-
+        
         $subjectprefixesnew = $db->escape(decode_entities(formVar('subjectprefixesnew')));
-        $db->query("UPDATE ".X_PREFIX."forums SET
+        $db->query("UPDATE " . X_PREFIX . "forums SET
             name = '$namenew',
             description = '$descnew',
             allowsmilies = '$allowsmiliesnew',
@@ -947,11 +910,10 @@ function doPanel($fdetails)
             postcount = '$postcountnew'
             WHERE fid = '$fdetails'
         ");
-
+        
         $delete = formInt('delete');
-        if ($delete > 0)
-        {
-            $db->query("DELETE FROM ".X_PREFIX."forums WHERE fid = '$delete'");
+        if ($delete > 0) {
+            $db->query("DELETE FROM " . X_PREFIX . "forums WHERE fid = '$delete'");
         }
         cp_message($lang['textforumupdate'], false, '', '</td></tr></table>', 'cp_forums.php', true, false, true);
     }
@@ -961,18 +923,15 @@ displayAdminPanel();
 
 $fdetails = getRequestInt('fdetails');
 
-if (noSubmit('forumsubmit') && empty($fdetails))
-{
+if (noSubmit('forumsubmit') && empty($fdetails)) {
     viewPanel();
 }
 
-if (noSubmit('forumsubmit') && !empty($fdetails))
-{
+if (noSubmit('forumsubmit') && ! empty($fdetails)) {
     viewDetailsPanel($fdetails);
 }
 
-if (onSubmit('forumsubmit'))
-{
+if (onSubmit('forumsubmit')) {
     doPanel($fdetails);
 }
 

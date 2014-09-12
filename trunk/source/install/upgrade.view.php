@@ -24,74 +24,79 @@
  *    along with GaiaBB.  If not, see <http://www.gnu.org/licenses/>.
  *
  **/
-
-if (!defined('IN_PROGRAM') && (defined('DEBUG') && DEBUG == false))
-{
+if (! defined('IN_PROGRAM') && (defined('DEBUG') && DEBUG == false)) {
     exit('This file is not designed to be called directly');
 }
 
 /**
-* function() - short description of function
-*
-* Long description of function
-*
-* @param    $varname    type, what it does
-* @return   type, what the return does
-*/
+ * function() - short description of function
+ *
+ * Long description of function
+ *
+ * @param $varname type,
+ *            what it does
+ * @return type, what the return does
+ *        
+ */
 // There's no upgrade path from UltimaBB 1.0 to UltimaBB 1.0
 // So we temporarily in this release make it XMB 1.9.1 -> UltimaBB
 function view_upgrade_index($path)
 {
     top_box('Select upgrade actions to complete');
     ?>
-    <tr>
-    <td class="tablerow" bgcolor="#ffffff">
-    <br>
-    <form action="index.php" method="post">
-    <input type=checkbox name="resetset" value="on">&nbsp;Reset to factory settings</p>
-    <input type=hidden name="path" value="<?php echo $path?>">
-    <input type=hidden name="step" value="upgrade">
-    <INPUT TYPE="submit" VALUE="Continue &gt;" />
-    </form>
-    </td>
-    </tr>
-    </table>
-    </tr>
-    </table>
-    <?php
+<tr>
+	<td class="tablerow" bgcolor="#ffffff"><br>
+		<form action="index.php" method="post">
+			<input type=checkbox name="resetset" value="on">&nbsp;Reset to
+			factory settings
+			</p>
+			<input type=hidden name="path" value="<?php echo $path?>"> <input
+				type=hidden name="step" value="upgrade"> <INPUT TYPE="submit"
+				VALUE="Continue &gt;" />
+		</form></td>
+</tr>
+</table>
+</tr>
+</table>
+<?php
     view_shadow();
 }
 
 /**
-* function() - short description of function
-*
-* Long description of function
-*
-* @param    $varname    type, what it does
-* @return   type, what the return does
-*/
+ * function() - short description of function
+ *
+ * Long description of function
+ *
+ * @param $varname type,
+ *            what it does
+ * @return type, what the return does
+ *        
+ */
 function view_upgrade_action()
 {
     output_buffering(false);
     ?>
-    <script src="../js/progressbar.js" type="text/javascript" language="javascript1.2"></script>
-    <table cellspacing="0" cellpadding="0" border="0" width="97%" align="center" bgcolor="#5176B5">
-    <tr>
-    <td>
-    <table border="0" cellspacing="1px" cellpadding="5px" width="100%">
-    <tr>
-    <td class="category"><font color="#000000"><strong>Upgrading UltimaBB</strong></font></td>
-    </tr>
-    <tr>
-    <td class="tablerow" bgcolor="#ffffff">
-    <table>
-    <tr>
-    <td>
-    <p class="subject">Progress</p>
-    </td>
-    </tr><tr>
-    <td>
-    <script type="text/javascript" language="javascript1.2">
+<script src="../js/progressbar.js" type="text/javascript"
+	language="javascript1.2"></script>
+<table cellspacing="0" cellpadding="0" border="0" width="97%"
+	align="center" bgcolor="#5176B5">
+	<tr>
+		<td>
+			<table border="0" cellspacing="1px" cellpadding="5px" width="100%">
+				<tr>
+					<td class="category"><font color="#000000"><strong>Upgrading
+								UltimaBB</strong></font></td>
+				</tr>
+				<tr>
+					<td class="tablerow" bgcolor="#ffffff">
+						<table>
+							<tr>
+								<td>
+									<p class="subject">Progress</p>
+								</td>
+							</tr>
+							<tr>
+								<td><script type="text/javascript" language="javascript1.2">
     <!--
     var upgradeBar = new progressBar(
     1,         //border thickness
@@ -103,33 +108,36 @@ function view_upgrade_action()
     1          //direction of progress: 1 = right, 2 = down, 3 = left, 4 = up
     );
     //-->
-    </script>
-    </td>
-    </tr>
-    </table>
-    </td>
-    </tr>
-    </table>
-    </td>
-    </tr>
-    </table>
-    <table cellspacing="0" cellpadding="0" border="0" width="97%" align="center">
-    <tr>
-    <td width="100%"><img src="../images/problue/shadow.gif" border="0" alt="" title="" /></td>
-    </tr>
-    </table>
-    <?php
+    </script></td>
+							</tr>
+						</table>
+					</td>
+				</tr>
+			</table>
+		</td>
+	</tr>
+</table>
+<table cellspacing="0" cellpadding="0" border="0" width="97%"
+	align="center">
+	<tr>
+		<td width="100%"><img src="../images/problue/shadow.gif" border="0"
+			alt="" title="" /></td>
+	</tr>
+</table>
+<?php
     return "upgradeBar";
 }
 
 /**
-* function() - short description of function
-*
-* Long description of function
-*
-* @param    $varname    type, what it does
-* @return   type, what the return does
-*/
+ * function() - short description of function
+ *
+ * Long description of function
+ *
+ * @param $varname type,
+ *            what it does
+ * @return type, what the return does
+ *        
+ */
 function view_upgrade_complete()
 {
     $_SESSION = array();
@@ -137,13 +145,15 @@ function view_upgrade_complete()
 }
 
 /**
-* function() - short description of function
-*
-* Long description of function
-*
-* @param    $varname    type, what it does
-* @return   type, what the return does
-*/
+ * function() - short description of function
+ *
+ * Long description of function
+ *
+ * @param $varname type,
+ *            what it does
+ * @return type, what the return does
+ *        
+ */
 function view_upgrade_warncomplete()
 {
     $_SESSION = array();

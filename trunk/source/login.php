@@ -34,12 +34,9 @@ define('DEBUG_REG', true);
 define('CACHECONTROL', 'nocache');
 define('ROOT', './');
 
-require_once(ROOT.'header.php');
+require_once (ROOT . 'header.php');
 
-loadtpl(
-'login',
-'login_incorrectdetails'
-);
+loadtpl('login', 'login_incorrectdetails');
 
 $shadow = shadowfx();
 $shadow2 = shadowfx2();
@@ -47,39 +44,35 @@ $meta = metaTags();
 
 smcwcache();
 
-eval('$css = "'.template('css').'";');
+eval('$css = "' . template('css') . '";');
 
 nav($lang['textlogin']);
 btitle($lang['textlogin']);
 
-eval('echo "'.template('header').'";');
+eval('echo "' . template('header') . '";');
 
-if (X_MEMBER)
-{
+if (X_MEMBER) {
     error($lang['plogtuf'], false);
 }
 
 $errMessage = '';
 
-if (onSubmit('loginsubmit'))
-{
+if (onSubmit('loginsubmit')) {
     $oToken->assert_token();
     
     $errMessage = $authC->checkExcessiveLogins();
     
-    if ( empty($errMessage) ) 
-    {
-    	$errMessage = $authC->login();
+    if (empty($errMessage)) {
+        $errMessage = $authC->login();
     }
-} 
-
-if ( !empty($errMessage) )
-{
-	echo $errMessage;
 }
 
-eval('echo stripslashes("'.template('login').'");');
+if (! empty($errMessage)) {
+    echo $errMessage;
+}
+
+eval('echo stripslashes("' . template('login') . '");');
 
 loadtime();
-eval('echo "'.template('footer').'";');
+eval('echo "' . template('footer') . '";');
 ?>

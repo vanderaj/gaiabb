@@ -28,38 +28,31 @@
  *    along with GaiaBB.  If not, see <http://www.gnu.org/licenses/>.
  *
  **/
-
 define('DEBUG_REG', true);
 define('ROOT', '../');
 define('ROOTINC', '../include/');
 define('ROOTCLASS', '../class/');
 define('ROOTHELPER', '../helper/');
 
-require_once(ROOT.'header.php');
-require_once(ROOTINC.'admincp.inc.php');
-require_once(ROOTHELPER.'formHelper.php');
+require_once (ROOT . 'header.php');
+require_once (ROOTINC . 'admincp.inc.php');
+require_once (ROOTHELPER . 'formHelper.php');
 
-loadtpl(
-'cp_header',
-'cp_footer',
-'cp_message',
-'cp_error'
-);
+loadtpl('cp_header', 'cp_footer', 'cp_message', 'cp_error');
 
 $shadow = shadowfx();
 $shadow2 = shadowfx2();
 $meta = metaTags();
 
-nav('<a href="index.php">'.$lang['textcp'].'</a>');
+nav('<a href="index.php">' . $lang['textcp'] . '</a>');
 nav($lang['admin_main_settings1']);
 btitle($lang['textcp']);
 btitle($lang['admin_main_settings1']);
 
-eval('$css = "'.template('css').'";');
-eval('echo "'.template('cp_header').'";');
+eval('$css = "' . template('css') . '";');
+eval('echo "' . template('cp_header') . '";');
 
-if (!X_ADMIN)
-{
+if (! X_ADMIN) {
     adminaudit($self['username'], '', 0, 0, 'Authorization failed');
     error($lang['adminonly'], false);
 }
@@ -68,17 +61,19 @@ adminaudit($self['username'], '', 0, 0);
 smcwcache();
 
 /**
-* function() - short description of function
-*
-* Long description of function
-*
-* @param    $varname    type, what it does
-* @return   type, what the return does
-*/
+ * function() - short description of function
+ *
+ * Long description of function
+ *
+ * @param $varname type,
+ *            what it does
+ * @return type, what the return does
+ *        
+ */
 function viewPanel()
 {
     global $oToken, $CONFIG, $THEME, $lang, $shadow2;
-
+    
     $onselect = $offselect = '';
     formHelper::getSettingOnOffHtml('bbstatus', $onselect, $offselect);
     $metatag_statuson = $metatag_statusoff = '';
@@ -99,13 +94,12 @@ function viewPanel()
     formHelper::getSettingOnOffHtml('predformat', $predf_on, $predf_off);
     $whosoptomized_on = $whosoptomized_off = '';
     formHelper::getSettingOnOffHtml('whosoptomized', $whosoptomized_on, $whosoptomized_off);
-
+    
     $max_attach_sizenew = intval($CONFIG['max_attach_size']) / 1024;
-    if ($max_attach_sizenew < 10 || $max_attach_sizenew > 1024)
-    {
+    if ($max_attach_sizenew < 10 || $max_attach_sizenew > 1024) {
         $max_attach_sizenew = 100;
     }
-
+    
     $CONFIG['sitename'] = stripslashes($CONFIG['sitename']);
     $CONFIG['bbname'] = stripslashes($CONFIG['bbname']);
     $CONFIG['siteurl'] = stripslashes($CONFIG['siteurl']);
@@ -119,15 +113,18 @@ function viewPanel()
     $CONFIG['pmwelcomemessage'] = stripslashes($CONFIG['pmwelcomemessage']);
     $CONFIG['pmwelcomefrom'] = stripslashes($CONFIG['pmwelcomefrom']);
     ?>
-    <form method="post" action="cp_board.php">
-    <input type="hidden" name="token" value="<?php echo $oToken->get_new_token()?>" />
-    <table cellspacing="0px" cellpadding="0px" border="0px" width="100%" align="center">
-    <tr>
-    <td bgcolor="<?php echo $THEME['bordercolor']?>">
-    <table border="0px" cellspacing="<?php echo $THEME['borderwidth']?>" cellpadding="<?php echo $THEME['tablespace']?>" width="100%">
-    <tr class="category">
-    <td class="title" colspan="2"><?php echo $lang['admin_main_settings1']?></td>
-    </tr>
+<form method="post" action="cp_board.php">
+	<input type="hidden" name="token"
+		value="<?php echo $oToken->get_new_token()?>" />
+	<table cellspacing="0px" cellpadding="0px" border="0px" width="100%"
+		align="center">
+		<tr>
+			<td bgcolor="<?php echo $THEME['bordercolor']?>">
+				<table border="0px" cellspacing="<?php echo $THEME['borderwidth']?>"
+					cellpadding="<?php echo $THEME['tablespace']?>" width="100%">
+					<tr class="category">
+						<td class="title" colspan="2"><?php echo $lang['admin_main_settings1']?></td>
+					</tr>
     <?php
     formHelper::formTextBox($lang['textsitename'], 'sitenamenew', $CONFIG['sitename'], 50);
     formHelper::formTextBox($lang['bbname'], 'bbnamenew', $CONFIG['bbname'], 50);
@@ -154,34 +151,38 @@ function viewPanel()
     formHelper::formTextBox($lang['pmwelcomemessage'], 5, 'pmwelcomemessagenew', 50, $CONFIG['pmwelcomemessage']);
     ?>
     <tr class="ctrtablerow" bgcolor="<?php echo $THEME['altbg2']?>">
-    <td colspan="2"><input class="submit" type="submit" name="boardsubmit" value="<?php echo $lang['textsubmitchanges']?>" /></td>
-    </tr>
-    </table>
-    </td>
-    </tr>
-    </table>
+						<td colspan="2"><input class="submit" type="submit"
+							name="boardsubmit"
+							value="<?php echo $lang['textsubmitchanges']?>" /></td>
+					</tr>
+				</table>
+			</td>
+		</tr>
+	</table>
     <?php echo $shadow2?>
     </form>
-    </td>
-    </tr>
-    </table>
-    <?php
+</td>
+</tr>
+</table>
+<?php
 }
 
 /**
-* function() - short description of function
-*
-* Long description of function
-*
-* @param    $varname    type, what it does
-* @return   type, what the return does
-*/
+ * function() - short description of function
+ *
+ * Long description of function
+ *
+ * @param $varname type,
+ *            what it does
+ * @return type, what the return does
+ *        
+ */
 function doPanel()
 {
     global $oToken, $CONFIG, $THEME, $lang, $shadow2, $db;
-
+    
     $oToken->assert_token();
-
+    
     $bbstatusnew = formOnOff('bbstatusnew');
     $metatag_statusnew = formOnOff('metatag_statusnew');
     $pmwelcomestatusnew = formOnOff('pmwelcomestatusnew');
@@ -192,20 +193,18 @@ function doPanel()
     $specqnew = formOnOff('specqnew');
     $predformatnew = formOnOff('predformatnew');
     $whosoptomizednew = formOnOff('whosoptomizednew');
-
+    
     $max_attach_sizenew = formInt('max_attach_sizenew');
-    if ($max_attach_sizenew < 10 || $max_attach_sizenew > 1024)
-    {
+    if ($max_attach_sizenew < 10 || $max_attach_sizenew > 1024) {
         $max_attach_sizenew = 100;
     }
     $max_attach_sizenew = $max_attach_sizenew * 1024;
-
+    
     $bboffreasonnew = $db->escape(formVar('bboffreasonnew'));
-    if ($bbstatusnew == 'off' && empty($bboffreasonnew))
-    {
+    if ($bbstatusnew == 'off' && empty($bboffreasonnew)) {
         cp_error($lang['bbstatusempty'], false, '', '</td></tr></table>');
     }
-
+    
     $sitenamenew = $db->escape(formVar('sitenamenew'));
     $bbnamenew = $db->escape(formVar('bbnamenew'));
     $siteurlnew = $db->escape(formVar('siteurlnew'));
@@ -217,8 +216,8 @@ function doPanel()
     $pmwelcomesubjectnew = $db->escape(formVar('pmwelcomesubjectnew'));
     $pmwelcomemessagenew = $db->escape(formVar('pmwelcomemessagenew'));
     $pmwelcomefromnew = $db->escape(formVar('pmwelcomefromnew'));
-
-    $config_array = array (
+    
+    $config_array = array(
         'bbname' => $bbnamenew,
         'bbstatus' => $bbstatusnew,
         'bboffreason' => $bboffreasonnew,
@@ -243,28 +242,25 @@ function doPanel()
         'max_attach_size' => $max_attach_sizenew,
         'whosoptomized' => $whosoptomizednew
     );
-
+    
     // execute query
-    foreach ($config_array as $key => $value)
-    {
-        $db->query("UPDATE ".X_PREFIX."settings SET config_value = '$value' WHERE config_name = '$key' LIMIT 1");
+    foreach ($config_array as $key => $value) {
+        $db->query("UPDATE " . X_PREFIX . "settings SET config_value = '$value' WHERE config_name = '$key' LIMIT 1");
     }
-
+    
     cp_message($lang['textsettingsupdate'], false, '', '</td></tr></table>', 'index.php', true, false, true);
 }
 
 displayAdminPanel();
 
-if (noSubmit('boardsubmit'))
-{
+if (noSubmit('boardsubmit')) {
     viewPanel();
 }
 
-if (onSubmit('boardsubmit'))
-{
+if (onSubmit('boardsubmit')) {
     doPanel();
 }
 
 loadtime();
-eval ('echo "'.template('cp_footer').'";');
+eval('echo "' . template('cp_footer') . '";');
 ?>

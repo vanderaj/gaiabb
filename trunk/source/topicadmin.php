@@ -33,74 +33,54 @@
 define('DEBUG_REG', true);
 define('ROOT', './');
 
-require_once(ROOT.'header.php');
-require_once(ROOTINC.'topicadmin.inc.php');
+require_once (ROOT . 'header.php');
+require_once (ROOTINC . 'topicadmin.inc.php');
 
 $kill = false;
 
-loadtpl(
-'topicadmin_delete',
-'topicadmin_openclose',
-'topicadmin_move',
-'topicadmin_topuntop',
-'topicadmin_bump',
-'topicadmin_empty',
-'topicadmin_split_row',
-'topicadmin_split',
-'topicadmin_merge',
-'topicadmin_threadprune_row',
-'topicadmin_threadprune',
-'topicadmin_copy',
-'topicadmin_report',
-'topicadmin_markthread'
-);
+loadtpl('topicadmin_delete', 'topicadmin_openclose', 'topicadmin_move', 'topicadmin_topuntop', 'topicadmin_bump', 'topicadmin_empty', 'topicadmin_split_row', 'topicadmin_split', 'topicadmin_merge', 'topicadmin_threadprune_row', 'topicadmin_threadprune', 'topicadmin_copy', 'topicadmin_report', 'topicadmin_markthread');
 
 $shadow = shadowfx();
 $meta = metaTags();
 
-eval('$css = "'.template('css').'";');
+eval('$css = "' . template('css') . '";');
 
 smcwcache();
 
 $thread = array();
-if ($tid > 0)
-{
-    $query = $db->query("SELECT * FROM ".X_PREFIX."threads WHERE tid = '$tid'");
+if ($tid > 0) {
+    $query = $db->query("SELECT * FROM " . X_PREFIX . "threads WHERE tid = '$tid'");
     $thread = $db->fetch_array($query);
     $thread['subject'] = stripslashes($thread['subject']);
-    $thread['subject'] = shortenString(censor($thread['subject']), 100, X_SHORTEN_SOFT|X_SHORTEN_HARD, '...');
+    $thread['subject'] = shortenString(censor($thread['subject']), 100, X_SHORTEN_SOFT | X_SHORTEN_HARD, '...');
     $fid = $thread['fid'];
     $db->free_result($query);
 }
 
-$query = $db->query("SELECT * FROM ".X_PREFIX."forums WHERE fid = '$fid'");
+$query = $db->query("SELECT * FROM " . X_PREFIX . "forums WHERE fid = '$fid'");
 $forums = $db->fetch_array($query);
 $db->free_result($query);
 
-$query = $db->query("SELECT name, fid FROM ".X_PREFIX."forums WHERE fid = '$forums[fup]'");
+$query = $db->query("SELECT name, fid FROM " . X_PREFIX . "forums WHERE fid = '$forums[fup]'");
 $fup = $db->fetch_array($query);
 $db->free_result($query);
 
-if (!empty($forums['type']) && isset($forums['type']) && $forums['type'] == 'forum')
-{
-    nav('<a href="viewforum.php?fid='.$fid.'">'.stripslashes($forums['name']).'</a>');
-    nav('<a href="viewtopic.php?tid='.$tid.'">'.$thread['subject'].'</a>');
+if (! empty($forums['type']) && isset($forums['type']) && $forums['type'] == 'forum') {
+    nav('<a href="viewforum.php?fid=' . $fid . '">' . stripslashes($forums['name']) . '</a>');
+    nav('<a href="viewtopic.php?tid=' . $tid . '">' . $thread['subject'] . '</a>');
     btitle(stripslashes($forums['name']));
     btitle(stripslashes($thread['subject']));
-}
-else if (isset($forums['type']) && isset($forums['type']) == 'sub')
-{
-    nav('<a href="viewforum.php?fid='.$fup['fid'].'">'.stripslashes($fup['name']).'</a>');
-    nav('<a href="viewforum.php?fid='.$fid.'">'.stripslashes($forums['name']).'</a>');
-    nav('<a href="viewtopic.php?tid='.$tid.'">'.$thread['subject'].'</a>');
-    btitle(stripslashes($fup['name']));
-    btitle(stripslashes($forums['name']));
-    btitle(stripslashes($thread['subject']));
-}
-else
-{
-    $kill = true;
-}
+} else 
+    if (isset($forums['type']) && isset($forums['type']) == 'sub') {
+        nav('<a href="viewforum.php?fid=' . $fup['fid'] . '">' . stripslashes($fup['name']) . '</a>');
+        nav('<a href="viewforum.php?fid=' . $fid . '">' . stripslashes($forums['name']) . '</a>');
+        nav('<a href="viewtopic.php?tid=' . $tid . '">' . $thread['subject'] . '</a>');
+        btitle(stripslashes($fup['name']));
+        btitle(stripslashes($forums['name']));
+        btitle(stripslashes($thread['subject']));
+    } else {
+        $kill = true;
+    }
 
 $config_cache->expire('settings');
 $config_cache->expire('theme');
@@ -108,8 +88,7 @@ $config_cache->expire('pluglinks');
 $config_cache->expire('whosonline');
 $config_cache->expire('forumjump');
 
-switch ($action)
-{
+switch ($action) {
     case 'delete':
         nav($lang['textdeletethread']);
         btitle($lang['textdeletethread']);
@@ -165,8 +144,7 @@ switch ($action)
     case 'markthread':
         nav($lang['markthread']);
         btitle($lang['markthread']);
-        if (isset($forums['mt_status']) && $forums['mt_status'] == 'off')
-        {
+        if (isset($forums['mt_status']) && $forums['mt_status'] == 'off') {
             $kill = true;
         }
         break;
@@ -177,37 +155,32 @@ switch ($action)
         break;
 }
 
-if ($kill)
-{
+if ($kill) {
     error($lang['notpermitted']);
 }
 
-eval('echo "'.template('header').'";');
+eval('echo "' . template('header') . '";');
 
 $mod = new mod();
 
-if ($action != 'report' && $action != 'votepoll')
-{
+if ($action != 'report' && $action != 'votepoll') {
     $mod->statuscheck($fid);
 }
 
-switch ($action)
-{
+switch ($action) {
     case 'report':
+        
         // This get's unset by other code, so I've redefined it. ~martijn
         $pid = getRequestInt('pid');
-
-        if ($CONFIG['reportpost'] == 'off')
-        {
+        
+        if ($CONFIG['reportpost'] == 'off') {
             error($lang['fnasorry'], false);
         }
-
-        if (onSubmit('reportsubmit'))
-        {
+        
+        if (onSubmit('reportsubmit')) {
             $mod->doReport();
         }
-        if (noSubmit('reportsubmit'))
-        {
+        if (noSubmit('reportsubmit')) {
             $mod->viewReport();
         }
         break;
@@ -218,129 +191,105 @@ switch ($action)
         $mod->viewIP();
         break;
     case 'markthread':
-        if (onSubmit('markthreadsubmit'))
-        {
+        if (onSubmit('markthreadsubmit')) {
             $mod->doMarkThread();
         }
-        if (noSubmit('markthreadsubmit'))
-        {
+        if (noSubmit('markthreadsubmit')) {
             $mod->viewMarkThread();
         }
         break;
     case 'delete':
-        if (onSubmit('deletesubmit'))
-        {
+        if (onSubmit('deletesubmit')) {
             $mod->doDelete();
         }
-        if (noSubmit('deletesubmit'))
-        {
+        if (noSubmit('deletesubmit')) {
             $mod->viewDelete();
         }
         break;
     case 'close':
-        $query = $db->query("SELECT closed FROM ".X_PREFIX."threads WHERE fid = '$fid' AND tid = '$tid'");
-        if ($db->num_rows($query) == 0)
-        {
+        $query = $db->query("SELECT closed FROM " . X_PREFIX . "threads WHERE fid = '$fid' AND tid = '$tid'");
+        if ($db->num_rows($query) == 0) {
             $db->free_result($query);
             error($lang['textnothread'], false);
         }
         $closed = $db->result($query, 0);
         $db->free_result($query);
-
-        if (onSubmit('closesubmit'))
-        {
+        
+        if (onSubmit('closesubmit')) {
             $mod->doClose($closed);
         }
-        if (noSubmit('closesubmit'))
-        {
+        if (noSubmit('closesubmit')) {
             $mod->viewClose($closed);
         }
         break;
     case 'move':
-        if (onSubmit('movesubmit'))
-        {
+        if (onSubmit('movesubmit')) {
             $mod->doMove();
         }
-        if (noSubmit('movesubmit'))
-        {
+        if (noSubmit('movesubmit')) {
             $mod->viewMove();
         }
         break;
     case 'top':
-        $query = $db->query("SELECT topped FROM ".X_PREFIX."threads WHERE fid = '$fid' AND tid = '$tid'");
-        if ($db->num_rows($query) == 0)
-        {
+        $query = $db->query("SELECT topped FROM " . X_PREFIX . "threads WHERE fid = '$fid' AND tid = '$tid'");
+        if ($db->num_rows($query) == 0) {
             error($lang['textnothread'], false);
         }
         $topped = $db->result($query, 0);
         $db->free_result($query);
-
-        if (onSubmit('topsubmit'))
-        {
+        
+        if (onSubmit('topsubmit')) {
             $mod->doTop($topped);
         }
-        if (noSubmit('topsubmit'))
-        {
+        if (noSubmit('topsubmit')) {
             $mod->viewTop($topped);
         }
         break;
     case 'bump':
-        if (onSubmit('bumpsubmit'))
-        {
+        if (onSubmit('bumpsubmit')) {
             $mod->doBump();
         }
-        if (noSubmit('bumpsubmit'))
-        {
+        if (noSubmit('bumpsubmit')) {
             $mod->viewBump();
         }
         break;
     case 'empty':
-        if (onSubmit('emptysubmit'))
-        {
+        if (onSubmit('emptysubmit')) {
             $mod->doEmpty();
         }
-        if (noSubmit('emptysubmit'))
-        {
+        if (noSubmit('emptysubmit')) {
             $mod->viewEmpty();
         }
         break;
     case 'split':
-        if (onSubmit('splitsubmit'))
-        {
+        if (onSubmit('splitsubmit')) {
             $mod->doSplit();
         }
-        if (noSubmit('splitsubmit'))
-        {
+        if (noSubmit('splitsubmit')) {
             $mod->viewSplit();
         }
         break;
     case 'merge':
-        if (onSubmit('mergesubmit'))
-        {
+        if (onSubmit('mergesubmit')) {
             $mod->doMerge();
         }
-        if (noSubmit('mergesubmit'))
-        {
+        if (noSubmit('mergesubmit')) {
             $mod->viewMerge();
         }
         break;
     case 'threadprune':
-        if (onSubmit('threadprunesubmit'))
-        {
+        if (onSubmit('threadprunesubmit')) {
             $mod->doPrune();
         }
-        if (noSubmit('threadprunesubmit'))
-        {
+        if (noSubmit('threadprunesubmit')) {
             $mod->viewPrune();
         }
         break;
     case 'copy':
-        if (onSubmit('copysubmit'))
-        {
+        if (onSubmit('copysubmit')) {
             $mod->doCopy();
         }
-        if (noSubmit('copysubmit'))
-        {
+        if (noSubmit('copysubmit')) {
             $mod->viewCopy();
         }
         break;
@@ -350,5 +299,5 @@ switch ($action)
 }
 
 loadtime();
-eval('echo "'.template('footer').'";');
+eval('echo "' . template('footer') . '";');
 ?>
