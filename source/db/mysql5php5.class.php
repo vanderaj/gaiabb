@@ -892,7 +892,7 @@ class mysql5Php5
             <table align="center">
 								<tr>
 									<td align="center" class="smalltxt"><br /> <br /> Powered by
-										GaiaBB <br /> Copyright &copy; 2011-2013 The GaiaBB Group. All
+										GaiaBB <br /> Copyright &copy; 2011-2014 The GaiaBB Group. All
 										rights reserved. <br /> <br /></td>
 								</tr>
 							</table> <br /></td>

@@ -605,7 +605,7 @@ function view_footer()
     <table align="center">
 								<tr>
 									<td align="center" class="smalltxt"><br /> <br /> Powered by
-										GaiaBB <br /> Copyright &copy; 2013 GaiaBB Group. All rights
+										GaiaBB <br /> Copyright &copy; 2011-2014 GaiaBB Group. All rights
 										reserved. <br /> <br /></td>
 								</tr>
 							</table> <br /></td>
