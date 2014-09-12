@@ -81,7 +81,7 @@ switch ($action) {
             $open = array();
             
             $query = $db->query("SELECT tid, closed FROM " . X_PREFIX . "threads WHERE fid = '$fid' AND tid IN ($tids)");
-            while ($thread = $db->fetch_array($query)) {
+            while (($thread = $db->fetch_array($query)) != false) {
                 if ($thread['closed'] == 'yes') {
                     $open[] = $thread['tid'];
                     $act = 'open';
@@ -115,7 +115,7 @@ switch ($action) {
             $top = array();
             $untop = array();
             $query = $db->query("SELECT tid, topped FROM " . X_PREFIX . "threads WHERE fid = '$fid' AND tid IN ($tids)");
-            while ($thread = $db->fetch_array($query)) {
+            while (($thread = $db->fetch_array($query)) != false) {
                 if ($thread['topped'] == 1) {
                     $untop[] = $thread['tid'];
                     $act = 'untop';
@@ -166,7 +166,7 @@ switch ($action) {
         
         if (onSubmit('copysubmit')) {
             $query = $db->query("SELECT * FROM " . X_PREFIX . "threads WHERE tid IN ($tids)");
-            while ($thread = $db->fetch_array($query)) {
+            while (($thread = $db->fetch_array($query)) != false) {
                 foreach ($thread as $key => $val) {
                     switch ($key) {
                         case 'tid':
@@ -208,7 +208,7 @@ switch ($action) {
                 $vals = array();
                 
                 $query2 = $db->query("SELECT * FROM " . X_PREFIX . "posts WHERE tid = '$tid' ORDER BY pid ASC");
-                while ($post = $db->fetch_array($query2)) {
+                while (($post = $db->fetch_array($query2)) != false) {
                     $post['fid'] = $newfid;
                     $post['tid'] = $newtid;
                     
@@ -255,7 +255,7 @@ switch ($action) {
         if (onSubmit('deletesubmit')) {
             $member = array();
             $query = $db->query("SELECT * FROM " . X_PREFIX . "posts WHERE tid IN ($tids)");
-            while ($result = $db->fetch_array($query)) {
+            while (($result = $db->fetch_array($query)) != false) {
                 $db->query("UPDATE " . X_PREFIX . "members SET postnum = postnum-1 WHERE username = '$result[author]'");
             }
             $db->free_result($query);
@@ -330,7 +330,7 @@ switch ($action) {
         if (onSubmit('movesubmit')) {
             if ($type == 'redirect') {
                 $query = $db->query("SELECT * FROM " . X_PREFIX . "threads WHERE tid IN ($tids)");
-                while ($info = $db->fetch_array($query)) {
+                while (($info = $db->fetch_array($query)) != false) {
                     $db->query("INSERT INTO " . X_PREFIX . "threads (tid, fid, subject, icon, views, replies, author, closed, topped) VALUES('', '$info[fid]', '$info[subject]', '', '-', '-', '$info[author]', 'moved|$info[tid]', '$info[topped]')");
                     $ntid = $db->insert_id();
                     $db->query("INSERT INTO " . X_PREFIX . "posts (fid, tid, author, message, subject) VALUES ('$info[fid]', '$ntid', '$info[author]', '$info[tid]', '$info[subject]')");

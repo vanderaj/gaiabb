@@ -129,7 +129,7 @@ function loadtpl($tpl)
         )));
         $sql = "'" . implode("', '", $namesarray) . "'";
         $query = $db->query("SELECT name, template FROM " . X_PREFIX . "templates WHERE name IN ($sql)");
-        while ($template = $db->fetch_array($query)) {
+        while (($template = $db->fetch_array($query)) != false) {
             templatecache(X_CACHE_PUT, $template['name'], $template['template']);
         }
         $db->free_result($query);
@@ -144,7 +144,7 @@ function censor($txt, $ignorespaces = false)
         if (count($censorcache) > 0) {
             reset($censorcache);
             
-            while (list ($find, $replace) = each($censorcache)) {
+            while ((list($find, $replace) = each($censorcache)) != false) {
                 if ($ignorespaces === true) {
                     $txt = str_replace($find, $replace, $txt);
                 } else {
@@ -199,7 +199,7 @@ function check_image_size($matches)
         $matches[3] = '';
     
     $imgurl = $matches[1] . '://' . $matches[2] . $matches[3];
-    if (list ($width, $height) = getimagesize($imgurl)) {
+    if ((list($width, $height) = getimagesize($imgurl)) != false) {
         $w_ratio = $CONFIG['bbc_maxwd'] / $width;
         $h_ratio = $CONFIG['bbc_maxht'] / $height;
         
@@ -392,19 +392,19 @@ function postify($message, $smileyoff = 'no', $bbcodeoff = 'no', $allowsmilies =
         $patterns = array();
         $replacements = array();
         
-        $patterns[] = "#\[color=([^\"'<>]*?)\](.*?)\[/color\]#Ssi";
+        $patterns[] = '#[color=([^"\'<>]*?)](.*?)[/color]#Ssi';
         $replacements[] = '<font color="\1">\2</font>';
         
-        $patterns[] = "#\[size=([+-]?[0-9]{1,2})\](.*?)\[/size\]#Ssie";
+        $patterns[] = '#[size=([+-]?[0-9]{1,2})](.*?)[/size]#Ssie';
         $replacements[] = '"<font style=\"font-size: ".createAbsFSizeFromRel(\'$1\').";\">".stripslashes(\'$2\')."</font>"';
         
-        $patterns[] = "#\[font=([a-z\r\n\t 0-9]+)\](.*?)\[/font\]#Ssi";
+        $patterns[] = '#[font=([a-z\r\n\t 0-9]+)](.*?)[/font]#Ssi';
         $replacements[] = '<font face="\1">\2</font>';
         
-        $patterns[] = "#\[align=([a-z]+)\](.*?)\[/align\]#Ssi";
+        $patterns[] = '#[align=([a-z]+)](.*?)[/align]#Ssi';
         $replacements[] = '<p align="\1">\2</p>';
         
-        $patterns[] = "#\[\*\]([^\"]*?)\\n#mi";
+        $patterns[] = '#[*]([^"]*?)\\n#mi';
         $replacements[] = '<li>\1</li>';
         
         if ($allowimgcode != 'no' && $allowimgcode != 'off') {
@@ -416,29 +416,29 @@ function postify($message, $smileyoff = 'no', $bbcodeoff = 'no', $allowsmilies =
                     $patterns[] = '#\[img\](http[s]?|ftp[s]?){1}://([:a-z\\./_\-0-9%~]+){1}(\?[a-z=_\-0-9&;~]*)?\[/img\]#Smi';
                     $replacements[] = '<img src="\1://\2\3" alt="\1://\2\3" title="\1://\2\3" border="0" />';
                 }
-                $patterns[] = "#\[img=([0-9]*?){1}x([0-9]*?)\](http[s]?|ftp[s]?){1}://([:~a-z\\./0-9_\-%]+){1}(\?[a-z=0-9&_\-;~]*)?\[/img\]#Smi";
+                $patterns[] = '#[img=([0-9]*?){1}x([0-9]*?)](http[s]?|ftp[s]?){1}://([:~a-z\\./0-9_\-%]+){1}(?[a-z=0-9&_-;~]*)?[/img]#Smi';
                 $replacements[] = '<img width="\1" height="\2" src="\3://\4\5" alt="\3://\4\5" title="\3://\4\5" border="0" />';
             }
         }
         
         $message = preg_replace_callback('#(^|\s|(?<=\())((((http(s?)|ftp(s?))://)|www)[-a-z\d.]+\.[a-z]{2,6}[^\s()]*)i?#Smi', 'fixUrl', $message);
         
-        $patterns[] = "#\[url\]([a-z]+?://){1}([^\"'<>]*?)\[/url\]#Smi";
+        $patterns[] = '#[url]([a-z]+?://){1}([^"\'<>]*?)[/url]#Smi';
         $replacements[] = '<a href="\1\2" target="_blank">\1\2</a>';
         
-        $patterns[] = "#\[url\]([^\"'<>]*?)\[/url\]#Smi";
+        $patterns[] = '#[url]([^"\'<>]*?)[/url]#Smi';
         $replacements[] = '<a href="http://\1" target="_blank">\1</a>';
         
-        $patterns[] = "#\[url=([a-z]+?://){1}([^\"'<>]*?)\](.*?)\[/url\]#Smi";
+        $patterns[] = '#[url=([a-z]+?://){1}([^"\'<>]*?)](.*?)[/url]#Smi';
         $replacements[] = '<a href="\1\2" target="_blank">\3</a>';
         
-        $patterns[] = "#\[url=([^\"'<>]*?)\](.*?)\[/url\]#Smi";
+        $patterns[] = '#[url=([^"\'<>]*?)](.*?)[/url]#Smi';
         $replacements[] = '<a href="http://\1" target="_blank">\2</a>';
         
-        $patterns[] = "#\[email\]([^\"'<>]*?)\[/email\]#Smi";
+        $patterns[] = '#[email]([^"\'<>]*?)[/email]#Smi';
         $replacements[] = '<a href="mailto:\1">\1</a>';
         
-        $patterns[] = "#\[email=([^\"'<>]*?){1}([^\"]*?)\](.*?)\[/email\]#Smi";
+        $patterns[] = '#[email=([^"\'<>]*?){1}([^"]*?)](.*?)[/email]#Smi';
         $replacements[] = '<a href="mailto:\1\2">\3</a>';
         
         $message = preg_replace($patterns, $replacements, $message);
@@ -682,7 +682,7 @@ function smilieinsert()
             $querysmilie = $db->query("SELECT * FROM " . X_PREFIX . "smilies WHERE type = 'smiley' ORDER BY id ASC LIMIT $CONFIG[smtotal]") or die($db->error());
         }
         
-        while ($smilie = $db->fetch_array($querysmilie)) {
+        while (($smilie = $db->fetch_array($querysmilie)) != false) {
             eval('$smilies .= "' . template('functions_smilieinsert_smilie') . '";');
             
             $col_smilies ++;
@@ -732,7 +732,7 @@ function updateforumcount($fid)
     $db->free_result($query);
     
     $query = $db->query("SELECT fid FROM " . X_PREFIX . "forums WHERE fup = '$fid'");
-    while ($children = $db->fetch_array($query)) {
+    while (($children = $db->fetch_array($query)) != false) {
         $chquery1 = $db->query("SELECT COUNT(pid) FROM " . X_PREFIX . "posts WHERE fid = '$children[fid]'");
         $postcount += $db->result($chquery1, 0);
         $db->free_result($chquery1);
@@ -772,7 +772,7 @@ function updatelastposts()
     
     // Forums
     $query = $db->query("SELECT fid FROM " . X_PREFIX . "forums ORDER BY fid DESC");
-    while ($forums = $db->fetch_array($query)) {
+    while (($forums = $db->fetch_array($query)) != false) {
         $posts = $db->query("SELECT tid FROM " . X_PREFIX . "posts WHERE fid = '$forums[fid]' ORDER BY pid DESC LIMIT 0,1");
         $lp2 = $db->fetch_array($posts);
         $lp = $lp2['tid'];
@@ -783,7 +783,7 @@ function updatelastposts()
     
     // Threads
     $query = $db->query("SELECT tid FROM " . X_PREFIX . "threads ORDER BY tid DESC");
-    while ($threads = $db->fetch_array($query)) {
+    while (($threads = $db->fetch_array($query)) != false) {
         $posts = $db->query("SELECT p.author, m.uid, p.dateline, p.pid FROM " . X_PREFIX . "posts p, " . X_PREFIX . "members m WHERE p.author = m.username AND tid = '$threads[tid]' ORDER BY dateline DESC LIMIT 0,1");
         $lp = $db->fetch_array($posts);
         $db->free_result($posts);
@@ -809,7 +809,7 @@ function smcwcache()
         $smiliesnum = $db->num_rows($query);
         
         if ($smiliesnum > 0) {
-            while ($smilie = $db->fetch_array($query)) {
+            while (($smilie = $db->fetch_array($query)) != false) {
                 $code = $smilie['code'];
                 $smiliecache[$code] = $smilie['url'];
             }
@@ -819,7 +819,7 @@ function smcwcache()
         $query = $db->query("SELECT find, replace1 FROM " . X_PREFIX . "words");
         $wordsnum = $db->num_rows($query);
         if ($wordsnum > 0) {
-            while ($word = $db->fetch_array($query)) {
+            while (($word = $db->fetch_array($query)) != false) {
                 $find = $word['find'];
                 $censorcache[$find] = $word['replace1'];
             }
@@ -1345,7 +1345,7 @@ function ServerLoad()
         );
     }
     
-    if ($stats = @exec('uptime')) {
+    if (($stats = @exec('uptime')) != false) {
         $i = strpos($stats, "average");
         $load = str_replace(',', ' ', substr($stats, $i));
         $parts = explode(' ', $load);
@@ -1667,10 +1667,9 @@ function dump_query($resource, $header = true)
             echo '</tr>';
         }
         
-        while ($a = $db->fetch_array($resource, SQL_NUM)) {
+        while (($a = $db->fetch_array($resource, SQL_NUM)) != false) {
             ?>
-            
-<tr bgcolor="<?php echo $THEME['altbg1']?>" class="ctrtablerow">
+            <tr bgcolor="<?php echo $THEME['altbg1']?>" class="ctrtablerow">
             <?php
             for ($i = 0; $i < $count; $i ++) {
                 echo '<td align="left">';
@@ -1835,7 +1834,7 @@ function forumList($selectname = 'srchfid', $multiple = false, $allowall = true)
     $forums = array();
     $categories = array();
     $subforums = array();
-    while ($forum = $db->fetch_array($sql)) {
+    while (($forum = $db->fetch_array($sql)) != false) {
         if (! X_SADMIN && $forum['password'] != '') {
             $fidpw = isset($_COOKIE['fidpw' . $forum['fid']]) ? trim($_COOKIE['fidpw' . $forum['fid']]) : '';
             if ($forum['password'] !== $fidpw) {
@@ -2036,7 +2035,7 @@ function findLangName($instance)
     $dir = opendir(ROOT . 'lang');
     $langpos = 0;
     $file = '';
-    while ($file = readdir($dir)) {
+    while (($file = readdir($dir)) != false) {
         if ($instance == $langpos) {
             if (is_file(ROOT . 'lang/' . $file) && false !== strpos($file, '.lang.php')) {
                 $file = str_replace('.lang.php', '', $file);
@@ -2109,7 +2108,7 @@ function forumJump()
     $forums = array();
     $categories = array();
     $subforums = array();
-    while ($forum = $db->fetch_array($sql)) {
+    while (($forum = $db->fetch_array($sql)) != false) {
         if (! X_SADMIN && $forum['password'] != '') {
             $fidpw = isset($_COOKIE['fidpw' . $forum['fid']]) ? trim($_COOKIE['fidpw' . $forum['fid']]) : '';
             if ($forum['password'] !== $fidpw) {
@@ -2182,7 +2181,7 @@ function getPlugLinks()
     
     $pluglinks = array();
     $qp = $db->query("SELECT * FROM " . X_PREFIX . "pluglinks ORDER BY displayorder ASC");
-    while ($plug = $db->fetch_array($qp)) {
+    while (($plug = $db->fetch_array($qp)) != false) {
         if (isset($plug['status']) && $plug['status'] == 'on') {
             $img = '';
             if (isset($plug['img']) && ! empty($plug['img'])) {
@@ -2236,7 +2235,7 @@ function langSelect()
     $lfs = array();
     $dir = opendir(ROOT . 'lang');
     $langpos = 0;
-    while ($file = readdir($dir)) {
+    while (($file = readdir($dir)) != false) {
         if (is_file(ROOT . 'lang/' . $file) && false !== strpos($file, '.lang.php')) {
             $file = str_replace('.lang.php', '', $file);
             if ($file == $CONFIG['langfile']) {

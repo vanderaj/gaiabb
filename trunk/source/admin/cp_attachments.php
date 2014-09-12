@@ -207,7 +207,7 @@ function doDelete()
     }
     
     $query = $db->query("SELECT a.*, p.*, t.tid, t.subject AS tsubject, f.name AS fname FROM " . X_PREFIX . "attachments a, " . X_PREFIX . "posts p, " . X_PREFIX . "threads t, " . X_PREFIX . "forums f WHERE a.pid = p.pid AND t.tid = a.tid AND f.fid = p.fid $queryforum $querydate $queryauthor $queryname $querysizeless $querysizemore");
-    while ($attachment = $db->fetch_array($query)) {
+    while (($attachment = $db->fetch_array($query)) != false) {
         $afilename = "filename$attachment[aid]";
         $afilename = formVar($afilename);
         if ($attachment['filename'] != $afilename) {
@@ -304,7 +304,7 @@ function doSearch()
     }
     
     $query = $db->query("SELECT a.*, m.uid as author_uid, p.*, t.tid, t.subject AS tsubject, f.name AS fname FROM " . X_PREFIX . "attachments a, " . X_PREFIX . "members m, " . X_PREFIX . "posts p, " . X_PREFIX . "threads t, " . X_PREFIX . "forums f WHERE a.pid = p.pid AND p.author = m.username AND t.tid = a.tid AND f.fid = p.fid $restriction $orderby");
-    while ($attachment = $db->fetch_array($query)) {
+    while (($attachment = $db->fetch_array($query)) != false) {
         $attachsize = strlen($attachment['attachment']);
         if ($attachsize >= 1073741824) {
             $attachsize = round($attachsize / 1073741824 * 100) / 100 . "gb";

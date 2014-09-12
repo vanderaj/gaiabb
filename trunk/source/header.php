@@ -244,7 +244,7 @@ $config_cache = new cacheable('setcache', 60);
 $CONFIG = $config_cache->getData('settings');
 if ($CONFIG === false) {
     $sq = $db->query("SELECT * FROM " . X_PREFIX . "settings");
-    while ($srow = $db->fetch_array($sq)) {
+    while (($srow = $db->fetch_array($sq)) != false) {
         $key = $srow['config_name'];
         $val = $srow['config_value'];
         
@@ -286,7 +286,7 @@ $MODERATORS = $moderators_cache->getData('moderators');
 if ($MODERATORS === false) {
     $MODERATORS = array();
     $modq = $db->query("SELECT moderator FROM " . X_PREFIX . "forums WHERE moderator != ''");
-    while ($moda = $db->fetch_array($modq)) {
+    while (($moda = $db->fetch_array($modq)) != false) {
         $mods = explode(', ', $moda['moderator']);
         foreach ($mods as $mod_user) {
             $m_check = array_search(strtolower($mod_user), $MODERATORS);
@@ -463,7 +463,7 @@ if (X_MEMBER) {
     if (isset($_SERVER['HTTP_USER_AGENT']) && $_SERVER['HTTP_USER_AGENT'] != NULL) {
         $useragent = strtolower((string) $_SERVER['HTTP_USER_AGENT']);
         $rq = $db->query("SELECT LENGTH(robot_string) AS strlen, robot_string, robot_fullname FROM " . X_PREFIX . "robots ORDER BY strlen DESC");
-        while ($result = $db->fetch_array($rq)) {
+        while (($result = $db->fetch_array($rq)) != false) {
             if (strpos($useragent, $result['robot_string']) !== false) {
                 $onlineuser = 'xrobot123';
                 $robotname = $result['robot_fullname'];
@@ -509,7 +509,7 @@ if ($tid !== 0 && $action != 'templates') {
     
     if ($forumtheme === false || $fid === false) {
         $q = $db->query("SELECT f.fid, f.theme FROM " . X_PREFIX . "forums f, " . X_PREFIX . "threads t WHERE f.fid = t.fid AND t.tid = '$tid'");
-        while ($locate = $db->fetch_array($q)) {
+        while (($locate = $db->fetch_array($q)) != false) {
             $fid = $locate['fid'];
             $forumtheme = $locate['theme'];
         }

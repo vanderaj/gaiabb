@@ -121,7 +121,7 @@ function viewSearchPanel()
         $srchbot = "WHERE robot_fullname LIKE '%" . $srchbot . "%' ";
     }
     $query = $db->query("SELECT * FROM " . X_PREFIX . "robots $srchbot ORDER BY robot_fullname");
-    while ($robot = $db->fetch_array($query)) {
+    while (($robot = $db->fetch_array($query)) != false) {
         ?>
         <tr bgcolor="<?php echo $THEME['altbg2']?>" class="tablerow">
 						<td align="center"><input type="checkbox"
@@ -174,7 +174,7 @@ function doPanel()
     }
     
     $query = $db->query("SELECT * FROM " . X_PREFIX . "robots $srchbot");
-    while ($bot = $db->fetch_array($query)) {
+    while (($bot = $db->fetch_array($query)) != false) {
         $delete = formInt("delete" . $bot['robot_id']);
         if ($delete > 0) {
             $db->query("DELETE FROM " . X_PREFIX . "robots WHERE robot_id = '$delete'");

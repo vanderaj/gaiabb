@@ -85,7 +85,7 @@ function viewPanel()
     <?php
     $plugs = $db->query("SELECT * FROM " . X_PREFIX . "pluglinks ORDER BY displayorder ASC");
     $rowsFound = $db->num_rows($plugs);
-    while ($pluginfo = $db->fetch_array($plugs)) {
+    while (($pluginfo = $db->fetch_array($plugs)) != false) {
         $on = $off = '';
         switch ($pluginfo['status']) {
             case 'on':
@@ -163,7 +163,7 @@ function doPanel()
     $oToken->assert_token();
     
     $plugs = $db->query("SELECT * FROM " . X_PREFIX . "pluglinks");
-    while ($pluginfo = $db->fetch_array($plugs)) {
+    while (($pluginfo = $db->fetch_array($plugs)) != false) {
         $name = "name" . $pluginfo['id'];
         $name = $db->escape(formVar($name));
         $url = "url" . $pluginfo['id'];

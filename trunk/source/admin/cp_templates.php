@@ -47,7 +47,7 @@ if (X_SADMIN) {
     if ($action == 'templates' && isset($download)) {
         $code = '';
         $templates = $db->query("SELECT * FROM " . X_PREFIX . "templates");
-        while ($template = $db->fetch_array($templates)) {
+        while (($template = $db->fetch_array($templates)) != false) {
             $template['template'] = trim($template['template']);
             $template['name'] = trim($template['name']);
             if ($template['name'] != '') {
@@ -95,7 +95,7 @@ if ($action == 'templates') {
         $templatelist[] = '<select name="tid">';
         $query = $db->query("SELECT * FROM " . X_PREFIX . "templates ORDER BY name");
         $templatelist[] = '<option value="default" selected="selected">' . $lang['selecttemplate'] . '</option>';
-        while ($template = $db->fetch_array($query)) {
+        while (($template = $db->fetch_array($query)) != false) {
             if (! empty($template['name'])) {
                 $templatelist[] = '<option value="' . $template['id'] . '">' . $template['name'] . '</option>';
             }
@@ -202,7 +202,7 @@ if ($action == 'templates') {
         $templatesfile = fread($fp, $filesize);
         fclose($fp);
         $templates = explode("|#*GBB TEMPLATE FILE*#|", $templatesfile);
-        while (list ($key, $val) = each($templates)) {
+        while ((list($key, $val) = each($templates)) != false) {
             $template = explode("|#*GBB TEMPLATE*#|", $val);
             if (isset($template[1])) {
                 $template[1] = addslashes($template[1]);
@@ -419,7 +419,7 @@ if ($action == 'templates') {
         } else {
             $code = '';
             $templates = $db->query("SELECT * FROM " . X_PREFIX . "templates");
-            while ($template = $db->fetch_array($templates)) {
+            while (($template = $db->fetch_array($templates)) != false) {
                 $template['name'] = trim($template['name']);
                 $template['template'] = trim(stripslashes($template['template']));
                 $code .= $template['name'] . "|#*GBB TEMPLATE*#|\r\n" . $template['template'] . "\r\n\r\n|#*GBB TEMPLATE FILE*#|";
@@ -474,7 +474,7 @@ if ($action == 'templates') {
             $templatesfile = fread($fp, $filesize);
             fclose($fp);
             $templates = explode("|#*GBB TEMPLATE FILE*#|", $templatesfile);
-            while (list ($key, $val) = each($templates)) {
+            while ((list($key, $val) = each($templates)) != false) {
                 $template = explode("|#*GBB TEMPLATE*#|", $val);
                 if (isset($template[1])) {
                     $template[1] = addslashes($template[1]);
@@ -485,7 +485,7 @@ if ($action == 'templates') {
             if (is_writable('./templates/')) {
                 $code = '';
                 $templates = $db->query("SELECT * FROM " . X_PREFIX . "templates");
-                while ($template = $db->fetch_array($templates)) {
+                while (($template = $db->fetch_array($templates)) != false) {
                     $template['name'] = trim($template['name']);
                     $template['template'] = trim(stripslashes($template['template']));
                     $code .= $template['name'] . "|#*GBB TEMPLATE*#|\r\n" . $template['template'] . "\r\n\r\n|#*GBB TEMPLATE FILE*#|";

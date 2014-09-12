@@ -81,7 +81,7 @@ function viewPanel()
     <?php
     $query = $db->query("SELECT * FROM " . X_PREFIX . "banned ORDER BY dateline");
     $rowsFound = $db->num_rows($query);
-    while ($ipaddress = $db->fetch_array($query)) {
+    while (($ipaddress = $db->fetch_array($query)) != false) {
         for ($i = 1; $i <= 4; ++ $i) {
             $j = "ip" . $i;
             if ($ipaddress[$j] == - 1) {
@@ -156,7 +156,7 @@ function doPanel()
     $oToken->assert_token();
     
     $query = $db->query("SELECT id FROM " . X_PREFIX . "banned");
-    while ($ip = $db->fetch_array($query)) {
+    while (($ip = $db->fetch_array($query)) != false) {
         $delete = "delete" . $ip['id'];
         if (formOnOff($delete) == 'on') {
             $db->query("DELETE FROM " . X_PREFIX . "banned WHERE id = '" . $ip['id'] . "'");

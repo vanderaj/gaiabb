@@ -162,7 +162,7 @@ $threadcount = 0;
 $threads = '';
 $fidarray = array();
 $query = $db->query("SELECT DISTINCT f.fid, f.password, f.private, f.userlist FROM (" . X_PREFIX . "threads t, " . X_PREFIX . "forums f) LEFT JOIN " . X_PREFIX . "lastposts l ON t.tid = l.tid WHERE l.dateline >= '$srchfrom' AND t.fid = f.fid");
-while ($forums = $db->fetch_array($query)) {
+while (($forums = $db->fetch_array($query)) != false) {
     $authorization = privfcheck($forums['private'], $forums['userlist']);
     if ($authorization == true || X_SADMIN) {
         $fidpw = isset($_COOKIE['fidpw' . $forums['fid']]) ? $_COOKIE['fidpw' . $forums['fid']] : '';
@@ -175,7 +175,7 @@ $db->free_result($query);
 
 $fidlist = "'" . implode("', '", $fidarray) . "'";
 $query = $db->query("SELECT $dotadd1 t.*, m.uid as authorid, f.name, l.uid as lp_uid, l.username as lp_user, l.dateline as lp_dateline, l.pid as lp_pid FROM (" . X_PREFIX . "threads t, " . X_PREFIX . "forums f) $dotadd2 LEFT JOIN " . X_PREFIX . "members m ON t.author = m.username LEFT JOIN " . X_PREFIX . "lastposts l ON (t.tid = l.tid) WHERE $srchtype l.dateline >= '$srchfrom' AND t.fid = f.fid AND f.fid IN ($fidlist) ORDER BY $srchsort $srchorder LIMIT $start_limit, " . $self['tpp']);
-while ($thread = $db->fetch_array($query)) {
+while (($thread = $db->fetch_array($query)) != false) {
     $thread['subject'] = shortenString(censor($thread['subject']), 80, X_SHORTEN_SOFT | X_SHORTEN_HARD, '...');
     $tmOffset = ($self['timeoffset'] * 3600) + $self['daylightsavings'];
     

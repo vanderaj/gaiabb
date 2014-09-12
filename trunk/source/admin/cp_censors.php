@@ -89,7 +89,7 @@ function viewPanel()
     <?php
     $query = $db->query("SELECT * FROM " . X_PREFIX . "words ORDER BY id");
     $rowsFound = $db->num_rows($query);
-    while ($censor = $db->fetch_array($query)) {
+    while (($censor = $db->fetch_array($query)) != false) {
         ?>
         <tr bgcolor="<?php echo $THEME['altbg2']?>" class="ctrtablerow">
 						<td><input type="checkbox" name="delete<?php echo $censor['id']?>"
@@ -152,7 +152,7 @@ function doPanel()
     $oToken->assert_token();
     
     $querycensor = $db->query("SELECT id FROM " . X_PREFIX . "words");
-    while ($censor = $db->fetch_array($querycensor)) {
+    while (($censor = $db->fetch_array($querycensor)) != false) {
         $delete = "delete" . $censor['id'];
         $delete = formInt($delete);
         if ($delete > 0) {

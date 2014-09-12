@@ -80,7 +80,7 @@ function viewPanel()
     <?php
     
     $query = $db->query("SELECT * FROM " . X_PREFIX . "smilies WHERE type = 'picon' ORDER BY id ASC");
-    while ($smilie = $db->fetch_array($query)) {
+    while (($smilie = $db->fetch_array($query)) != false) {
         ?>
         <tr bgcolor="<?php echo $THEME['altbg2']?>">
 						<td class="ctrtablerow"><input type="checkbox"
@@ -141,7 +141,7 @@ function doPanel()
         }
     }
     $querysmilie = $db->query("SELECT id FROM " . X_PREFIX . "smilies WHERE type = 'picon' ORDER BY id ASC");
-    while ($picon = $db->fetch_array($querysmilie)) {
+    while (($picon = $db->fetch_array($querysmilie)) != false) {
         $id = $picon['id'];
         if (isset($pidelete[$id]) && $pidelete[$id] == 1) {
             $query = $db->query("DELETE FROM " . X_PREFIX . "smilies WHERE id = '$picon[id]'");
@@ -160,12 +160,12 @@ function doPanel()
         $posticons_count = $newposticons_count = 0;
         $posticon_url = array();
         $query = $db->query("SELECT * FROM " . X_PREFIX . "smilies WHERE type = 'picon'");
-        while ($picon = $db->fetch_array($query)) {
+        while (($picon = $db->fetch_array($query)) != false) {
             $posticon_url[] = $picon['url'];
         }
         $db->free_result($query);
         $dir = opendir(ROOT . $THEME['smdir']);
-        while ($picon = readdir($dir)) {
+        while (($picon = readdir($dir)) != false) {
             if ($picon != '.' && $picon != '..' && (strpos($picon, '.gif') || strpos($picon, '.jpg') || strpos($picon, '.bmp') || strpos($picon, '.png'))) {
                 $newposticon_url = $picon;
                 $newposticon_url = urlencode($newposticon_url);

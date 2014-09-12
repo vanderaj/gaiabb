@@ -110,7 +110,7 @@ if (count($fup) == 0) {
     
     if ($db->num_rows($query) != 0) {
         $fulist = $forum['userlist'];
-        while ($sub = $db->fetch_array($query)) {
+        while (($sub = $db->fetch_array($query)) != false) {
             $forumlist .= forum($sub, 'viewforum_subforum');
         }
         $forum['userlist'] = $fulist;
@@ -285,7 +285,7 @@ if ($status1 == 'Moderator') {
 $topicsnum = 0;
 $threadlist = '';
 $querytop = $db->query("SELECT $dotadd1 t.*, m.uid, l.uid as lp_uid, l.username as lp_user, l.dateline as lp_dateline, l.pid as lp_pid FROM " . X_PREFIX . "threads t $dotadd2 LEFT JOIN " . X_PREFIX . "members m ON (m.username = t.author) LEFT JOIN " . X_PREFIX . "lastposts l ON l.tid = t.tid WHERE t.fid = '$fid' $srchfrom $srchtype ORDER BY topped $srchorder, $srchsort $srchorder LIMIT $start_limit, " . $self['tpp']);
-while ($thread = $db->fetch_array($querytop)) {
+while (($thread = $db->fetch_array($querytop)) != false) {
     $thread['subject'] = shortenString(censor($thread['subject']), 80, X_SHORTEN_SOFT | X_SHORTEN_HARD, '...');
     $tmOffset = ($self['timeoffset'] * 3600) + $self['daylightsavings'];
     

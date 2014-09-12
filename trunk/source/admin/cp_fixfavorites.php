@@ -104,7 +104,7 @@ function doPanel()
     $oToken->assert_token();
     $query = $db->query("SELECT tid, username FROM " . X_PREFIX . "favorites WHERE 1 ORDER BY tid ASC");
     $count = $count2 = 0;
-    while ($favs = $db->fetch_array($query)) {
+    while (($favs = $db->fetch_array($query)) != false) {
         $count2 ++;
         $query2 = $db->query("SELECT tid FROM " . X_PREFIX . "threads WHERE tid = $favs[tid]");
         $thread = $db->fetch_array($query2);

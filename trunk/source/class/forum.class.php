@@ -66,7 +66,7 @@ class Forum
         
         // Forums
         $query = $db->query("SELECT fid FROM " . X_PREFIX . "forums ORDER BY fid DESC");
-        while ($forums = $db->fetch_array($query)) {
+        while (($forums = $db->fetch_array($query)) != false) {
             $posts = $db->query("SELECT tid FROM " . X_PREFIX . "posts WHERE fid = '$forums[fid]' ORDER BY pid DESC LIMIT 0,1");
             $lp2 = $db->fetch_array($posts);
             $lp = $lp2['tid'];
@@ -77,7 +77,7 @@ class Forum
         
         // Threads
         $query = $db->query("SELECT tid FROM " . X_PREFIX . "threads ORDER BY tid DESC");
-        while ($threads = $db->fetch_array($query)) {
+        while (($threads = $db->fetch_array($query)) != false) {
             $posts = $db->query("SELECT p.author, m.uid, p.dateline, p.pid FROM " . X_PREFIX . "posts p, " . X_PREFIX . "members m WHERE p.author = m.username AND tid = '$threads[tid]' ORDER BY dateline DESC LIMIT 0,1");
             $lp = $db->fetch_array($posts);
             $db->free_result($posts);
@@ -111,11 +111,11 @@ class Forum
         global $db;
         
         $query = $db->query("SELECT fid FROM " . X_PREFIX . "forums WHERE type = 'forum'");
-        while ($forum = $db->fetch_array($query)) {
+        while (($forum = $db->fetch_array($query)) != false) {
             $threadnum = $postnum = $sub_threadnum = $sub_postnum = 0;
             $squery = $stquery = $spquery = $ftquery = $fpquery = '';
             $squery = $db->query("SELECT fid FROM " . X_PREFIX . "forums WHERE fup = '$forum[fid]' AND type = 'sub'");
-            while ($sub = $db->fetch_array($squery)) {
+            while (($sub = $db->fetch_array($squery)) != false) {
                 $stquery = $db->query("SELECT COUNT(tid) FROM " . X_PREFIX . "threads WHERE fid = '$sub[fid]'");
                 $sub_threadnum = $db->result($stquery, 0);
                 $db->free_result($stquery);

@@ -133,7 +133,7 @@ class favorite
         $toDelete = array();
         
         $query = $db->query("SELECT tid FROM " . X_PREFIX . "favorites WHERE username = '" . $self['username'] . "' AND type='favorite'");
-        while ($sub = $db->fetch_array($query)) {
+        while (($sub = $db->fetch_array($query)) != false) {
             $delete = formInt("delete" . $sub['tid'] . "");
             if (is_numeric($delete)) {
                 $toDelete[] = $delete;

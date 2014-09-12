@@ -72,7 +72,7 @@ function viewPanel()
     $subs = array();
     $i = 0;
     $query = $db->query("SELECT fid, type, name, displayorder, status, fup FROM " . X_PREFIX . "forums ORDER BY fup ASC, displayorder ASC");
-    while ($selForums = $db->fetch_array($query)) {
+    while (($selForums = $db->fetch_array($query)) != false) {
         if ($selForums['type'] == 'group') {
             $groups[$i]['fid'] = $selForums['fid'];
             $groups[$i]['name'] = htmlspecialchars($selForums['name']);
@@ -413,7 +413,7 @@ function viewDetailsPanel($fdetails)
     $themelist[] = '<select name="themeforumnew">';
     $themelist[] = '<option value="0">' . $lang['textusedefault'] . '</option>';
     $query = $db->query("SELECT themeid, name FROM " . X_PREFIX . "themes WHERE themestatus = 'on' ORDER BY name ASC");
-    while ($themeinfo = $db->fetch_array($query)) {
+    while (($themeinfo = $db->fetch_array($query)) != false) {
         if ($themeinfo['themeid'] == $forum['theme']) {
             $themelist[] = '<option value="' . $themeinfo['themeid'] . '" selected="selected">' . stripslashes($themeinfo['name']) . '</option>';
         } else {
@@ -758,7 +758,7 @@ function doPanel($fdetails)
     if ($fdetails == 0) {
         $queryforum = $db->query("SELECT fid, type FROM " . X_PREFIX . "forums WHERE type = 'forum' OR type = 'sub'");
         $db->query("DELETE FROM " . X_PREFIX . "forums WHERE name = ''");
-        while ($forum = $db->fetch_array($queryforum)) {
+        while (($forum = $db->fetch_array($queryforum)) != false) {
             $displayorder = "displayorder$forum[fid]";
             $displayorder = formInt($displayorder);
             $name = "name$forum[fid]";
@@ -772,13 +772,13 @@ function doPanel($fdetails)
             if ($delete > 0) {
                 $db->query("DELETE FROM " . X_PREFIX . "forums WHERE (type = 'forum' OR type = 'sub') AND fid = '$delete'");
                 $querythread = $db->query("SELECT tid, author FROM " . X_PREFIX . "threads WHERE fid = '$delete'");
-                while ($thread = $db->fetch_array($querythread)) {
+                while (($thread = $db->fetch_array($querythread)) != false) {
                     $db->query("DELETE FROM " . X_PREFIX . "threads WHERE tid = '$thread[tid]'");
                     $db->query("DELETE FROM " . X_PREFIX . "favorites WHERE tid = '$thread[tid]'");
                     $db->query("DELETE FROM " . X_PREFIX . "subscriptions WHERE tid = '$thread[tid]'");
                     $db->query("UPDATE " . X_PREFIX . "members SET postnum = postnum-1 WHERE username = '$thread[author]'");
                     $querypost = $db->query("SELECT pid, author FROM " . X_PREFIX . "posts WHERE tid = '$thread[tid]'");
-                    while ($post = $db->fetch_array($querypost)) {
+                    while (($post = $db->fetch_array($querypost)) != false) {
                         $db->query("DELETE FROM " . X_PREFIX . "posts WHERE pid = '$post[pid]'");
                         $db->query("UPDATE " . X_PREFIX . "members SET postnum = postnum-1 WHERE username = '$post[author]'");
                     }
@@ -792,7 +792,7 @@ function doPanel($fdetails)
         $db->free_result($queryforum);
         $querygroup = $db->query("SELECT fid FROM " . X_PREFIX . "forums WHERE type = 'group'");
         $deleter = array();
-        while ($group2 = $db->fetch_array($querygroup)) {
+        while (($group2 = $db->fetch_array($querygroup)) != false) {
             $delete2 = "delete$group2[fid]";
             if (isset(${$delete2})) {
                 $deleter[] = ${$delete2};
@@ -804,7 +804,7 @@ function doPanel($fdetails)
         }
         $db->free_result($querygroup);
         $querygroup2 = $db->query("SELECT fid FROM " . X_PREFIX . "forums WHERE type = 'group'");
-        while ($group = $db->fetch_array($querygroup2)) {
+        while (($group = $db->fetch_array($querygroup2)) != false) {
             $name = "name$group[fid]";
             $name = $db->escape(decode_entities(formVar($name)));
             $displayorder = "displayorder$group[fid]";
@@ -815,7 +815,7 @@ function doPanel($fdetails)
             $delete = formInt($delete);
             if ($delete > 0) {
                 $query = $db->query("SELECT fid FROM " . X_PREFIX . "forums WHERE type = 'forum' AND fup = '$delete'");
-                while ($forum = $db->fetch_array($query)) {
+                while (($forum = $db->fetch_array($query)) != false) {
                     $db->query("UPDATE " . X_PREFIX . "forums SET fup = '' WHERE type = 'forum' AND fup = '$delete'");
                 }
                 $db->query("DELETE FROM " . X_PREFIX . "forums WHERE type = 'group' AND fid = '$delete'");

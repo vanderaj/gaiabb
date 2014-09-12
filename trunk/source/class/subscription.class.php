@@ -118,7 +118,7 @@ class subscription
         $toDelete = array();
         
         $query = $db->query("SELECT tid FROM " . X_PREFIX . "subscriptions WHERE username = '" . $self['username'] . "' AND type='subscription'");
-        while ($sub = $db->fetch_array($query)) {
+        while (($sub = $db->fetch_array($query)) != false) {
             $delete = formInt("delete" . $sub['tid'] . "");
             if (is_numeric($delete)) {
                 $toDelete[] = $delete;

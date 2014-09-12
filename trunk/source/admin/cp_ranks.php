@@ -84,7 +84,7 @@ function viewPanel()
     <?php
     $avatarno = $avataryes = '';
     $query = $db->query("SELECT * FROM " . X_PREFIX . "ranks ORDER BY id");
-    while ($rank = $db->fetch_array($query)) {
+    while (($rank = $db->fetch_array($query)) != false) {
         $staff_disable = '';
         switch ($rank['title']) {
             case 'Super Administrator':
@@ -184,7 +184,7 @@ function doPanel()
     // Load the existing ranks in
     $query = $db->query("SELECT * FROM " . X_PREFIX . "ranks ORDER BY id ASC");
     $staffranks = array();
-    while ($ranks = $db->fetch_array($query)) {
+    while (($ranks = $db->fetch_array($query)) != false) {
         if ($ranks['title'] == 'Super Administrator' || $ranks['title'] == 'Administrator' || $ranks['title'] == 'Super Moderator' || $ranks['title'] == 'Moderator') {
             $title[$ranks['id']] = $ranks['title'];
             $staffranks[$ranks['id']] = $ranks['title'];

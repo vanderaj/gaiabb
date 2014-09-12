@@ -63,7 +63,7 @@ class attachment
             return false;
         }
         
-        while ($row = $db->fetch_array($q)) {
+        while (($row = $db->fetch_array($q)) != false) {
             $pids[] = $row['pid'];
         }
         $db->free_result($q);
@@ -81,7 +81,7 @@ class attachment
             return false;
         }
         
-        while ($row = $db->fetch_array($q)) {
+        while (($row = $db->fetch_array($q)) != false) {
             $this->attachments[] = $row;
         }
         $db->free_result($q);
@@ -210,7 +210,7 @@ class attachment
         
         $query = $db->query("SELECT pid, aid FROM " . X_PREFIX . "attachments WHERE 1 ORDER BY pid ASC");
         $count = $count2 = 0;
-        while ($attach = $db->fetch_array($query)) {
+        while (($attach = $db->fetch_array($query)) != false) {
             $count2 ++;
             $query2 = $db->query("SELECT pid FROM " . X_PREFIX . "posts WHERE pid = $attach[pid]");
             $thread = $db->fetch_array($query2);

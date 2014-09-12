@@ -70,7 +70,7 @@ function viewPanel()
     $themelist = array();
     $themelist[] = '<select name="themenew">';
     $query = $db->query("SELECT themeid, name FROM " . X_PREFIX . "themes WHERE themestatus = 'on' ORDER BY name ASC");
-    while ($themeinfo = $db->fetch_array($query)) {
+    while (($themeinfo = $db->fetch_array($query)) != false) {
         $themeinfo['name'] = stripslashes($themeinfo['name']);
         if ($themeinfo['themeid'] == $CONFIG['theme']) {
             $themelist[] = '<option value="' . $themeinfo['themeid'] . '" selected="selected">' . $themeinfo['name'] . '</option>';
@@ -292,7 +292,7 @@ function viewPanel()
     }
     $df = $df . "\t<td bgcolor=\"$THEME[altbg2]\"><select name=\"dateformatnew\">\n";
     $querydf = $db->query("SELECT * FROM " . X_PREFIX . "dateformats");
-    while ($dformats = $db->fetch_array($querydf)) {
+    while (($dformats = $db->fetch_array($querydf)) != false) {
         if ($CONFIG['predformat'] == 'on') {
             $example = gmdate(formatDate($dformats['dateformat']), $ubblva + ($self['timeoffset'] * 3600) + $self['daylightsavings']);
         } else {

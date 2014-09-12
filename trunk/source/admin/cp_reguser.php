@@ -150,7 +150,7 @@ function doPanel()
     
     $fail = $efail = false;
     $query = $db->query("SELECT * FROM " . X_PREFIX . "restricted");
-    while ($restriction = $db->fetch_array($query)) {
+    while (($restriction = $db->fetch_array($query)) != false) {
         if ($restriction['case_sensitivity'] == 1) {
             if ($restriction['partial'] == 1) {
                 if (strpos($regusername, $restriction['name']) !== false) {

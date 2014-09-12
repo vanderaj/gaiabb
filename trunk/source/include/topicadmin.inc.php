@@ -93,7 +93,7 @@ class mod
             error($lang['textnothread'], false);
         }
         
-        while ($result = $db->fetch_array($query)) {
+        while (($result = $db->fetch_array($query)) != false) {
             $db->query("UPDATE " . X_PREFIX . "members SET postnum = postnum-1 WHERE username = '$result[author]'");
         }
         $db->free_result($query);
@@ -372,7 +372,7 @@ class mod
         
         $posts = '';
         $qp = $db->query("SELECT * FROM " . X_PREFIX . "posts WHERE tid = '$tid' ORDER BY dateline");
-        while ($post = $db->fetch_array($qp)) {
+        while (($post = $db->fetch_array($qp)) != false) {
             $bbcodeoff = $post['bbcodeoff'];
             $smileyoff = $post['smileyoff'];
             $post['message'] = addslashes($post['message']);
@@ -458,7 +458,7 @@ class mod
         global $db, $lang, $tid, $self, $action, $fid, $forums, $fup;
         
         $query = $db->query("SELECT author, pid, message FROM " . X_PREFIX . "posts WHERE tid = '$tid'");
-        while ($post = $db->fetch_array($query)) {
+        while (($post = $db->fetch_array($query)) != false) {
             $move = "move$post[pid]";
             $move = getRequestInt($move);
             if (! empty($move)) {
@@ -513,7 +513,7 @@ class mod
         
         $posts = '';
         $query = $db->query("SELECT * FROM " . X_PREFIX . "posts WHERE tid = '$tid' ORDER BY dateline");
-        while ($post = $db->fetch_array($query)) {
+        while (($post = $db->fetch_array($query)) != false) {
             $bbcodeoff = $post['bbcodeoff'];
             $smileyoff = $post['smileyoff'];
             $post['message'] = addslashes($post['message']);
@@ -584,7 +584,7 @@ class mod
         $vals = array();
         
         $query = $db->query("SELECT * FROM " . X_PREFIX . "posts WHERE tid = '$tid' ORDER BY pid ASC");
-        while ($post = $db->fetch_array($query)) {
+        while (($post = $db->fetch_array($query)) != false) {
             $post['fid'] = $newfid;
             $post['tid'] = $newtid;
             
@@ -640,7 +640,7 @@ class mod
         $mods = array();
         
         $query = $db->query("SELECT username FROM " . X_PREFIX . "members WHERE status = 'Super Administrator' OR status = 'Administrator'");
-        while ($usr = $db->fetch_array($query)) {
+        while (($usr = $db->fetch_array($query)) != false) {
             $mods[] = $usr['username'];
         }
         $db->free_result($query);

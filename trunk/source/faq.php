@@ -218,7 +218,7 @@ switch ($page) {
             $itemlist = array();
             $i = 0;
             $query = $db->query("SELECT fid, type, name, description, displayorder, fup FROM " . X_PREFIX . "faq WHERE status = 'on' ORDER BY displayorder ASC");
-            while ($selItems = $db->fetch_array($query)) {
+            while (($selItems = $db->fetch_array($query)) != false) {
                 if ($selItems['type'] == 'group') {
                     $groups[$i]['fid'] = $selItems['fid'];
                     $groups[$i]['name'] = $selItems['name'];
@@ -266,7 +266,7 @@ switch ($page) {
             $itemlist = array();
             $i = 0;
             $query = $db->query("SELECT fid, type, name, description, displayorder, fup, allowsmilies, allowbbcode, allowimgcode, code, view FROM " . X_PREFIX . "faq WHERE (fid = '$faqid' OR fup = '$faqid') AND status = 'on' ORDER BY displayorder ASC");
-            while ($selItems = $db->fetch_array($query)) {
+            while (($selItems = $db->fetch_array($query)) != false) {
                 if ($selItems['type'] == 'group') {
                     $groups[$i]['fid'] = $selItems['fid'];
                     $groups[$i]['name'] = $selItems['name'];
@@ -363,7 +363,7 @@ switch ($page) {
                             <td width="30%" class="header">' . $lang['smiliepreview'] . '</td>
                             </tr>';
                             $querysmilie = $db->query("SELECT * FROM " . X_PREFIX . "smilies WHERE type = 'smiley'");
-                            while ($smilie = $db->fetch_array($querysmilie)) {
+                            while (($smilie = $db->fetch_array($querysmilie)) != false) {
                                 $fmsctr ++;
                                 if ($fmsctr == 1) {
                                     $faq .= '<tr>';
@@ -392,7 +392,7 @@ switch ($page) {
                             <td width="33%" class="header">' . $lang['textposts'] . '</td>
                             </tr>';
                             $query = $db->query("SELECT * FROM " . X_PREFIX . "ranks WHERE title !='Moderator' AND title !='Super Moderator' AND title !='Super Administrator' AND title !='Administrator' ORDER BY posts ASC");
-                            while ($ranks = $db->fetch_array($query)) {
+                            while (($ranks = $db->fetch_array($query)) != false) {
                                 $stars = str_repeat('<img src="' . $THEME['imgdir'] . '/star.gif" alt="*" title="*" border="0px" />', $ranks['stars']);
                                 $faq .= '<tr>
                                 <td class="tablerow" bgcolor="' . $THEME['altbg2'] . '">' . $ranks['title'] . '</td>

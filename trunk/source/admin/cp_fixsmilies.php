@@ -104,7 +104,7 @@ function doPanel()
     
     $i = 0;
     $query = $db->query("SELECT code, COUNT(code) AS count FROM " . X_PREFIX . "smilies WHERE type = 'smiley' GROUP BY code");
-    while ($smilies = $db->fetch_array($query)) {
+    while (($smilies = $db->fetch_array($query)) != false) {
         if ($smilies['count'] > 1) {
             $db->query("DELETE FROM " . X_PREFIX . "smilies WHERE code = '" . $smilies['code'] . "' ORDER BY id DESC LIMIT " . ($smilies['count'] - 1) . "");
             $i ++;

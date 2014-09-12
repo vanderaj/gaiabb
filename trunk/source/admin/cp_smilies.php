@@ -85,7 +85,7 @@ function viewPanel()
     <?php
     
     $query = $db->query("SELECT * FROM " . X_PREFIX . "smilies WHERE type = 'smiley' ORDER BY id ASC");
-    while ($smilie = $db->fetch_array($query)) {
+    while (($smilie = $db->fetch_array($query)) != false) {
         ?>
         <tr>
 						<td bgcolor="<?php echo $THEME['altbg2']?>" class="ctrtablerow"><input
@@ -157,7 +157,7 @@ function doPanel()
         }
     
     $querysmilie = $db->query("SELECT id FROM " . X_PREFIX . "smilies WHERE type = 'smiley'");
-    while ($smilie = $db->fetch_array($querysmilie)) {
+    while (($smilie = $db->fetch_array($querysmilie)) != false) {
         $id = $smilie['id'];
         if (! empty($smdelete[$id]) && $smdelete[$id] == 1) {
             $query = $db->query("DELETE FROM " . X_PREFIX . "smilies WHERE id = '$id'");
@@ -186,14 +186,14 @@ function doPanel()
         $smiley_code = array();
         
         $query = $db->query("SELECT * FROM " . X_PREFIX . "smilies WHERE type = 'smiley' ORDER BY id ASC");
-        while ($smiley = $db->fetch_array($query)) {
+        while (($smiley = $db->fetch_array($query)) != false) {
             $smiley_url[] = $smiley['url'];
             $smiley_code[] = $smiley['code'];
         }
         $db->free_result($query);
         
         $dir = opendir(ROOT . $THEME['smdir']);
-        while ($smiley = readdir($dir)) {
+        while (($smiley = readdir($dir)) != false) {
             if ($smiley != '.' && $smiley != '..' && (strpos($smiley, '.gif') || strpos($smiley, '.jpg') || strpos($smiley, '.bmp') || strpos($smiley, '.png'))) {
                 $newsmiley_url = $smiley;
                 $newsmiley_code = $smiley;

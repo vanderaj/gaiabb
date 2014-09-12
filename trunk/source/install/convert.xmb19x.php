@@ -108,7 +108,7 @@ class xmb19x extends convert
         
         $this->toDbHost->query("TRUNCATE " . X_PREFIX . "members");
         
-        while ($row = $this->fromDbHost->fetch_array($memfromquery)) {
+        while (($row = $this->fromDbHost->fetch_array($memfromquery)) != false) {
             $meminsert = $this->toDbHost->query("INSERT INTO `" . X_PREFIX . "members` (
             uid,
             username,
@@ -214,7 +214,7 @@ class xmb19x extends convert
         }
         
         $this->toDbHost->query("TRUNCATE TABLE " . X_PREFIX . "posts");
-        while ($row = $this->fromDbHost->fetch_array($postquery)) {
+        while (($row = $this->fromDbHost->fetch_array($postquery)) != false) {
             $posts_insert = $this->toDbHost->query("INSERT INTO " . X_PREFIX . "posts (fid, tid, pid, author, message, subject, dateline, icon, usesig, useip, bbcodeoff, smileyoff) VALUES ('$row[fid]','$row[tid]','$row[pid]','" . $this->toDbHost->escape($row['author']) . "','" . $this->toDbHost->escape($row['message']) . "','" . $this->toDbHost->escape(stripslashes($row['subject'])) . "','$row[dateline]','$row[icon]','$row[usesig]','$row[useip]','$row[bbcodeoff]','$row[smileyoff]')");
             if ($posts_insert === false) {
                 setCol($this->prgbar, '#ff0000');
@@ -243,7 +243,7 @@ class xmb19x extends convert
         // Find all the threads which have non-blank polls
         $pollquery = $this->toDbHost->query("SELECT tid, pollopts, subject FROM " . X_PREFIX . "threads WHERE pollopts != ''");
         if ($pollquery) {
-            while ($row = $this->toDbHost->fetch_array($pollquery)) {
+            while (($row = $this->toDbHost->fetch_array($pollquery)) != false) {
                 // skip over converted rows
                 if ($row['pollopts'] === '1') {
                     continue;
@@ -332,7 +332,7 @@ class xmb19x extends convert
         }
         
         $this->toDbHost->query("TRUNCATE TABLE " . X_PREFIX . "ranks");
-        while ($row = $this->fromDbHost->fetch_array($ranksquery)) {
+        while (($row = $this->fromDbHost->fetch_array($ranksquery)) != false) {
             $ranks_insert = $this->toDbHost->query("INSERT INTO " . X_PREFIX . "ranks (title, posts, id, stars, allowavatars, avatarrank) VALUES ('" . $this->toDbHost->escape($row['title']) . "', '$row[posts]', '$row[id]', '$row[stars]', '$row[allowavatars]', '$row[avatarrank]')");
             if ($ranks_insert === false) {
                 setCol($this->prgbar, '#ff0000');
@@ -374,7 +374,7 @@ class xmb19x extends convert
         }
         
         $this->toDbHost->query("TRUNCATE TABLE " . X_PREFIX . "threads");
-        while ($row = $this->fromDbHost->fetch_array($threadsquery)) {
+        while (($row = $this->fromDbHost->fetch_array($threadsquery)) != false) {
             $threads_insert = $this->toDbHost->query("INSERT INTO " . X_PREFIX . "threads (tid, fid, subject, icon, lastpost, views, replies, author, closed, topped, pollopts) VALUES ('$row[tid]','$row[fid]','" . $this->toDbHost->escape($row['subject']) . "','$row[icon]','$row[lastpost]','$row[views]','$row[replies]','$row[author]','$row[closed]','$row[topped]','" . $this->toDbHost->escape($row['pollopts']) . "')");
             if ($threads_insert === false) {
                 setCol($this->prgbar, '#ff0000');
@@ -403,7 +403,7 @@ class xmb19x extends convert
         }
         $fupless = true;
         $this->toDbHost->query("TRUNCATE TABLE " . X_PREFIX . "forums");
-        while ($row = $this->fromDbHost->fetch_array($forumsquery)) {
+        while (($row = $this->fromDbHost->fetch_array($forumsquery)) != false) {
             if ($row['type'] != 'group') {
                 $update = false;
                 $pp = trim($row['postperm']);
@@ -478,7 +478,7 @@ class xmb19x extends convert
         }
         
         $attachquery = $this->toDbHost->query("SELECT aid, filetype, attachment  FROM " . X_PREFIX . "attachments");
-        while ($row = $this->toDbHost->fetch_array($attachquery)) {
+        while (($row = $this->toDbHost->fetch_array($attachquery)) != false) {
             if (strpos($row['filetype'], 'image') !== false) {
                 $exsize = getimagesize($row['attachment']);
                 $attach_insert = $this->toDbHost->query("UPDATE " . X_PREFIX . "attachments set fileheight = '" . intval($exsize[1]) . "', filewidth = '" . intval($exsize[0]) . "' WHERE aid = '" . $row['aid'] . "'");
@@ -513,7 +513,7 @@ class xmb19x extends convert
         }
         
         $this->toDbHost->query("TRUNCATE TABLE " . X_PREFIX . "addresses");
-        while ($row = $this->fromDbHost->fetch_array($addressquery)) {
+        while (($row = $this->fromDbHost->fetch_array($addressquery)) != false) {
             $address_insert = $this->toDbHost->query("INSERT INTO " . X_PREFIX . "addresses (username, addressname) VALUES ('" . $this->toDbHost->escape($row['username']) . "','" . $this->toDbHost->escape($row['buddyname']) . "')");
             if ($address_insert === false) {
                 setCol($this->prgbar, '#ff0000');
@@ -542,7 +542,7 @@ class xmb19x extends convert
         }
         
         $this->toDbHost->query("TRUNCATE TABLE " . X_PREFIX . "favorites");
-        while ($row = $this->fromDbHost->fetch_array($favquery)) {
+        while (($row = $this->fromDbHost->fetch_array($favquery)) != false) {
             $favorites_insert = $this->toDbHost->query("INSERT INTO " . X_PREFIX . "favorites (tid, username, type) VALUES ('$row[tid]','" . $this->toDbHost->escape($row['username']) . "','$row[type]')");
             if ($favorites_insert === false) {
                 setCol($this->prgbar, '#ff0000');
@@ -571,7 +571,7 @@ class xmb19x extends convert
         }
         
         $this->toDbHost->query("TRUNCATE TABLE " . X_PREFIX . "subscriptions");
-        while ($row = $this->fromDbHost->fetch_array($subquery)) {
+        while (($row = $this->fromDbHost->fetch_array($subquery)) != false) {
             $subs_insert = $this->toDbHost->query("INSERT INTO " . X_PREFIX . "subscriptions (tid, username, type) VALUES ('$row[tid]','" . $this->toDbHost->escape($row['username']) . "','$row[type]')");
             if ($subs_insert === false) {
                 setCol($this->prgbar, '#ff0000');
@@ -600,7 +600,7 @@ class xmb19x extends convert
         }
         
         $this->toDbHost->query("TRUNCATE TABLE " . X_PREFIX . "words");
-        while ($row = $this->fromDbHost->fetch_array($censorquery)) {
+        while (($row = $this->fromDbHost->fetch_array($censorquery)) != false) {
             $word_insert = $this->toDbHost->query("INSERT INTO " . X_PREFIX . "words (find, replace1, id) VALUES ('" . $this->toDbHost->escape($row['find']) . "','" . $this->toDbHost->escape($row['replace1']) . "','$row[id]')");
             if ($word_insert === false) {
                 setCol($this->prgbar, '#ff0000');
@@ -629,7 +629,7 @@ class xmb19x extends convert
         }
         
         $this->toDbHost->query("TRUNCATE TABLE " . X_PREFIX . "banned");
-        while ($row = $this->fromDbHost->fetch_array($banquery)) {
+        while (($row = $this->fromDbHost->fetch_array($banquery)) != false) {
             $ban_insert = $this->toDbHost->query("INSERT INTO " . X_PREFIX . "banned (ip1, ip2, ip3, ip4, dateline, id) VALUES ('$row[ip1]','$row[ip2]','$row[ip3]','$row[ip4]','$row[dateline]','$row[id]')");
             if ($ban_insert === false) {
                 setCol($this->prgbar, '#ff0000');
@@ -712,7 +712,7 @@ class xmb19x extends convert
         }
         
         $this->toDbHost->query("TRUNCATE TABLE " . X_PREFIX . "u2u");
-        while ($row = $this->fromDbHost->fetch_array($u2uquery)) {
+        while (($row = $this->fromDbHost->fetch_array($u2uquery)) != false) {
             $u2u_insert = $this->toDbHost->query("INSERT INTO " . X_PREFIX . "u2u (u2uid, msgto, msgfrom, type, owner, folder, subject, message, dateline, readstatus, sentstatus) VALUES ('$row[u2uid]', '" . $this->toDbHost->escape($row['msgto']) . "', '" . $this->toDbHost->escape($row['msgfrom']) . "', '$row[type]', '" . $this->toDbHost->escape($row['owner']) . "', '" . $this->toDbHost->escape($row['folder']) . "', '" . $this->toDbHost->escape($row['subject']) . "', '" . $this->toDbHost->escape($row['message']) . "', '$row[dateline]', '$row[readstatus]', '$row[sentstatus]')");
             if ($u2u_insert === false) {
                 setCol($this->prgbar, '#ff0000');

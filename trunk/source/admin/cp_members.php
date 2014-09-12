@@ -206,7 +206,7 @@ function viewMembers()
 						<td colspan="9"><?php echo $multipage ?></td>
 					</tr>
     <?php
-    while ($member = $db->fetch_array($q1)) {
+    while (($member = $db->fetch_array($q1)) != false) {
         $readrulesyes = $readrulesno = '';
         switch ($member['readrules']) {
             case 'yes':
@@ -397,7 +397,7 @@ function processMembers()
     }
     
     $q2 = $db->query($sql . " ORDER BY username LIMIT $start, $CONFIG[memberperpage]");
-    while ($mem = $db->fetch_array($q2)) {
+    while (($mem = $db->fetch_array($q2)) != false) {
         $to['status'] = formVar("status" . $mem['uid']);
         if ($to['status'] == '') {
             $to['status'] = 'Member';
@@ -437,7 +437,7 @@ function processMembers()
             $un = $db->result($db->query("SELECT username FROM " . X_PREFIX . "members WHERE uid = '$delete'"), 0);
             $db->query("DELETE FROM " . X_PREFIX . "members WHERE uid = '$delete'");
             $queryr = $db->query("SELECT t.tid as ttid, count(p.pid) as postcount FROM " . X_PREFIX . "threads t LEFT JOIN " . X_PREFIX . "posts p ON p.tid = t.tid WHERE t.author = '$un' GROUP BY t.tid");
-            while ($row = $db->fetch_array($queryr)) {
+            while (($row = $db->fetch_array($queryr)) != false) {
                 $q2 = $db->query("SELECT count(pid) FROM " . X_PREFIX . "posts WHERE author = '$un' AND tid = '$row[ttid]'");
                 if ($row['postcount'] == $db->result($q2, 0)) {
                     $rem[] = $row['ttid'];
@@ -457,7 +457,7 @@ function processMembers()
             
             $rem = array();
             $queryp = $db->query("SELECT pid FROM " . X_PREFIX . "posts WHERE author = '$un'");
-            while ($row = $db->fetch_array($queryp)) {
+            while (($row = $db->fetch_array($queryp)) != false) {
                 $rem[] = $row['pid'];
             }
             $db->free_result($queryp);

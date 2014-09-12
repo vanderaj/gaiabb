@@ -241,7 +241,7 @@ switch ($action) {
             $db->free_result($qmem);
             eval('$members = "' . template('memberlist_results_none') . '";');
         } else {
-            while ($member = $db->fetch_array($qmem)) {
+            while (($member = $db->fetch_array($qmem)) != false) {
                 $member['regdate'] = gmdate($self['dateformat'], $member['regdate'] + $adjTime);
                 
                 if (! ($member['lastvisit'] > 0)) {

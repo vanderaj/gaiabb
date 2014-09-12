@@ -269,7 +269,7 @@ function doPanel()
         $queryWhere = implode(' AND ', $queryWhere);
         $q = $db->query("SELECT t.tid FROM " . X_PREFIX . "threads t, " . X_PREFIX . "lastposts l WHERE " . $queryWhere);
         if ($db->num_rows($q) > 0) {
-            while ($t = $db->fetch_array($q)) {
+            while (($t = $db->fetch_array($q)) != false) {
                 $tids[] = $t['tid'];
             }
             $db->free_result($q);

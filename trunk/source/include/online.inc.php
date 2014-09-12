@@ -83,7 +83,7 @@ function url_to_text($url)
             $location = $lang['onlineviewtopic'] . ' ' . censor($tsub[$tid]);
         } else {
             $query = $db->query("SELECT t.fid, t.subject FROM " . X_PREFIX . "forums f, " . X_PREFIX . "threads t WHERE $restrict f.fid = t.fid AND t.tid = '$tid'");
-            while ($locate = $db->fetch_array($query)) {
+            while (($locate = $db->fetch_array($query)) != false) {
                 $location = $lang['onlineviewtopic'] . ' ' . censor(stripslashes($locate['subject']));
                 $tsub[$tid] = censor(stripslashes($locate['subject']));
             }
@@ -107,7 +107,7 @@ function url_to_text($url)
                 $location = $lang['onlineviewforum'] . ' ' . $fname[$fid];
             } else {
                 $query = $db->query("SELECT name FROM " . X_PREFIX . "forums f WHERE $restrict f.fid = '$fid'");
-                while ($locate = $db->fetch_array($query)) {
+                while (($locate = $db->fetch_array($query)) != false) {
                     $location = $lang['onlineviewforum'] . ' ' . $locate['name'];
                     $fname[$fid] = $locate['name'];
                 }
