@@ -629,9 +629,9 @@ function viewDetailsPanel($fdetails)
     $forum['attachnum'] = (int) $forum['attachnum'];
     $CONFIG['attach_num_default'] = (int) $CONFIG['attach_num_default'];
     formHelper::formTextBox($lang['textforumname'], 'namenew', $forum['name'], 20);
-    formHelper::formTextBox($lang['textdesc'], 5, 'descnew', 50, $forum['description']);
+    formHelper::formTextBox2($lang['textdesc'], 5, 'descnew', 50, $forum['description']);
     formHelper::formSelectOnOff($lang['frules_status'], 'frules_statusnew', $fruleson, $frulesoff);
-    formHelper::formTextBox($lang['frules_explain'], 5, 'frulesnew', 50, $forum['frules']);
+    formHelper::formTextBox2($lang['frules_explain'], 5, 'frulesnew', 50, $forum['frules']);
     formHelper::formSelectOnOff($lang['closethreadsstatus'], 'closethreadsnew', $closethreadson, $closethreadsoff);
     formHelper::formSelectOnOff($lang['quickreply_status'], 'quickreplynew', $quickreplyon, $quickreplyoff);
     formHelper::formSelectOnOff($lang['fpostcount'], 'postcountnew', $postcounton, $postcountoff);
@@ -665,9 +665,9 @@ function viewDetailsPanel($fdetails)
 					</tr>
     <?php
     formHelper::formSelectOnOff($lang['markthreadstatus'], 'mt_statusnew', $markthreadson, $markthreadsoff);
-    formHelper::formTextBox($lang['markthreadopen'], 4, 'mt_opennew', 50, $forum['mt_open']);
-    formHelper::formTextBox($lang['markthreadclose'], 4, 'mt_closenew', 50, $forum['mt_close']);
-    formHelper::formTextBox($lang['topicsubjectprefixes'], 5, 'subjectprefixesnew', 50, $forum['subjectprefixes']);
+    formHelper::formTextBox2($lang['markthreadopen'], 4, 'mt_opennew', 50, $forum['mt_open']);
+    formHelper::formTextBox2($lang['markthreadclose'], 4, 'mt_closenew', 50, $forum['mt_close']);
+    formHelper::formTextBox2($lang['topicsubjectprefixes'], 5, 'subjectprefixesnew', 50, $forum['subjectprefixes']);
     ?>
     <tr class="tablerow">
 						<td bgcolor="<?php echo $THEME['altbg1']?>"><?php echo $lang['whopostop1']?></td>
@@ -725,7 +725,7 @@ function viewDetailsPanel($fdetails)
 						</select></td>
 					</tr>
     <?php
-    formHelper::formTextBox($lang['textuserlist'], 5, 'userlistnew', 50, $forum['userlist']);
+    formHelper::formTextBox2($lang['textuserlist'], 5, 'userlistnew', 50, $forum['userlist']);
     formHelper::formTextPassBox($lang['forumpw'], 'passwordnew', $forum['password'], 20);
     ?>
     <tr class="tablerow">
