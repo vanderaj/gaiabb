@@ -1,7 +1,7 @@
 <?php
 /**
  * GaiaBB
- * Copyright (c) 2011-2013 The GaiaBB Group
+ * Copyright (c) 2011-2014 The GaiaBB Group
  * http://www.GaiaBB.com
  *
  * Based off UltimaBB
@@ -364,7 +364,7 @@ else
     $cookiedomain = $array['host'];
 }
 
-if (strpos($cookiedomain, 'localhost') !== false || preg_match("/^([0-9]{1,3}\.){3}[0-9]{1,3}$/i", $cookiedomain))
+if (strpos($cookiedomain, 'localhost') !== false || preg_match('/^([0-9]{1,3}.){3}[0-9]{1,3}$/i', $cookiedomain))
 {
     $cookiedomain  = '';
 }

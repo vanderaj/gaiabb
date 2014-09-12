@@ -1,7 +1,7 @@
 <?php
 /**
  * GaiaBB
- * Copyright (c) 2011-2013 The GaiaBB Group
+ * Copyright (c) 2011-2014 The GaiaBB Group
  * http://www.GaiaBB.com
  *
  * Based off UltimaBB
@@ -81,11 +81,11 @@ $versionpowered = ' - Powered by GaiaBB';
 $versioncompany = 'The GaiaBB Group';
 $versionshort = 'GaiaBB';
 $versiongeneral = 'GaiaBB 1.0-HEAD';
-$versioncopyright = 'GaiaBB 1.0-HEAD, &copy; 2011-2013 The GaiaBB Group';
-$versionbuild = '20130819';
+$versioncopyright = 'GaiaBB 1.0-HEAD, &copy; 2011-2014 The GaiaBB Group';
+$versionbuild = '20140912';
 $alpha = '';
 $beta = '';
-$gamma = '1.0-HEAD dev sprint 3';
+$gamma = '1.0-HEAD phracker';
 $sp = '';
 
 // No user serviceable items below

@@ -1,7 +1,7 @@
 <?php
 /**
  * GaiaBB
- * Copyright (c) 2011-2013 The GaiaBB Group
+ * Copyright (c) 2011-2014 The GaiaBB Group
  * http://www.GaiaBB.com
  *
  * Based off UltimaBB
@@ -164,7 +164,7 @@ function censor($txt, $ignorespaces = false)
                 }
                 else
                 {
-                    $txt = preg_replace("#(^|[[:space:]\.\,\!\?\[\]\{\}\(\)])(".preg_quote($find).")($|[[:space:]\.\,\!\?\(\)\[\]\{\}])#si", "$1" . $replace . "$3", $txt);
+                    $txt = preg_replace('#(^|[[:space:].,!?[]{}()])('.preg_quote($find).')($|[[:space:].,!?()[]{}])#si', "$1" . $replace . "$3", $txt);
                 }
             }
         }
@@ -2276,7 +2276,7 @@ function securityChecks()
     // Checks the IP-format, if it's not a IPv4, nor a IPv6 type, it will be blocked, safe to remove....
     if ($CONFIG['ipcheck'] == 'on')
     {
-        if (!eregi("^([0-9]{1,3}\.){3}[0-9]{1,3}$", $onlineip) && !eregi("^([a-z,0-9]{0,4}:){5}[a-z,0-9]{0,4}$", $onlineip)&& !stristr($onlineip, ':::::'))
+        if (!eregi('^([0-9]{1,3}.){3}[0-9]{1,3}$', $onlineip) && !eregi('^([a-z,0-9]{0,4}:){5}[a-z,0-9]{0,4}$', $onlineip)&& !stristr($onlineip, ':::::'))
         {
             exit("Access to this website is currently not possible as your hostname/IP appears suspicous.");
         }

@@ -1,7 +1,7 @@
 <?php
 /**
  * GaiaBB
- * Copyright (c) 2011-2013 The GaiaBB Group
+ * Copyright (c) 2011-2014 The GaiaBB Group
  * http://www.GaiaBB.com
  *
  * Based off UltimaBB
@@ -309,7 +309,7 @@ function isValidFilename($filename)
 */
 function isValidEmail($addr)
 {
-    $emailPattern = "/^([_a-z0-9-]+)(\.[_a-z0-9-]+)*@([a-z0-9-]+)(\.[a-z0-9-]+)*(\.[a-z]{2,4})$/i";
+    $emailPattern = '/^([_a-z0-9-]+)(.[_a-z0-9-]+)*@([a-z0-9-]+)(.[a-z0-9-]+)*(.[a-z]{2,4})$/i';
     $emailValid = false;
 
     if (preg_match($emailPattern, $addr) > 0)

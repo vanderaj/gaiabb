@@ -297,7 +297,7 @@ function doRegister()
     
     $member = new member();
     
-    if (preg_match("/[\]\['".'",!@#~$%\^&*()+=\/\\\\:;?|.<>{}]/', $username))
+    if (preg_match('/[\]\[.,!@#~$%\^&*()+=\/\\\\:;?|.<>{}]/', $username))
     {
         error($lang['badusername'], false, '', '', 'register.php?action=reg', true, false, true);
     }
