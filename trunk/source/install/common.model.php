@@ -412,19 +412,14 @@ function isInstalled($db = false)
         $dbname = 'DBNAME';
         $dbpw = '';
         $pconnect = false;
-        @include_once (ROOT . 'config.php');
+        include_once ('../config.php');
         
-        if ($dbname !== "DBNAME" && file_exists(ROOT . "db/$database.php")) {
+        if ($dbname !== "DBNAME" && file_exists("../db/mysql5php5.php")) {
             // Okay, it's safe to check the database as per config.php
             define('X_PREFIX', $tablepre);
-            include_once (ROOT . "db/$database.php");
+            include_once ("../db/mysql5php5.php");
             
-            // TODO: Remove me when old DAL goes away
-            if (! defined('X_DBCLASSNAME')) {
-                define('X_DBCLASSNAME', 'dbstuff');
-            }
-            $dalname = X_DBCLASSNAME;
-            $db = new $dalname();
+            $db = new mysql5Php5();
             $db->connect($dbhost, $dbuser, $dbpw, $dbname, $pconnect, false);
             
             if (@in_array(X_PREFIX . 'settings', $db->getTables())) {
