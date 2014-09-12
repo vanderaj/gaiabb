@@ -837,7 +837,7 @@ function doPanel($fdetails)
         $newgorder = formInt('newgorder');
         $newgstatus = $db->escape(decode_entities(formVar('newgstatus')));
         if ($newgname != $lang['textnewgroup']) {
-            $db->query("INSERT INTO " . X_PREFIX . "forums (type, name, status, moderator, displayorder, private, description, allowsmilies, allowbbcode, userlist, posts, threads, fup, postperm, allowimgcode, attachstatus, pollstatus, password, guestposting, minchars, attachnum, frules_status, frules, mt_status, mt_open, mt_close, closethreads, quickreply, subjectprefixes, mpnt, mpnp, mpfa, postcount) VALUES ('group', '$newgname', '$newgstatus', '', " . $newgorder . ", '', '', '', '', '', 0, 0, '', '', '', '', '', '', 'off', 0, $CONFIG[attach_num_default], 'off', '', 'off', '', '', 'off', 'on', '', 0, 0, '0, 'on')");
+            $db->query("INSERT INTO " . X_PREFIX . "forums (type, name, status, moderator, displayorder, private, description, allowsmilies, allowbbcode, userlist, posts, threads, fup, postperm, allowimgcode, attachstatus, pollstatus, password, guestposting, minchars, attachnum, frules_status, frules, mt_status, mt_open, mt_close, closethreads, quickreply, subjectprefixes, mpnt, mpnp, mpfa, postcount) VALUES ('group', '$newgname', '$newgstatus', '', " . $newgorder . ", '', '', '', '', '', 0, 0, '', '', '', '', '', '', 'off', 0, $CONFIG[attach_num_default], 'off', '', 'off', '', '', 'off', 'on', '', 0, 0, '0', 'on')");
         }
         
         $newsubname = $db->escape(decode_entities(formVar('newsubname')));
