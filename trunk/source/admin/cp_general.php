@@ -256,7 +256,7 @@ function viewPanel()
         'pm',
         'email'
     ), $notifycheck, false);
-    formHelper::formTextBox($lang['notify'], 5, 'usernamenotifynew', 50, $CONFIG['usernamenotify']);
+    formHelper::formTextBox2($lang['notify'], 5, 'usernamenotifynew', 50, $CONFIG['usernamenotify']);
     formHelper::formSelectOnOff($lang['textreggedonly'], 'regviewonlynew', $regonlyon, $regonlyoff);
     formHelper::formSelectOnOff($lang['texthidepriv'], 'hideprivatenew', $hideon, $hideoff);
     formHelper::formSelectOnOff($lang['emailverify'], 'emailchecknew', $echeckon, $echeckoff);

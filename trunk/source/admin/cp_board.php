@@ -126,6 +126,9 @@ function viewPanel()
 						<td class="title" colspan="2"><?php echo $lang['admin_main_settings1']?></td>
 					</tr>
     <?php
+    
+    // $setname, $setrows, $setvarname, $setcols, $setvalue
+    
     formHelper::formTextBox($lang['textsitename'], 'sitenamenew', $CONFIG['sitename'], 50);
     formHelper::formTextBox($lang['bbname'], 'bbnamenew', $CONFIG['bbname'], 50);
     formHelper::formTextBox($lang['textsiteurl'], 'siteurlnew', $CONFIG['siteurl'], 50);
@@ -136,7 +139,7 @@ function viewPanel()
     formHelper::formTextBox($lang['metatag_keywords'], 'metatag_keywordsnew', $CONFIG['metatag_keywords'], 50);
     formHelper::formTextBox($lang['metatag_description'], 'metatag_descriptionnew', $CONFIG['metatag_description'], 50);
     formHelper::formSelectOnOff($lang['textbstatus'], 'bbstatusnew', $onselect, $offselect);
-    formHelper::formTextBox($lang['textbboffreason'], 5, 'bboffreasonnew', 50, $CONFIG['bboffreason']);
+    formHelper::formTextBox2($lang['textbboffreason'], 5, 'bboffreasonnew', 50, $CONFIG['bboffreason']);
     formHelper::formSelectOnOff($lang['set_show_full_info'], 'show_full_infonew', $show_full_on, $show_full_off);
     formHelper::formSelectOnOff($lang['set_comment'], 'commentnew', $comment_on, $comment_off);
     formHelper::formSelectOnOff($lang['set_ipreg'], 'ipregnew', $ipreg_on, $ipreg_off);
@@ -148,7 +151,7 @@ function viewPanel()
     formHelper::formSelectOnOff($lang['pmwelcomestatus'], 'pmwelcomestatusnew', $pmwelcomestatuson, $pmwelcomestatusoff);
     formHelper::formTextBox($lang['pmwelcomefrom'], 'pmwelcomefromnew', $CONFIG['pmwelcomefrom'], 32);
     formHelper::formTextBox($lang['pmwelcomesubject'], 'pmwelcomesubjectnew', $CONFIG['pmwelcomesubject'], 32);
-    formHelper::formTextBox($lang['pmwelcomemessage'], 5, 'pmwelcomemessagenew', 50, $CONFIG['pmwelcomemessage']);
+    formHelper::formTextBox2($lang['pmwelcomemessage'], 5, 'pmwelcomemessagenew', 50, $CONFIG['pmwelcomemessage']);
     ?>
     <tr class="ctrtablerow" bgcolor="<?php echo $THEME['altbg2']?>">
 						<td colspan="2"><input class="submit" type="submit"
