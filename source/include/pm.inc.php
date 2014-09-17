@@ -34,6 +34,8 @@ if (! defined('IN_PROGRAM') && (defined('DEBUG') && DEBUG == false)) {
     exit('This file is not designed to be called directly');
 }
 
+require_once('mimetypes.inc.php');
+
 class pmDAO
 {
 
@@ -409,14 +411,14 @@ class pmModel
                     // create attachment icon if any
                     $attachicon = '';
                     if ($CONFIG['attachicon_status'] == 'on') {
-                        include ('include/mimetypes.inc.php');
+                        $attachicon = getMimeType($extension);
                     }
                     eval('$pmmessage .= "' . template('pm_attachmentimage') . '";');
                 } else {
                     // create attachment icon if any
                     $attachicon = '';
                     if ($CONFIG['attachicon_status'] == 'on') {
-                        include ('mimetypes.inc.php');
+                        $attachicon = getMimeType($extension);
                     }
                     eval('$pmmessage .= "' . template('pm_attachment') . '";');
                 }
