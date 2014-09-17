@@ -35,7 +35,7 @@ if (! defined('IN_PROGRAM') && (defined('DEBUG') && DEBUG == false)) {
 class thread
 {
 
-    function thread()
+    function __construct()
     {}
 
     function init()

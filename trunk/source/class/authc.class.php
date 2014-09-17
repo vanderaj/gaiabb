@@ -38,7 +38,6 @@ class AuthState
     private $state;
 
     public $gbbuid;
-
     public $gbbpw;
 
     function __construct()

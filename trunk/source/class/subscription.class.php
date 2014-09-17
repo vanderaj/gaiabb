@@ -39,7 +39,7 @@ class subscription
 
     public $dirty;
 
-    function subscription($tid = 0)
+    function __construct($tid = 0)
     {
         if ($tid === 0) {
             $this->dirty = false;
