@@ -41,24 +41,16 @@ if ((version_compare(phpversion(), "5.2.6")) < 0) {
 
 define('IN_PROGRAM', true);
 
-if (! defined('ROOT')) {
-    define('ROOT', './');
-}
-
-if (! defined('ROOTINC')) {
-    define('ROOTINC', './include/');
-}
-
-if (! defined('ROOTCLASS')) {
-    define('ROOTCLASS', './class/');
-}
+$smiliecache = array();
+$censorcache = array();
+$smiliesnum = 0;
+$wordsnum = 0;
 
 $mtime = explode(' ', microtime());
 $starttime = $mtime[1] + $mtime[0];
 $onlinetime = time();
 
 // Include files used by all users of header.php
-include ('include/global.inc.php');
 include ('include/constants.inc.php');
 include ('include/validate.inc.php');
 include ('include/functions.inc.php');
@@ -89,11 +81,11 @@ if (X_GZIP && $action != 'attachment') {
         }
 }
 
-if (! file_exists(ROOT . 'config.php')) {
+if (! file_exists('config.php')) {
     die('Error: Could not load configuration. Please try again.');
 }
 
-if (file_exists(ROOT . 'install/')) {
+if (file_exists('install/')) {
     die('Error: installer still available. Cannot proceed until it is deleted.');
 }
 
@@ -153,7 +145,7 @@ include ('db/mysql5php5.class.php');
 $oToken = new page_token();
 $oToken->init();
 
-$contactLink = ROOT . 'contact.php?token=' . $oToken->get_new_token() . '';
+$contactLink = 'contact.php?token=' . $oToken->get_new_token() . '';
 
 // initialize navigation
 nav();
@@ -330,7 +322,9 @@ if (isset($array['path'])) {
 
 // Initialize Authentication
 
-require_once (ROOTCLASS . 'authc.class.php');
+$lastvisit = $lastvisit2 = 0;
+
+require_once ('authc.class.php');
 
 $authState = new AuthState();
 $authC = new AuthC();
@@ -412,8 +406,8 @@ define('X_SMOD', $role['smod']);
 define('X_STAFF', $role['staff']);
 
 // Get the required language file
-if (! file_exists(ROOT . 'lang/' . $self['langfile'] . '.lang.php')) {
-    if (! file_exists(ROOT . 'lang/English.lang.php')) {
+if (! file_exists('lang/' . $self['langfile'] . '.lang.php')) {
+    if (! file_exists('lang/English.lang.php')) {
         die('Error: no languages available.');
     }
     $self['langfile'] = 'English';
@@ -436,26 +430,26 @@ $mailsys = new MailSys();
 // Checks for the possibility to register
 $reglink = '';
 if ($CONFIG['regstatus'] == 'on' && X_GUEST) {
-    $reglink = '- <a href="' . ROOT . 'register.php?action=coppa">' . $lang['textregister'] . '</a>';
+    $reglink = '- <a href="' . 'register.php?action=coppa">' . $lang['textregister'] . '</a>';
 }
 
 // Creates login/logout links
 if (X_MEMBER) {
-    $loginout = '<a href="' . ROOT . 'logout.php?token=' . $oToken->get_new_token() . '">' . $lang['textlogout'] . '</a>';
-    $usercp = '<a href="' . ROOT . 'usercp.php">' . $lang['textusercp'] . '</a>';
+    $loginout = '<a href="' . 'logout.php?token=' . $oToken->get_new_token() . '">' . $lang['textlogout'] . '</a>';
+    $usercp = '<a href="' . 'usercp.php">' . $lang['textusercp'] . '</a>';
     $onlineuser = $self['username'];
     $robotname = $cplink = $pmlink = $modcplink = '';
     if (! ($CONFIG['pmstatus'] == 'off' && isset($self['status']) && $self['status'] == 'Member')) {
-        $pmlink = '<a href="' . ROOT . 'pm.php">' . $lang['banpm'] . '</a> - ';
+        $pmlink = '<a href="' . 'pm.php">' . $lang['banpm'] . '</a> - ';
     }
     
     if (X_ADMIN) {
-        $cplink = ' - <a href="' . ROOT . 'admin/index.php">' . $lang['textcp'] . '</a>';
+        $cplink = ' - <a href="' . 'admin/index.php">' . $lang['textcp'] . '</a>';
     }
     
-    $notify = $lang['loggedin'] . ' <a href="' . ROOT . 'viewprofile.php?memberid=' . intval($self['uid']) . '"><strong>' . trim($self['username']) . '</strong></a> - [ ' . $loginout . ' - ' . $pmlink . '' . $usercp . '' . $modcplink . '' . $cplink . ' ]';
+    $notify = $lang['loggedin'] . ' <a href="' . 'viewprofile.php?memberid=' . intval($self['uid']) . '"><strong>' . trim($self['username']) . '</strong></a> - [ ' . $loginout . ' - ' . $pmlink . '' . $usercp . '' . $modcplink . '' . $cplink . ' ]';
 } else {
-    $loginout = '<a href="' . ROOT . 'login.php">' . $lang['textlogin'] . '</a>';
+    $loginout = '<a href="' . 'login.php">' . $lang['textlogin'] . '</a>';
     $onlineuser = 'xguest123';
     $self['status'] = '';
     $notify = '' . $lang['notloggedin'] . ' [ ' . $loginout . ' ' . $reglink . ' ]';
@@ -692,9 +686,9 @@ if (strlen($THEME['boardimg'] = trim($THEME['boardimg'])) > 0) {
     if (! isset($l['scheme']) || ! isset($l['host'])) {
         $THEME['boardimg'] = $THEME['imgdir'] . '/' . $THEME['boardimg'];
     }
-    $logo = '<a href="' . ROOT . 'index.php"><img src="' . $THEME['boardimg'] . '" alt="' . $lang['altboardlogo'] . '" title="' . $lang['altboardlogo'] . '" border="0px" /></a>';
+    $logo = '<a href="' . 'index.php"><img src="' . $THEME['boardimg'] . '" alt="' . $lang['altboardlogo'] . '" title="' . $lang['altboardlogo'] . '" border="0px" /></a>';
 } else {
-    $logo = '<a href="' . ROOT . 'index.php">' . stripslashes($CONFIG['bbname']) . '</a>';
+    $logo = '<a href="' . 'index.php">' . stripslashes($CONFIG['bbname']) . '</a>';
 }
 
 // Font stuff...
@@ -723,27 +717,27 @@ if (isset($CONFIG['siteurl']) && ! empty($CONFIG['siteurl'])) {
 
 // Search-link
 if (X_MEMBER && $CONFIG['searchstatus'] == 'on') {
-    $links[] = '<img src="' . $THEME['imgdir'] . '/search.gif" alt="' . $lang['altsearch'] . '" title="' . $lang['altsearch'] . '" border="0px" />&nbsp;<a href="' . ROOT . 'search.php"><font class="navtd">' . $lang['textsearch'] . '</font></a>';
+    $links[] = '<img src="' . $THEME['imgdir'] . '/search.gif" alt="' . $lang['altsearch'] . '" title="' . $lang['altsearch'] . '" border="0px" />&nbsp;<a href="' . 'search.php"><font class="navtd">' . $lang['textsearch'] . '</font></a>';
 }
 
 // Faq-link
 if ($CONFIG['faqstatus'] == 'on') {
-    $links[] = '<img src="' . $THEME['imgdir'] . '/faq.gif" alt="' . $lang['altfaq'] . '" title="' . $lang['altfaq'] . '" border="0px" />&nbsp;<a href="' . ROOT . 'faq.php"><font class="navtd">' . $lang['textfaq'] . '</font></a>';
+    $links[] = '<img src="' . $THEME['imgdir'] . '/faq.gif" alt="' . $lang['altfaq'] . '" title="' . $lang['altfaq'] . '" border="0px" />&nbsp;<a href="' . 'faq.php"><font class="navtd">' . $lang['textfaq'] . '</font></a>';
 }
 
 // Member List-link
 if (X_MEMBER && $CONFIG['memliststatus'] == 'on') {
-    $links[] = '<img src="' . $THEME['imgdir'] . '/members_list.gif" alt="' . $lang['altmemberlist'] . '" title="' . $lang['altmemberlist'] . '" border="0px" />&nbsp;<a href="' . ROOT . 'memberlist.php?action=list"><font class="navtd">' . $lang['textmemberlist'] . '</font></a>';
+    $links[] = '<img src="' . $THEME['imgdir'] . '/members_list.gif" alt="' . $lang['altmemberlist'] . '" title="' . $lang['altmemberlist'] . '" border="0px" />&nbsp;<a href="' . 'memberlist.php?action=list"><font class="navtd">' . $lang['textmemberlist'] . '</font></a>';
 }
 
 // Topic Activity-link
 if ($CONFIG['topicactivity_status'] == 'on') {
-    $links[] = '<img src="' . $THEME['imgdir'] . '/todays_posts.gif" alt="' . $lang['topicactivityalt'] . '" title="' . $lang['topicactivityalt'] . '" border="0px" />&nbsp;<a href="' . ROOT . 'activity.php"><font class="navtd">' . $lang['topicactivity'] . '</font></a>';
+    $links[] = '<img src="' . $THEME['imgdir'] . '/todays_posts.gif" alt="' . $lang['topicactivityalt'] . '" title="' . $lang['topicactivityalt'] . '" border="0px" />&nbsp;<a href="' . 'activity.php"><font class="navtd">' . $lang['topicactivity'] . '</font></a>';
 }
 
 // Stats-link
 if ($CONFIG['stats'] == 'on') {
-    $links[] = '<img src="' . $THEME['imgdir'] . '/stats.gif" alt="' . $lang['altstats'] . '" title="' . $lang['altstats'] . '" border="0px" />&nbsp;<a href="' . ROOT . 'stats.php"><font class="navtd">' . $lang['navstats'] . '</font></a>';
+    $links[] = '<img src="' . $THEME['imgdir'] . '/stats.gif" alt="' . $lang['altstats'] . '" title="' . $lang['altstats'] . '" border="0px" />&nbsp;<a href="' . 'stats.php"><font class="navtd">' . $lang['navstats'] . '</font></a>';
 }
 
 // Contact Us-link
@@ -753,7 +747,7 @@ if ($CONFIG['contactus'] == 'on') {
 
 // Board Rules-link
 if ($CONFIG['bbrules'] == 'on') {
-    $links[] = '<img src="' . $THEME['imgdir'] . '/bbrules.gif" alt="' . $lang['altrules'] . '" title="' . $lang['altrules'] . '" border="0px" />&nbsp;<a href="' . ROOT . 'faq.php?page=forumrules"><font class="navtd">' . $lang['textbbrules'] . '</font></a>';
+    $links[] = '<img src="' . $THEME['imgdir'] . '/bbrules.gif" alt="' . $lang['altrules'] . '" title="' . $lang['altrules'] . '" border="0px" />&nbsp;<a href="' . 'faq.php?page=forumrules"><font class="navtd">' . $lang['textbbrules'] . '</font></a>';
 }
 
 $links = implode('&nbsp;&nbsp;', $links);
@@ -798,9 +792,9 @@ if ($CONFIG['bbstatus'] == 'off' && ! (X_ADMIN) && false === strpos($url, "login
 if ($CONFIG['regviewonly'] == 'on') {
     if (X_GUEST && $action != 'reg' && $action != 'coppa' && $action != 'captcha' && false === strpos($url, "lostpw.php") && false === strpos($url, "login.php") && false === strpos($url, "logout.php")) {
         if ($CONFIG['coppa'] == 'on') {
-            $message = $lang['reggedonly'] . ' <a href="' . ROOT . 'register.php?action=coppa">' . $lang['textregister'] . '</a> ' . $lang['textor'] . ' <a href="' . ROOT . 'login.php">' . $lang['textlogin'] . '</a>';
+            $message = $lang['reggedonly'] . ' <a href="' . 'register.php?action=coppa">' . $lang['textregister'] . '</a> ' . $lang['textor'] . ' <a href="' . 'login.php">' . $lang['textlogin'] . '</a>';
         } else {
-            $message = $lang['reggedonly'] . ' <a href="' . ROOT . 'register.php?action=reg">' . $lang['textregister'] . '</a> ' . $lang['textor'] . ' <a href="login.php">' . $lang['textlogin'] . '</a>';
+            $message = $lang['reggedonly'] . ' <a href="' . 'register.php?action=reg">' . $lang['textregister'] . '</a> ' . $lang['textor'] . ' <a href="login.php">' . $lang['textlogin'] . '</a>';
         }
         eval('$css = "' . template('css') . '";');
         $shadow = shadowfx();
@@ -848,7 +842,7 @@ if (X_MEMBER && $newpmmsg === false && ! ($CONFIG['pmstatus'] == 'off' && isset(
     $newpmnum = $db->result($qpm, 0);
     $db->free_result($qpm);
     if ($newpmnum > 0) {
-        $newpmmsg = '<a href="' . ROOT . 'pm.php">' . $lang['newpm1'] . ' <strong>' . $newpmnum . '</strong> ' . $lang['newpm2'] . '</a>';
+        $newpmmsg = '<a href="' . 'pm.php">' . $lang['newpm1'] . ' <strong>' . $newpmnum . '</strong> ' . $lang['newpm2'] . '</a>';
     }
     $config_cache->setData('newpmmsg', base64_encode($newpmmsg));
 } else {

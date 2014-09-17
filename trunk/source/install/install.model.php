@@ -89,12 +89,12 @@ function install_forum($prgbar)
     $dbuser = '';
     $dbpw = '';
     
-    if (! file_exists(ROOT . 'config.php')) {
+    if (! file_exists('config.php')) {
         setCol($prgbar, '#ff0000');
         print_error('Configuration file', 'Please ensure that config.php has been successfully written prior to running this install.');
     }
     
-    require ROOT . 'config.php';
+    require 'config.php';
     
     if ($dbname == 'DBNAME') {
         setCol($prgbar, '#ff0000');
@@ -125,7 +125,7 @@ function install_forum($prgbar)
             )) . "</pre>";
         }
         
-        print_error('Database connection', 'The database file ' . ROOT . 'db/' . $database . '.php does not exist. Please try again');
+        print_error('Database connection', 'The database file ' . 'db/' . $database . '.php does not exist. Please try again');
     }
     require_once (ROOT . "db/$database.php");
     

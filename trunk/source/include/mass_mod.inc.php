@@ -67,6 +67,123 @@ if ($cmassmod) {
 $mod = new mod();
 $mod->statuscheck($fid);
 
+function doEmptySubmit($fid, $tids) {
+    global $db, $mod, $self;
+    
+    $leavealone = array();
+    $tids = explode(', ', $tids);
+    
+    foreach ($tids as $post) {
+        $query = $db->query("SELECT pid, author FROM " . X_PREFIX . "posts WHERE tid = '$post' ORDER BY pid ASC LIMIT 1");
+        $posts = $db->fetch_array($query);
+        $db->free_result($query);
+        $leavealone[] = $posts['pid'];
+    }
+    
+    $tids = implode(', ', $tids);
+    $pids = implode(', ', $leavealone);
+    
+    $db->query("DELETE FROM " . X_PREFIX . "posts WHERE tid IN ($tids) AND pid NOT IN ($pids)");
+    
+    $tids = explode(', ', $tids);
+    for ($i = 0; $i < count($tids); $i ++) {
+        updatethreadcount($tids[$i]);
+    }
+    
+    updateforumcount($fid);
+    
+    foreach ($tids as $tid) {
+        $mod->log($self['username'], 'empty', $fid, $tid);
+    }
+}
+
+function doDeleteSubmit($fid, $tids) {
+    global $db, $action, $self, $mod;
+    
+    $member = array();
+    $query = $db->query("SELECT * FROM " . X_PREFIX . "posts WHERE tid IN ($tids)");
+    while (($result = $db->fetch_array($query)) != false) {
+        $db->query("UPDATE " . X_PREFIX . "members SET postnum = postnum-1 WHERE username = '$result[author]'");
+    }
+    $db->free_result($query);
+    
+    $mod_tids = explode(', ', $tids);
+    foreach ($mod_tids as $tid) {
+        $query = $db->query("SELECT subject FROM " . X_PREFIX . "threads WHERE tid = '$tid'");
+        $subject = $db->result($query, 0);
+        $db->free_result($query);
+        $mod->log($self['username'], $action . ": " . $subject, $fid, $tid);
+    }
+    
+    $db->query("DELETE FROM " . X_PREFIX . "threads WHERE tid IN ($tids)");
+    $db->query("DELETE FROM " . X_PREFIX . "lastposts WHERE tid IN ($tids)");
+    $db->query("DELETE FROM " . X_PREFIX . "posts WHERE tid IN ($tids)");
+    $db->query("DELETE FROM " . X_PREFIX . "attachments WHERE tid IN ($tids)");
+    $db->query("DELETE FROM " . X_PREFIX . "favorites WHERE tid IN ($tids)");
+    $db->query("DELETE FROM " . X_PREFIX . "subscriptions WHERE tid IN ($tids)");
+    
+    foreach ($mod_tids as $tid) {
+        $db->query("DELETE FROM " . X_PREFIX . "threads WHERE closed='moved|$tid'");
+    }
+}
+
+function doTopSubmit($fid, $tids) {
+    global $db, $self, $mod; 
+    
+    $top = array();
+    $untop = array();
+    $query = $db->query("SELECT tid, topped FROM " . X_PREFIX . "threads WHERE fid = '$fid' AND tid IN ($tids)");
+    while (($thread = $db->fetch_array($query)) != false) {
+        if ($thread['topped'] == 1) {
+            $untop[] = $thread['tid'];
+            $act = 'untop';
+        } else {
+            $top[] = $thread['tid'];
+            $act = 'top';
+        }
+        $mod->log($self['username'], $act, $fid, $thread['tid']);
+    }
+    
+    if (count($untop) != 0) {
+        $untop = implode(', ', $untop);
+        $db->query("UPDATE " . X_PREFIX . "threads SET topped = '0' WHERE tid IN ($untop)");
+    }
+    
+    if (count($top) != 0) {
+        $top = implode(', ', $top);
+        $db->query("UPDATE " . X_PREFIX . "threads SET topped = '1' WHERE tid IN ($top)");
+    }
+}
+
+function doCloseSubmit($fid, $tids) {
+    global $db, $mod, $self;
+    
+    $close = array();
+    $open = array();
+    
+    $query = $db->query("SELECT tid, closed FROM " . X_PREFIX . "threads WHERE fid = '$fid' AND tid IN ($tids)");
+    while (($thread = $db->fetch_array($query)) != false) {
+        if ($thread['closed'] == 'yes') {
+            $open[] = $thread['tid'];
+            $act = 'open';
+        } else {
+            $close[] = $thread['tid'];
+            $act = 'close';
+        }
+        $mod->log($self['username'], $act, $fid, $thread['tid']);
+    }
+    
+    if (count($open) != 0) {
+        $open = implode(', ', $open);
+        $db->query("UPDATE " . X_PREFIX . "threads SET closed = '' WHERE tid IN ($open)");
+    }
+    
+    if (count($close) != 0) {
+        $close = implode(', ', $close);
+        $db->query("UPDATE " . X_PREFIX . "threads SET closed = 'yes' WHERE tid IN ($close)");
+    }
+}
+
 switch ($action) {
     case 'close':
         if (noSubmit('closesubmit')) {
@@ -77,30 +194,7 @@ switch ($action) {
         }
         
         if (onSubmit('closesubmit')) {
-            $close = array();
-            $open = array();
-            
-            $query = $db->query("SELECT tid, closed FROM " . X_PREFIX . "threads WHERE fid = '$fid' AND tid IN ($tids)");
-            while (($thread = $db->fetch_array($query)) != false) {
-                if ($thread['closed'] == 'yes') {
-                    $open[] = $thread['tid'];
-                    $act = 'open';
-                } else {
-                    $close[] = $thread['tid'];
-                    $act = 'close';
-                }
-                $mod->log($self['username'], $act, $fid, $thread['tid']);
-            }
-            
-            if (count($open) != 0) {
-                $open = implode(', ', $open);
-                $db->query("UPDATE " . X_PREFIX . "threads SET closed = '' WHERE tid IN ($open)");
-            }
-            
-            if (count($close) != 0) {
-                $close = implode(', ', $close);
-                $db->query("UPDATE " . X_PREFIX . "threads SET closed = 'yes' WHERE tid IN ($close)");
-            }
+            doCloseSubmit($fid, $tids);
         }
         break;
     case 'top':
@@ -112,29 +206,7 @@ switch ($action) {
         }
         
         if (onSubmit('topsubmit')) {
-            $top = array();
-            $untop = array();
-            $query = $db->query("SELECT tid, topped FROM " . X_PREFIX . "threads WHERE fid = '$fid' AND tid IN ($tids)");
-            while (($thread = $db->fetch_array($query)) != false) {
-                if ($thread['topped'] == 1) {
-                    $untop[] = $thread['tid'];
-                    $act = 'untop';
-                } else {
-                    $top[] = $thread['tid'];
-                    $act = 'top';
-                }
-                $mod->log($self['username'], $act, $fid, $thread['tid']);
-            }
-            
-            if (count($untop) != 0) {
-                $untop = implode(', ', $untop);
-                $db->query("UPDATE " . X_PREFIX . "threads SET topped = '0' WHERE tid IN ($untop)");
-            }
-            
-            if (count($top) != 0) {
-                $top = implode(', ', $top);
-                $db->query("UPDATE " . X_PREFIX . "threads SET topped = '1' WHERE tid IN ($top)");
-            }
+            doTopSubmit($fid, $tids);
         }
         break;
     case 'bump':
@@ -253,32 +325,7 @@ switch ($action) {
         }
         
         if (onSubmit('deletesubmit')) {
-            $member = array();
-            $query = $db->query("SELECT * FROM " . X_PREFIX . "posts WHERE tid IN ($tids)");
-            while (($result = $db->fetch_array($query)) != false) {
-                $db->query("UPDATE " . X_PREFIX . "members SET postnum = postnum-1 WHERE username = '$result[author]'");
-            }
-            $db->free_result($query);
-            
-            $mod_tids = explode(', ', $tids);
-            foreach ($mod_tids as $tid) {
-                $query = $db->query("SELECT subject FROM " . X_PREFIX . "threads WHERE tid = '$tid'");
-                $subject = $db->result($query, 0);
-                $db->free_result($query);
-                $mod->log($self['username'], $action . ": " . $subject, $fid, $tid);
-            }
-            
-            $db->query("DELETE FROM " . X_PREFIX . "threads WHERE tid IN ($tids)");
-            $db->query("DELETE FROM " . X_PREFIX . "lastposts WHERE tid IN ($tids)");
-            $db->query("DELETE FROM " . X_PREFIX . "posts WHERE tid IN ($tids)");
-            $db->query("DELETE FROM " . X_PREFIX . "attachments WHERE tid IN ($tids)");
-            $db->query("DELETE FROM " . X_PREFIX . "favorites WHERE tid IN ($tids)");
-            $db->query("DELETE FROM " . X_PREFIX . "subscriptions WHERE tid IN ($tids)");
-            
-            foreach ($mod_tids as $tid) {
-                $db->query("DELETE FROM " . X_PREFIX . "threads WHERE closed='moved|$tid'");
-            }
-            
+            doDeleteSubmit($fid, $tids);            
             updateforumcount($fid);
         }
         break;
@@ -291,31 +338,7 @@ switch ($action) {
         }
         
         if (onSubmit('emptysubmit')) {
-            $leavealone = array();
-            $tids = explode(', ', $tids);
-            
-            foreach ($tids as $post) {
-                $query = $db->query("SELECT pid, author FROM " . X_PREFIX . "posts WHERE tid = '$post' ORDER BY pid ASC LIMIT 1");
-                $posts = $db->fetch_array($query);
-                $db->free_result($query);
-                $leavealone[] = $posts['pid'];
-            }
-            
-            $tids = implode(', ', $tids);
-            $pids = implode(', ', $leavealone);
-            
-            $db->query("DELETE FROM " . X_PREFIX . "posts WHERE tid IN ($tids) AND pid NOT IN ($pids)");
-            
-            $tids = explode(', ', $tids);
-            for ($i = 0; $i < count($tids); $i ++) {
-                updatethreadcount($tids[$i]);
-            }
-            
-            updateforumcount($fid);
-            
-            foreach ($tids as $tid) {
-                $mod->log($self['username'], 'empty', $fid, $tid);
-            }
+            doEmptySubmit($fid, $tids);
         }
         break;
     case 'move':
@@ -328,6 +351,7 @@ switch ($action) {
         }
         
         if (onSubmit('movesubmit')) {
+            $type = formVar('type');
             if ($type == 'redirect') {
                 $query = $db->query("SELECT * FROM " . X_PREFIX . "threads WHERE tid IN ($tids)");
                 while (($info = $db->fetch_array($query)) != false) {

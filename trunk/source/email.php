@@ -29,11 +29,11 @@
  *
  **/
 
-// Safe to use without global.inc.php
-define('DEBUG_REG', true);
-define('ROOT', './');
 
-require_once (ROOT . 'header.php');
+
+
+
+require_once ('header.php');
 
 loadtpl('email_member');
 

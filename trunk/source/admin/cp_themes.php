@@ -33,9 +33,9 @@ define('ROOTINC', '../include/');
 define('ROOTCLASS', '../class/');
 define('ROOTHELPER', '../helper/');
 
-require_once (ROOT . 'header.php');
-require_once (ROOTINC . 'admincp.inc.php');
-require_once (ROOTHELPER . 'formHelper.php');
+require_once ('../header.php');
+require_once ('../include/admincp.inc.php');
+require_once ('../helper/formHelper.php');
 
 loadtpl('cp_header', 'cp_footer', 'cp_message', 'cp_error');
 

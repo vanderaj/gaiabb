@@ -578,7 +578,7 @@ class mod
         
         $db->query("INSERT INTO " . X_PREFIX . "threads ($columns) VALUES($values)") or die($db->error());
         $newtid = $db->insert_id();
-        $db->query("INSERT INTO " . X_PREFIX . "lastposts (tid, uid, username, dateline, pid) SELECT '$ntid', uid, username, dateline, pid FROM " . X_PREFIX . "lastposts WHERE tid = '$tid'");
+        $db->query("INSERT INTO " . X_PREFIX . "lastposts (tid, uid, username, dateline, pid) SELECT '$newtid', uid, username, dateline, pid FROM " . X_PREFIX . "lastposts WHERE tid = '$tid'");
         
         $cols = array();
         $vals = array();

@@ -103,7 +103,7 @@ function get_config()
 function create_config($config)
 {
     $retval = false;
-    $handle = @fopen(ROOT . 'config.php', "w");
+    $handle = @fopen('config.php', "w");
     if (! $handle) {
         return false;
     }
@@ -116,7 +116,7 @@ function create_config($config)
     fclose($handle);
     
     // set the file read-only and not world readable (dangerous on shared hosts)
-    @chmod(ROOT . 'config.php', 0440);
+    @chmod('config.php', 0440);
     return $retval;
 }
 
@@ -366,7 +366,6 @@ function check_files()
         'include/captcha/mpl3.gdf',
         'include/constants.inc.php',
         'include/functions.inc.php',
-        'include/global.inc.php',
         'include/index.html',
         'include/mass_mod.inc.php',
         'include/mimetypes.inc.php',

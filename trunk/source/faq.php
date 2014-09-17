@@ -28,11 +28,11 @@
  *    along with GaiaBB.  If not, see <http://www.gnu.org/licenses/>.
  *
  **/
-define('DEBUG_REG', true);
-define('CACHECONTROL', 'public');
-define('ROOT', './');
 
-require_once (ROOT . 'header.php');
+define('CACHECONTROL', 'public');
+
+
+require_once ('header.php');
 
 loadtpl('error_nologinsession');
 

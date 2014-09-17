@@ -29,12 +29,12 @@
  *
  **/
 
-// Safe to use without global.inc.php
-define('DEBUG_REG', true);
-define('ROOT', './');
 
-require_once (ROOT . 'header.php');
-require_once (ROOTINC . 'topicadmin.inc.php');
+
+
+
+require_once ('header.php');
+require_once ('topicadmin.inc.php');
 
 $kill = false;
 

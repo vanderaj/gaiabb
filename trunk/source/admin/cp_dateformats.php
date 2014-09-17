@@ -28,13 +28,13 @@
  *    along with GaiaBB.  If not, see <http://www.gnu.org/licenses/>.
  *
  **/
-define('DEBUG_REG', true);
+
 define('ROOT', '../');
 define('ROOTINC', '../include/');
 define('ROOTCLASS', '../class/');
 
-require_once (ROOT . 'header.php');
-require_once (ROOTINC . 'admincp.inc.php');
+require_once ('../header.php');
+require_once ('../include/admincp.inc.php');
 
 loadtpl('cp_header', 'cp_footer', 'cp_message', 'cp_error');
 
@@ -134,6 +134,8 @@ function doPanel($querydate)
         $db->query("UPDATE " . X_PREFIX . "dateformats SET dateformat='$find' WHERE did='$dformat[did]'");
     }
     $db->free_result($querydate);
+    
+    $newfind = $db->escape(formVar('newfind'));
     if (isset($newfind) && $newfind != '') {
         $db->query("INSERT INTO " . X_PREFIX . "dateformats (`dateformat`) VALUES ('$newfind')");
     }

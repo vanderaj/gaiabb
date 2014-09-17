@@ -474,7 +474,7 @@ function view_default_index()
  */
 function view_header($title = "GaiaBB Installer", $path)
 {
-    $logo = ROOT . 'images/logo.png';
+    $logo = 'images/logo.png';
     $installnavimg = $upgradenavimg = $repairnavimg = $convertnavimg = ROOT . "images/problue/home.gif";
     $navtext = '';
     switch ($path) {

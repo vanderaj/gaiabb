@@ -787,10 +787,10 @@ class mysql5Php5
      */
     function view_header($title = "Data Abstraction Layer")
     {
-        $logo = ROOT . 'images/prored/logo.png';
+        $logo = 'images/prored/logo.png';
         $navtext = "Data Abstraction Layer";
-        $css = ROOT . 'images/prored/style.css';
-        $imgpath = ROOT . 'images/prored/';
+        $css = 'images/prored/style.css';
+        $imgpath = 'images/prored/';
         ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
             "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">

@@ -92,8 +92,8 @@ class pmModel
             $attachment = addslashes(fread(fopen($file['tmp_name'], 'rb'), $filesize));
             $filename = checkInput($file['name']);
             $filetype = checkInput($file['type']);
-            $extention = strtolower(substr(strrchr($file['name'], '.'), 1));
-            if ($extention == 'jpg' || $extention == 'jpeg' || $extention == 'gif' || $extention == 'png' || $extention == 'bmp') {
+            $extension = strtolower(substr(strrchr($file['name'], '.'), 1));
+            if ($extension == 'jpg' || $extension == 'jpeg' || $extension == 'gif' || $extension == 'png' || $extension == 'bmp') {
                 $exsize = getimagesize($file['tmp_name']);
                 $fileheight = $exsize[1];
                 $filewidth = $exsize[0];
@@ -158,7 +158,7 @@ class pmModel
                 if ($rcpt['emailonpm'] == 'yes' && $rcpt['status'] != 'Banned') {
                     // Force a langswitch (1)
                     $langfile = langswitch('no', $thislangfile);
-                    include (ROOT . 'lang/' . $langfile . '.lang.php');
+                    include ('lang/' . $langfile . '.lang.php');
                     
                     $pmurl = $CONFIG['boardurl'] . 'pm.php';
                     
@@ -182,7 +182,7 @@ class pmModel
                     
                     // Force a revert langswitch (1)
                     $langfile = langswitch('yes', '');
-                    include (ROOT . 'lang/' . $langfile . '.lang.php');
+                    include ('lang/' . $langfile . '.lang.php');
                 }
             } else {
                 $errors = '<br />' . $lang['pmblocked'];
@@ -386,8 +386,8 @@ class pmModel
                         }
                 
                 $pm['filename'] = htmlspecialchars($pm['filename']);
-                $extention = strtolower(substr(strrchr($pm['filename'], '.'), 1));
-                if ($CONFIG['attachimgpost'] == 'on' && ($extention == 'jpg' || $extention == 'jpeg' || $extention == 'gif' || $extention == 'png' || $extention == 'bmp')) {
+                $extension = strtolower(substr(strrchr($pm['filename'], '.'), 1));
+                if ($CONFIG['attachimgpost'] == 'on' && ($extension == 'jpg' || $extension == 'jpeg' || $extension == 'gif' || $extension == 'png' || $extension == 'bmp')) {
                     if ($pm['fileheight'] != '' && $pm['filewidth'] != '') {
                         $CONFIG['max_attheight'] = (int) $CONFIG['max_attheight'];
                         $CONFIG['max_attwidth'] = (int) $CONFIG['max_attwidth'];
@@ -409,14 +409,14 @@ class pmModel
                     // create attachment icon if any
                     $attachicon = '';
                     if ($CONFIG['attachicon_status'] == 'on') {
-                        include (ROOT . 'include/mimetypes.inc.php');
+                        include ('include/mimetypes.inc.php');
                     }
                     eval('$pmmessage .= "' . template('pm_attachmentimage') . '";');
                 } else {
                     // create attachment icon if any
                     $attachicon = '';
                     if ($CONFIG['attachicon_status'] == 'on') {
-                        include (ROOTINC . 'mimetypes.inc.php');
+                        include ('mimetypes.inc.php');
                     }
                     eval('$pmmessage .= "' . template('pm_attachment') . '";');
                 }
@@ -881,7 +881,7 @@ class pmModel
 
     function viewFolderList()
     {
-        global $db, $self, $lang, $CONFIG, $THEME;
+        global $db, $self, $lang, $CONFIG, $THEME, $pmid;
         global $folderlist, $folders, $farray, $shadow, $shadow2;
         
         if (isset($_SESSION['folder'])) {

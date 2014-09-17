@@ -28,11 +28,11 @@
  *    along with GaiaBB.  If not, see <http://www.gnu.org/licenses/>.
  *
  **/
-// Safe to use without global.inc.php
-define('DEBUG_REG', true);
-define('ROOT', './');
 
-require_once (ROOT . 'header.php');
+
+
+
+require_once ('header.php');
 
 loadtpl('popup_footer', 'popup_header', 'smilies', 'functions_smilieinsert', 'functions_smilieinsert_smilie');
 
@@ -48,7 +48,7 @@ if (X_GUEST) {
     error($lang['textnoaction']);
 }
 
-$header = '';
+$css = $footer = $header = $misc = '';
 eval('$css = "' . template('css') . '";');
 eval('$header = "' . template('popup_header') . '";');
 eval('$footer = "' . template('popup_footer') . '";');

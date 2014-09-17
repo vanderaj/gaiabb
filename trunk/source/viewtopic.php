@@ -32,13 +32,10 @@ if (isset($GET['action']) && $_GET['action'] == 'attachment') {
     define('CACHECONTROL', 'IMAGE');
 }
 
-define('DEBUG_REG', true);
-define('ROOT', './');
-
-require_once (ROOT . 'header.php');
-require_once (ROOTCLASS . 'attachments.class.php');
-require_once (ROOTCLASS . 'thread.class.php');
-require_once (ROOTINC . 'theme.inc.php');
+require_once ('header.php');
+require_once ('class/attachments.class.php');
+require_once ('thread.class.php');
+require_once ('theme.inc.php');
 
 validatePpp();
 

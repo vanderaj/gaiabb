@@ -35,7 +35,7 @@ if (! defined('IN_PROGRAM') && (defined('DEBUG') && DEBUG == false)) {
 }
 
 // create action per extension
-switch ($extention) {
+switch ($extension) {
     case 'zip':
     case 'rar':
     case 'tar':

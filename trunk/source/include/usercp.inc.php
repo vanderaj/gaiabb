@@ -38,7 +38,7 @@ if (! defined('ROOTCLASS')) {
     define('ROOTCLASS', '../class/');
 }
 
-require_once (ROOTCLASS . 'member.class.php');
+require_once ('member.class.php');
 
 function makenav($current)
 {

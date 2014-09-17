@@ -32,8 +32,8 @@ define('ROOT', '../');
 define('ROOTINC', '../include/');
 define('ROOTCLASS', '../class/');
 
-require_once (ROOT . 'header.php');
-require_once (ROOTINC . 'admincp.inc.php');
+require_once ('../header.php');
+require_once ('../include/admincp.inc.php');
 
 loadtpl('cp_header', 'cp_footer', 'cp_message', 'cp_error');
 
@@ -261,7 +261,8 @@ if ($action == 'templates') {
     }
     
     if (onSubmit('editsubmit')) {
-        $templatenew = addslashes(trim($templatenew));
+        $templatenew = $db->escape(formVar('templatenew'));
+        $namenew = $db->escape(formVar('namenew'));
         if ($tid == 'new') {
             if (empty($namenew)) {
                 cp_error($lang['templateempty'], false, '', '</td></tr></table>');
@@ -371,6 +372,7 @@ if ($action == 'templates') {
     }
     
     if (onSubmit('renamesubmit') && noSubmit('rename')) {
+        $new_name = $db->escape(formVar('new_name'));
         $check_newname = $db->query("SELECT name FROM " . X_PREFIX . "templates WHERE name = '$new_name'");
         if ($check_newname && $db->num_rows($check_newname) != 0) {
             cp_error($lang['templateexists'], false, '', '</td></tr></table>');
@@ -500,6 +502,7 @@ if ($action == 'templates') {
     }
     
     if (onSubmit('new')) {
+        $newtemplatename = $db->escape(formVar('newtemplatename'));
         ?>
 <form method="post"
 	action="cp_templates.php?action=templates&amp;tid=new">

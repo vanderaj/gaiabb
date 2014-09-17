@@ -36,13 +36,13 @@ if (! defined('ROOTCLASS')) {
     define('ROOTCLASS', '../class/');
 }
 
-require_once (ROOTCLASS . 'attachments.class.php');
-require_once (ROOTCLASS . 'forum.class.php');
-require_once (ROOTCLASS . 'thread.class.php');
-require_once (ROOTCLASS . 'post.class.php');
-require_once (ROOTCLASS . 'favorite.class.php');
-require_once (ROOTCLASS . 'subscription.class.php');
-require_once (ROOTCLASS . 'pm.class.php');
+require_once ('attachments.class.php');
+require_once ('forum.class.php');
+require_once ('thread.class.php');
+require_once ('post.class.php');
+require_once ('favorite.class.php');
+require_once ('subscription.class.php');
+require_once ('pm.class.php');
 
 /**
  * This object creates a nice wrapper for dealing with members.
