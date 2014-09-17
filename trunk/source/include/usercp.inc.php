@@ -449,7 +449,7 @@ class userObj
         global $timezone19, $timezone20, $timezone21, $timezone22, $timezone23, $timezone24;
         global $timezone25, $timezone26, $timezone27, $timezone28, $timezone29, $timezone30;
         global $timezone31, $timezone32, $timezone33;
-        global $ubblva;
+        global $gbblva;
         
         $member = $self;
         
@@ -556,7 +556,7 @@ class userObj
         $querydf = $db->query("SELECT * FROM " . X_PREFIX . "dateformats");
         while (($dformats = $db->fetch_array($querydf)) != false) {
             if ($CONFIG['predformat'] == 'on') {
-                $example = gmdate(formatDate($dformats['dateformat']), $ubblva + ($self['timeoffset'] * 3600) + $self['daylightsavings']);
+                $example = gmdate(formatDate($dformats['dateformat']), $gbblva + ($self['timeoffset'] * 3600) + $self['daylightsavings']);
             } else {
                 $example = $dformats['dateformat'];
             }

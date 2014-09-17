@@ -101,8 +101,8 @@ define('X_SHORTEN_HARD', 2);
 
 $cookiepath = '';
 $cookiedomain = '';
-$ubblva = 0;
-$ubblvb = 0;
+$gbblva = 0;
+$gbblvb = 0;
 $bbcodescript = '';
 $attachscript = '';
 $navigation = '';

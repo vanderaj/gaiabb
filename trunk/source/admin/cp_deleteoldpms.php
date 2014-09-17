@@ -62,7 +62,7 @@ smcwcache();
 function viewPanel()
 {
     global $THEME, $lang, $shadow2, $oToken, $db, $CONFIG, $selHTML;
-    global $self, $onlinetime, $ubblva;
+    global $self, $onlinetime, $gbblva;
     
     ?>
 <form method="post" action="cp_deleteoldpms.php">

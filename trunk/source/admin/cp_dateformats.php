@@ -60,7 +60,7 @@ smcwcache();
 function viewPanel($queryd)
 {
     global $THEME, $lang, $shadow2, $oToken, $db;
-    global $ubblva, $self;
+    global $gbblva, $self;
     ?>
 <form method="post" action="cp_dateformats.php">
 	<input type="hidden" name="token"
@@ -87,7 +87,7 @@ function viewPanel($queryd)
 						<td class="tablerow"><input type="text" size="20"
 							name="find<?php echo $dformat['did']?>"
 							value="<?php echo $dformat['dateformat']?>" /></td>
-						<td class="tablerow"><?php echo gmdate(formatDate($dformat['dateformat']), $ubblva + ($self['timeoffset'] * 3600) + $self['daylightsavings'])?></td>
+						<td class="tablerow"><?php echo gmdate(formatDate($dformat['dateformat']), $gbblva + ($self['timeoffset'] * 3600) + $self['daylightsavings'])?></td>
 					</tr>
             <?php
         }

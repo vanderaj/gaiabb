@@ -39,7 +39,7 @@ loadtpl('register', 'register_coppa', 'register_password', 'register_rules', 're
 
 function viewRegister()
 {
-    global $CONFIG, $lang, $self, $THEME, $ubblva;
+    global $CONFIG, $lang, $self, $THEME, $gbblva;
     global $selHTML, $db, $onlinetime, $dformatorig;
     global $oToken, $shadow;
     
@@ -197,7 +197,7 @@ function viewRegister()
         $querydf = $db->query("SELECT * FROM " . X_PREFIX . "dateformats");
         while (($dformats = $db->fetch_array($querydf)) != false) {
             if ($CONFIG['predformat'] == 'on') {
-                $example = gmdate(formatDate($dformats['dateformat']), $ubblva + ($self['timeoffset'] * 3600) + $self['daylightsavings']);
+                $example = gmdate(formatDate($dformats['dateformat']), $gbblva + ($self['timeoffset'] * 3600) + $self['daylightsavings']);
             } else {
                 $example = $dformats['dateformat'];
             }
@@ -235,7 +235,7 @@ function viewRegister()
 
 function doRegister()
 {
-    global $CONFIG, $lang, $self, $THEME, $ubblva;
+    global $CONFIG, $lang, $self, $THEME, $gbblva;
     global $selHTML, $db, $onlinetime, $dformatorig;
     global $oToken, $shadow, $onlineip;
     
@@ -416,9 +416,9 @@ function doRegister()
         
         $currtime = $onlinetime + (86400 * 30);
         
-        $authState->ubbuid = $uid;
-        $authState->ubbuser = $username;
-        $authState->ubbpw = $password;
+        $authState->gbbuid = $uid;
+        $authState->gbbuser = $username;
+        $authState->gbbpw = $password;
         $authState->update();
     }
     

@@ -63,7 +63,7 @@ smcwcache();
 function viewPanel()
 {
     global $THEME, $lang, $shadow2, $oToken, $db, $CONFIG, $selHTML;
-    global $self, $onlinetime, $ubblva;
+    global $self, $onlinetime, $gbblva;
     
     $langfileselect = langSelect();
     
@@ -294,7 +294,7 @@ function viewPanel()
     $querydf = $db->query("SELECT * FROM " . X_PREFIX . "dateformats");
     while (($dformats = $db->fetch_array($querydf)) != false) {
         if ($CONFIG['predformat'] == 'on') {
-            $example = gmdate(formatDate($dformats['dateformat']), $ubblva + ($self['timeoffset'] * 3600) + $self['daylightsavings']);
+            $example = gmdate(formatDate($dformats['dateformat']), $gbblva + ($self['timeoffset'] * 3600) + $self['daylightsavings']);
         } else {
             $example = $dformats['dateformat'];
         }

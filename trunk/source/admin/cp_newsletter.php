@@ -169,11 +169,11 @@ function doPanel()
         $query = $db->query("SELECT username, email FROM " . X_PREFIX . "members WHERE status = 'Moderator' $tome ORDER BY uid");
     }
     
-    $_ubbuser = $db->escape(trim($self['username']));
+    $_gbbuser = $db->escape(trim($self['username']));
     
     if ($sendvia == 'pm') {
         while (($memnews = $db->fetch_array($query)) != false) {
-            $db->query("INSERT INTO " . X_PREFIX . "pm (msgto, msgfrom, type, owner, folder, subject, message, dateline, readstatus, sentstatus, usesig) VALUES ('" . $db->escape($memnews['username']) . "', '" . $_ubbuser . "', 'incoming', '" . $db->escape($memnews['username']) . "', 'Inbox', '$newssubject', '$newsmessage', '" . time() . "', 'no', 'yes', 'no')");
+            $db->query("INSERT INTO " . X_PREFIX . "pm (msgto, msgfrom, type, owner, folder, subject, message, dateline, readstatus, sentstatus, usesig) VALUES ('" . $db->escape($memnews['username']) . "', '" . $_gbbuser . "', 'incoming', '" . $db->escape($memnews['username']) . "', 'Inbox', '$newssubject', '$newsmessage', '" . time() . "', 'no', 'yes', 'no')");
         }
         $db->free_result($query);
     } else {

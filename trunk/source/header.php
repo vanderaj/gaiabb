@@ -707,7 +707,7 @@ $THEME['font3'] = $fontedit + 2 . $fontsuf;
 
 // Update lastvisit in the header shown
 if (isset($lastvisit) && X_MEMBER) {
-    $theTime = $ubblva + ($self['timeoffset'] * 3600) + $self['daylightsavings'];
+    $theTime = $gbblva + ($self['timeoffset'] * 3600) + $self['daylightsavings'];
     $lastdate = gmdate($self['dateformat'], $theTime);
     $lasttime = gmdate($self['timecode'], $theTime);
     $lastvisittext = $lang['lastactive'] . ' ' . $lastdate . ' ' . $lang['textat'] . ' ' . $lasttime;

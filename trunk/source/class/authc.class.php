@@ -37,24 +37,24 @@ class AuthState
 
     private $state;
 
-    public $ubbuid;
+    public $gbbuid;
 
-    public $ubbpw;
+    public $gbbpw;
 
     function __construct()
     {
         $this->state = array();
-        $this->ubbuid = '';
-        $this->ubbpw = '';
+        $this->gbbuid = '';
+        $this->gbbpw = '';
         
         $this->get();
     }
 
     function get()
     {
-        if (isset($_COOKIE['ubbstate'])) {
+        if (isset($_COOKIE['gbbstate'])) {
             try {
-                $tmpState = $_COOKIE['ubbstate'];
+                $tmpState = $_COOKIE['gbbstate'];
                 
                 $tmpState = base64_decode($tmpState, true);
                 
@@ -73,8 +73,8 @@ class AuthState
                     throw new Exception("Invalid state version, or state is not valid.");
                 }
                 
-                $this->ubbuid = $this->state['ubbuid'];
-                $this->ubbpw = $this->state['ubbpw'];
+                $this->gbbuid = $this->state['gbbuid'];
+                $this->gbbpw = $this->state['gbbpw'];
             } catch (Exception $e) {
                 global $db;
                 
@@ -85,12 +85,12 @@ class AuthState
 
     function convert()
     {
-        if (isset($_COOKIE['ubbuid'])) {
-            $this->ubbuid = $_COOKIE['ubbuid'];
+        if (isset($_COOKIE['gbbuid'])) {
+            $this->gbbuid = $_COOKIE['gbbuid'];
         }
         
-        if (isset($_COOKIE['ubbpw'])) {
-            $this->ubbpw = $_COOKIE['ubbpw'];
+        if (isset($_COOKIE['gbbpw'])) {
+            $this->gbbpw = $_COOKIE['gbbpw'];
         }
         
         $this->update();
@@ -102,8 +102,8 @@ class AuthState
         
         try {
             $this->state['version'] = 1;
-            $this->state['ubbuid'] = $this->ubbuid;
-            $this->state['ubbpw'] = $this->ubbpw;
+            $this->state['gbbuid'] = $this->gbbuid;
+            $this->state['gbbpw'] = $this->gbbpw;
             
             $tmpState = serialize($this->state);
             
@@ -114,7 +114,7 @@ class AuthState
             // }
             $tmpState = base64_encode($tmpState);
             $currtime = $onlinetime + (86400 * 30);
-            setcookie('ubbstate', $tmpState, $currtime, $cookiepath, $cookiedomain);
+            setcookie('gbbstate', $tmpState, $currtime, $cookiepath, $cookiedomain);
         } catch (Exception $e) {
             global $db;
             
@@ -143,13 +143,13 @@ class AuthC
 
     function autoLoginViaSession()
     {
-        global $ubbpw, $ubbuid;
+        global $gbbpw, $gbbuid;
         
         $retval = false;
         
-        if (isset($_SESSION['ubbuid']) && is_numeric($_SESSION['ubbuid'])) {
-            $ubbuid = intval($_SESSION['ubbuid']);
-            $ubbpw = $_SESSION['ubbpw'];
+        if (isset($_SESSION['gbbuid']) && is_numeric($_SESSION['gbbuid'])) {
+            $gbbuid = intval($_SESSION['gbbuid']);
+            $gbbpw = $_SESSION['gbbpw'];
             
             $retval = true;
         }
@@ -158,15 +158,15 @@ class AuthC
 
     function autoLoginViaAuthState()
     {
-        global $ubbpw, $ubbuid, $authState;
+        global $gbbpw, $gbbuid, $authState;
         
         $retval = false;
         
         $authState->get();
         
-        if (isset($authState->ubbuid) && is_numeric($authState->ubbuid)) {
-            $ubbuid = $_SESSION['ubbuid'] = $authState->ubbuid;
-            $ubbpw = $_SESSION['ubbpw'] = $authState->ubbpw;
+        if (isset($authState->gbbuid) && is_numeric($authState->gbbuid)) {
+            $gbbuid = $_SESSION['gbbuid'] = $authState->gbbuid;
+            $gbbpw = $_SESSION['gbbpw'] = $authState->gbbpw;
             
             $retval = true;
         }
@@ -179,7 +179,7 @@ class AuthC
         
         $retval = false;
         
-        if (isset($_COOKIE['ubbuid']) && is_numeric($_COOKIE['ubbuid'])) {
+        if (isset($_COOKIE['gbbuid']) && is_numeric($_COOKIE['gbbuid'])) {
             $authState->convert();
             $retval = $this->autoLoginViaAuthState();
         }
@@ -188,32 +188,32 @@ class AuthC
 
     function autoLogin()
     {
-        global $db, $self, $ubbuser, $ubbpw, $ubbuid, $onlinetime, $CONFIG;
+        global $db, $self, $gbbuser, $gbbpw, $gbbuid, $onlinetime, $CONFIG;
         
-        $ubbuser = '';
-        $ubbpw = '';
-        $ubbuid = 0;
+        $gbbuser = '';
+        $gbbpw = '';
+        $gbbuid = 0;
         
         $auto = false;
         
-        if (isset($_SESSION['ubbuid']) && $_SESSION['ubbuid'] > 0) {
+        if (isset($_SESSION['gbbuid']) && $_SESSION['gbbuid'] > 0) {
             $auto = $this->autoLoginViaSession();
         } else 
-            if (isset($_COOKIE['ubbstate'])) {
+            if (isset($_COOKIE['gbbstate'])) {
                 $auto = $this->autoLoginViaAuthState();
             } else 
-                if (isset($_COOKIE['ubbuid'])) {
+                if (isset($_COOKIE['gbbuid'])) {
                     $auto = $this->autoLoginViaCookie();
                 }
         
         $q = false;
         $self['status'] = '';
         $userrec = array();
-        if ($auto && $ubbuid > 0) {
-            $mq = $db->query("SELECT * FROM " . X_PREFIX . "members WHERE uid = '$ubbuid'");
+        if ($auto && $gbbuid > 0) {
+            $mq = $db->query("SELECT * FROM " . X_PREFIX . "members WHERE uid = '$gbbuid'");
             $userrec = $db->fetch_array($mq);
-            if (($db->num_rows($mq) == 1) && ($userrec['password'] == $ubbpw)) {
-                $db->query("UPDATE " . X_PREFIX . "members SET lastvisit = " . $db->time($onlinetime) . " WHERE uid = '$ubbuid'");
+            if (($db->num_rows($mq) == 1) && ($userrec['password'] == $gbbpw)) {
+                $db->query("UPDATE " . X_PREFIX . "members SET lastvisit = " . $db->time($onlinetime) . " WHERE uid = '$gbbuid'");
                 $q = true;
             }
             $db->free_result($mq);
@@ -226,7 +226,7 @@ class AuthC
                 $self[$key] = $val;
             }
             
-            $ubbuser = $self['username'];
+            $gbbuser = $self['username'];
             
             if (empty($self['theme'])) {
                 $self['theme'] = 0;
@@ -298,24 +298,24 @@ class AuthC
     function updateLastVisit()
     {
         global $onlinetime, $cookiepath, $cookiedomain;
-        global $ubblva, $ubblvb;
+        global $gbblva, $gbblvb;
         global $lastvisit, $lastvisit2;
         
-        $ubblva = isset($_COOKIE['ubblva']) ? intval($_COOKIE['ubblva']) : 0;
-        $ubblvb = isset($_COOKIE['ubblvb']) ? intval($_COOKIE['ubblvb']) : 0;
+        $gbblva = isset($_COOKIE['gbblva']) ? intval($_COOKIE['gbblva']) : 0;
+        $gbblvb = isset($_COOKIE['gbblvb']) ? intval($_COOKIE['gbblvb']) : 0;
         
-        setcookie('ubblva', $onlinetime, $onlinetime + (86400 * 365), $cookiepath, $cookiedomain);
+        setcookie('gbblva', $onlinetime, $onlinetime + (86400 * 365), $cookiepath, $cookiedomain);
         
         $thetime = $onlinetime;
-        if ($ubblvb > 0) {
-            $thetime = $ubblvb;
+        if ($gbblvb > 0) {
+            $thetime = $gbblvb;
         } else {
-            if ($ubblva > 0) {
-                $thetime = $ubblva;
+            if ($gbblva > 0) {
+                $thetime = $gbblva;
             }
         }
         
-        setcookie('ubblvb', $thetime, ($onlinetime + 600), $cookiepath, $cookiedomain);
+        setcookie('gbblvb', $thetime, ($onlinetime + 600), $cookiepath, $cookiedomain);
         
         $lastvisit = $thetime;
         $lastvisit2 = $lastvisit - 540;
@@ -383,7 +383,7 @@ class AuthC
 
     function login()
     {
-        global $db, $member, $cookiedomain, $cookiepath, $onlinetime, $onlineip, $authState, $ubbuid, $ubbpw;
+        global $db, $member, $cookiedomain, $cookiepath, $onlinetime, $onlineip, $authState, $gbbuid, $gbbpw;
         
         $errmsg = '';
         
@@ -410,17 +410,17 @@ class AuthC
             $db->query("DELETE FROM " . X_PREFIX . "whosonline WHERE ip = '$onlineip' && username = 'xguest123'");
             $currtime = $onlinetime + (86400 * 30);
             
-            $ubbuid = $_SESSION['ubbuid'] = $member['uid'];
-            $ubbpw = $_SESSION['ubbpw'] = $password;
+            $gbbuid = $_SESSION['gbbuid'] = $member['uid'];
+            $gbbpw = $_SESSION['gbbpw'] = $password;
             
             // Logging on invisible?
-            $db->query("UPDATE " . X_PREFIX . "members SET invisible = '$hide' WHERE uid = '$ubbuid'");
+            $db->query("UPDATE " . X_PREFIX . "members SET invisible = '$hide' WHERE uid = '$gbbuid'");
             
             // Logging on permanently?
             if ($remember == 'yes') {
                 // Set a permanent cookie, which will generally last a month without being updated
-                $authState->ubbuid = $ubbuid;
-                $authState->ubbpw = $ubbpw;
+                $authState->gbbuid = $gbbuid;
+                $authState->gbbpw = $gbbpw;
                 $authState->update();
             }
             
@@ -440,26 +440,26 @@ class AuthC
         
         $query = $db->query("DELETE FROM " . X_PREFIX . "whosonline WHERE username = '" . $self['uid'] . "'");
         
-        if (isset($_COOKIE['ubbstate'])) {
-            setcookie("ubbstate", '', 0, $cookiepath, $cookiedomain);
+        if (isset($_COOKIE['gbbstate'])) {
+            setcookie("gbbstate", '', 0, $cookiepath, $cookiedomain);
         }
-        if (isset($_COOKIE['ubbuser'])) {
-            setcookie("ubbuser", '', 0, $cookiepath, $cookiedomain);
+        if (isset($_COOKIE['gbbuser'])) {
+            setcookie("gbbuser", '', 0, $cookiepath, $cookiedomain);
         }
-        if (isset($_COOKIE['ubbpw'])) {
-            setcookie("ubbpw", '', 0, $cookiepath, $cookiedomain);
+        if (isset($_COOKIE['gbbpw'])) {
+            setcookie("gbbpw", '', 0, $cookiepath, $cookiedomain);
         }
-        if (isset($_COOKIE['ubbuid'])) {
-            setcookie("ubbuid", '', 0, $cookiepath, $cookiedomain);
+        if (isset($_COOKIE['gbbuid'])) {
+            setcookie("gbbuid", '', 0, $cookiepath, $cookiedomain);
         }
         if (isset($_COOKIE['oldtopics'])) {
             setcookie("oldtopics", '', 0, $cookiepath, $cookiedomain);
         }
-        if (isset($_COOKIE['ubblva'])) {
-            setcookie("ubblva", '', 0, $cookiepath, $cookiedomain);
+        if (isset($_COOKIE['gbblva'])) {
+            setcookie("gbblva", '', 0, $cookiepath, $cookiedomain);
         }
-        if (isset($_COOKIE['ubblvb'])) {
-            setcookie("ubblvb", '', 0, $cookiepath, $cookiedomain);
+        if (isset($_COOKIE['gbblvb'])) {
+            setcookie("gbblvb", '', 0, $cookiepath, $cookiedomain);
         }
         
         // loop trough all password-forum-cookies and remove them
