@@ -29,11 +29,11 @@
  *
  **/
 
-// Safe to use without global.inc.php
-define('DEBUG_REG', true);
-define('ROOT', './');
 
-require_once (ROOT . 'header.php');
+
+
+
+require_once ('header.php');
 
 loadtpl('memberlist_row', 'memberlist', 'memberlist_admin', 'memberlist_multipage', 'memberlist_separator', 'memberlist_results_none');
 
@@ -370,8 +370,8 @@ switch ($action) {
         break;
 }
 
+$header = $footer = '';
 eval('$header = "' . template('header') . '";');
-
 loadtime();
 eval('$footer = "' . template('footer') . '";');
 echo stripslashes($header . $memberlist . $footer);

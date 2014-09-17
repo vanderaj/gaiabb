@@ -29,10 +29,6 @@
  *
  **/
 
-// Safe to use without global.inc.php
-define('DEBUG_REG', true);
-define('ROOT', './');
-
 require_once ('header.php');
 
 loadtpl('topic_activity', 'topic_activity_dotfolders', 'topic_activity_multipage', 'topic_activity_none', 'topic_activity_threads');

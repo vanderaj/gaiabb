@@ -29,10 +29,10 @@
  *
  **/
 
-// Safe to use without global.inc.php
-define('DEBUG_REG', true);
-define('ROOT', './');
-require_once (ROOT . 'header.php');
+
+
+
+require_once ('header.php');
 
 loadtpl('index', 'index_boardoffmsg', 'index_category', 'index_category_spacer', 'index_forum', 'index_forum_lastpost', 'index_forum_nolastpost', 'index_forum_row', 'index_login', 'index_member', 'index_member_avatar', 'index_member_notepad', 'index_member_pm', 'index_news', 'index_stats', 'index_whosonline', 'index_whosonline_iconkey', 'index_whosonline_key', 'index_whosonline_today');
 

@@ -29,12 +29,8 @@
  *
  **/
 
-// Safe to use without global.inc.php
-define('DEBUG_REG', true);
-define('ROOT', './');
-
-require_once (ROOT . 'header.php');
-require_once (ROOTINC . 'address.inc.php');
+require_once ('header.php');
+require_once ('address.inc.php');
 
 loadtpl('addresslist_edit_address', 'addresslist_edit', 'addresslist_address_online', 'addresslist_address_offline', 'addresslist', 'address_pm_inv', 'address_pm_on', 'address_pm_off', 'address_pm', 'addresslist_message');
 

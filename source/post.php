@@ -29,10 +29,10 @@
  *
  **/
 define('CACHECONTROL', 'private');
-define('ROOT', './');
 
-require_once (ROOT . 'header.php');
-require_once (ROOTCLASS . 'forum.class.php');
+
+require_once ('header.php');
+require_once ('forum.class.php');
 
 loadtpl('functions_smilieinsert', 'functions_smilieinsert_smilie', 'functions_bbcodeinsert', 'functions_bbcode', 'post_attachmentbox', 'post_edit', 'post_captcha', 'register_captchajs', 'post_edit_attachment', 'post_loggedin', 'post_newpoll', 'post_newthread', 'post_notloggedin', 'post_preview', 'post_reply', 'post_reply_review_post', 'post_reply_review_toolong', 'post_attach_edit_JS', 'post_edit_attach_JS', 'post_edit_delete', 'post_delete_confirm', 'viewforum_password');
 
@@ -128,14 +128,14 @@ if (isset($forums['mpfa']) && $forums['mpfa'] != 0 && isset($self['postnum']) &&
 }
 
 if (isset($forums['type']) && $forums['type'] == 'forum') {
-    nav('<a href="' . ROOT . 'viewforum.php?fid=' . $fid . '">' . stripslashes($forums['name']) . '</a>');
+    nav('<a href="' . 'viewforum.php?fid=' . $fid . '">' . stripslashes($forums['name']) . '</a>');
     btitle(stripslashes($forums['name']));
 } else {
     if (isset($forums['fup'])) {
         $query = $db->query("SELECT name, fid FROM " . X_PREFIX . "forums WHERE fid = '$forums[fup]'");
         $fup = $db->fetch_array($query);
-        nav('<a href="' . ROOT . 'viewforum.php?fid=' . $fup['fid'] . '">' . stripslashes($fup['name']) . '</a>');
-        nav('<a href="' . ROOT . 'viewforum.php?fid=' . $fid . '">' . stripslashes($forums['name']) . '</a>');
+        nav('<a href="' . 'viewforum.php?fid=' . $fup['fid'] . '">' . stripslashes($fup['name']) . '</a>');
+        nav('<a href="' . 'viewforum.php?fid=' . $fid . '">' . stripslashes($forums['name']) . '</a>');
         btitle(stripslashes($fup['name']));
         btitle(stripslashes($forums['name']));
     }
@@ -539,7 +539,7 @@ switch ($action) {
     case 'reply':
         $fattachnum = (int) $forum['attachnum'];
         eval('$attachscript = "' . template('post_attach_edit_JS') . '";');
-        nav('<a href="' . ROOT . 'viewtopic.php?tid=' . $tid . '">' . $thread['subject'] . '</a>');
+        nav('<a href="' . 'viewtopic.php?tid=' . $tid . '">' . $thread['subject'] . '</a>');
         nav($lang['textreply']);
         btitle($thread['subject']);
         btitle($lang['textreply']);
@@ -586,7 +586,7 @@ switch ($action) {
             $db->free_result($querytop);
             
             if ($replynum >= $self['ppp']) {
-                $threadlink = ROOT . 'viewtopic.php?fid=' . $fid . '&amp;tid=' . $tid;
+                $threadlink = 'viewtopic.php?fid=' . $fid . '&amp;tid=' . $tid;
                 eval($lang['evaltrevlt']);
                 eval('$posts .= "' . template('post_reply_review_toolong') . '";');
             } else {
@@ -808,7 +808,7 @@ switch ($action) {
         }
         
         if (noSubmit('deletepostsubmit')) {
-            nav('<a href="' . ROOT . 'viewtopic.php?tid=' . $tid . '">' . $thread['subject'] . '</a>');
+            nav('<a href="' . 'viewtopic.php?tid=' . $tid . '">' . $thread['subject'] . '</a>');
             nav($lang['textdeletepost']);
             btitle($lang['textdeletepost']);
             eval('echo "' . template('header') . '";');
@@ -930,7 +930,7 @@ switch ($action) {
     
     case 'edit':
         eval('$attachscript = "' . template('post_edit_attach_JS') . '";');
-        nav('<a href="' . ROOT . 'viewtopic.php?tid=' . $tid . '">' . $thread['subject'] . '</a>');
+        nav('<a href="' . 'viewtopic.php?tid=' . $tid . '">' . $thread['subject'] . '</a>');
         nav($lang['texteditpost']);
         btitle($thread['subject']);
         btitle($lang['texteditpost']);
@@ -1263,6 +1263,7 @@ switch ($action) {
                 $postUser = $db->result($query, 0);
                 $db->free_result($query);
                 
+                $delete = formVar('delete');
                 if (isset($delete) && $delete == 'yes' && ! ($isfirstpost['pid'] == $pid)) {
                     if (isset($forums['postcount']) && $forums['postcount'] == 'on') {
                         $db->query("UPDATE " . X_PREFIX . "members SET postnum = postnum-1 WHERE username = '" . $db->escape($orig['author']) . "'");
@@ -1334,7 +1335,7 @@ switch ($action) {
         }
         break;
     case 'captcha':
-        require_once (ROOTCLASS . 'captcha.class.php');
+        require_once ('captcha.class.php');
         $captcha = new captcha();
         break;
     default:

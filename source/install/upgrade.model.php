@@ -245,7 +245,7 @@ function upgrade_forum($path, $prgbar)
     $dbuser = '';
     $dbpw = '';
     
-    require_once (ROOT . 'config.php');
+    require_once ('config.php');
     if ($database == 'DBTYPE' || ! file_exists(ROOT . "db/$database.php")) {
         setCol($prgbar, '#ff0000');
         print_error('Database connection', 'Please ensure that config.php has been successfully written prior to running this install.');

@@ -29,12 +29,8 @@
  *
  **/
 
-// Safe to use without global.inc.php
-define('DEBUG_REG', true);
-define('ROOT', './');
-
-require_once (ROOT . 'header.php');
-require_once (ROOTINC . 'usercp.inc.php');
+require_once ('header.php');
+require_once ('usercp.inc.php');
 
 if (X_GUEST) {
     redirect('login.php', 0);
@@ -113,6 +109,7 @@ switch ($action) {
     case 'gallery':
         nav('<a href="usercp.php">' . $lang['textusercp'] . '</a>');
         btitle($lang['textusercp']);
+        $type = formVar('type');
         if (! isset($type)) {
             nav($lang['avatargallery']);
             btitle($lang['avatargallery']);

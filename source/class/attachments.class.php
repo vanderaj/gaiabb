@@ -142,7 +142,7 @@ class attachment
             if ($attach['pid'] == $pid) {
                 $post['filename'] = htmlspecialchars($attach['filename']);
                 if (! empty($attach['filename']) && isset($forum['attachstatus']) && $forum['attachstatus'] != 'off') {
-                    $extention = strtolower(substr(strrchr($post['filename'], '.'), 1));
+                    $extension = strtolower(substr(strrchr($post['filename'], '.'), 1));
                     $attachsize = $this->format_attach($attach['filesize']);
                     $downloadcount = $attach['downloads'];
                     if ($downloadcount == '') {
@@ -152,7 +152,7 @@ class attachment
                     if ($CONFIG['viewattach'] == 'no' && X_GUEST) {
                         eval("\$post['message'] .= \"" . template('viewtopic_post_attachment_none') . "\";");
                     } else 
-                        if ($CONFIG['attachimgpost'] == 'on' && ($extention == 'jpg' || $extention == 'jpeg' || $extention == 'gif' || $extention == 'png' || $extention == 'bmp')) {
+                        if ($CONFIG['attachimgpost'] == 'on' && ($extension == 'jpg' || $extension == 'jpeg' || $extension == 'gif' || $extension == 'png' || $extension == 'bmp')) {
                             if ($attach['fileheight'] != '' && $attach['filewidth'] != '') {
                                 $CONFIG['max_attheight'] = (int) $CONFIG['max_attheight'];
                                 $CONFIG['max_attwidth'] = (int) $CONFIG['max_attwidth'];
@@ -174,13 +174,13 @@ class attachment
                             if ($CONFIG['attachborder'] == 'on') {
                                 $attachicon = '';
                                 if ($CONFIG['attachicon_status'] == 'on') {
-                                    include (ROOTINC . 'mimetypes.inc.php');
+                                    include ('mimetypes.inc.php');
                                 }
                                 eval("\$post['message'] .= \"" . template('viewtopic_post_attachmentimage') . "\";");
                             } else {
                                 $attachicon = '';
                                 if ($CONFIG['attachicon_status'] == 'on') {
-                                    include (ROOTINC . 'mimetypes.inc.php');
+                                    include ('mimetypes.inc.php');
                                 }
                                 eval("\$post['message'] .= \"" . template('viewtopic_post_attimg_noborder') . "\";");
                             }
@@ -188,13 +188,13 @@ class attachment
                             if ($CONFIG['attachborder'] == 'on') {
                                 $attachicon = '';
                                 if ($CONFIG['attachicon_status'] == 'on') {
-                                    include (ROOTINC . 'mimetypes.inc.php');
+                                    include ('mimetypes.inc.php');
                                 }
                                 eval("\$post['message'] .= \"" . template('viewtopic_post_attachment') . "\";");
                             } else {
                                 $attachicon = '';
                                 if ($CONFIG['attachicon_status'] == 'on') {
-                                    include (ROOTINC . 'mimetypes.inc.php');
+                                    include ('mimetypes.inc.php');
                                 }
                                 eval("\$post['message'] .= \"" . template('viewtopic_post_attach_noborder') . "\";");
                             }

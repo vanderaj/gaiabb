@@ -29,12 +29,8 @@
  *
  **/
 
-// Safe to use without global.inc.php
-define('DEBUG_REG', true);
-define('ROOT', './');
-
-require_once (ROOT . 'header.php');
-require_once (ROOT . 'include/validate.inc.php');
+require_once ('header.php');
+require_once ('include/validate.inc.php');
 
 loadtpl('contactus');
 

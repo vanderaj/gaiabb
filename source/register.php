@@ -28,12 +28,12 @@
  *    along with GaiaBB.  If not, see <http://www.gnu.org/licenses/>.
  *
  **/
-define('DEBUG_REG', true);
-define('ROOT', './');
+
+
 define('CACHECONTROL', 'nocache');
 
-require_once (ROOT . 'header.php');
-require_once (ROOTCLASS . 'member.class.php');
+require_once ('header.php');
+require_once ('member.class.php');
 
 loadtpl('register', 'register_coppa', 'register_password', 'register_rules', 'register_captcha', 'register_captchajs');
 
@@ -520,7 +520,7 @@ if ($db->result($query, 0) > $CONFIG['max_reg_day']) {
 
 switch ($action) {
     case 'captcha':
-        require_once (ROOTCLASS . 'captcha.class.php');
+        require_once ('captcha.class.php');
         $captcha = new captcha();
         nav($lang['textregister']);
         btitle($lang['textregister']);

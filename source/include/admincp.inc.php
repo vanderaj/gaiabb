@@ -32,10 +32,17 @@ if (! defined('IN_PROGRAM') && (defined('DEBUG') && DEBUG == false)) {
     exit('This file is not designed to be called directly');
 }
 
-$config_cache->expire('settings');
-$config_cache->expire('theme');
-$config_cache->expire('whosonline');
-$config_cache->expire('forumjump');
+function expireAdminConfigCache()
+{
+    global $config_cache;
+    
+    $config_cache->expire('settings');
+    $config_cache->expire('theme');
+    $config_cache->expire('whosonline');
+    $config_cache->expire('forumjump');
+}
+
+expireAdminConfigCache();
 
 function displayAdminPanel()
 {

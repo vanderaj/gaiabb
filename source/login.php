@@ -29,12 +29,12 @@
  *
  **/
 
-// Safe to use without global.inc.php
-define('DEBUG_REG', true);
-define('CACHECONTROL', 'nocache');
-define('ROOT', './');
 
-require_once (ROOT . 'header.php');
+
+define('CACHECONTROL', 'nocache');
+
+
+require_once ('header.php');
 
 loadtpl('login', 'login_incorrectdetails');
 

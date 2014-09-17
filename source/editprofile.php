@@ -29,12 +29,12 @@
  *
  **/
 
-// Safe to use without global.inc.php
-define('DEBUG_REG', true);
-define('ROOT', './');
 
-require_once (ROOT . 'header.php');
-require_once (ROOTINC . 'usercp.inc.php');
+
+
+
+require_once ('header.php');
+require_once ('usercp.inc.php');
 
 loadtpl('error_nologinsession', 'usercp_avatarurl', 'admintool_editprofile', 'usercp_photourl', 'usercp_avatarhidden', 'usercp_useravatar', 'editprofile_avatarurl', 'editprofile_avatarhidden', 'editprofile_useravatar', 'editprofile_photourl', 'editprofile_photohidden', 'editprofile_userphoto');
 
@@ -622,7 +622,7 @@ if (onSubmit('editsubmit')) {
         
         $db->query("UPDATE " . X_PREFIX . "members SET password = '$newpassword' WHERE uid = '$memberid'");
     }
-    message($lang['textsettingsupdate'], false, '', '', '' . ROOT . 'admin/index.php', true, false, true);
+    message($lang['textsettingsupdate'], false, '', '', '' . 'admin/index.php', true, false, true);
 }
 
 loadtime();

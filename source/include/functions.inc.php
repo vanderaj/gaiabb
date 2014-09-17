@@ -573,7 +573,7 @@ function forum($forum, $template)
                 $sub = $index_subforums[$i];
                 if ($sub['fup'] == $forum['fid']) {
                     if (X_SADMIN || $CONFIG['hideprivate'] == 'off' || privfcheck($sub['private'], $sub['userlist'])) {
-                        $subforums[] = '<a href="' . ROOT . 'viewforum.php?fid=' . intval($sub['fid']) . '">' . stripslashes($sub['name']) . '</a>';
+                        $subforums[] = '<a href="' . 'viewforum.php?fid=' . intval($sub['fid']) . '">' . stripslashes($sub['name']) . '</a>';
                     }
                 }
             }
@@ -1298,8 +1298,8 @@ function get_attached_file($file, $attachstatus)
         $filename = checkInput($file['name']);
         $filetype = checkInput($file['type']);
         
-        $extention = strtolower(substr(strrchr($file['name'], '.'), 1));
-        if ($extention == 'jpg' || $extention == 'jpeg' || $extention == 'gif' || $extention == 'png' || $extention == 'bmp') {
+        $extension = strtolower(substr(strrchr($file['name'], '.'), 1));
+        if ($extension == 'jpg' || $extension == 'jpeg' || $extension == 'gif' || $extension == 'png' || $extension == 'bmp') {
             $exsize = getimagesize($file['tmp_name']);
             $fileheight = $exsize[1];
             $filewidth = $exsize[0];
@@ -1335,8 +1335,8 @@ function get_attached_file_multi($file, $i, $attachstatus)
         $filename = checkInput($file['name'][$i]);
         $filetype = checkInput($file['type'][$i]);
         
-        $extention = strtolower(substr(strrchr($file['name'][$i], '.'), 1));
-        if ($extention == 'jpg' || $extention == 'jpeg' || $extention == 'gif' || $extention == 'png' || $extention == 'bmp') {
+        $extension = strtolower(substr(strrchr($file['name'][$i], '.'), 1));
+        if ($extension == 'jpg' || $extension == 'jpeg' || $extension == 'gif' || $extension == 'png' || $extension == 'bmp') {
             $exsize = getimagesize($file['tmp_name'][$i]);
             $fileheight = $exsize[1];
             $filewidth = $exsize[0];
@@ -1453,7 +1453,7 @@ function cp_error($msg, $showheader = true, $prepend = '', $append = '', $redire
     $return_str = (isset($args[6]) ? $args[6] : false);
     $showfooter = (isset($args[7]) ? $args[7] : true);
     
-    $header = $footer = $return = '';
+    $header = $footer = $return = $css = '';
     
     loadtime();
     
@@ -1570,7 +1570,7 @@ function cp_message($msg, $showheader = true, $prepend = '', $append = '', $redi
     $return_str = (isset($args[6]) ? $args[6] : false);
     $showfooter = (isset($args[7]) ? $args[7] : true);
     
-    $header = $footer = $return = '';
+    $header = $footer = $return = $css = '';
     
     loadtime();
     
@@ -1659,6 +1659,16 @@ function mysql_syn_highlight($query)
         $replace[$key] = '</em><strong>' . $val . '</strong><em>';
     }
     return '<em>' . str_replace($find, $replace, $query) . '</em>';
+}
+
+/**
+ * Get rid of registered globals if they are set
+ */
+function disposeGlobals()
+{
+    if (ini_get('register_globals')) {
+        die("This program does not support running with register globals enabled");
+    }
 }
 
 function dump_query($resource, $header = true)
@@ -1979,15 +1989,15 @@ function securityChecks()
 {
     global $CONFIG, $onlineip, $url;
     
-    if (file_exists(ROOT . 'cplogfile.php') && ! @unlink(ROOT . 'cplogfile.php')) {
+    if (file_exists('cplogfile.php') && ! @unlink('cplogfile.php')) {
         exit('<h1>Error:</h1><br />The old logfile("cplogfile.php") has been found on the server, but could not be removed. Please remove it as soon as possible.');
     }
     
-    if (file_exists(ROOT . 'fixhack.php') && ! @unlink(ROOT . 'fixhack.php')) {
+    if (file_exists('fixhack.php') && ! @unlink('fixhack.php')) {
         exit('<h1>Error:</h1><br />The hack repair tool("fixhack.php") has been found on the server, but could not be removed. Please remove it as soon as possible.');
     }
     
-    if (file_exists(ROOT . 'install/emergency.php') && ! @unlink(ROOT . 'install/emergency.php')) {
+    if (file_exists('install/emergency.php') && ! @unlink('install/emergency.php')) {
         exit('<h1>Error:</h1><br />The emergency repair file("install/emergency.php") has been found on the server, but could not be removed. Please remove it as soon as possible.');
     }
     
@@ -2045,12 +2055,12 @@ function findLangName($instance)
         return "";
     }
     
-    $dir = opendir(ROOT . 'lang');
+    $dir = opendir('lang');
     $langpos = 0;
     $file = '';
     while (($file = readdir($dir)) != false) {
         if ($instance == $langpos) {
-            if (is_file(ROOT . 'lang/' . $file) && false !== strpos($file, '.lang.php')) {
+            if (is_file('lang/' . $file) && false !== strpos($file, '.lang.php')) {
                 $file = str_replace('.lang.php', '', $file);
                 break;
             }
@@ -2162,10 +2172,10 @@ function forumJump()
     reset($forums);
     
     foreach ($standAloneForums as $forum) {
-        $forumselect[] = '<option value="' . ROOT . 'viewforum.php?fid=' . intval($forum['fid']) . '"> &nbsp; &raquo; ' . stripslashes($forum['name']) . '</option>';
+        $forumselect[] = '<option value="' . 'viewforum.php?fid=' . intval($forum['fid']) . '"> &nbsp; &raquo; ' . stripslashes($forum['name']) . '</option>';
         if (isset($subforums[$forum['fid']])) {
             foreach ($subforums[$forum['fid']] as $sub) {
-                $forumselect[] = '<option value="' . ROOT . 'viewforum.php?fid=' . intval($sub['fid']) . '">&nbsp; &nbsp; &raquo; ' . stripslashes($sub['name']) . '</option>';
+                $forumselect[] = '<option value="' . 'viewforum.php?fid=' . intval($sub['fid']) . '">&nbsp; &nbsp; &raquo; ' . stripslashes($sub['name']) . '</option>';
             }
         }
     }
@@ -2173,12 +2183,12 @@ function forumJump()
     foreach ($categories as $group) {
         if (isset($forums[$group['fid']])) {
             $forumselect[] = '<option value=""></option>';
-            $forumselect[] = '<option value="' . ROOT . 'index.php?gid=' . intval($group['fid']) . '">' . stripslashes($group['name']) . '</option>';
+            $forumselect[] = '<option value="' . 'index.php?gid=' . intval($group['fid']) . '">' . stripslashes($group['name']) . '</option>';
             foreach ($forums[$group['fid']] as $forum) {
-                $forumselect[] = '<option value="' . ROOT . 'viewforum.php?fid=' . intval($forum['fid']) . '"> &nbsp; &raquo; ' . stripslashes($forum['name']) . '</option>';
+                $forumselect[] = '<option value="' . 'viewforum.php?fid=' . intval($forum['fid']) . '"> &nbsp; &raquo; ' . stripslashes($forum['name']) . '</option>';
                 if (isset($subforums[$forum['fid']])) {
                     foreach ($subforums[$forum['fid']] as $sub) {
-                        $forumselect[] = '<option value="' . ROOT . 'viewforum.php?fid=' . intval($sub['fid']) . '">&nbsp; &nbsp; &raquo; ' . stripslashes($sub['name']) . '</option>';
+                        $forumselect[] = '<option value="' . 'viewforum.php?fid=' . intval($sub['fid']) . '">&nbsp; &nbsp; &raquo; ' . stripslashes($sub['name']) . '</option>';
                     }
                 }
             }
@@ -2229,7 +2239,7 @@ function langswitch($revert = 'no', $thislangfile = '')
     global $CONFIG, $self, $db;
     
     if ($revert == 'no') {
-        if (empty($thislangfile) || ! file_exists(ROOT . 'lang/' . $thislangfile . '.lang.php')) {
+        if (empty($thislangfile) || ! file_exists('lang/' . $thislangfile . '.lang.php')) {
             $langfile = $CONFIG['langfile'];
         } else {
             $langfile = $thislangfile;
@@ -2246,10 +2256,10 @@ function langSelect()
     global $member, $selHTML, $CONFIG;
     
     $lfs = array();
-    $dir = opendir(ROOT . 'lang');
+    $dir = opendir('lang');
     $langpos = 0;
     while (($file = readdir($dir)) != false) {
-        if (is_file(ROOT . 'lang/' . $file) && false !== strpos($file, '.lang.php')) {
+        if (is_file('lang/' . $file) && false !== strpos($file, '.lang.php')) {
             $file = str_replace('.lang.php', '', $file);
             if ($file == $CONFIG['langfile']) {
                 $lfs[] = '<option value="' . $langpos . '" ' . $selHTML . '>' . $file . '</option>';

@@ -28,11 +28,11 @@
  *    along with GaiaBB.  If not, see <http://www.gnu.org/licenses/>.
  *
  **/
-define('DEBUG_REG', true);
-define('ROOT', './');
 
-require_once (ROOT . 'header.php');
-require_once (ROOTINC . 'pm.inc.php');
+
+
+require_once ('header.php');
+require_once ('pm.inc.php');
 
 loadtpl('pm_nav', 'pm', 'pm_folderlink', 'pm_inbox', 'pm_outbox', 'pm_drafts', 'pm_row', 'pm_row_none', 'pm_view', 'pm_ignore', 'pm_send', 'pm_send_preview', 'pm_folders', 'pm_main', 'pm_multipage', 'pm_quotabar', 'pm_printable', 'pm_attachmentbox', 'pm_attachment', 'pm_sig', 'pm_trash', 'pm_send_preview_sig', 'pm_attachmentimage', 'functions_smilieinsert', 'functions_smilieinsert_smilie', 'functions_bbcodeinsert', 'functions_bbcode');
 

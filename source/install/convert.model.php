@@ -354,7 +354,7 @@ function convert_forum($path, $prgbar)
     $database = $pconnect = $dbname = $dbhost = '';
     $tablepre = $dbuser = $dbpw = '';
     
-    require_once (ROOT . 'config.php');
+    require_once ('config.php');
     if ($database == 'DBTYPE' || ! file_exists(ROOT . "db/$database.php")) {
         setCol($prgbar, '#ff0000');
         print_error('Database connection', 'Please ensure that you have successfully installed GaiaBB prior to running this convertion.');
