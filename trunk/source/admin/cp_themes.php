@@ -45,6 +45,8 @@ $meta = metaTags();
 
 eval('$css = "' . template('css') . '";');
 
+$download = formInt('download');
+
 if (X_ADMIN) {
     if ($action == 'themes' && isset($download)) {
         $contents = array();
@@ -88,275 +90,168 @@ adminaudit($self['username'], $auditaction, 0, 0);
 
 displayAdminPanel();
 
-if ($action == 'themes') {
-    if (noSubmit('themesubmit') && ! isset($single) && noSubmit('importsubmit')) {
-        ?>
-<form method="post" action="cp_themes.php?action=themes"
-	name="theme_main">
-	<input type="hidden" name="token"
-		value="<?php echo $oToken->get_new_token()?>" />
-	<table cellspacing="0px" cellpadding="0px" border="0px" width="100%"
-		align="center">
-		<tr>
-			<td bgcolor="<?php echo $THEME['bordercolor']?>">
-				<table border="0px" cellspacing="<?php echo $THEME['borderwidth']?>"
-					cellpadding="<?php echo $THEME['tablespace']?>" width="100%">
-					<tr class="category">
-						<td class="title" align="center"><?php echo $lang['textdeleteques']?></td>
-						<td class="title" align="center"><?php echo $lang['textthemename']?></td>
-						<td class="title" align="center"><?php echo $lang['numberusing']?></td>
-						<td class="title" align="center"><?php echo $lang['status']?></td>
-					</tr>
-        <?php
-        // altered theme code to produce a 20x speed increase
-        $themeMem = array(
-            0 => 0
-        );
-        $tq = $db->query("SELECT theme, COUNT(theme) as cnt FROM " . X_PREFIX . "members GROUP BY theme");
-        while (($t = $db->fetch_array($tq)) != false) {
-            $themeMem[((int) $t['theme'])] = $t['cnt'];
-        }
-        $db->free_result($tq);
-        
-        $query = $db->query("SELECT name, themestatus, themeid FROM " . X_PREFIX . "themes ORDER BY name ASC");
-        while (($themeinfo = $db->fetch_array($query)) != false) {
-            $themeid = $themeinfo['themeid'];
-            if (! isset($themeMem[$themeid])) {
-                $themeMem[$themeid] = 0;
-            }
-            
-            if ($themeinfo['themeid'] == $CONFIG['theme']) {
-                $members = ($themeMem[$themeid] + $themeMem[0]);
-            } else {
-                $members = $themeMem[$themeid];
-            }
-            
-            if ($themeinfo['themeid'] == $theme) {
-                $checked = $cheHTML;
-            } else {
-                $checked = 'checked="unchecked"';
-            }
-            ?>
-            <tr>
-						<td bgcolor="<?php echo $THEME['altbg1']?>" class="ctrtablerow"><input
-							type="checkbox" name="theme_delete[]"
-							value="<?php echo $themeinfo['themeid']?>" /></td>
-						<td bgcolor="<?php echo $THEME['altbg2']?>" class="tablerow"><input
-							type="text" name="theme_name[<?php echo $themeinfo['themeid']?>]"
-							value="<?php echo $themeinfo['name']?>" />&nbsp;[ <a
-							href="./cp_themes.php?action=themes&amp;single=<?php echo $themeinfo['themeid']?>"><?php echo $lang['textdetails']?></a>
-							]&nbsp;-&nbsp;[ <a
-							href="./cp_themes.php?action=themes&amp;download=<?php echo $themeinfo['themeid']?>"><?php echo $lang['textdownload']?></a>
-							]</td>
-						<td bgcolor="<?php echo $THEME['altbg1']?>" class="ctrtablerow"><?php echo $members?></td>
-						<td bgcolor="<?php echo $THEME['altbg2']?>" class="ctrtablerow"><?php echo $themeinfo['themestatus']?></td>
-					</tr>
-            <?php
-        }
-        $db->free_result($query);
-        ?>
-        <tr bgcolor="<?php echo $THEME['altbg1']?>" class="tablerow">
-						<td colspan="4"><a
-							href="./cp_themes.php?action=themes&amp;single=anewtheme1"><strong><?php echo $lang['textnewtheme']?></strong></a>
-							- <a href="#"
-							onclick="setCheckboxes('theme_main', 'theme_delete[]', true); return false;"><?php echo $lang['checkall']?></a>
-							- <a href="#"
-							onclick="setCheckboxes('theme_main', 'theme_delete[]', false); return false;"><?php echo $lang['uncheckall']?></a>
-							- <a href="#"
-							onclick="invertSelection('theme_main', 'theme_delete[]'); return false;"><?php echo $lang['invertselection']?></a></td>
-					</tr>
-					<tr class="ctrtablerow" bgcolor="<?php echo $THEME['altbg2']?>">
-						<td colspan="4"><input type="submit" name="themesubmit"
-							value="<?php echo $lang['textsubmitchanges']?>" class="submit" /></td>
-					</tr>
-				</table>
-			</td>
-		</tr>
-	</table>
-        <?php echo $shadow2?>
-        </form>
-<br />
-<form method="post" action="cp_themes.php?action=themes"
-	enctype="multipart/form-data">
-	<input type="hidden" name="token"
-		value="<?php echo $oToken->get_new_token()?> " />
-	<table cellspacing="0px" cellpadding="0px" border="0px" width="100%"
-		align="center">
-		<tr>
-			<td bgcolor="<?php echo $THEME['bordercolor']?>">
-				<table border="0px" cellspacing="<?php echo $THEME['borderwidth']?>"
-					cellpadding="<?php echo $THEME['tablespace']?>" width="100%">
-					<tr class="category">
-						<td colspan="2" class="title"><?php echo $lang['textimporttheme']?></td>
-					</tr>
-					<tr class="tablerow">
-						<td bgcolor="<?php echo $THEME['altbg1']?>"><?php echo $lang['textthemefile']?></td>
-						<td bgcolor="<?php echo $THEME['altbg2']?>"><input type="file"
-							name="themefile" value="" size="40" /></td>
-					</tr>
-					<tr class="ctrtablerow" bgcolor="<?php echo $THEME['altbg2']?>">
-						<td colspan="2"><input type="submit" class="submit"
-							name="importsubmit"
-							value="<?php echo $lang['textimportsubmit']?>" /></td>
-					</tr>
-				</table>
-			</td>
-		</tr>
-	</table>
-        <?php echo $shadow2?>
-        </form>
-</td>
-</tr>
-</table>
-<?php
-    } else 
-        if (onSubmit('importsubmit') && isset($_FILES['themefile']['tmp_name'])) {
-            $themebits = readFileAsINI($_FILES['themefile']['tmp_name']);
-            if (! is_array($themebits)) {
-                $themebits = (array) $themebits;
-            }
-            
-            if (! array_key_exists('name', $themebits)) {
-                cp_error($lang['textthemeimportfail'], false, '', '</td></tr></table>', 'cp_themes.php?action=themes');
-            }
-            
-            $keysql = array();
-            $valsql = array();
-            foreach ($themebits as $key => $val) {
-                if ($key == 'themeid') {
-                    $val = '';
-                    continue; // Jump over the identity row for MySQL 5.0
-                } else 
-                    if ($key == 'name') {
-                        $name = $val;
-                    }
-                $keysql[] = $key;
-                $valsql[] = "'$val'";
-            }
-            $keysql = implode(', ', $keysql);
-            $valsql = implode(', ', $valsql);
-            
-            $query = $db->query("SELECT COUNT(themeid) FROM " . X_PREFIX . "themes WHERE name = '" . addslashes($name) . "'");
-            if ($db->result($query, 0) > 0) {
-                $db->free_result($query);
-                cp_error($lang['theme_already_exists'], false, '', '</td></tr></table>', 'cp_themes.php?action=themes');
-            }
-            
-            $sql = "INSERT INTO " . X_PREFIX . "themes ($keysql) VALUES ($valsql);";
-            $query = $db->query($sql);
-            if (! $query) {
-                cp_message($lang['textthemeimportfail'], false, '', '</td></tr></table>', 'cp_themes.php?action=themes');
-            } else {
-                cp_message($lang['textthemeimportsuccess'], false, '', '</td></tr></table>', 'cp_themes.php?action=themes');
-            }
+function doImportTheme()
+{
+    global $db, $lang;
+    $themebits = readFileAsINI($_FILES['themefile']['tmp_name']);
+    if (! is_array($themebits)) {
+        $themebits = (array) $themebits;
+    }
+    
+    if (! array_key_exists('name', $themebits)) {
+        cp_error($lang['textthemeimportfail'], false, '', '</td></tr></table>', 'cp_themes.php?action=themes');
+    }
+    
+    $keysql = array();
+    $valsql = array();
+    foreach ($themebits as $key => $val) {
+        if ($key == 'themeid') {
+            $val = '';
+            continue; // Jump over the identity row for MySQL 5.0
         } else 
-            if (onSubmit('themesubmit')) {
-                $number_of_themes = $db->result($db->query("SELECT count(themeid) FROM " . X_PREFIX . "themes"), 0);
-                if (isset($theme_delete) && count($theme_delete) >= $number_of_themes) {
-                    cp_error($lang['delete_all_themes'], false, '', '</td></tr></table>', 'cp_themes.php?action=themes');
-                }
-                if (isset($theme_delete)) {
-                    foreach ($theme_delete as $themeid) {
-                        $otherid = $db->result($db->query("SELECT themeid FROM " . X_PREFIX . "themes WHERE themeid != '$themeid' ORDER BY rand() LIMIT 1"), 0);
-                        $db->query("UPDATE " . X_PREFIX . "members SET theme = '$otherid' WHERE theme = '$themeid'");
-                        $db->query("UPDATE " . X_PREFIX . "forums SET theme = '0' WHERE theme = '$themeid'");
-                        if ($CONFIG['theme'] == $themeid) {
-                            $db->query("UPDATE " . X_PREFIX . "settings SET theme = '$otherid'");
-                        }
-                        $db->query("DELETE FROM " . X_PREFIX . "themes WHERE themeid = '$themeid'");
-                    }
-                }
-                foreach ($theme_name as $themeid => $name) {
-                    $name = addslashes(trim($name));
-                    $db->query("UPDATE " . X_PREFIX . "themes SET name = '$name' WHERE themeid = '$themeid'");
-                }
-                cp_message($lang['themeupdate'], false, '', '</td></tr></table>', 'cp_themes.php?action=themes');
-            } else 
-                if (isset($single) && $single != 'submit' && $single != 'anewtheme1') {
-                    $query = $db->query("SELECT * FROM " . X_PREFIX . "themes WHERE themeid = '$single'");
-                    $themedata = $db->fetch_array($query);
-                    $db->free_result($query);
-                    
-                    $roundon = $squareon = $none = '';
-                    switch ($themedata['outertable']) {
-                        case 'round':
-                            $roundon = $selHTML;
-                            break;
-                        case 'square':
-                            $squareon = $selHTML;
-                            break;
-                        default:
-                            $none = $selHTML;
-                            break;
-                    }
-                    
-                    $threadoptimg = $threadopttxt = '';
-                    switch ($themedata['threadopts']) {
-                        case 'image':
-                            $threadoptimg = $selHTML;
-                            break;
-                        default:
-                            $threadopttxt = $selHTML;
-                            break;
-                    }
-                    
-                    $shadowon = $shadowoff = '';
-                    formHelper::getThemeOnOffHtml('shadowfx', $shadowon, $shadowoff);
-                    $themeon = $themeoff = '';
-                    formHelper::getThemeOnOffHtml('themestatus', $themeon, $themeoff);
-                    $celloveron = $celloveroff = '';
-                    formHelper::getThemeOnOffHtml('celloverfx', $celloveron, $celloveroff);
-                    $riconon = $riconoff = '';
-                    formHelper::getThemeOnOffHtml('riconstatus', $riconon, $riconoff);
-                    $spacecatson = $spacecatsoff = '';
-                    formHelper::getThemeOnOffHtml('space_cats', $spacecatson, $spacecatsoff);
-                    
-                    $themedata['name'] = stripslashes($themedata['name']);
-                    $themedata['bgcolor'] = stripslashes($themedata['bgcolor']);
-                    $themedata['altbg1'] = stripslashes($themedata['altbg1']);
-                    $themedata['altbg2'] = stripslashes($themedata['altbg2']);
-                    $themedata['link'] = stripslashes($themedata['link']);
-                    $themedata['bordercolor'] = stripslashes($themedata['bordercolor']);
-                    $themedata['header'] = stripslashes($themedata['header']);
-                    $themedata['headertext'] = stripslashes($themedata['headertext']);
-                    $themedata['top'] = stripslashes($themedata['top']);
-                    $themedata['catcolor'] = stripslashes($themedata['catcolor']);
-                    $themedata['tabletext'] = stripslashes($themedata['tabletext']);
-                    $themedata['text'] = stripslashes($themedata['text']);
-                    $themedata['borderwidth'] = stripslashes($themedata['borderwidth']);
-                    $themedata['tablewidth'] = stripslashes($themedata['tablewidth']);
-                    $themedata['tablespace'] = stripslashes($themedata['tablespace']);
-                    $themedata['fontsize'] = stripslashes($themedata['fontsize']);
-                    $themedata['font'] = stripslashes($themedata['font']);
-                    $themedata['boardimg'] = stripslashes($themedata['boardimg']);
-                    $themedata['imgdir'] = stripslashes($themedata['imgdir']);
-                    $themedata['smdir'] = stripslashes($themedata['smdir']);
-                    $themedata['cattext'] = stripslashes($themedata['cattext']);
-                    $themedata['outerbgcolor'] = stripslashes($themedata['outerbgcolor']);
-                    $themedata['outertable'] = stripslashes($themedata['outertable']);
-                    $themedata['outertablewidth'] = stripslashes($themedata['outertablewidth']);
-                    $themedata['outerbordercolor'] = stripslashes($themedata['outerbordercolor']);
-                    $themedata['outerborderwidth'] = stripslashes($themedata['outerborderwidth']);
-                    $themedata['navsymbol'] = stripslashes($themedata['navsymbol']);
-                    $themedata['spacolor'] = stripslashes($themedata['spacolor']);
-                    $themedata['admcolor'] = stripslashes($themedata['admcolor']);
-                    $themedata['spmcolor'] = stripslashes($themedata['spmcolor']);
-                    $themedata['modcolor'] = stripslashes($themedata['modcolor']);
-                    $themedata['memcolor'] = stripslashes($themedata['memcolor']);
-                    $themedata['ricondir'] = stripslashes($themedata['ricondir']);
-                    $themedata['highlight'] = stripslashes($themedata['highlight']);
-                    
-                    if (false === strpos($themedata['catcolor'], '.')) {
-                        $catcode = 'style="background-color: ' . $themedata['catcolor'] . '"';
-                    } else {
-                        $catcode = 'style="background-image: url(../' . $themedata['imgdir'] . '/' . $themedata['catcolor'] . ')"';
-                    }
-                    if (false === strpos($themedata['top'], '.')) {
-                        $topcode = 'style="background-color: ' . $themedata['top'] . '"';
-                    } else {
-                        $topcode = 'style="background-image: url(../' . $themedata['imgdir'] . '/' . $themedata['top'] . ')"';
-                    }
-                    ?>
+            if ($key == 'name') {
+                $name = $val;
+            }
+        $keysql[] = $key;
+        $valsql[] = "'$val'";
+    }
+    $keysql = implode(', ', $keysql);
+    $valsql = implode(', ', $valsql);
+    
+    $query = $db->query("SELECT COUNT(themeid) FROM " . X_PREFIX . "themes WHERE name = '" . addslashes($name) . "'");
+    if ($db->result($query, 0) > 0) {
+        $db->free_result($query);
+        cp_error($lang['theme_already_exists'], false, '', '</td></tr></table>', 'cp_themes.php?action=themes');
+    }
+    
+    $sql = "INSERT INTO " . X_PREFIX . "themes ($keysql) VALUES ($valsql);";
+    $query = $db->query($sql);
+    if (! $query) {
+        cp_message($lang['textthemeimportfail'], false, '', '</td></tr></table>', 'cp_themes.php?action=themes');
+    } else {
+        cp_message($lang['textthemeimportsuccess'], false, '', '</td></tr></table>', 'cp_themes.php?action=themes');
+    }
+}
+
+function doUpdateTheme()
+{
+    global $db;
+    
+    $number_of_themes = $db->result($db->query("SELECT count(themeid) FROM " . X_PREFIX . "themes"), 0);
+    $theme_delete = formArray('theme_delete');
+    if (isset($theme_delete) && count($theme_delete) >= $number_of_themes) {
+        cp_error($lang['delete_all_themes'], false, '', '</td></tr></table>', 'cp_themes.php?action=themes');
+    }
+    if (isset($theme_delete)) {
+        foreach ($theme_delete as $themeid) {
+            $otherid = $db->result($db->query("SELECT themeid FROM " . X_PREFIX . "themes WHERE themeid != '$themeid' ORDER BY rand() LIMIT 1"), 0);
+            $db->query("UPDATE " . X_PREFIX . "members SET theme = '$otherid' WHERE theme = '$themeid'");
+            $db->query("UPDATE " . X_PREFIX . "forums SET theme = '0' WHERE theme = '$themeid'");
+            if ($CONFIG['theme'] == $themeid) {
+                $db->query("UPDATE " . X_PREFIX . "settings SET theme = '$otherid'");
+            }
+            $db->query("DELETE FROM " . X_PREFIX . "themes WHERE themeid = '$themeid'");
+        }
+    }
+    
+    $theme_name = formArray('theme_name');
+    foreach ($theme_name as $themeid => $name) {
+        $name = addslashes(trim($name));
+        $db->query("UPDATE " . X_PREFIX . "themes SET name = '$name' WHERE themeid = '$themeid'");
+    }
+    cp_message($lang['themeupdate'], false, '', '</td></tr></table>', 'cp_themes.php?action=themes');
+}
+
+function doDisplayThemes()
+{
+    global $db, $oToken;
+    
+    $single = formInt('single');
+    
+    $query = $db->query("SELECT * FROM " . X_PREFIX . "themes WHERE themeid = '$single'");
+    $themedata = $db->fetch_array($query);
+    $db->free_result($query);
+    
+    $roundon = $squareon = $none = '';
+    switch ($themedata['outertable']) {
+        case 'round':
+            $roundon = $selHTML;
+            break;
+        case 'square':
+            $squareon = $selHTML;
+            break;
+        default:
+            $none = $selHTML;
+            break;
+    }
+    
+    $threadoptimg = $threadopttxt = '';
+    switch ($themedata['threadopts']) {
+        case 'image':
+            $threadoptimg = $selHTML;
+            break;
+        default:
+            $threadopttxt = $selHTML;
+            break;
+    }
+    
+    $shadowon = $shadowoff = '';
+    formHelper::getThemeOnOffHtml('shadowfx', $shadowon, $shadowoff);
+    $themeon = $themeoff = '';
+    formHelper::getThemeOnOffHtml('themestatus', $themeon, $themeoff);
+    $celloveron = $celloveroff = '';
+    formHelper::getThemeOnOffHtml('celloverfx', $celloveron, $celloveroff);
+    $riconon = $riconoff = '';
+    formHelper::getThemeOnOffHtml('riconstatus', $riconon, $riconoff);
+    $spacecatson = $spacecatsoff = '';
+    formHelper::getThemeOnOffHtml('space_cats', $spacecatson, $spacecatsoff);
+    
+    $themedata['name'] = stripslashes($themedata['name']);
+    $themedata['bgcolor'] = stripslashes($themedata['bgcolor']);
+    $themedata['altbg1'] = stripslashes($themedata['altbg1']);
+    $themedata['altbg2'] = stripslashes($themedata['altbg2']);
+    $themedata['link'] = stripslashes($themedata['link']);
+    $themedata['bordercolor'] = stripslashes($themedata['bordercolor']);
+    $themedata['header'] = stripslashes($themedata['header']);
+    $themedata['headertext'] = stripslashes($themedata['headertext']);
+    $themedata['top'] = stripslashes($themedata['top']);
+    $themedata['catcolor'] = stripslashes($themedata['catcolor']);
+    $themedata['tabletext'] = stripslashes($themedata['tabletext']);
+    $themedata['text'] = stripslashes($themedata['text']);
+    $themedata['borderwidth'] = stripslashes($themedata['borderwidth']);
+    $themedata['tablewidth'] = stripslashes($themedata['tablewidth']);
+    $themedata['tablespace'] = stripslashes($themedata['tablespace']);
+    $themedata['fontsize'] = stripslashes($themedata['fontsize']);
+    $themedata['font'] = stripslashes($themedata['font']);
+    $themedata['boardimg'] = stripslashes($themedata['boardimg']);
+    $themedata['imgdir'] = stripslashes($themedata['imgdir']);
+    $themedata['smdir'] = stripslashes($themedata['smdir']);
+    $themedata['cattext'] = stripslashes($themedata['cattext']);
+    $themedata['outerbgcolor'] = stripslashes($themedata['outerbgcolor']);
+    $themedata['outertable'] = stripslashes($themedata['outertable']);
+    $themedata['outertablewidth'] = stripslashes($themedata['outertablewidth']);
+    $themedata['outerbordercolor'] = stripslashes($themedata['outerbordercolor']);
+    $themedata['outerborderwidth'] = stripslashes($themedata['outerborderwidth']);
+    $themedata['navsymbol'] = stripslashes($themedata['navsymbol']);
+    $themedata['spacolor'] = stripslashes($themedata['spacolor']);
+    $themedata['admcolor'] = stripslashes($themedata['admcolor']);
+    $themedata['spmcolor'] = stripslashes($themedata['spmcolor']);
+    $themedata['modcolor'] = stripslashes($themedata['modcolor']);
+    $themedata['memcolor'] = stripslashes($themedata['memcolor']);
+    $themedata['ricondir'] = stripslashes($themedata['ricondir']);
+    $themedata['highlight'] = stripslashes($themedata['highlight']);
+    
+    if (false === strpos($themedata['catcolor'], '.')) {
+        $catcode = 'style="background-color: ' . $themedata['catcolor'] . '"';
+    } else {
+        $catcode = 'style="background-image: url(../' . $themedata['imgdir'] . '/' . $themedata['catcolor'] . ')"';
+    }
+    if (false === strpos($themedata['top'], '.')) {
+        $topcode = 'style="background-color: ' . $themedata['top'] . '"';
+    } else {
+        $topcode = 'style="background-image: url(../' . $themedata['imgdir'] . '/' . $themedata['top'] . ')"';
+    }
+    ?>
 <form method="post"
 	action="cp_themes.php?action=themes&amp;single=submit">
 	<input type="hidden" name="token"
@@ -638,15 +533,18 @@ if ($action == 'themes') {
 			</td>
 		</tr>
 	</table>
-        <?php echo $shadow2?>
-        </form>
+            <?php echo $shadow2?>
+            </form>
 </td>
 </tr>
 </table>
 <?php
-                } else 
-                    if (isset($single) && $single == 'anewtheme1') {
-                        ?>
+}
+
+function doDisplayANewTheme($single)
+{
+    global $THEME, $oToken;
+    ?>
 <form method="post"
 	action="cp_themes.php?action=themes&amp;single=submit">
 	<input type="hidden" name="token"
@@ -852,142 +750,308 @@ if ($action == 'themes') {
 			</td>
 		</tr>
 	</table>
-        <?php echo $shadow2?>
-        </form>
+            <?php echo $shadow2?>
+            </form>
 </td>
 </tr>
 </table>
 <?php
+}
+
+function doThemeUpdateSubmit()
+{
+    global $db;
+    
+    $namenew = $db->escape(formVar('namenew'));
+    $bgcolornew = $db->escape(formVar('bgcolornew'));
+    $altbg1new = $db->escape(formVar('altbg1new'));
+    $altbg2new = $db->escape(formVar('altbg2new'));
+    $linknew = $db->escape(formVar('linknew'));
+    $bordercolornew = $db->escape(formVar('bordercolornew'));
+    $headernew = $db->escape(formVar('headernew'));
+    $headertextnew = $db->escape(formVar('headertextnew'));
+    $topnew = $db->escape(formVar('topnew'));
+    $catcolornew = $db->escape(formVar('catcolornew'));
+    $tabletextnew = $db->escape(formVar('tabletextnew'));
+    $textnew = $db->escape(formVar('textnew'));
+    $borderwidthnew = $db->escape(formVar('borderwidthnew'));
+    $tablewidthnew = $db->escape(formVar('tablewidthnew'));
+    $tablespacenew = $db->escape(formVar('tablespacenew'));
+    $fontsizenew = $db->escape(formVar('fontsizenew'));
+    $fontnew = $db->escape(formVar('fontnew'));
+    $boardlogonew = $db->escape(formVar('boardlogonew'));
+    $imgdirnew = $db->escape(formVar('imgdirnew'));
+    $smdirnew = $db->escape(formVar('smdirnew'));
+    $cattextnew = $db->escape(formVar('cattextnew'));
+    $outerbgcolornew = $db->escape(formVar('outerbgcolornew'));
+    $outertablenew = $db->escape(formVar('outertablenew'));
+    $outertablewidthnew = $db->escape(formVar('outertablewidthnew'));
+    $outerbordercolornew = $db->escape(formVar('outerbordercolornew'));
+    $outerborderwidthnew = $db->escape(formVar('outerborderwidthnew'));
+    $navsymbolnew = $db->escape(formVar('navsymbolnew'));
+    $spacolornew = $db->escape(formVar('spacolornew'));
+    $admcolornew = $db->escape(formVar('admcolornew'));
+    $spmcolornew = $db->escape(formVar('spmcolornew'));
+    $modcolornew = $db->escape(formVar('modcolornew'));
+    $memcolornew = $db->escape(formVar('memcolornew'));
+    $ricondirnew = $db->escape(formVar('ricondirnew'));
+    $highlightnew = $db->escape(formVar('highlightnew'));
+    
+    $shadowfxnew = formOnOff('shadowfxnew');
+    $themestatusnew = formOnOff('themestatusnew');
+    $celloverfxnew = formOnOff('celloverfxnew');
+    $riconstatusnew = formOnOff('riconstatusnew');
+    $space_catsnew = formOnOff('space_catsnew');
+    $threadoptsnew = ($threadoptsnew == 'image') ? 'image' : 'text';
+    $outertablenew = ($outertablenew == 'none') ? 'none' : ($outertablenew == 'round' ? 'round' : 'square');
+    
+    $orig = formInt('orig');
+    
+    $db->query("UPDATE " . X_PREFIX . "themes SET
+        name = '$namenew',
+        bgcolor = '$bgcolornew',
+        altbg1 = '$altbg1new',
+        altbg2 = '$altbg2new',
+        link = '$linknew',
+        bordercolor = '$bordercolornew',
+        header = '$headernew',
+        headertext = '$headertextnew',
+        top = '$topnew',
+        catcolor = '$catcolornew',
+        tabletext = '$tabletextnew',
+        text = '$textnew',
+        borderwidth = '$borderwidthnew',
+        tablewidth = '$tablewidthnew',
+        tablespace = '$tablespacenew',
+        fontsize = '$fontsizenew',
+        font = '$fontnew',
+        boardimg = '$boardlogonew',
+        imgdir = '$imgdirnew',
+        smdir = '$smdirnew',
+        cattext = '$cattextnew',
+        outerbgcolor = '$outerbgcolornew',
+        outertable = '$outertablenew',
+        outertablewidth = '$outertablewidthnew',
+        outerbordercolor = '$outerbordercolornew',
+        outerborderwidth = '$outerborderwidthnew',
+        shadowfx = '$shadowfxnew',
+        threadopts = '$threadoptsnew',
+        themestatus = '$themestatusnew',
+        navsymbol = '$navsymbolnew',
+        celloverfx = '$celloverfxnew',
+        riconstatus = '$riconstatusnew',
+        spacolor = '$spacolornew',
+        admcolor = '$admcolornew',
+        spmcolor = '$spmcolornew',
+        modcolor = '$modcolornew',
+        memcolor = '$memcolornew',
+        ricondir = '$ricondirnew',
+        highlight = '$highlightnew',
+        space_cats = '$space_catsnew'
+        WHERE themeid = '$orig'
+        ");
+    if (isset($themestatusnew) && $themestatusnew != 'on') {
+        $db->query("UPDATE " . X_PREFIX . "members SET theme = '0' WHERE theme = '$orig'");
+    }
+    cp_message($lang['themeupdate'], false, '', '</td></tr></table>', 'cp_themes.php?action=themes');
+}
+
+function doNewThemeSubmit()
+{
+    global $db;
+    
+    $namenew = $db->escape(formVar('namenew'));
+    $bgcolornew = $db->escape(formVar('bgcolornew'));
+    $altbg1new = $db->escape(formVar('altbg1new'));
+    $altbg2new = $db->escape(formVar('altbg2new'));
+    $linknew = $db->escape(formVar('linknew'));
+    $bordercolornew = $db->escape(formVar('bordercolornew'));
+    $headernew = $db->escape(formVar('headernew'));
+    $headertextnew = $db->escape(formVar('headertextnew'));
+    $topnew = $db->escape(formVar('topnew'));
+    $catcolornew = $db->escape(formVar('catcolornew'));
+    $tabletextnew = $db->escape(formVar('tabletextnew'));
+    $textnew = $db->escape(formVar('textnew'));
+    $borderwidthnew = $db->escape(formVar('borderwidthnew'));
+    $tablewidthnew = $db->escape(formVar('tablewidthnew'));
+    $tablespacenew = $db->escape(formVar('tablespacenew'));
+    $fontsizenew = $db->escape(formVar('fontsizenew'));
+    $fontnew = $db->escape(formVar('fontnew'));
+    $boardlogonew = $db->escape(formVar('boardlogonew'));
+    $imgdirnew = $db->escape(formVar('imgdirnew'));
+    $smdirnew = $db->escape(formVar('smdirnew'));
+    $cattextnew = $db->escape(formVar('cattextnew'));
+    $outerbgcolornew = $db->escape(formVar('outerbgcolornew'));
+    $outertablenew = $db->escape(formVar('outertablenew'));
+    $outertablewidthnew = $db->escape(formVar('outertablewidthnew'));
+    $outerbordercolornew = $db->escape(formVar('outerbordercolornew'));
+    $outerborderwidthnew = $db->escape(formVar('outerborderwidthnew'));
+    $navsymbolnew = $db->escape(formVar('navsymbolnew'));
+    $spacolornew = $db->escape(formVar('spacolornew'));
+    $admcolornew = $db->escape(formVar('admcolornew'));
+    $spmcolornew = $db->escape(formVar('spmcolornew'));
+    $modcolornew = $db->escape(formVar('modcolornew'));
+    $memcolornew = $db->escape(formVar('memcolornew'));
+    $ricondirnew = $db->escape(formVar('ricondirnew'));
+    $riconstatusnew = $db->escape(formVar('riconstatusnew'));
+    $highlightnew = $db->escape(formVar('highlightnew'));
+    $celloverfxnew = $db->escape(formVar('celloverfxnew'));
+    $shadowfxnew = $db->escape(formVar('shadowfxnew'));
+    $space_catsnew = $db->escape(formVar('space_catsnew'));
+    $threadoptsnew = $db->escape(formVar('threadoptsnew'));
+    $themestatusnew = $db->escape(formVar('themestatusnew'));
+    
+    $db->query("INSERT INTO " . X_PREFIX . "themes (themeid, name, bgcolor, altbg1, altbg2, link, bordercolor, header, headertext, top, catcolor, tabletext, text, borderwidth, tablewidth, tablespace, font, fontsize, boardimg, imgdir, smdir, cattext, outerbgcolor, outertable, outertablewidth, outerbordercolor, outerborderwidth, shadowfx, threadopts, themestatus, navsymbol, celloverfx, riconstatus, spacolor, admcolor, spmcolor, modcolor, memcolor, ricondir, highlight, space_cats) VALUES ('', '$namenew', '$bgcolornew', '$altbg1new', '$altbg2new', '$linknew', '$bordercolornew', '$headernew', '$headertextnew', '$topnew', '$catcolornew', '$tabletextnew', '$textnew', '$borderwidthnew', '$tablewidthnew', '$tablespacenew', '$fontnew', '$fontsizenew', '$boardlogonew', '$imgdirnew', '$smdirnew', '$cattextnew', '$outerbgcolornew', '$outertablenew', '$outertablewidthnew', '$outerbordercolornew', '$outerborderwidthnew', '$shadowfxnew', '$threadoptsnew', '$themestatusnew', '$navsymbolnew', '$celloverfxnew', '$riconstatusnew', '$spacolornew', '$admcolornew', '$spmcolornew', '$modcolornew', '$memcolornew', '$ricondirnew', '$highlightnew', '$space_catsnew')");
+    cp_message($lang['themeupdate'], false, '', '</td></tr></table>', 'cp_themes.php?action=themes');
+}
+
+function doDisplayThemePanel()
+{
+    global $db, $lang, $THEME, $oToken;
+    
+    ?>
+<form method="post" action="cp_themes.php?action=themes"
+	name="theme_main">
+	<input type="hidden" name="token"
+		value="<?php echo $oToken->get_new_token()?>" />
+	<table cellspacing="0px" cellpadding="0px" border="0px" width="100%"
+		align="center">
+		<tr>
+			<td bgcolor="<?php echo $THEME['bordercolor']?>">
+				<table border="0px" cellspacing="<?php echo $THEME['borderwidth']?>"
+					cellpadding="<?php echo $THEME['tablespace']?>" width="100%">
+					<tr class="category">
+						<td class="title" align="center"><?php echo $lang['textdeleteques']?></td>
+						<td class="title" align="center"><?php echo $lang['textthemename']?></td>
+						<td class="title" align="center"><?php echo $lang['numberusing']?></td>
+						<td class="title" align="center"><?php echo $lang['status']?></td>
+					</tr>
+            <?php
+    // altered theme code to produce a 20x speed increase
+    $themeMem = array(
+        0 => 0
+    );
+    $tq = $db->query("SELECT theme, COUNT(theme) as cnt FROM " . X_PREFIX . "members GROUP BY theme");
+    while (($t = $db->fetch_array($tq)) != false) {
+        $themeMem[((int) $t['theme'])] = $t['cnt'];
+    }
+    $db->free_result($tq);
+    
+    $query = $db->query("SELECT name, themestatus, themeid FROM " . X_PREFIX . "themes ORDER BY name ASC");
+    while (($themeinfo = $db->fetch_array($query)) != false) {
+        $themeid = $themeinfo['themeid'];
+        if (! isset($themeMem[$themeid])) {
+            $themeMem[$themeid] = 0;
+        }
+        
+        if ($themeinfo['themeid'] == $CONFIG['theme']) {
+            $members = ($themeMem[$themeid] + $themeMem[0]);
+        } else {
+            $members = $themeMem[$themeid];
+        }
+        
+        if ($themeinfo['themeid'] == $theme) {
+            $checked = $cheHTML;
+        } else {
+            $checked = 'checked="unchecked"';
+        }
+        ?>
+                <tr>
+						<td bgcolor="<?php echo $THEME['altbg1']?>" class="ctrtablerow"><input
+							type="checkbox" name="theme_delete[]"
+							value="<?php echo $themeinfo['themeid']?>" /></td>
+						<td bgcolor="<?php echo $THEME['altbg2']?>" class="tablerow"><input
+							type="text" name="theme_name[<?php echo $themeinfo['themeid']?>]"
+							value="<?php echo $themeinfo['name']?>" />&nbsp;[ <a
+							href="./cp_themes.php?action=themes&amp;single=<?php echo $themeinfo['themeid']?>"><?php echo $lang['textdetails']?></a>
+							]&nbsp;-&nbsp;[ <a
+							href="./cp_themes.php?action=themes&amp;download=<?php echo $themeinfo['themeid']?>"><?php echo $lang['textdownload']?></a>
+							]</td>
+						<td bgcolor="<?php echo $THEME['altbg1']?>" class="ctrtablerow"><?php echo $members?></td>
+						<td bgcolor="<?php echo $THEME['altbg2']?>" class="ctrtablerow"><?php echo $themeinfo['themestatus']?></td>
+					</tr>
+                <?php
+    }
+    $db->free_result($query);
+    ?>
+            <tr bgcolor="<?php echo $THEME['altbg1']?>" class="tablerow">
+						<td colspan="4"><a
+							href="./cp_themes.php?action=themes&amp;single=anewtheme1"><strong><?php echo $lang['textnewtheme']?></strong></a>
+							- <a href="#"
+							onclick="setCheckboxes('theme_main', 'theme_delete[]', true); return false;"><?php echo $lang['checkall']?></a>
+							- <a href="#"
+							onclick="setCheckboxes('theme_main', 'theme_delete[]', false); return false;"><?php echo $lang['uncheckall']?></a>
+							- <a href="#"
+							onclick="invertSelection('theme_main', 'theme_delete[]'); return false;"><?php echo $lang['invertselection']?></a></td>
+					</tr>
+					<tr class="ctrtablerow" bgcolor="<?php echo $THEME['altbg2']?>">
+						<td colspan="4"><input type="submit" name="themesubmit"
+							value="<?php echo $lang['textsubmitchanges']?>" class="submit" /></td>
+					</tr>
+				</table>
+			</td>
+		</tr>
+	</table>
+            <?php echo $shadow2?>
+            </form>
+<br />
+<form method="post" action="cp_themes.php?action=themes"
+	enctype="multipart/form-data">
+	<input type="hidden" name="token"
+		value="<?php echo $oToken->get_new_token()?> " />
+	<table cellspacing="0px" cellpadding="0px" border="0px" width="100%"
+		align="center">
+		<tr>
+			<td bgcolor="<?php echo $THEME['bordercolor']?>">
+				<table border="0px" cellspacing="<?php echo $THEME['borderwidth']?>"
+					cellpadding="<?php echo $THEME['tablespace']?>" width="100%">
+					<tr class="category">
+						<td colspan="2" class="title"><?php echo $lang['textimporttheme']?></td>
+					</tr>
+					<tr class="tablerow">
+						<td bgcolor="<?php echo $THEME['altbg1']?>"><?php echo $lang['textthemefile']?></td>
+						<td bgcolor="<?php echo $THEME['altbg2']?>"><input type="file"
+							name="themefile" value="" size="40" /></td>
+					</tr>
+					<tr class="ctrtablerow" bgcolor="<?php echo $THEME['altbg2']?>">
+						<td colspan="2"><input type="submit" class="submit"
+							name="importsubmit"
+							value="<?php echo $lang['textimportsubmit']?>" /></td>
+					</tr>
+				</table>
+			</td>
+		</tr>
+	</table>
+            <?php echo $shadow2?>
+            </form>
+</td>
+</tr>
+</table>
+<?php
+}
+
+$single = formVar('single');
+if ($action == 'themes') {
+    if (noSubmit('themesubmit') && ! isset($single) && noSubmit('importsubmit')) {
+        doDisplayThemePanel();
+    } else 
+        if (onSubmit('importsubmit') && isset($_FILES['themefile']['tmp_name'])) {
+            doImportTheme();
+        } else 
+            if (onSubmit('themesubmit')) {
+                doUpdateTheme();
+            } else 
+                if (isset($single) && $single != 'submit' && $single != 'anewtheme1') {
+                    doDisplayThemes();
+                } else 
+                    if (isset($single) && $single == 'anewtheme1') {
+                        doDisplayANewTheme($single);
                     } else 
                         if (isset($single) && $single == 'submit' && ! isset($newtheme)) {
-                            $namenew = addslashes(trim($namenew));
-                            $bgcolornew = addslashes(trim($bgcolornew));
-                            $altbg1new = addslashes(trim($altbg1new));
-                            $altbg2new = addslashes(trim($altbg2new));
-                            $linknew = addslashes(trim($linknew));
-                            $bordercolornew = addslashes(trim($bordercolornew));
-                            $headernew = addslashes(trim($headernew));
-                            $headertextnew = addslashes(trim($headertextnew));
-                            $topnew = addslashes(trim($topnew));
-                            $catcolornew = addslashes(trim($catcolornew));
-                            $tabletextnew = addslashes(trim($tabletextnew));
-                            $textnew = addslashes(trim($textnew));
-                            $borderwidthnew = addslashes(trim($borderwidthnew));
-                            $tablewidthnew = addslashes(trim($tablewidthnew));
-                            $tablespacenew = addslashes(trim($tablespacenew));
-                            $fontsizenew = addslashes(trim($fontsizenew));
-                            $fontnew = addslashes(trim($fontnew));
-                            $boardlogonew = addslashes(trim($boardlogonew));
-                            $imgdirnew = addslashes(trim($imgdirnew));
-                            $smdirnew = addslashes(trim($smdirnew));
-                            $cattextnew = addslashes(trim($cattextnew));
-                            $outerbgcolornew = addslashes(trim($outerbgcolornew));
-                            $outertablenew = addslashes(trim($outertablenew));
-                            $outertablewidthnew = addslashes(trim($outertablewidthnew));
-                            $outerbordercolornew = addslashes(trim($outerbordercolornew));
-                            $outerborderwidthnew = addslashes(trim($outerborderwidthnew));
-                            $navsymbolnew = addslashes(trim($navsymbolnew));
-                            $spacolornew = addslashes(trim($spacolornew));
-                            $admcolornew = addslashes(trim($admcolornew));
-                            $spmcolornew = addslashes(trim($spmcolornew));
-                            $modcolornew = addslashes(trim($modcolornew));
-                            $memcolornew = addslashes(trim($memcolornew));
-                            $ricondirnew = addslashes(trim($ricondirnew));
-                            $highlightnew = addslashes(trim($highlightnew));
-                            
-                            $shadowfxnew = formOnOff('shadowfxnew');
-                            $themestatusnew = formOnOff('themestatusnew');
-                            $celloverfxnew = formOnOff('celloverfxnew');
-                            $riconstatusnew = formOnOff('riconstatusnew');
-                            $space_catsnew = formOnOff('space_catsnew');
-                            $threadoptsnew = ($threadoptsnew == 'image') ? 'image' : 'text';
-                            $outertablenew = ($outertablenew == 'none') ? 'none' : ($outertablenew == 'round' ? 'round' : 'square');
-                            
-                            $db->query("UPDATE " . X_PREFIX . "themes SET
-            name = '$namenew',
-            bgcolor = '$bgcolornew',
-            altbg1 = '$altbg1new',
-            altbg2 = '$altbg2new',
-            link = '$linknew',
-            bordercolor = '$bordercolornew',
-            header = '$headernew',
-            headertext = '$headertextnew',
-            top = '$topnew',
-            catcolor = '$catcolornew',
-            tabletext = '$tabletextnew',
-            text = '$textnew',
-            borderwidth = '$borderwidthnew',
-            tablewidth = '$tablewidthnew',
-            tablespace = '$tablespacenew',
-            fontsize = '$fontsizenew',
-            font = '$fontnew',
-            boardimg = '$boardlogonew',
-            imgdir = '$imgdirnew',
-            smdir = '$smdirnew',
-            cattext = '$cattextnew',
-            outerbgcolor = '$outerbgcolornew',
-            outertable = '$outertablenew',
-            outertablewidth = '$outertablewidthnew',
-            outerbordercolor = '$outerbordercolornew',
-            outerborderwidth = '$outerborderwidthnew',
-            shadowfx = '$shadowfxnew',
-            threadopts = '$threadoptsnew',
-            themestatus = '$themestatusnew',
-            navsymbol = '$navsymbolnew',
-            celloverfx = '$celloverfxnew',
-            riconstatus = '$riconstatusnew',
-            spacolor = '$spacolornew',
-            admcolor = '$admcolornew',
-            spmcolor = '$spmcolornew',
-            modcolor = '$modcolornew',
-            memcolor = '$memcolornew',
-            ricondir = '$ricondirnew',
-            highlight = '$highlightnew',
-            space_cats = '$space_catsnew'
-            WHERE themeid = '$orig'
-        ");
-                            if (isset($themestatusnew) && $themestatusnew != 'on') {
-                                $db->query("UPDATE " . X_PREFIX . "members SET theme = '0' WHERE theme = '$orig'");
-                            }
-                            cp_message($lang['themeupdate'], false, '', '</td></tr></table>', 'cp_themes.php?action=themes');
+                            doThemeUpdateSubmit();
                         } else 
                             if (isset($single) && $single == 'submit' && isset($newtheme)) {
-                                $namenew = addslashes(trim($namenew));
-                                $bgcolornew = addslashes(trim($bgcolornew));
-                                $altbg1new = addslashes(trim($altbg1new));
-                                $altbg2new = addslashes(trim($altbg2new));
-                                $linknew = addslashes(trim($linknew));
-                                $bordercolornew = addslashes(trim($bordercolornew));
-                                $headernew = addslashes(trim($headernew));
-                                $headertextnew = addslashes(trim($headertextnew));
-                                $topnew = addslashes(trim($topnew));
-                                $catcolornew = addslashes(trim($catcolornew));
-                                $tabletextnew = addslashes(trim($tabletextnew));
-                                $textnew = addslashes(trim($textnew));
-                                $borderwidthnew = addslashes(trim($borderwidthnew));
-                                $tablewidthnew = addslashes(trim($tablewidthnew));
-                                $tablespacenew = addslashes(trim($tablespacenew));
-                                $fontsizenew = addslashes(trim($fontsizenew));
-                                $fontnew = addslashes(trim($fontnew));
-                                $boardlogonew = addslashes(trim($boardlogonew));
-                                $imgdirnew = addslashes(trim($imgdirnew));
-                                $smdirnew = addslashes(trim($smdirnew));
-                                $cattextnew = addslashes(trim($cattextnew));
-                                $outerbgcolornew = addslashes(trim($outerbgcolornew));
-                                $outertablenew = addslashes(trim($outertablenew));
-                                $outertablewidthnew = addslashes(trim($outertablewidthnew));
-                                $outerbordercolornew = addslashes(trim($outerbordercolornew));
-                                $outerborderwidthnew = addslashes(trim($outerborderwidthnew));
-                                $navsymbolnew = addslashes(trim($navsymbolnew));
-                                $spacolornew = addslashes(trim($spacolornew));
-                                $admcolornew = addslashes(trim($admcolornew));
-                                $spmcolornew = addslashes(trim($spmcolornew));
-                                $modcolornew = addslashes(trim($modcolornew));
-                                $memcolornew = addslashes(trim($memcolornew));
-                                $ricondirnew = addslashes(trim($ricondirnew));
-                                $highlightnew = addslashes(trim($highlightnew));
-                                $db->query("INSERT INTO " . X_PREFIX . "themes (themeid, name, bgcolor, altbg1, altbg2, link, bordercolor, header, headertext, top, catcolor, tabletext, text, borderwidth, tablewidth, tablespace, font, fontsize, boardimg, imgdir, smdir, cattext, outerbgcolor, outertable, outertablewidth, outerbordercolor, outerborderwidth, shadowfx, threadopts, themestatus, navsymbol, celloverfx, riconstatus, spacolor, admcolor, spmcolor, modcolor, memcolor, ricondir, highlight, space_cats) VALUES ('', '$namenew', '$bgcolornew', '$altbg1new', '$altbg2new', '$linknew', '$bordercolornew', '$headernew', '$headertextnew', '$topnew', '$catcolornew', '$tabletextnew', '$textnew', '$borderwidthnew', '$tablewidthnew', '$tablespacenew', '$fontnew', '$fontsizenew', '$boardlogonew', '$imgdirnew', '$smdirnew', '$cattextnew', '$outerbgcolornew', '$outertablenew', '$outertablewidthnew', '$outerbordercolornew', '$outerborderwidthnew', '$shadowfxnew', '$threadoptsnew', '$themestatusnew', '$navsymbolnew', '$celloverfxnew', '$riconstatusnew', '$spacolornew', '$admcolornew', '$spmcolornew', '$modcolornew', '$memcolornew', '$ricondirnew', '$highlightnew', '$space_catsnew')");
-                                cp_message($lang['themeupdate'], false, '', '</td></tr></table>', 'cp_themes.php?action=themes');
+                                doNewThemeSubmit();
                             }
 }
 
