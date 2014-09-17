@@ -96,10 +96,12 @@ class member
 
     public $uid;
 
-    public $extracol = array();
+    public $extracol;
 
-    function member($memberId = 0)
+    function __construct($memberId = 0)
     {
+        $this->extracol = array();
+        
         if ($memberId == 0) {
             // create a new member object... in memory
             $this->init();
@@ -445,6 +447,8 @@ class member
      */
     function delete($uid = 0)
     {
+        global $db;
+        
         if ($this->uid === 0 && $uid === 0) {
             return false;
         }
@@ -531,7 +535,10 @@ class member
         
         $return = '';
         $return_ok = false;
-        foreach ($this->extracol as $colname => $coltype) {
+        
+        $extracol = $this->extracol;
+        
+        foreach ($extracol as $colname => $coltype) {
             switch ($type) {
                 case 'insertnames':
                     $return .= ',' . $colname;

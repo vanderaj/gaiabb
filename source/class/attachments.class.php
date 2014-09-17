@@ -32,6 +32,8 @@ if (! defined('IN_PROGRAM') && (defined('DEBUG') && DEBUG == false)) {
     exit('This file is not designed to be called directly');
 }
 
+require_once('mimetypes.inc.php');
+
 class attachment
 {
 
@@ -132,9 +134,12 @@ class attachment
         global $CONFIG, $THEME, $lang, $post, $forum, $tid;
         global $n_height, $n_width, $attachicon, $postauthor;
         
-        reset($this->attachments);
         $retval = '';
-        foreach ($this->attachments as $attach) {
+        $attachments = $this->attachments;
+        reset($attachments);
+        
+        $attachicon = '';
+        foreach ($attachments as $attach) {
             if ((intval($attach['fileheight']) == 0 || intval($attach['filewidth']) == 0) && strpos($attach['filetype'], 'image') !== false) {
                 $this->upgrade_attachment($attach);
             }
@@ -172,29 +177,25 @@ class attachment
                             }
                             
                             if ($CONFIG['attachborder'] == 'on') {
-                                $attachicon = '';
                                 if ($CONFIG['attachicon_status'] == 'on') {
-                                    include ('mimetypes.inc.php');
+                                    $attachicon = getMimeType($extension);
                                 }
                                 eval("\$post['message'] .= \"" . template('viewtopic_post_attachmentimage') . "\";");
                             } else {
-                                $attachicon = '';
                                 if ($CONFIG['attachicon_status'] == 'on') {
-                                    include ('mimetypes.inc.php');
+                                    $attachicon = getMimeType($extension);
                                 }
                                 eval("\$post['message'] .= \"" . template('viewtopic_post_attimg_noborder') . "\";");
                             }
                         } else {
                             if ($CONFIG['attachborder'] == 'on') {
-                                $attachicon = '';
                                 if ($CONFIG['attachicon_status'] == 'on') {
-                                    include ('mimetypes.inc.php');
+                                    $attachicon = getMimeType($extension);
                                 }
                                 eval("\$post['message'] .= \"" . template('viewtopic_post_attachment') . "\";");
                             } else {
-                                $attachicon = '';
                                 if ($CONFIG['attachicon_status'] == 'on') {
-                                    include ('mimetypes.inc.php');
+                                    $attachicon = getMimeType($extension);
                                 }
                                 eval("\$post['message'] .= \"" . template('viewtopic_post_attach_noborder') . "\";");
                             }

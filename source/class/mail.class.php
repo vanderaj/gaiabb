@@ -56,6 +56,8 @@ class MailSys
     {
         $OS = substr(PHP_OS, 0, 3);
         define('GAIABB_OS', $OS);
+        
+        $this->bcc = '';
     }
     
     // Required calls
@@ -263,13 +265,15 @@ class MailSys
             $this->SMTP_receive('MAIL FROM');
             $this->SMTP_send('RCPT TO:' . $this->to);
             
-            $this->bcc = array_unique(array_merge($this->bcc, $this->cc));
+            $bcc = array_unique(array_merge($this->bcc, $this->cc));
             
-            if (! empty($this->bcc)) {
-                foreach ($this->bcc as $rcpt_to) {
+            if (! empty($bcc)) {
+                foreach ($bcc as $rcpt_to) {
                     $this->SMTP_send('RCPT TO:' . $rcpt_to);
                 }
             }
+            
+            $this->bcc = $bcc;
             
             $this->SMTP_receive('RCPT TO (RECIPIENT)');
             $this->SMTP_send('DATA');
