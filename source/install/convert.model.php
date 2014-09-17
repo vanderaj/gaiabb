@@ -315,7 +315,7 @@ class convert
  */
 function process_convert_index($path)
 {
-    if (formVar('ubbinstall') == '') {
+    if (formVar('gbbinstall') == '') {
         view_header('Must Install First', $path);
         print_error('Cannot continue', 'You must have GaiaBB installed already to continue with the convertion');
     }

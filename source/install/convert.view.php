@@ -81,7 +81,7 @@ function view_convert_index($path)
 		check the following: <br />
 	<br />
 		<form action="index.php" method="post">
-			<input type=checkbox name="ubbinstall">&nbsp;Have you already
+			<input type=checkbox name="gbbinstall">&nbsp;Have you already
 			successfully installed GaiaBB?<br /> <input type=hidden name="path"
 				value="<?php echo $path?>"> <input type=hidden name="step"
 				value="preconvert"> <br /> <input type="submit" VALUE="Yes &gt;" />

@@ -2001,8 +2001,8 @@ function securityChecks()
     // Checks for various variables in the URL, if any of them is found, script is halted
     $url_check = array(
         'status=',
-        'ubbuser=',
-        'ubbpw=',
+        'gbbuser=',
+        'gbbpw=',
         '<script'
     );
     $url = trim(urldecode($url));

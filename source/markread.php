@@ -44,8 +44,8 @@ if (X_GUEST) {
     error($lang['textnoaction']);
 }
 
-$ubblvb = $onlinetime;
-put_cookie('ubblvb', $ubblvb, $ubblvb + 600, $cookiepath, $cookiedomain, null, X_SET_HEADER);
+$gbblvb = $onlinetime;
+put_cookie('gbblvb', $gbblvb, $gbblvb + 600, $cookiepath, $cookiedomain, null, X_SET_HEADER);
 $lastvisit = $onlinetime;
 $lastvisit2 = $onlinetime;
 redirect('index.php', 0);
