@@ -472,7 +472,7 @@ function bbcode(&$message, $allowimgcode, $allowurlcode) {
         if (false == stripos($message, 'javascript:')) {
             $patterns[] = '#\[img\](http[s]?|ftp[s]?){1}://([:a-z\\./_\-0-9%~]+){1}\[/img\]#Smi';
             $replacements[] = '<img <!-- nobr -->src="\1://\2\3"<!-- /nobr --> border="0" alt="" />';
-            $patterns[] = "#\[img=([0-9]*?){1}x([0-9]*?)\](http[s]?|ftp[s]?){1}://([:~a-z\\./0-9_\-%]+){1}(\?[a-z=0-9&_\-;~]*)?\[/img\]#Smi";
+            $patterns[] = "#[img=([0-9]*?){1}x([0-9]*?)](http[s]?|ftp[s]?){1}://([:~a-z\\./0-9_-%]+){1}(?[a-z=0-9&_-;~]*)?[/img]#Smi";
             $replacements[] = '<img width="\1" height="\2" <!-- nobr -->src="\3://\4\5"<!-- /nobr --> alt="" border="0" />';
         }
     }
@@ -481,6 +481,9 @@ function bbcode(&$message, $allowimgcode, $allowurlcode) {
     $replacements[] = '<a href="mailto:\1">\1</a>';
     $patterns[] = "#\\[email=([^\"'<>\\[\\]]+)\\](.+?)\\[/email\\]#mi";
     $replacements[] = '<a href="mailto:\1">\2</a>';
+    
+    $patterns[] = "#\[youtube\]([^\"'<>]*?)\[/youtube\]#Smi";
+    $replacements[] = '<object type="application/x-shockwave-flash" style="width:425px; height:350px;" data="http://www.youtube.com/v/\1"><param name="movie" value="http://www.youtube.com/v/\1" /></object>';
 
     $message = preg_replace($patterns, $replacements, $message);
 
@@ -507,7 +510,7 @@ function bbcode(&$message, $allowimgcode, $allowurlcode) {
 
         //[url=http://www.example.com/]Lorem Ipsum[/url]
         //[url=www.example.com]Lorem Ipsum[/url]
-        $message = preg_replace_callback("#\[url=([^\"'<>\[\]]+)\](.*?)\[/url\]#i", 'bbcodeLongURLs', $message);
+        $message = preg_replace_callback("#\[url=([^\"'<>\[\]]+)](.*?)\[/url\]#i", 'bbcodeLongURLs', $message);
     }
 
     return TRUE;
