@@ -578,6 +578,14 @@ function forum($forum, $template)
     global $db, $THEME, $CONFIG, $lang, $self, $lastvisit2;
     global $oldtopics, $lastvisit, $index_subforums, $sub, $subforums, $MODERATORS, $moderators_cache;
     
+    if ( empty($forum['private'])) {
+        $forum['private'] = '1';    // 1 = default
+    }
+    
+    if ( empty($forum['userlist'])) {
+        $forum['userlist'] = '';
+    }
+    
     if (! empty($forum['lp_user'])) {
         $dalast = $forum['lp_dateline'];
         if ($forum['lp_user'] != 'Anonymous') {
