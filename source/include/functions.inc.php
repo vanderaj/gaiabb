@@ -929,7 +929,7 @@ function smcwcache()
 
 function loadtime()
 {
-    global $footerstuff, $starttime, $CONFIG, $db;
+    global $footerstuff, $starttime, $CONFIG, $db, $lang;
     
     $mtime2 = explode(' ', microtime());
     $endtime = $mtime2[1] + $mtime2[0];
