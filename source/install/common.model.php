@@ -376,8 +376,7 @@ function check_files()
         'include/topicadmin.inc.php',
         'include/usercp.inc.php',
         'include/validate.inc.php',
-        'lang/English.lang.php',
-        'lang/Estonian.lang.php'
+        'lang/English.lang.php'
     );
     
     $retval = true;
