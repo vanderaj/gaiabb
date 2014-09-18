@@ -45,12 +45,12 @@ function install_forum($prgbar)
     setBar($prgbar, 0.05);
     
     $version = phpversion();
-    if (version_compare($version, "5.3.2") < 0) {
+    if (version_compare($version, "5.4.0") < 0) {
         setCol($prgbar, '#ff0000');
-        print_error('Version warning', 'GaiaBB requires PHP 5.3.2 or later and prefers the latest version.');
+        print_error('Version warning', 'GaiaBB requires PHP 5.4.0 or later and prefers the latest version.');
     }
     
-    if (version_compare($version, "5.3.9") < 0) {
+    if (version_compare($version, "5.5.16") < 0) {
         setCol($prgbar, '#ffff00');
         print_error('Version warning', 'GaiaBB prefers recent PHP releases. Strongly consider upgrading the version of PHP you are using.', false);
         $warn = true;
@@ -127,7 +127,7 @@ function install_forum($prgbar)
         
         print_error('Database connection', 'The database file ' . 'db/' . $database . '.php does not exist. Please try again');
     }
-    require_once (ROOT . "db/$database.php");
+    require_once ('../db/mysql5php5.php');
     
     setBar($prgbar, 0.3);
     
@@ -142,12 +142,7 @@ function install_forum($prgbar)
         define('X_PREFIX', $dbname . '.' . $tablepre);
     }
     
-    // TODO: Remove me when old DAL goes away
-    if (! defined('X_DBCLASSNAME')) {
-        define('X_DBCLASSNAME', 'dbstuff');
-    }
-    $dalname = X_DBCLASSNAME;
-    $db = new $dalname();
+    $db = new mysql5Php5();
     $db->connect($dbhost, $dbuser, $dbpw, $dbname, $pconnect, false); // don't force panics
     
     setBar($prgbar, 0.4);

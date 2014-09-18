@@ -32,7 +32,11 @@ require_once "upgrade.model.php";
 
 class upgrade_ultimaBB extends Upgrade
 {
-
+    function __construct($indb, $in_prgbar)
+    {
+        parent::__construct($indb, $in_prgbar);
+    }
+    
     /**
      * function() - short description of function
      *

@@ -10,7 +10,7 @@
  *
  * Based off XMB
  * Copyright (c) 2001 - 2004 The XMB Development Team
- * http://www.xmbforum.com
+ * http://forums.xmbforum2.com/
  *
  * This file is part of GaiaBB
  *

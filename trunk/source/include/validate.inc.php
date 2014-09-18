@@ -8,9 +8,9 @@
  * Copyright (c) 2004 - 2007 The UltimaBB Group 
  * (defunct)
  *
- * Based off XMB
- * Copyright (c) 2001 - 2004 The XMB Development Team
- * http://www.xmbforum.com
+ * Based off XMB and XMB Forum 2 (BBCode)
+ * Copyright (c) 2001 - 2012 The XMB Development Team
+ * http://forums.xmbforum2.com/
  *
  * This file is part of GaiaBB
  * 
@@ -320,12 +320,6 @@ function isValidEmail($addr)
     $emailValid = false;
     
     if (preg_match($emailPattern, $addr) > 0) {
-        // Under Windows prior to 5.3.0, PHP does not possess getmxrr(), so we skip it
-        if (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN' && version_compare(phpversion(), "5.3.0") < 0) {
-            $emailValid = true;
-            break;
-        }
-        
         $user = '';
         $domain = '';
         list ($user, $domain) = explode('@', $addr);
@@ -768,5 +762,32 @@ function pmTempAmp($message)
     $message = str_replace('&amp;', '&', $message);
     $message = str_replace('&amp;', '&', $message);
     return $message;
+}
+
+function rawHTMLmessage($rawstring, $allowhtml='no') {
+    if ($allowhtml == 'yes') {
+        return censor(htmlspecialchars_decode($rawstring, ENT_NOQUOTES));
+    } else {
+        return censor(decimalEntityDecode($rawstring));
+    }
+}
+
+function decimalEntityDecode($rawstring) {
+    $currPos = 0;
+    while(($currPos = strpos($rawstring, '&amp;#', $currPos)) !== FALSE) {
+        $tempPos = strpos($rawstring, ';', $currPos + 6);
+        $entLen = $tempPos - ($currPos + 6);
+        if ($entLen >= 3 And $entLen <= 5) {
+            $entNum = substr($rawstring, $currPos + 6, $entLen);
+            if (is_numeric($entNum)) {
+                if (intval($entNum) >= 160 And intval($entNum) <= 65533) {
+                    $rawstring = str_replace("&amp;#$entNum;", "&#$entNum;", $rawstring);
+                }
+            }
+        }
+        $currPos++;
+    }
+
+    return $rawstring;
 }
 ?>

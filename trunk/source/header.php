@@ -10,7 +10,7 @@
  *
  * Based off XMB
  * Copyright (c) 2001 - 2004 The XMB Development Team
- * http://www.xmbforum.com
+ * http://forums.xmbforum2.com/
  *
  * This file is part of GaiaBB
  * 
@@ -35,7 +35,7 @@ ini_set('display_errors', false);
 
 session_start();
 
-if ((version_compare(phpversion(), "5.2.6")) < 0) {
+if ((version_compare(phpversion(), "5.4.0")) < 0) {
     die("Unsupported PHP version");
 }
 

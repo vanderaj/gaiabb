@@ -61,7 +61,7 @@ class Upgrade
      *            what it does
      * @return type, what the return does
      */
-    function Upgrade($indb, $in_prgbar)
+    function __construct($indb, $in_prgbar)
     {
         $this->db = $indb;
         $this->prgbar = $in_prgbar;
@@ -208,12 +208,12 @@ function upgrade_forum($path, $prgbar)
     setBar($prgbar, 0.01);
     
     $version = phpversion();
-    if (version_compare($version, "5.3.2") < 0) {
+    if (version_compare($version, "5.4.0") < 0) {
         setCol($prgbar, '#ff0000');
-        print_error('Version error', 'GaiaBB requires PHP 4.3.2 or later and prefers the latest version.');
+        print_error('Version error', 'GaiaBB requires PHP 5.4.0 or later and prefers the latest version.');
     }
     
-    if (version_compare($version, "5.3.9") < 0) {
+    if (version_compare($version, "5.5.16") < 0) {
         setCol($prgbar, '#ffff00');
         print_error('Version warning', 'GaiaBB prefers recent PHP releases. Strongly consider upgrading the version of PHP you are using.', false);
         $warn = true;
