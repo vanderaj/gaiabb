@@ -324,7 +324,7 @@ if (isset($array['path'])) {
 
 $lastvisit = $lastvisit2 = 0;
 
-require_once ('authc.class.php');
+require_once ('class/authc.class.php');
 
 $authState = new AuthState();
 $authC = new AuthC();
