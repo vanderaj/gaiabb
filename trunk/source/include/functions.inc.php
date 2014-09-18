@@ -578,6 +578,8 @@ function forum($forum, $template)
     global $db, $THEME, $CONFIG, $lang, $self, $lastvisit2;
     global $oldtopics, $lastvisit, $index_subforums, $sub, $subforums, $MODERATORS, $moderators_cache;
     
+    echo "<!-- " . print_r($forum) . " -->";
+    
     if ( empty($forum['private'])) {
         $forum['private'] = '1';    // 1 = default
     }
