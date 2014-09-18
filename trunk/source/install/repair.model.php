@@ -84,7 +84,7 @@ function repair_forum($path, $prgbar)
         print_error('Version warning', 'GaiaBB requires PHP 5.4.0 or later and prefers the latest version.');
     }
     
-    if (version_compare($version, "5.5.16", "<")) {
+    if (version_compare($version, "5.5.13", "<")) {
         setCol($prgbar, '#ffff00');
         print_error('Version warning', 'GaiaBB prefers recent PHP releases. Strongly consider upgrading the version of PHP you are using.', false);
         $warn = true;

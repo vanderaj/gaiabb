@@ -50,7 +50,7 @@ function install_forum($prgbar)
         print_error('Version warning', 'GaiaBB requires PHP 5.4.0 or later and prefers the latest version.');
     }
     
-    if (version_compare($version, "5.5.16") < 0) {
+    if (version_compare($version, "5.5.13") < 0) {
         setCol($prgbar, '#ffff00');
         print_error('Version warning', 'GaiaBB prefers recent PHP releases. Strongly consider upgrading the version of PHP you are using.', false);
         $warn = true;
@@ -89,12 +89,12 @@ function install_forum($prgbar)
     $dbuser = '';
     $dbpw = '';
     
-    if (! file_exists('config.php')) {
+    if (! file_exists('../config.php')) {
         setCol($prgbar, '#ff0000');
         print_error('Configuration file', 'Please ensure that config.php has been successfully written prior to running this install.');
     }
     
-    require 'config.php';
+    require '../config.php';
     
     if ($dbname == 'DBNAME') {
         setCol($prgbar, '#ff0000');
@@ -127,7 +127,7 @@ function install_forum($prgbar)
         
         print_error('Database connection', 'The database file ' . 'db/' . $database . '.php does not exist. Please try again');
     }
-    require_once ('../db/mysql5php5.php');
+    require_once ('../db/mysql5php5.class.php');
     
     setBar($prgbar, 0.3);
     
