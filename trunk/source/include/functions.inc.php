@@ -668,18 +668,9 @@ function forum($forum, $template)
             $subforums = '';
         }
         
+        $mouseover = '';
         if ( isset($forum['fid']) ) {
             $mouseover = celloverfx('viewforum.php?fid=' . intval($forum['fid']));
-        } else {
-            $forum['fid'] = 0;
-            $forum['name'] = "NAME";
-            $forum['description'] = "description";
-            $forum['threads'] = "threads";
-            $forum['posts'] = "posts";
-            $forum['moderator'] = "moderator";
-            
-            $mouseover = '';
-            
         }
         
         eval('$foruminfo = stripslashes("' . template($template) . '");');
