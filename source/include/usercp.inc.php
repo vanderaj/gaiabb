@@ -10,7 +10,7 @@
  *
  * Based off XMB
  * Copyright (c) 2001 - 2004 The XMB Development Team
- * http://www.xmbforum.com
+ * http://forums.xmbforum2.com/
  *
  * This file is part of GaiaBB
  * 
@@ -663,8 +663,8 @@ class userObj
     function submitEmail()
     {
         global $db, $oToken, $lang, $THEME, $title, $CONFIG, $mailsys;
-        global $selHTML, $self, $onlinetime, $shadow2, $menu;
-        global $currtime, $cookiepath, $cookiedomain;
+        global $selHTML, $self, $onlinetime, $shadow2, $menu, $authC;
+        global $currtime, $cookiepath, $cookiedomain, $onlineip;
         
         reset($self);
         
@@ -969,7 +969,7 @@ class userObj
     {
         global $db, $oToken, $lang, $THEME, $title, $CONFIG;
         global $selHTML, $self, $onlinetime, $shadow2, $menu;
-        global $cookiepath, $cookiedomain, $authC;
+        global $cookiepath, $cookiedomain, $authC, $onlineip;
         
         reset($self);
         

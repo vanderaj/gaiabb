@@ -79,12 +79,12 @@ function repair_forum($path, $prgbar)
     setBar($prgbar, 0.1);
     
     $version = phpversion();
-    if (version_compare($version, "5.3.2", "<")) {
+    if (version_compare($version, "5.4.0", "<")) {
         setCol($prgbar, '#ff0000');
-        print_error('Version warning', 'GaiaBB requires PHP 5.3.2 or later and prefers the latest version.');
+        print_error('Version warning', 'GaiaBB requires PHP 5.4.0 or later and prefers the latest version.');
     }
     
-    if (version_compare($version, "5.3.9", "<")) {
+    if (version_compare($version, "5.5.16", "<")) {
         setCol($prgbar, '#ffff00');
         print_error('Version warning', 'GaiaBB prefers recent PHP releases. Strongly consider upgrading the version of PHP you are using.', false);
         $warn = true;

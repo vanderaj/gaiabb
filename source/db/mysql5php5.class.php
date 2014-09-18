@@ -10,7 +10,7 @@
  *
  * Based off XMB
  * Copyright (c) 2001 - 2004 The XMB Development Team
- * http://www.xmbforum.com
+ * http://forums.xmbforum2.com/
  *
  * This file is part of GaiaBB
  * 
@@ -100,7 +100,7 @@ class mysql5Php5
             
             $this->force = $force_db;
             
-            if ((version_compare(phpversion(), "5.3.2")) < 0) {
+            if ((version_compare(phpversion(), "5.4.0")) < 0) {
                 throw new Exception("Unsupported PHP version");
             }
             

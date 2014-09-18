@@ -10,7 +10,7 @@
  *
  * Based off XMB
  * Copyright (c) 2001 - 2004 The XMB Development Team
- * http://www.xmbforum.com
+ * http://forums.xmbforum2.com/
  *
  * This file is part of GaiaBB
  * 
@@ -236,8 +236,8 @@ function viewRegister()
 function doRegister()
 {
     global $CONFIG, $lang, $self, $THEME, $gbblva;
-    global $selHTML, $db, $onlinetime, $dformatorig;
-    global $oToken, $shadow, $onlineip;
+    global $selHTML, $db, $onlinetime, $dformatorig, $mailsys, $authState;
+    global $oToken, $shadow, $onlineip, $config_cache, $moderators_cache;
     
     // Validation of user supplied data
     $username = formVar('username');
@@ -417,7 +417,6 @@ function doRegister()
         $currtime = $onlinetime + (86400 * 30);
         
         $authState->gbbuid = $uid;
-        $authState->gbbuser = $username;
         $authState->gbbpw = $password;
         $authState->update();
     }
