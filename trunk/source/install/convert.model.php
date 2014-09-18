@@ -359,18 +359,13 @@ function convert_forum($path, $prgbar)
         setCol($prgbar, '#ff0000');
         print_error('Database connection', 'Please ensure that you have successfully installed GaiaBB prior to running this convertion.');
     }
-    require_once (ROOT . "db/$database.php");
+    require_once ("../db/mysql5php.php");
     
     setBar($prgbar, 0.05);
     
     define('X_PREFIX', $tablepre);
     
-    // TODO: Remove me when old DAL goes away
-    if (! defined('X_DBCLASSNAME')) {
-        define('X_DBCLASSNAME', 'dbstuff');
-    }
-    $dalname = X_DBCLASSNAME;
-    $db = new $dalname();
+    $db = new mysql5Php5();
     $db->connect($dbhost, $dbuser, $dbpw, $dbname, $pconnect, true, true);
     
     setBar($prgbar, 0.07);
@@ -391,8 +386,7 @@ function convert_forum($path, $prgbar)
     
     define('X_PREFIX2', $_SESSION['tablepre']);
     
-    $dalname = X_DBCLASSNAME;
-    $db2 = new $dalname();
+    $db2 = new mysql5Php5();
     $db2->connect($_SESSION['dbhost'], $_SESSION['dbuser'], $_SESSION['dbpw'], $_SESSION['dbname'], 0, true, true, X_PREFIX2);
     
     setBar($prgbar, 0.11);

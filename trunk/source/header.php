@@ -41,6 +41,14 @@ if ((version_compare(phpversion(), "5.4.0")) < 0) {
 
 define('IN_PROGRAM', true);
 
+if ( !defined(ROOT)) {
+    define('ROOT', './');
+}
+
+if ( !defined('ROOTCLASS')) {
+    define('ROOTCLASS', './class/');
+}
+
 $smiliecache = array();
 $censorcache = array();
 $smiliesnum = 0;

@@ -32,10 +32,6 @@ if (! defined('IN_PROGRAM') && (defined('DEBUG') && DEBUG == false)) {
     exit('This file is not designed to be called directly');
 }
 
-if (! defined('ROOTCLASS')) {
-    define('ROOTCLASS', '../class/');
-}
-
 require_once ('attachments.class.php');
 require_once ('forum.class.php');
 require_once ('thread.class.php');
