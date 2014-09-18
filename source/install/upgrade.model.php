@@ -250,7 +250,7 @@ function upgrade_forum($path, $prgbar)
         setCol($prgbar, '#ff0000');
         print_error('Database connection', 'Please ensure that config.php has been successfully written prior to running this install.');
     }
-    require_once (ROOT . "db/$database.php");
+    require_once ("../db/mysql5php5.php");
     
     setBar($prgbar, 0.05);
     
@@ -263,12 +263,7 @@ function upgrade_forum($path, $prgbar)
     
     define('X_PREFIX', $tablepre);
     
-    // TODO: Remove me when old DAL goes away
-    if (! defined('X_DBCLASSNAME')) {
-        define('X_DBCLASSNAME', 'dbstuff');
-    }
-    $dalname = X_DBCLASSNAME;
-    $db = new $dalname();
+    $db = new mysql5Php5();
     $db->connect($dbhost, $dbuser, $dbpw, $dbname, $pconnect, true);
     
     setBar($prgbar, 0.07);
