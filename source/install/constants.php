@@ -35,7 +35,7 @@ define('X_INST_WARN', 1);
 define('X_INST_OK', 2);
 define('X_INST_SKIP', 3);
 
-define('INSTALLVER', 'GaiaBB 1.0 RC1');
+define('INSTALLVER', 'GaiaBB 1.0 M1');
 
 define('INSTALLER', true);
 define('X_REDIRECT_HEADER', 1);
