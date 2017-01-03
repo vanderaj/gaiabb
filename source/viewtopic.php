@@ -1,7 +1,7 @@
 <?php
 /**
  * GaiaBB
- * Copyright (c) 2011-2013 The GaiaBB Group
+ * Copyright (c) 2011-2017 The GaiaBB Group
  * http://www.GaiaBB.com
  *
  * Based off UltimaBB
@@ -955,7 +955,7 @@ if (empty($action)) {
         
         echo $file['attachment'];
         exit();
-    } else 
+    } else {
         if ($action == 'printable') {
             pwverify($forum['password'], 'viewtopic.php?tid=' . $tid, $fid, true);
             
@@ -978,4 +978,4 @@ if (empty($action)) {
             $db->free_result($querypost);
             eval('echo stripslashes("' . template('viewtopic_printable') . '");');
         }
-?>
+    }

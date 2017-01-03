@@ -1,7 +1,7 @@
 <?php
 /**
  * GaiaBB
- * Copyright (c) 2011-2015 The GaiaBB Group
+ * Copyright (c) 2011-2017 The GaiaBB Group
  * http://www.GaiaBB.com
  *
  * Based off UltimaBB
@@ -63,7 +63,7 @@ smcwcache();
 /**
  * function() - short description of function
  *
- * Long description of function
+ * TODO: Long description of function
  *
  * @param $varname type,
  *            what it does
@@ -135,7 +135,7 @@ function viewPanel()
 /**
  * function() - short description of function
  *
- * Long description of function
+ * TODO: Long description of function
  *
  * @param $varname type,
  *            what it does

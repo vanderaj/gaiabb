@@ -484,8 +484,8 @@ $bottomcorners
 $shadow2
 
 |#*GBB TEMPLATE FILE*#|header|#*GBB TEMPLATE*#|
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="$lang_code" lang="$lang_code" dir="$lang_dir">
+<!DOCTYPE html>
+<html  lang="$lang_code" dir="$lang_dir">
 <head>
 <link href='http://fonts.googleapis.com/css?family=Roboto' rel='stylesheet' type='text/css'>
 <meta http-equiv="Content-Type" content="text/html; charset=$charset" />
@@ -1672,8 +1672,8 @@ $npt_list[next]
 </tr>
 
 |#*GBB TEMPLATE FILE*#|addresslist|#*GBB TEMPLATE*#|
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="$lang_code" lang="$lang_code" dir="$lang_dir">
+<!DOCTYPE html>
+<html  lang="$lang_code" dir="$lang_dir">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=$charset" />
 $css
@@ -1725,8 +1725,8 @@ $shadow
 </html>
 
 |#*GBB TEMPLATE FILE*#|addresslist_edit|#*GBB TEMPLATE*#|
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="$lang_code" lang="$lang_code" dir="$lang_dir">
+<!DOCTYPE html>
+<html  lang="$lang_code" dir="$lang_dir">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=$charset" />
 $css
@@ -1800,8 +1800,8 @@ $shadow
 </tr>
 
 |#*GBB TEMPLATE FILE*#|addresslist_message|#*GBB TEMPLATE*#|
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="$lang_code" lang="$lang_code" dir="$lang_dir">
+<!DOCTYPE html>
+<html  lang="$lang_code" dir="$lang_dir">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=$charset" />
 $css
@@ -2135,8 +2135,8 @@ $mt_option
 </tr>
 
 |#*GBB TEMPLATE FILE*#|viewtopic_printable|#*GBB TEMPLATE*#|
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="$lang_code" lang="$lang_code" dir="$lang_dir">
+<!DOCTYPE html>
+<html  lang="$lang_code" dir="$lang_dir">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=$charset">
 <style type="text/css">
@@ -3326,8 +3326,8 @@ $shadow
 </div>
 
 |#*GBB TEMPLATE FILE*#|popup_header|#*GBB TEMPLATE*#|
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="$lang_code" lang="$lang_code" dir="$lang_dir">
+<!DOCTYPE html>
+<html  lang="$lang_code" dir="$lang_dir">
 <head>
 <link href='http://fonts.googleapis.com/css?family=Roboto' rel='stylesheet' type='text/css'>
 <meta http-equiv="Content-Type" content="text/html; charset=$charset" />
@@ -3379,8 +3379,8 @@ $shadow
 </tr>
 
 |#*GBB TEMPLATE FILE*#|address_pm|#*GBB TEMPLATE*#|
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="$lang_code" lang="$lang_code" dir="$lang_dir">
+<!DOCTYPE html>
+<html  lang="$lang_code" dir="$lang_dir">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=$charset" />
 $css
@@ -4403,8 +4403,8 @@ $shadow
 </tr>
 
 |#*GBB TEMPLATE FILE*#|cp_header|#*GBB TEMPLATE*#|
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="$lang_code" lang="$lang_code" dir="$lang_dir">
+<!DOCTYPE html>
+<html  lang="$lang_code" dir="$lang_dir">
 <head>
 <link href='http://fonts.googleapis.com/css?family=Roboto' rel='stylesheet' type='text/css'>
 <meta http-equiv="Content-Type" content="text/html; charset=$charset" />
@@ -6043,8 +6043,8 @@ $sendoptions
 $shadow2
 
 |#*GBB TEMPLATE FILE*#|pm_printable|#*GBB TEMPLATE*#|
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="$lang_code" lang="$lang_code" dir="$lang_dir">
+<!DOCTYPE html>
+<html lang="$lang_code" dir="$lang_dir">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=$charset">
 <style type="text/css">

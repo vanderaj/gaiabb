@@ -1,7 +1,7 @@
 <?php
 /**
  * GaiaBB
- * Copyright (c) 2011-2015 The GaiaBB Group
+ * Copyright (c) 2011-2017 The GaiaBB Group
  * http://www.GaiaBB.com
  *
  * Based off UltimaBB
@@ -80,12 +80,12 @@ define('GAIABB_MASTERKEY', 'sq^%L4Ld/<*C~WG)');
 $versionpowered = ' - Powered by GaiaBB';
 $versioncompany = 'The GaiaBB Group';
 $versionshort = 'GaiaBB';
-$versiongeneral = 'GaiaBB 1.0-HEAD';
-$versioncopyright = 'GaiaBB 1.0-HEAD, &copy; 2011-2015 The GaiaBB Group';
-$versionbuild = '20141222';
+$versiongeneral = 'GaiaBB 1.0-M1';
+$versioncopyright = 'GaiaBB 1.0-M1, &copy; 2011-2017 The GaiaBB Group';
+$versionbuild = '20170103';
 $alpha = '';
 $beta = '';
-$gamma = '1.0-HEAD';
+$gamma = '1.0-M1';
 $sp = '';
 
 // No user serviceable items below
@@ -156,4 +156,4 @@ define('X_GZIP', true);
 if (! defined('X_GZIP')) {
     define('X_GZIP', false);
 }
-?>
+

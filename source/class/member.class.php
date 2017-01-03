@@ -1,7 +1,7 @@
 <?php
 /**
  * GaiaBB
- * Copyright (c) 2011-2015 The GaiaBB Group
+ * Copyright (c) 2011-2017 The GaiaBB Group
  * http://www.GaiaBB.com
  *
  * Based off UltimaBB
@@ -715,4 +715,3 @@ class member
         $db->free_result($query);
     }
 }
-?>

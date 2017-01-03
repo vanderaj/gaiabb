@@ -1,7 +1,7 @@
 <?php
 /**
  * GaiaBB
- * Copyright (c) 2011-2013 The GaiaBB Group
+ * Copyright (c) 2011-2017 The GaiaBB Group
  * http://www.GaiaBB.com
  *
  * Based off UltimaBB
@@ -431,7 +431,7 @@ function doRegister()
 /**
  * function() - short description of function
  *
- * Long description of function
+ * TODO: Long description of function
  *
  * @param $varname type,
  *            what it does
@@ -457,7 +457,7 @@ function notifyViapm($username)
 /**
  * function() - short description of function
  *
- * Long description of function
+ * TODO: Long description of function
  *
  * @param $varname type,
  *            what it does
@@ -561,4 +561,3 @@ switch ($action) {
 
 loadtime();
 eval('echo "' . template('footer') . '";');
-?>

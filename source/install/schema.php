@@ -1,7 +1,7 @@
 <?php
 /**
  * GaiaBB
- * Copyright (c) 2011-2013 The GaiaBB Group
+ * Copyright (c) 2011-2017 The GaiaBB Group
  * http://www.GaiaBB.com
  *
  * Based off UltimaBB's installer (ajv)
@@ -46,7 +46,7 @@ function schema_create_addresses($db, $tablepre)
 /**
 * function() - short description of function
 *
-* Long description of function
+* TODO: Long description of function
 *
 * @param    $varname    type, what it does
 * @return   type, what the return does
@@ -119,7 +119,7 @@ $db->query("CREATE TABLE `".$tablepre."banned` (
 /**
 * function() - short description of function
 *
-* Long description of function
+* TODO: Long description of function
 *
 * @param    $varname    type, what it does
 * @return   type, what the return does
@@ -202,7 +202,7 @@ function schema_create_forums($db, $tablepre)
 /**
 * function() - short description of function
 *
-* Long description of function
+* TODO: Long description of function
 *
 * @param    $varname    type, what it does
 * @return   type, what the return does
@@ -222,7 +222,7 @@ function schema_create_guestcount($db, $tablepre)
 /**
 * function() - short description of function
 *
-* Long description of function
+* TODO: Long description of function
 *
 * @param    $varname    type, what it does
 * @return   type, what the return does
@@ -356,7 +356,7 @@ function schema_create_modlogs($db, $tablepre)
 /**
 * function() - short description of function
 *
-* Long description of function
+* TODO: Long description of function
 *
 * @param    $varname    type, what it does
 * @return   type, what the return does
@@ -435,7 +435,7 @@ function schema_create_restricted($db, $tablepre)
 /**
 * function() - short description of function
 *
-* Long description of function
+* TODO: Long description of function
 *
 * @param    $varname    type, what it does
 * @return   type, what the return does
@@ -455,7 +455,7 @@ function schema_create_robotcount($db, $tablepre)
 /**
 * function() - short description of function
 *
-* Long description of function
+* TODO: Long description of function
 *
 * @param    $varname    type, what it does
 * @return   type, what the return does
@@ -476,7 +476,7 @@ function schema_create_robots($db, $tablepre)
 /**
 * function() - short description of function
 *
-* Long description of function
+* TODO: Long description of function
 *
 * @param    $varname    type, what it does
 * @return   type, what the return does
@@ -508,7 +508,7 @@ function schema_create_smilies($db, $tablepre)
 /**
 * function() - short description of function
 *
-* Long description of function
+* TODO: Long description of function
 *
 * @param    $varname    type, what it does
 * @return   type, what the return does
@@ -644,7 +644,7 @@ function schema_create_pm($db, $tablepre)
 /**
 * function() - short description of function
 *
-* Long description of function
+* TODO: Long description of function
 *
 * @param    $varname    type, what it does
 * @return   type, what the return does
@@ -674,7 +674,7 @@ function schema_create_pm_attachments($db, $tablepre)
 /**
 * function() - short description of function
 *
-* Long description of function
+* TODO: Long description of function
 *
 * @param    $varname    type, what it does
 * @return   type, what the return does
@@ -751,7 +751,7 @@ function schema_create_words($db, $tablepre)
 /**
 * function() - short description of function
 *
-* Long description of function
+* TODO: Long description of function
 *
 * @param    $varname    type, what it does
 * @return   type, what the return does
@@ -764,7 +764,7 @@ function schema_insert_dateformats($db, $tablepre)
 /**
 * function() - short description of function
 *
-* Long description of function
+* TODO: Long description of function
 *
 * @param    $varname    type, what it does
 * @return   type, what the return does
@@ -975,7 +975,7 @@ function schema_insert_settings($db, $tablepre)
 /**
 * function() - short description of function
 *
-* Long description of function
+* TODO: Long description of function
 *
 * @param    $varname    type, what it does
 * @return   type, what the return does
@@ -1378,7 +1378,7 @@ function schema_insert_robots($db, $tablepre)
 /**
 * function() - short description of function
 *
-* Long description of function
+* TODO: Long description of function
 *
 * @param    $varname    type, what it does
 * @return   type, what the return does
@@ -1396,7 +1396,7 @@ function schema_insert_problue($db, $tablepre)
 /**
 * function() - short description of function
 *
-* Long description of function
+* TODO: Long description of function
 *
 * @param    $varname    type, what it does
 * @return   type, what the return does
@@ -1450,7 +1450,7 @@ function schema_insert_smilies($db, $tablepre)
 /**
 * function() - short description of function
 *
-* Long description of function
+* TODO: Long description of function
 *
 * @param    $varname    type, what it does
 * @return   type, what the return does
@@ -1582,7 +1582,7 @@ function create_tables($db, $tablepre, $prgBar, $start, $incr = 0.05)
 /**
 * function() - short description of function
 *
-* Long description of function
+* TODO: Long description of function
 *
 * @param    $varname    type, what it does
 * @return   type, what the return does
@@ -1638,7 +1638,7 @@ function insert_data($db, $tablepre, $prgbar, $start, $incr)
 /**
 * Factory reset the settings back to out of the box defaults
 *
-* Long description of function
+* TODO: Long description of function
 *
 * @param    $varname    type, what it does
 * @return   type, what the return does
@@ -1661,7 +1661,7 @@ function reset_settings($db, $tablepre)
 /**
 * function() - short description of function
 *
-* Long description of function
+* TODO: Long description of function
 *
 * @param    $varname    type, what it does
 * @return   type, what the return does
@@ -1691,7 +1691,7 @@ function reset_templates($db, $tablepre)
 /**
 * function() - short description of function
 *
-* Long description of function
+* TODO: Long description of function
 *
 * @param    $varname    type, what it does
 * @return   type, what the return does
@@ -1720,7 +1720,7 @@ function check_db_api($database)
 /**
 * function() - short description of function
 *
-* Long description of function
+* TODO: Long description of function
 *
 * @param    $varname    type, what it does
 * @return   type, what the return does
@@ -1732,4 +1732,3 @@ function is_priv_db_user($admin)
 
     return in_array($admin, $priv_accts);
 }
-?>

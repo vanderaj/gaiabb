@@ -1,7 +1,7 @@
 <?php
 /**
  * GaiaBB
- * Copyright (c) 2011-2015 The GaiaBB Group
+ * Copyright (c) 2011-2017 The GaiaBB Group
  * http://www.GaiaBB.com
  *
  * Based off UltimaBB's installer (ajv)
@@ -31,7 +31,7 @@ if (! defined('IN_PROGRAM') && (defined('DEBUG') && DEBUG == false)) {
 /**
  * function() - short description of function
  *
- * Long description of function
+ * TODO: Long description of function
  *
  * @param $varname type,
  *            what it does
@@ -67,7 +67,7 @@ function print_error($head, $msg, $die = true)
 /**
  * function() - short description of function
  *
- * Long description of function
+ * TODO: Long description of function
  *
  * @param $varname type,
  *            what it does
@@ -82,7 +82,7 @@ function setBar($thebar, $value)
 /**
  * function() - short description of function
  *
- * Long description of function
+ * TODO: Long description of function
  *
  * @param $varname type,
  *            what it does
@@ -95,14 +95,10 @@ function setCol($theBar, $color)
 }
 
 /**
- * function() - short description of function
+ * view_config() - Output the forum configuration
  *
- * Long description of function
+ * TODO: Long description of function
  *
- * @param $varname type,
- *            what it does
- * @return type, what the return does
- *        
  */
 function view_config($path)
 {
@@ -151,7 +147,7 @@ function view_config($path)
 /**
  * function() - short description of function
  *
- * Long description of function
+ * TODO: Long description of function
  *
  * @param $varname type,
  *            what it does
@@ -205,7 +201,7 @@ function view_config_download($config)
 /**
  * function() - short description of function
  *
- * Long description of function
+ * TODO: Long description of function
  *
  * @param $varname type,
  *            what it does
@@ -274,7 +270,7 @@ function view_eula($path)
 /**
  * function() - short description of function
  *
- * Long description of function
+ * TODO: Long description of function
  *
  * @param $varname type,
  *            what it does
@@ -308,7 +304,7 @@ function view_backup($path, $boardType = "GaiaBB")
 /**
  * function() - short description of function
  *
- * Long description of function
+ * TODO: Long description of function
  *
  * @param $varname type,
  *            what it does
@@ -401,7 +397,7 @@ function view_admin($path)
 /**
  * function() - short description of function
  *
- * Long description of function
+ * TODO: Long description of function
  *
  * @param $varname type,
  *            what it does
@@ -426,7 +422,7 @@ function top_box($header = 'CHANGE ME')
 /**
  * function() - short description of function
  *
- * Long description of function
+ * TODO: Long description of function
  *
  * @param $varname type,
  *            what it does
@@ -465,7 +461,7 @@ function view_default_index()
 /**
  * function() - short description of function
  *
- * Long description of function
+ * TODO: Long description of function
  *
  * @param $varname type,
  *            what it does
@@ -594,7 +590,7 @@ function view_header($title = "GaiaBB Installer", $path)
 /**
  * function() - short description of function
  *
- * Long description of function
+ * TODO: Long description of function
  *
  * @param $varname type,
  *            what it does
@@ -607,7 +603,7 @@ function view_footer()
     <table align="center">
 								<tr>
 									<td align="center" class="smalltxt"><br /> <br /> Powered by
-										GaiaBB <br /> Copyright &copy; 2011-2015 GaiaBB Group. All rights
+										GaiaBB <br /> Copyright &copy; 2011-2017 GaiaBB Group. All rights
 										reserved. <br /> <br /></td>
 								</tr>
 							</table> <br /></td>
@@ -643,7 +639,7 @@ function view_footer()
 /**
  * function() - short description of function
  *
- * Long description of function
+ * TODO: Long description of function
  *
  * @param $varname type,
  *            what it does
@@ -744,7 +740,7 @@ function view_database($path)
 /**
  * function() - short description of function
  *
- * Long description of function
+ * TODO: Long description of function
  *
  * @param $varname type,
  *            what it does
@@ -767,7 +763,7 @@ function view_shadow()
 /**
 * function() - short description of function
 *
-* Long description of function
+* TODO: Long description of function
 *
 * @param    $varname    type, what it does
 * @return   type, what the return does

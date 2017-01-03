@@ -1,7 +1,7 @@
 <?php
 /**
  * GaiaBB
- * Copyright (c) 2011-2013 The GaiaBB Group
+ * Copyright (c) 2011-2017 The GaiaBB Group
  * http://www.GaiaBB.com
  *
  * Based off UltimaBB's installer (ajv)
@@ -38,13 +38,12 @@ class upgrade_ultimaBB extends Upgrade
     }
     
     /**
-     * function() - short description of function
+     * rename_tables() - rename database tables
      *
-     * Long description of function
+     * GaiaBB has same table names as UltimaBB
      *
-     * @param $varname type,
-     *            what it does
-     * @return type, what the return does
+     * @param $prg - progress percentage
+     * @return boolean - completed
      */
     function rename_tables($prg)
     {
@@ -54,110 +53,108 @@ class upgrade_ultimaBB extends Upgrade
     }
 
     /**
-     * function() - short description of function
+     * add_tables() - add any new tables
      *
-     * Long description of function
+     * GaiaBB checks to see if FAQ tables exist and puts them back if not
      *
-     * @param $varname type,
-     *            what it does
-     * @return type, what the return does
+     * @param $prg - progress percentage
+     * @return boolean - completed
      */
     function add_tables($prg)
     {
         setBar($this->prgbar, $prg);
-        $prg += 0.01;
+        $this->prgbar += 0.01;
         
         if (! $this->table_exists('faq')) {
             schema_create_faq($this->db, X_PREFIX);
             schema_insert_faq($this->db, X_PREFIX);
         }
         setBar($this->prgbar, $prg);
-        $prg += 0.01;
+        $this->prgbar += 0.01;
         
         if (! $this->table_exists('guestcount')) {
             schema_create_guestcount($this->db, X_PREFIX);
         }
         setBar($this->prgbar, $prg);
-        $prg += 0.01;
+        $this->prgbar += 0.01;
         
         if (! $this->table_exists('pluglinks')) {
             schema_create_pluglinks($this->db, X_PREFIX);
         }
         setBar($this->prgbar, $prg);
-        $prg += 0.01;
+        $this->prgbar += 0.01;
         
         if (! $this->table_exists('robotcount')) {
             schema_create_robotcount($this->db, X_PREFIX);
         }
         setBar($this->prgbar, $prg);
-        $prg += 0.01;
+        $this->prgbar += 0.01;
         
         if (! $this->table_exists('subscriptions')) {
             schema_create_subscriptions($this->db, X_PREFIX);
         }
         setBar($this->prgbar, $prg);
-        $prg += 0.01;
+        $this->prgbar+= 0.01;
         
         return true;
     }
 
     /**
-     * function() - short description of function
+     * delete_tables() - delete any unnecessary tables
      *
-     * Long description of function
+     * GaiaBB removes a calendar and events from the UltimaBB database
      *
-     * @param $varname type,
-     *            what it does
-     * @return type, what the return does
+     * @param $prg - progress percentage
+     * @return boolean - completed
      */
     function delete_tables($prg)
     {
         setBar($this->prgbar, $prg);
-        $prg += 0.01;
+        $this->prgbar += 0.01;
         
         if ($this->table_exists('calendar')) {
             $this->db->query("DROP TABLE `" . X_PREFIX . "calendar`");
         }
         setBar($this->prgbar, $prg);
-        $prg += 0.01;
+        $this->prgbar += 0.01;
         
         if ($this->table_exists('events')) {
             $this->db->query("DROP TABLE `" . X_PREFIX . "events`");
         }
         setBar($this->prgbar, $prg);
-        $prg += 0.01;
+        $this->prgbar += 0.01;
         
         if ($this->table_exists('holidays')) {
             $this->db->query("DROP TABLE `" . X_PREFIX . "holidays`");
         }
         setBar($this->prgbar, $prg);
-        $prg += 0.01;
+        $this->prgbar += 0.01;
         
         return true;
     }
 
     /**
-     * function() - short description of function
+     * alter_tables() - alter database tables
      *
-     * Long description of function
+     * Change the schema from UltimaBB to GaiaBB's
      *
-     * @param $varname type,
-     *            what it does
-     * @return type, what the return does
+     * @param $prg - progress percentage
+     * @return boolean - completed
      */
     function alter_tables($prg)
     {
         setBar($this->prgbar, $prg);
-        $prg += 0.05;
+        $this->prgbar += 0.05;
         
         switch ($this->schemaver) {
+
             case 34:
                 $query = "ALTER TABLE `" . X_PREFIX . "forums` ";
                 $query .= "CHANGE `postperm` `postperm` varchar(7) NOT NULL DEFAULT ''";
                 $this->db->query($query);
                 
                 setBar($this->prgbar, $prg);
-                $prg += 0.05;
+                $this->prgbar += 0.05;
                 
                 $query = "ALTER TABLE `" . X_PREFIX . "settings` ";
                 $query .= "ADD `login_max_attempts` smallint(2) NOT NULL DEFAULT '5'";
@@ -165,16 +162,19 @@ class upgrade_ultimaBB extends Upgrade
                 $this->db->query($query);
                 
                 setBar($this->prgbar, $prg);
-                $prg += 0.05;
+                $this->prgbar += 0.05;
                 break;
+
             case 35:
                 $query = "ALTER TABLE `" . X_PREFIX . "members` ";
                 $query .= "ADD `forcelogout` set('yes','no') NOT NULL DEFAULT 'no'";
                 
                 $this->db->query($query);
                 
-                setBar($this->prgbar, $prg);
-                $prg += 0.05;
+                setBar($this->prgbar, $this->prgbar);
+                $this->prgbar += 0.05;
+                break;
+
             default:
                 break;
         }
@@ -182,19 +182,18 @@ class upgrade_ultimaBB extends Upgrade
         $query = "UPDATE `" . X_PREFIX . "settings` SET schemaver='36'";
         $this->db->query($query);
         
-        setBar($this->prgbar, $prg);
+        setBar($this->prgbar, $this->prgbar);
         
         return true;
     }
 
     /**
-     * function() - short description of function
+     * migrate_data() - migrate data from UltimaBB
      *
-     * Long description of function
+     * As UltimaBB and GaiaBB are close cousins, main thing is to reset templates
      *
-     * @param $varname type,
-     *            what it does
-     * @return type, what the return does
+     * @param $prg - progress percentage
+     * @return boolean - completed
      */
     function migrate_data($prg)
     {
@@ -209,17 +208,15 @@ class upgrade_ultimaBB extends Upgrade
     }
 
     /**
-     * function() - short description of function
+     * migrate_settings() - migrate settings from UltimaBB
      *
-     * Long description of function
+     * As UltimaBB and GaiaBB are close cousins, nothing to do
      *
-     * @param $varname type,
-     *            what it does
-     * @return type, what the return does
+     * @param $prg - progress percentage
+     * @return boolean - completed
      */
     function migrate_settings($prg)
     {
         return true;
     }
 }
-?>

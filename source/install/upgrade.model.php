@@ -1,7 +1,7 @@
 <?php
 /**
  * GaiaBB
- * Copyright (c) 2011-2013 The GaiaBB Group
+ * Copyright (c) 2011-2017 The GaiaBB Group
  * http://www.GaiaBB.com
  *
  * Based off UltimaBB's installer (ajv)
@@ -31,7 +31,7 @@ if (! defined('IN_PROGRAM') && (defined('DEBUG') && DEBUG == false)) {
 /**
  * function() - short description of function
  *
- * Long description of function
+ * TODO: Long description of function
  *
  * @param $varname type,
  *            what it does
@@ -45,21 +45,15 @@ function process_upgrade_config()
 
 class Upgrade
 {
-
-    private $db;
-
-    private $prgbar;
-
-    private $schemaver;
+    public $db;
+    public $prgbar;
+    public $schemaver;
 
     /**
-     * function() - short description of function
+     * __construct() - constructor for Upgrade base class
      *
-     * Long description of function
+     * Constructor
      *
-     * @param $varname type,
-     *            what it does
-     * @return type, what the return does
      */
     function __construct($indb, $in_prgbar)
     {
@@ -76,7 +70,7 @@ class Upgrade
     /**
      * function() - short description of function
      *
-     * Long description of function
+     * TODO: Long description of function
      *
      * @param $varname type,
      *            what it does
@@ -92,7 +86,7 @@ class Upgrade
     /**
      * function() - short description of function
      *
-     * Long description of function
+     * TODO: Long description of function
      *
      * @param $varname type,
      *            what it does
@@ -108,7 +102,7 @@ class Upgrade
     /**
      * function() - short description of function
      *
-     * Long description of function
+     * TODO: Long description of function
      *
      * @param $varname type,
      *            what it does
@@ -122,7 +116,7 @@ class Upgrade
     /**
      * function() - short description of function
      *
-     * Long description of function
+     * TODO: Long description of function
      *
      * @param $varname type,
      *            what it does
@@ -136,7 +130,7 @@ class Upgrade
     /**
      * function() - short description of function
      *
-     * Long description of function
+     * TODO: Long description of function
      *
      * @param $varname type,
      *            what it does
@@ -150,7 +144,7 @@ class Upgrade
     /**
      * function() - short description of function
      *
-     * Long description of function
+     * TODO: Long description of function
      *
      * @param $varname type,
      *            what it does
@@ -164,7 +158,7 @@ class Upgrade
     /**
      * function() - short description of function
      *
-     * Long description of function
+     * TODO: Long description of function
      *
      * @param $varname type,
      *            what it does
@@ -178,7 +172,7 @@ class Upgrade
     /**
      * function() - short description of function
      *
-     * Long description of function
+     * TODO: Long description of function
      *
      * @param $varname type,
      *            what it does
@@ -195,7 +189,7 @@ require_once "upgrade.ultimabb.php";
 /**
  * function() - short description of function
  *
- * Long description of function
+ * TODO: Long description of function
  *
  * @param $varname type,
  *            what it does
@@ -315,4 +309,3 @@ function upgrade_forum($path, $prgbar)
     setBar($prgbar, 1.0);
     return $warn;
 }
-?>

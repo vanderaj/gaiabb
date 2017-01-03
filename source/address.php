@@ -1,7 +1,7 @@
 <?php
 /**
  * GaiaBB
- * Copyright (c) 2011-2015 The GaiaBB Group
+ * Copyright (c) 2011-2017 The GaiaBB Group
  * http://www.GaiaBB.com
  *
  * Based off UltimaBB
@@ -30,7 +30,7 @@
  **/
 
 require_once ('header.php');
-require_once ('address.inc.php');
+require_once ('include/address.inc.php');
 
 loadtpl('addresslist_edit_address', 'addresslist_edit', 'addresslist_address_online', 'addresslist_address_offline', 'addresslist', 'address_pm_inv', 'address_pm_on', 'address_pm_off', 'address_pm', 'addresslist_message');
 
@@ -84,4 +84,3 @@ switch ($action) {
         address_display();
         break;
 }
-?>

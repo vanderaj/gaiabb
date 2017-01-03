@@ -49,7 +49,7 @@ function add()
 
     if (++clicked >= 10)
     {
-        window.alert(max_addresses_per_entry);
+        window.alert("Max 10 addresses");
         return false;
     }
     else

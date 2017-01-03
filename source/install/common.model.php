@@ -1,7 +1,7 @@
 <?php
 /**
  * GaiaBB
- * Copyright (c) 2011-2015 The GaiaBB Group
+ * Copyright (c) 2011-2017 The GaiaBB Group
  * http://www.GaiaBB.com
  *
  * Based off UltimaBB's installer (ajv)
@@ -29,18 +29,16 @@ if (! defined('IN_PROGRAM') && (defined('DEBUG') && DEBUG == false)) {
 }
 
 /**
- * function() - short description of function
+ * get_boardurl() - Try to fill in $boardurl for the user
  *
- * Long description of function
+ * This will work as long as the DNS is good.
  *
- * @param $varname type,
- *            what it does
- * @return type, what the return does
+ * @return type, the board's URL from headers
  *        
  */
 function get_boardurl()
 {
-    // Try to fill in $boardurl for the user. This will work as long as the DNS is good.
+    //
     $boardurl = isset($_SERVER['HTTP_HOST']) ? $_SERVER['HTTP_HOST'] : $_SERVER['SERVER_NAME'];
     $self = $_SERVER['PHP_SELF']; // which we need to strip off /install from the back
     $i = strpos($self, "install/index.php");
@@ -69,7 +67,7 @@ function get_boardurl()
 /**
  * function() - short description of function
  *
- * Long description of function
+ * TODO: Long description of function
  *
  * @param $varname type,
  *            what it does
@@ -93,7 +91,7 @@ function get_config()
 /**
  * function() - short description of function
  *
- * Long description of function
+ * TODO: Long description of function
  *
  * @param $varname type,
  *            what it does
@@ -123,7 +121,7 @@ function create_config($config)
 /**
  * function() - short description of function
  *
- * Long description of function
+ * TODO: Long description of function
  *
  * @param $varname type,
  *            what it does
@@ -144,7 +142,7 @@ function get_db_array()
 /**
  * function() - short description of function
  *
- * Long description of function
+ * TODO: Long description of function
  *
  * @param $varname type,
  *            what it does
@@ -168,7 +166,7 @@ function get_databases()
 /**
  * function() - short description of function
  *
- * Long description of function
+ * TODO: Long description of function
  *
  * @param $varname type,
  *            what it does
@@ -236,7 +234,7 @@ function find_nonwritable_folders()
 /**
  * function() - short description of function
  *
- * Long description of function
+ * TODO: Long description of function
  *
  * @param $varname type,
  *            what it does
@@ -392,7 +390,7 @@ function check_files()
 /**
  * function() - short description of function
  *
- * Long description of function
+ * TODO: Long description of function
  *
  * @param $varname type,
  *            what it does
@@ -439,7 +437,7 @@ function isInstalled($db = false)
 /**
  * function() - short description of function
  *
- * Long description of function
+ * TODO: Long description of function
  *
  * @param $varname type,
  *            what it does
@@ -467,7 +465,7 @@ function is_admin($db, $tablepre)
 /**
  * function() - short description of function
  *
- * Long description of function
+ * TODO: Long description of function
  *
  * @param $varname type,
  *            what it does
@@ -494,7 +492,7 @@ function is_admin_pw_same()
 /**
  * function() - short description of function
  *
- * Long description of function
+ * TODO: Long description of function
  *
  * @param $varname type,
  *            what it does
@@ -516,7 +514,7 @@ function process_admin_creds($path)
 /**
  * function() - short description of function
  *
- * Long description of function
+ * TODO: Long description of function
  *
  * @param $varname type,
  *            what it does
@@ -553,7 +551,7 @@ function process_db($path)
 /**
  * function() - short description of function
  *
- * Long description of function
+ * TODO: Long description of function
  *
  * @param $varname type,
  *            what it does
@@ -617,7 +615,7 @@ function process_config($path)
 /**
  * function() - short description of function
  *
- * Long description of function
+ * TODO: Long description of function
  *
  * @param $varname type,
  *            what it does
@@ -635,7 +633,7 @@ function process_backup($path)
 /**
  * function() - short description of function
  *
- * Long description of function
+ * TODO: Long description of function
  *
  * @param $varname type,
  *            what it does
@@ -660,7 +658,7 @@ function createsa($db, $tablepre)
 /**
  * function() - short description of function
  *
- * Long description of function
+ * TODO: Long description of function
  *
  * @param $varname type,
  *            what it does
@@ -672,4 +670,3 @@ function disable_gbb($db, $tablepre)
     $db->query("UPDATE " . $tablepre . "settings SET config_value = 'off' WHERE config_name = 'bbstatus'");
     $db->query("UPDATE " . $tablepre . "settings SET config_value = 'The forum is disabled for maintenance. Please come back soon.' WHERE config_name = 'bboffreason'");
 }
-?>

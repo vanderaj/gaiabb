@@ -1,7 +1,7 @@
 <?php
 /**
  * GaiaBB
- * Copyright (c) 2011-2015 The GaiaBB Group
+ * Copyright (c) 2011-2017 The GaiaBB Group
  * http://www.GaiaBB.com
  *
  * Based off UltimaBB
@@ -67,7 +67,7 @@ class mysql5Php5
     /**
      * function() - short description of function
      *
-     * Long description of function
+     * TODO: Long description of function
      *
      * @param $varname type,
      *            what it does
@@ -83,7 +83,7 @@ class mysql5Php5
     /**
      * function() - short description of function
      *
-     * Long description of function
+     * TODO: Long description of function
      *
      * @param $varname type,
      *            what it does
@@ -779,7 +779,7 @@ class mysql5Php5
     /**
      * function() - short description of function
      *
-     * Long description of function
+     * TODO: Long description of function
      *
      * @param $varname type,
      *            what it does
@@ -792,8 +792,7 @@ class mysql5Php5
         $css = 'images/prored/style.css';
         $imgpath = 'images/prored/';
         ?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-            "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />
@@ -880,7 +879,7 @@ class mysql5Php5
     /**
      * function() - short description of function
      *
-     * Long description of function
+     * TODO: Long description of function
      *
      * @param $varname type,
      *            what it does
@@ -892,7 +891,7 @@ class mysql5Php5
             <table align="center">
 								<tr>
 									<td align="center" class="smalltxt"><br /> <br /> Powered by
-										GaiaBB <br /> Copyright &copy; 2011-2015 The GaiaBB Group. All
+										GaiaBB <br /> Copyright &copy; 2011-2017 The GaiaBB Group. All
 										rights reserved. <br /> <br /></td>
 								</tr>
 							</table> <br /></td>
@@ -909,7 +908,7 @@ class mysql5Php5
     /**
      * function() - short description of function
      *
-     * Long description of function
+     * TODO: Long description of function
      *
      * @param $varname type,
      *            what it does

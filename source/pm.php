@@ -1,7 +1,7 @@
 <?php
 /**
  * GaiaBB
- * Copyright (c) 2011-2013 The GaiaBB Group
+ * Copyright (c) 2011-2017 The GaiaBB Group
  * http://www.GaiaBB.com
  *
  * Based off UltimaBB
@@ -319,4 +319,3 @@ eval('echo stripslashes("' . template('pm') . '");');
 
 loadtime();
 eval('echo "' . template('footer') . '";');
-?>

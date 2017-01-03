@@ -1,7 +1,7 @@
 <?php
 /**
  * GaiaBB
- * Copyright (c) 2011-2015 The GaiaBB Group
+ * Copyright (c) 2011-2017 The GaiaBB Group
  * http://www.GaiaBB.com
  *
  * Based off UltimaBB
@@ -39,4 +39,3 @@ while (($theme = $db->fetch_array($query)) != false) {
     ${'theme' . $theme['themeid']} = stripslashes($theme['name']);
 }
 $db->free_result($query);
-?>

@@ -1,7 +1,7 @@
 <?php
 /**
  * GaiaBB
- * Copyright (c) 2011-2015 The GaiaBB Group
+ * Copyright (c) 2011-2017 The GaiaBB Group
  * http://www.GaiaBB.com
  *
  * Based off UltimaBB's installer (ajv)
@@ -33,7 +33,7 @@ require_once ('common.model.php');
 /**
  * function() - short description of function
  *
- * Long description of function
+ * TODO: Long description of function
  *
  * @param $varname type,
  *            what it does
@@ -59,7 +59,7 @@ function process_repair_config()
 /**
  * function() - short description of function
  *
- * Long description of function
+ * TODO: Long description of function
  *
  * @param $varname type,
  *            what it does
@@ -208,7 +208,7 @@ function repair_forum($path, $prgbar)
 /**
  * function() - short description of function
  *
- * Long description of function
+ * TODO: Long description of function
  *
  * @param $varname type,
  *            what it does
@@ -220,4 +220,3 @@ function disablesa($db, $tablepre)
     $admin = $db->escape($_SESSION['admin']);
     $db->query("UPDATE `" . $tablepre . "members` SET status='Banned' WHERE username!='" . $admin . "' AND status IN ('Super Administrator', 'Administrator', 'Super Moderator', 'Moderator')");
 }
-?>
