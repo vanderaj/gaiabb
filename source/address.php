@@ -5,7 +5,7 @@
  * http://www.GaiaBB.com
  *
  * Based off UltimaBB
- * Copyright (c) 2004 - 2007 The UltimaBB Group 
+ * Copyright (c) 2004 - 2007 The UltimaBB Group
  * (defunct)
  *
  * Based off XMB
@@ -13,7 +13,7 @@
  * http://forums.xmbforum2.com/
  *
  * This file is part of GaiaBB
- * 
+ *
  *    GaiaBB is free software: you can redistribute it and/or modify
  *    it under the terms of the GNU General Public License as published by
  *    the Free Software Foundation, either version 3 of the License, or
@@ -23,16 +23,27 @@
  *    but WITHOUT ANY WARRANTY; without even the implied warranty of
  *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  *    GNU General Public License for more details.
- * 
+ *
  *    You should have received a copy of the GNU General Public License
  *    along with GaiaBB.  If not, see <http://www.gnu.org/licenses/>.
  *
  **/
 
-require_once ('header.php');
-require_once ('include/address.inc.php');
+require_once('header.php');
+require_once('class/address.class.php');
 
-loadtpl('addresslist_edit_address', 'addresslist_edit', 'addresslist_address_online', 'addresslist_address_offline', 'addresslist', 'address_pm_inv', 'address_pm_on', 'address_pm_off', 'address_pm', 'addresslist_message');
+loadtpl(
+    'addresslist_edit_address',
+    'addresslist_edit',
+    'addresslist_address_online',
+    'addresslist_address_offline',
+    'addresslist',
+    'address_pm_inv',
+    'address_pm_on',
+    'address_pm_off',
+    'address_pm',
+    'addresslist_message'
+);
 
 $shadow = shadowfx();
 $meta = metaTags();
@@ -46,41 +57,27 @@ if (X_GUEST || isset($self['status']) && $self['status'] == 'Banned') {
     error($lang['pmnotloggedin']);
 }
 
-$addresses = formArray('addresses', true, false, 'string');
-$delete = formArray('delete', true, false, 'string');
 
-if (empty($addresses) && isset($_GET['addresses'])) {
-    $addresses = $db->escape($_GET['addresses']);
-    $addresses = array(
-        $addresses
-    );
-}
-
-if (empty($delete) && isset($_GET['delete'])) {
-    $addresses = $db->escape($_GET['delete']);
-    $addresses = array(
-        $delete
-    );
-}
+$addr = new Address();
 
 switch ($action) {
     case 'add':
-        address_add($addresses);
+        $addr->add($addresses);
         break;
     case 'edit':
-        address_edit();
+        $addr->edit();
         break;
     case 'delete':
         if (count($delete) > 0) {
-            address_delete($delete);
+            $addr->delete($delete);
         } else {
-            blistmsg($lang['nomember']);
+            $addr->blistmsg($lang['nomember']);
         }
         break;
     case 'add2pm':
-        address_addpm();
+        $addr->addpm();
         break;
     default:
-        address_display();
+        $addr->display();
         break;
 }

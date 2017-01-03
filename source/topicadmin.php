@@ -5,7 +5,7 @@
  * http://www.GaiaBB.com
  *
  * Based off UltimaBB
- * Copyright (c) 2004 - 2007 The UltimaBB Group 
+ * Copyright (c) 2004 - 2007 The UltimaBB Group
  * (defunct)
  *
  * Based off XMB
@@ -13,7 +13,7 @@
  * http://forums.xmbforum2.com/
  *
  * This file is part of GaiaBB
- * 
+ *
  *    GaiaBB is free software: you can redistribute it and/or modify
  *    it under the terms of the GNU General Public License as published by
  *    the Free Software Foundation, either version 3 of the License, or
@@ -23,18 +23,15 @@
  *    but WITHOUT ANY WARRANTY; without even the implied warranty of
  *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  *    GNU General Public License for more details.
- * 
+ *
  *    You should have received a copy of the GNU General Public License
  *    along with GaiaBB.  If not, see <http://www.gnu.org/licenses/>.
  *
  **/
 
 
-
-
-
-require_once ('header.php');
-require_once ('topicadmin.inc.php');
+require_once('header.php');
+require_once('include/topicadmin.inc.php');
 
 $kill = false;
 
@@ -65,12 +62,12 @@ $query = $db->query("SELECT name, fid FROM " . X_PREFIX . "forums WHERE fid = '$
 $fup = $db->fetch_array($query);
 $db->free_result($query);
 
-if (! empty($forums['type']) && isset($forums['type']) && $forums['type'] == 'forum') {
+if (!empty($forums['type']) && isset($forums['type']) && $forums['type'] == 'forum') {
     nav('<a href="viewforum.php?fid=' . $fid . '">' . stripslashes($forums['name']) . '</a>');
     nav('<a href="viewtopic.php?tid=' . $tid . '">' . $thread['subject'] . '</a>');
     btitle(stripslashes($forums['name']));
     btitle(stripslashes($thread['subject']));
-} else 
+} else
     if (isset($forums['type']) && isset($forums['type']) == 'sub') {
         nav('<a href="viewforum.php?fid=' . $fup['fid'] . '">' . stripslashes($fup['name']) . '</a>');
         nav('<a href="viewforum.php?fid=' . $fid . '">' . stripslashes($forums['name']) . '</a>');
@@ -169,14 +166,14 @@ if ($action != 'report' && $action != 'votepoll') {
 
 switch ($action) {
     case 'report':
-        
+
         // This get's unset by other code, so I've redefined it. ~martijn
         $pid = getRequestInt('pid');
-        
+
         if ($CONFIG['reportpost'] == 'off') {
             error($lang['fnasorry'], false);
         }
-        
+
         if (onSubmit('reportsubmit')) {
             $mod->doReport();
         }
@@ -214,7 +211,7 @@ switch ($action) {
         }
         $closed = $db->result($query, 0);
         $db->free_result($query);
-        
+
         if (onSubmit('closesubmit')) {
             $mod->doClose($closed);
         }
@@ -237,7 +234,7 @@ switch ($action) {
         }
         $topped = $db->result($query, 0);
         $db->free_result($query);
-        
+
         if (onSubmit('topsubmit')) {
             $mod->doTop($topped);
         }

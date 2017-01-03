@@ -4,7 +4,7 @@
  * http://www.GaiaBB.com
  *
  * Based off UltimaBB
- * Copyright (c) 2004 - 2007 The UltimaBB Group 
+ * Copyright (c) 2004 - 2007 The UltimaBB Group
  * (defunct)
  *
  * Based off XMB
@@ -12,7 +12,7 @@
  * http://www.xmbforum.com
  *
  * This file is part of GaiaBB
- * 
+ *
  *    GaiaBB is free software: you can redistribute it and/or modify
  *    it under the terms of the GNU General Public License as published by
  *    the Free Software Foundation, either version 3 of the License, or
@@ -22,7 +22,7 @@
  *    but WITHOUT ANY WARRANTY; without even the implied warranty of
  *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  *    GNU General Public License for more details.
- * 
+ *
  *    You should have received a copy of the GNU General Public License
  *    along with GaiaBB.  If not, see <http://www.gnu.org/licenses/>.
  *
@@ -33,27 +33,22 @@ var attachNode = '';
 var layer = '';
 var clicked = 0;
 
-function init()
-{
+function init() {
     attachNode = document.getElementById('address_add');
     layer = document.getElementById('addresses');
     isInit = true;
 }
 
-function add()
-{
-    if (!isInit)
-    {
+function add() {
+    if (!isInit) {
         init();
     }
 
-    if (++clicked >= 10)
-    {
+    if (++clicked >= 10) {
         window.alert("Max 10 addresses");
         return false;
     }
-    else
-    {
+    else {
         var newChild = layer.appendChild(attachNode.cloneNode(true));
         newChild.childNodes[1].value = '';
     }

@@ -5,7 +5,7 @@
  * http://www.GaiaBB.com
  *
  * Based off UltimaBB
- * Copyright (c) 2004 - 2007 The UltimaBB Group 
+ * Copyright (c) 2004 - 2007 The UltimaBB Group
  * (defunct)
  *
  * Based off XMB
@@ -13,7 +13,7 @@
  * http://forums.xmbforum2.com/
  *
  * This file is part of GaiaBB
- * 
+ *
  *    GaiaBB is free software: you can redistribute it and/or modify
  *    it under the terms of the GNU General Public License as published by
  *    the Free Software Foundation, either version 3 of the License, or
@@ -23,18 +23,15 @@
  *    but WITHOUT ANY WARRANTY; without even the implied warranty of
  *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  *    GNU General Public License for more details.
- * 
+ *
  *    You should have received a copy of the GNU General Public License
  *    along with GaiaBB.  If not, see <http://www.gnu.org/licenses/>.
  *
  **/
 
 
-
-
-
-require_once ('header.php');
-require_once ('online.inc.php');
+require_once('header.php');
+require_once('include/online.inc.php');
 
 loadtpl('online_row_admin', 'online_row', 'online_admin', 'online');
 
@@ -69,24 +66,24 @@ while (($online = $db->fetch_array($q)) != false) {
     $array = url_to_text($online['location']);
     $onlinetime = gmdate($self['timecode'], $online['time'] + ($self['timeoffset'] * 3600) + $self['daylightsavings']);
     $username = str_replace('xguest123', $lang['textguest1'], $online['username']);
-    
+
     if ($online['username'] == 'xrobot123') {
         $username = $online['robotname'];
     }
-    
+
     $online['location'] = $array['text'];
     if (X_STAFF) {
         $online['location'] = '<a href="' . $array['url'] . '">' . $array['text'] . '</a>';
         $online['location'] = stripslashes($online['location']);
     }
-    
+
     if ($online['invisible'] == 1 && (X_ADMIN || $online['username'] == $self['username'])) {
         $hidepre = '<strike>';
         $hidesuff = '</strike>';
     } else {
         $hidepre = $hidesuff = '';
     }
-    
+
     if ($online['username'] != 'xguest123' && $online['username'] != $lang['textguest1'] && $online['username'] != 'xrobot123' && $online['username'] != $lang['textrobot1']) {
         $icon = $pre = $suff = '';
         switch ($online['status']) {
@@ -156,7 +153,7 @@ while (($online = $db->fetch_array($q)) != false) {
                 }
                 break;
         }
-    } else 
+    } else
         if ($online['username'] == 'xrobot123') {
             if ($THEME['riconstatus'] == 'on') {
                 $icon = '<img src="' . $THEME['ricondir'] . '/online_robot.gif" alt="' . $lang['textrobot1'] . '" title="' . $lang['textrobot1'] . '" border="0px" />';
@@ -174,7 +171,7 @@ while (($online = $db->fetch_array($q)) != false) {
                 $online['username'] = $icon . '' . $username;
             }
         }
-    
+
     if (X_ADMIN) {
         eval('$onlineusers .= "' . template('online_row_admin') . '";');
     } else {

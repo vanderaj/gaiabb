@@ -5,7 +5,7 @@
  * http://www.GaiaBB.com
  *
  * Based off UltimaBB
- * Copyright (c) 2004 - 2007 The UltimaBB Group 
+ * Copyright (c) 2004 - 2007 The UltimaBB Group
  * (defunct)
  *
  * Based off XMB
@@ -13,7 +13,7 @@
  * http://forums.xmbforum2.com/
  *
  * This file is part of GaiaBB
- * 
+ *
  *    GaiaBB is free software: you can redistribute it and/or modify
  *    it under the terms of the GNU General Public License as published by
  *    the Free Software Foundation, either version 3 of the License, or
@@ -23,22 +23,22 @@
  *    but WITHOUT ANY WARRANTY; without even the implied warranty of
  *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  *    GNU General Public License for more details.
- * 
+ *
  *    You should have received a copy of the GNU General Public License
  *    along with GaiaBB.  If not, see <http://www.gnu.org/licenses/>.
  *
  **/
 
 // check to ensure no direct viewing of page
-if (! defined('IN_PROGRAM') && (defined('DEBUG') && DEBUG == false)) {
+if (!defined('IN_PROGRAM') && (defined('DEBUG') && DEBUG == false)) {
     exit('This file is not designed to be called directly');
 }
 
-if (! X_STAFF) {
+if (!X_STAFF) {
     error($lang['notpermitted'], false);
 }
 
-require_once ('topicadmin.inc.php');
+require_once('topicadmin.inc.php');
 
 $pid = getInt('pid');
 $tid = getInt('tid');
@@ -61,52 +61,54 @@ if ($cmassmod) {
     foreach ($cmassmod as $key => $val) {
         $threads[] = $val;
     }
-    $tids = (count($threads) > 1) ? implode(', ', $threads) : (int) $threads[0][0];
+    $tids = (count($threads) > 1) ? implode(', ', $threads) : (int)$threads[0][0];
 }
 
 $mod = new mod();
 $mod->statuscheck($fid);
 
-function doEmptySubmit($fid, $tids) {
+function doEmptySubmit($fid, $tids)
+{
     global $db, $mod, $self;
-    
+
     $leavealone = array();
     $tids = explode(', ', $tids);
-    
+
     foreach ($tids as $post) {
         $query = $db->query("SELECT pid, author FROM " . X_PREFIX . "posts WHERE tid = '$post' ORDER BY pid ASC LIMIT 1");
         $posts = $db->fetch_array($query);
         $db->free_result($query);
         $leavealone[] = $posts['pid'];
     }
-    
+
     $tids = implode(', ', $tids);
     $pids = implode(', ', $leavealone);
-    
+
     $db->query("DELETE FROM " . X_PREFIX . "posts WHERE tid IN ($tids) AND pid NOT IN ($pids)");
-    
+
     $tids = explode(', ', $tids);
-    for ($i = 0; $i < count($tids); $i ++) {
+    for ($i = 0; $i < count($tids); $i++) {
         updatethreadcount($tids[$i]);
     }
-    
+
     updateforumcount($fid);
-    
+
     foreach ($tids as $tid) {
         $mod->log($self['username'], 'empty', $fid, $tid);
     }
 }
 
-function doDeleteSubmit($fid, $tids) {
+function doDeleteSubmit($fid, $tids)
+{
     global $db, $action, $self, $mod;
-    
+
     $member = array();
     $query = $db->query("SELECT * FROM " . X_PREFIX . "posts WHERE tid IN ($tids)");
     while (($result = $db->fetch_array($query)) != false) {
         $db->query("UPDATE " . X_PREFIX . "members SET postnum = postnum-1 WHERE username = '$result[author]'");
     }
     $db->free_result($query);
-    
+
     $mod_tids = explode(', ', $tids);
     foreach ($mod_tids as $tid) {
         $query = $db->query("SELECT subject FROM " . X_PREFIX . "threads WHERE tid = '$tid'");
@@ -114,22 +116,23 @@ function doDeleteSubmit($fid, $tids) {
         $db->free_result($query);
         $mod->log($self['username'], $action . ": " . $subject, $fid, $tid);
     }
-    
+
     $db->query("DELETE FROM " . X_PREFIX . "threads WHERE tid IN ($tids)");
     $db->query("DELETE FROM " . X_PREFIX . "lastposts WHERE tid IN ($tids)");
     $db->query("DELETE FROM " . X_PREFIX . "posts WHERE tid IN ($tids)");
     $db->query("DELETE FROM " . X_PREFIX . "attachments WHERE tid IN ($tids)");
     $db->query("DELETE FROM " . X_PREFIX . "favorites WHERE tid IN ($tids)");
     $db->query("DELETE FROM " . X_PREFIX . "subscriptions WHERE tid IN ($tids)");
-    
+
     foreach ($mod_tids as $tid) {
         $db->query("DELETE FROM " . X_PREFIX . "threads WHERE closed='moved|$tid'");
     }
 }
 
-function doTopSubmit($fid, $tids) {
-    global $db, $self, $mod; 
-    
+function doTopSubmit($fid, $tids)
+{
+    global $db, $self, $mod;
+
     $top = array();
     $untop = array();
     $query = $db->query("SELECT tid, topped FROM " . X_PREFIX . "threads WHERE fid = '$fid' AND tid IN ($tids)");
@@ -143,24 +146,25 @@ function doTopSubmit($fid, $tids) {
         }
         $mod->log($self['username'], $act, $fid, $thread['tid']);
     }
-    
+
     if (count($untop) != 0) {
         $untop = implode(', ', $untop);
         $db->query("UPDATE " . X_PREFIX . "threads SET topped = '0' WHERE tid IN ($untop)");
     }
-    
+
     if (count($top) != 0) {
         $top = implode(', ', $top);
         $db->query("UPDATE " . X_PREFIX . "threads SET topped = '1' WHERE tid IN ($top)");
     }
 }
 
-function doCloseSubmit($fid, $tids) {
+function doCloseSubmit($fid, $tids)
+{
     global $db, $mod, $self;
-    
+
     $close = array();
     $open = array();
-    
+
     $query = $db->query("SELECT tid, closed FROM " . X_PREFIX . "threads WHERE fid = '$fid' AND tid IN ($tids)");
     while (($thread = $db->fetch_array($query)) != false) {
         if ($thread['closed'] == 'yes') {
@@ -172,12 +176,12 @@ function doCloseSubmit($fid, $tids) {
         }
         $mod->log($self['username'], $act, $fid, $thread['tid']);
     }
-    
+
     if (count($open) != 0) {
         $open = implode(', ', $open);
         $db->query("UPDATE " . X_PREFIX . "threads SET closed = '' WHERE tid IN ($open)");
     }
-    
+
     if (count($close) != 0) {
         $close = implode(', ', $close);
         $db->query("UPDATE " . X_PREFIX . "threads SET closed = 'yes' WHERE tid IN ($close)");
@@ -192,7 +196,7 @@ switch ($action) {
             }
             eval('echo stripslashes("' . template('massmod_openclose') . '");');
         }
-        
+
         if (onSubmit('closesubmit')) {
             doCloseSubmit($fid, $tids);
         }
@@ -204,7 +208,7 @@ switch ($action) {
             }
             eval('echo stripslashes("' . template('massmod_topuntop') . '");');
         }
-        
+
         if (onSubmit('topsubmit')) {
             doTopSubmit($fid, $tids);
         }
@@ -216,13 +220,13 @@ switch ($action) {
             }
             eval('echo stripslashes("' . template('massmod_bump') . '");');
         }
-        
+
         if (onSubmit('bumpsubmit')) {
             $tids = explode(', ', $tids);
             foreach ($tids as $tid) {
                 $db->query("UPDATE " . X_PREFIX . "lastposts SET dateline = '$onlinetime' WHERE tid = '$tid'");
                 $db->query("UPDATE " . X_PREFIX . "forums SET lastpost = '$tid' WHERE fid = '$fid'");
-                
+
                 $mod->log($self['username'], $action, $fid, $tid);
             }
         }
@@ -235,7 +239,7 @@ switch ($action) {
             $forumselect = forumList('newfid', false, false);
             eval('echo stripslashes("' . template('massmod_copy') . '");');
         }
-        
+
         if (onSubmit('copysubmit')) {
             $query = $db->query("SELECT * FROM " . X_PREFIX . "threads WHERE tid IN ($tids)");
             while (($thread = $db->fetch_array($query)) != false) {
@@ -253,53 +257,53 @@ switch ($action) {
                     }
                 }
                 reset($thread);
-                
+
                 $cols = array();
                 $vals = array();
                 foreach ($thread as $key => $val) {
                     if (trim($key) == '') {
                         continue;
                     }
-                    
+
                     if ($key == 'subject') {
                         $val = '[Copy] ' . $val;
                     }
-                    
+
                     $cols[] = $key;
                     $vals[] = addslashes($val);
                 }
                 reset($thread);
                 $columns = implode(', ', $cols);
                 $values = "'" . implode("', '", $vals) . "'";
-                
+
                 $db->query("INSERT INTO " . X_PREFIX . "threads ($columns) VALUES ($values)") or die($db->error());
                 $newtid = $db->insert_id();
                 $db->query("INSERT INTO " . X_PREFIX . "lastposts (tid, uid, username, dateline, pid) SELECT '$newtid', uid, username, dateline, pid FROM " . X_PREFIX . "lastposts where tid = '$tid'");
-                
+
                 $cols = array();
                 $vals = array();
-                
+
                 $query2 = $db->query("SELECT * FROM " . X_PREFIX . "posts WHERE tid = '$tid' ORDER BY pid ASC");
                 while (($post = $db->fetch_array($query2)) != false) {
                     $post['fid'] = $newfid;
                     $post['tid'] = $newtid;
-                    
+
                     $oldPid = $post['pid'];
-                    
+
                     $post['pid'] = '';
                     reset($post);
-                    
+
                     foreach ($post as $key => $val) {
                         $cols[] = $key;
                         $vals[] = addslashes($val);
                     }
-                    
+
                     $columns = implode(', ', $cols);
                     $values = "'" . implode("', '", $vals) . "'";
-                    
+
                     $cols = array();
                     $vals = array();
-                    
+
                     $db->query("INSERT INTO " . X_PREFIX . "posts ($columns) VALUES ($values)") or die($db->error());
                     $newpid = $db->insert_id();
                     $db->query("INSERT INTO " . X_PREFIX . "attachments (`tid`,`pid`,`filename`,`filetype`,`filesize`,`attachment`,`downloads`) SELECT '$newtid','$newpid',`filename`,`filetype`,`filesize`,`attachment`,`downloads` FROM " . X_PREFIX . "attachments WHERE pid = '$oldPid'");
@@ -307,9 +311,9 @@ switch ($action) {
                 $db->free_result($query2);
             }
             $db->free_result($query);
-            
+
             updateforumcount($newfid);
-            
+
             $tids2 = explode(', ', $tids);
             foreach ($tids2 as $tid) {
                 $mod->log($self['username'], $action, $fid, $tid);
@@ -323,9 +327,9 @@ switch ($action) {
             }
             eval('echo stripslashes("' . template('massmod_delete') . '");');
         }
-        
+
         if (onSubmit('deletesubmit')) {
-            doDeleteSubmit($fid, $tids);            
+            doDeleteSubmit($fid, $tids);
             updateforumcount($fid);
         }
         break;
@@ -336,7 +340,7 @@ switch ($action) {
             }
             eval('echo stripslashes("' . template('massmod_empty') . '");');
         }
-        
+
         if (onSubmit('emptysubmit')) {
             doEmptySubmit($fid, $tids);
         }
@@ -349,7 +353,7 @@ switch ($action) {
             $forumselect = forumList('moveto', false, false);
             eval('echo stripslashes("' . template('massmod_move') . '");');
         }
-        
+
         if (onSubmit('movesubmit')) {
             $type = formVar('type');
             if ($type == 'redirect') {
@@ -361,19 +365,19 @@ switch ($action) {
                     $db->query("INSERT INTO " . X_PREFIX . "lastposts (tid, uid, username, dateline, pid) SELECT '$ntid', uid, username, dateline, pid FROM " . X_PREFIX . "lastposts WHERE tid = '$info[tid]'");
                 }
             }
-            
+
             $db->query("UPDATE " . X_PREFIX . "threads SET fid = '$moveto' WHERE tid IN ($tids)");
             $db->query("UPDATE " . X_PREFIX . "posts SET fid = '$moveto' WHERE tid IN ($tids)");
-            
+
             updateforumcount($fid);
             updateforumcount($moveto);
-            
+
             $tids = explode(', ', $tids);
             foreach ($tids as $tid) {
                 $query = $db->query("SELECT subject FROM " . X_PREFIX . "threads WHERE tid = '$tid'");
                 $subject = $db->fetch_array($query);
                 $db->free_result($query);
-                
+
                 $f = "$fid -> $moveto";
                 $mod->log($self['username'], $action . ': ' . $subject['subject'], $f, $tid);
             }
@@ -386,19 +390,19 @@ switch ($action) {
             }
             eval('echo stripslashes("' . template('massmod_merge') . '");');
         }
-        
+
         if (onSubmit('mergesubmit')) {
             $tids2 = stripslashes($tids);
             $tids = explode(', ', $tids);
-            
+
             if (in_array($othertid, $tids)) {
                 error($lang['cannotmergesamethread'], false);
             }
-            
+
             if ($othertid == 0) {
                 error($lang['mergenothread'], false);
             }
-            
+
             foreach ($tids as $tid) {
                 $query = $db->query("SELECT replies, fid FROM " . X_PREFIX . "threads WHERE tid = '$tid'");
                 if ($db->num_rows($query) == 0) {
@@ -406,19 +410,19 @@ switch ($action) {
                 }
             }
             $db->free_result($query);
-            
+
             $query = $db->query("SELECT replies, fid FROM " . X_PREFIX . "threads WHERE tid = '$othertid'");
             if ($db->num_rows($query) == 0) {
                 error($lang['mergenothread'], false);
             }
-            
+
             $db->query("UPDATE " . X_PREFIX . "posts SET tid = '$othertid' WHERE tid IN ($tids2)");
             $db->query("UPDATE " . X_PREFIX . "attachments SET tid = '$othertid' WHERE tid IN ($tids2)");
             $db->query("DELETE FROM " . X_PREFIX . "threads WHERE tid IN ($tids2)");
             $db->query("DELETE FROM " . X_PREFIX . "lastposts WHERE tid IN ($tids2)");
             $db->query("UPDATE " . X_PREFIX . "forums SET threads = threads-" . count($tids) . " WHERE fid = '$fid'");
             updatethreadcount($othertid);
-            
+
             foreach ($tids as $tid) {
                 $mod->log($self['username'], $action, $fid, "$othertid, $tid");
             }
@@ -432,24 +436,24 @@ switch ($action) {
             $query = $db->query("SELECT mt_open, mt_close FROM " . X_PREFIX . "forums WHERE fid = '$fid'");
             $forums = $db->fetch_array($query);
             $db->free_result($query);
-            
+
             $query = $db->query("SELECT * FROM " . X_PREFIX . "threads WHERE tid IN ($tids)");
             $thread = $db->fetch_array($query);
             $db->free_result($query);
-            
+
             $openprefixes = explode(',', $forums['mt_open']);
-            for ($i = 0; $i < count($openprefixes); $i ++) {
+            for ($i = 0; $i < count($openprefixes); $i++) {
                 $openprefixes[$i] = trim($openprefixes[$i]);
             }
-            
+
             $closeprefixes = explode(',', $forums['mt_close']);
-            for ($i = 0; $i < count($closeprefixes); $i ++) {
+            for ($i = 0; $i < count($closeprefixes); $i++) {
                 $closeprefixes[$i] = trim($closeprefixes[$i]);
             }
-            
+
             $prefixes = array_merge($openprefixes, $closeprefixes);
             natcasesort($prefixes);
-            
+
             $markthread_select = array();
             $markthread_select[] = '<select name="newmarkthread">';
             $markthread_select[] = '<option value="none">' . $lang['textnone'] . '</option>';
@@ -465,54 +469,54 @@ switch ($action) {
             $markthread_select = implode("\n", $markthread_select);
             eval('echo stripslashes("' . template('massmod_markthread') . '");');
         }
-        
+
         if (onSubmit('markthreadsubmit')) {
             $newmarkthread = formVar('newmarkthread');
             $query = $db->query("SELECT mt_open, mt_close FROM " . X_PREFIX . "forums WHERE fid = '$fid'");
             $forums = $db->fetch_array($query);
             $db->free_result($query);
-            
+
             $openprefixes = explode(',', $forums['mt_open']);
-            for ($i = 0; $i < count($openprefixes); $i ++) {
+            for ($i = 0; $i < count($openprefixes); $i++) {
                 $openprefixes[$i] = trim($openprefixes[$i]);
             }
-            
+
             $closeprefixes = explode(',', $forums['mt_close']);
-            for ($i = 0; $i < count($closeprefixes); $i ++) {
+            for ($i = 0; $i < count($closeprefixes); $i++) {
                 $closeprefixes[$i] = trim($closeprefixes[$i]);
             }
-            
+
             $prefixes = array_merge($openprefixes, $closeprefixes);
             natcasesort($prefixes);
-            
+
             if (in_array($newmarkthread, $closeprefixes) !== false) {
                 $closed = 'yes';
             } else {
                 $closed = '';
             }
-            
+
             if ($newmarkthread == 'none') {
                 $newmarkthread = '';
             } else {
                 $newmarkthread = '[' . $newmarkthread . ']';
             }
-            
+
             $tids = explode(', ', $tids);
             foreach ($tids as $tid) {
                 $query = $db->query("SELECT p.*, t.tid FROM " . X_PREFIX . "posts p LEFT JOIN " . X_PREFIX . "threads t ON p.tid = t.tid WHERE p.tid = '$tid' ORDER BY dateline LIMIT 0, 1");
                 $post = $db->fetch_array($query);
                 $db->free_result($query);
-                
+
                 foreach ($prefixes as $prefix) {
                     $prefix = trim($prefix);
                     $post['subject'] = str_replace('[' . $prefix . ']', '', $post['subject']);
                 }
-                
+
                 $subject = addslashes($post['subject']);
                 $db->query("UPDATE " . X_PREFIX . "posts SET subject = '$newmarkthread $subject' WHERE pid = '$post[pid]'");
                 $db->query("UPDATE " . X_PREFIX . "threads SET closed = '$closed', subject = '$newmarkthread $subject' WHERE tid = '$tid'");
             }
-            
+
             foreach ($tids as $tid) {
                 $mod->log($self['username'], $action, $fid, $tid);
             }

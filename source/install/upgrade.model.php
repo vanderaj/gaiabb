@@ -5,11 +5,11 @@
  * http://www.GaiaBB.com
  *
  * Based off UltimaBB's installer (ajv)
- * Copyright (c) 2004 - 2007 The UltimaBB Group 
+ * Copyright (c) 2004 - 2007 The UltimaBB Group
  * (defunct)
  *
  * This file is part of GaiaBB
- * 
+ *
  *    GaiaBB is free software: you can redistribute it and/or modify
  *    it under the terms of the GNU General Public License as published by
  *    the Free Software Foundation, either version 3 of the License, or
@@ -19,12 +19,12 @@
  *    but WITHOUT ANY WARRANTY; without even the implied warranty of
  *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  *    GNU General Public License for more details.
- * 
+ *
  *    You should have received a copy of the GNU General Public License
  *    along with GaiaBB.  If not, see <http://www.gnu.org/licenses/>.
  *
  **/
-if (! defined('IN_PROGRAM') && (defined('DEBUG') && DEBUG == false)) {
+if (!defined('IN_PROGRAM') && (defined('DEBUG') && DEBUG == false)) {
     exit('This file is not designed to be called directly');
 }
 
@@ -36,7 +36,7 @@ if (! defined('IN_PROGRAM') && (defined('DEBUG') && DEBUG == false)) {
  * @param $varname type,
  *            what it does
  * @return type, what the return does
- *        
+ *
  */
 function process_upgrade_config()
 {
@@ -59,7 +59,7 @@ class Upgrade
     {
         $this->db = $indb;
         $this->prgbar = $in_prgbar;
-        
+
         if ($this->column_exists('settings', 'schemaver')) {
             $query = $this->db->query("SELECT schemaver FROM `" . X_PREFIX . "settings`");
             $this->schemaver = $this->db->result($query, 0);
@@ -76,9 +76,9 @@ class Upgrade
      *            what it does
      * @return type, what the return does
      */
-    function table_exists($table)
+    function column_exists($table, $column)
     {
-        $query = $this->db->query("SHOW TABLES LIKE '" . X_PREFIX . $table . "'");
+        $query = $this->db->query("SHOW COLUMNS FROM `" . X_PREFIX . $table . "` LIKE '" . $column . "'");
         $rows = $this->db->num_rows($query);
         return ($rows > 0) ? true : false;
     }
@@ -92,9 +92,9 @@ class Upgrade
      *            what it does
      * @return type, what the return does
      */
-    function column_exists($table, $column)
+    function table_exists($table)
     {
-        $query = $this->db->query("SHOW COLUMNS FROM `" . X_PREFIX . $table . "` LIKE '" . $column . "'");
+        $query = $this->db->query("SHOW TABLES LIKE '" . X_PREFIX . $table . "'");
         $rows = $this->db->num_rows($query);
         return ($rows > 0) ? true : false;
     }
@@ -194,43 +194,43 @@ require_once "upgrade.ultimabb.php";
  * @param $varname type,
  *            what it does
  * @return type, what the return does
- *        
+ *
  */
 function upgrade_forum($path, $prgbar)
 {
     $warn = false;
     setBar($prgbar, 0.01);
-    
+
     $version = phpversion();
     if (version_compare($version, "5.4.0") < 0) {
         setCol($prgbar, '#ff0000');
         print_error('Version error', 'GaiaBB requires PHP 5.4.0 or later and prefers the latest version.');
     }
-    
+
     if (version_compare($version, "5.5.13") < 0) {
         setCol($prgbar, '#ffff00');
         print_error('Version warning', 'GaiaBB prefers recent PHP releases. Strongly consider upgrading the version of PHP you are using.', false);
         $warn = true;
     }
-    
+
     setBar($prgbar, 0.02);
-    
+
     $error = check_folders();
     if ($error !== true) {
         setCol($prgbar, '#ff0000');
         print_error('Configuration error', "Cannot find $error. Please upload GaiaBB correctly and start again.");
     }
-    
+
     setBar($prgbar, 0.03);
-    
+
     $error = check_files();
     if ($error !== true) {
         setCol($prgbar, '#ff0000');
         print_error('Configuration error', "Cannot find $error. Please upload GaiaBB correctly and start again.");
     }
-    
+
     setBar($prgbar, 0.04);
-    
+
     $database = '';
     $pconnect = '';
     $dbname = '';
@@ -238,57 +238,57 @@ function upgrade_forum($path, $prgbar)
     $tablepre = '';
     $dbuser = '';
     $dbpw = '';
-    
-    require_once ('config.php');
-    if ($database == 'DBTYPE' || ! file_exists(ROOT . "db/$database.php")) {
+
+    require_once('config.php');
+    if ($database == 'DBTYPE' || !file_exists(ROOT . "db/$database.php")) {
         setCol($prgbar, '#ff0000');
         print_error('Database connection', 'Please ensure that config.php has been successfully written prior to running this install.');
     }
-    require_once ("../db/mysql5php5.php");
-    
+    require_once("../db/mysql5php5.php");
+
     setBar($prgbar, 0.05);
-    
-    if (! check_db_api($database)) {
+
+    if (!check_db_api($database)) {
         setCol($prgbar, '#ff0000');
         print_error('Database connection', 'GaiaBB does not support the configured type of database.');
     }
-    
+
     setBar($prgbar, 0.06);
-    
+
     define('X_PREFIX', $tablepre);
-    
+
     $db = new mysql5Php5();
     $db->connect($dbhost, $dbuser, $dbpw, $dbname, $pconnect, true);
-    
+
     setBar($prgbar, 0.07);
-    
+
     $version = $db->getVersion();
     if (version_compare($version, "5.1.0", "<")) {
         setCol($prgbar, '#ffff00');
         print_error('Database warning', 'GaiaBB requires MariaDB 5.1 or later and prefers the latest version.', false);
         $warn = true;
     }
-    
+
     setBar($prgbar, 0.08);
-    
+
     if (is_priv_db_user($dbuser)) {
         setCol($prgbar, '#ffff00');
         print_error('Security notice', 'Connecting to the database as a highly privileged user is strongly discouraged.', false);
         $warn = true;
     }
-    
+
     setBar($prgbar, 0.09);
-    
+
     $admin = is_admin($db, $tablepre);
-    if (! $admin) {
+    if (!$admin) {
         setCol($prgbar, '#ff0000');
         print_error('Security notice', 'The user specified is not a super administrator. The upgrade utility cannot continue.');
     }
-    
+
     setBar($prgbar, 0.1);
-    
+
     $upgrade = new upgrade_ultimaBB($db, $prgbar);
-    
+
     // Reset the settings row to sane values and turn off board
     if ($_SESSION['resetset'] == 'on') {
         schema_create_settings($db, $tablepre);
@@ -297,15 +297,15 @@ function upgrade_forum($path, $prgbar)
         $upgrade->migrate_settings();
     }
     disable_gbb($db, $tablepre); // we turn the board off for safety reasons
-                                 
+
     // Some operations take time. If your script fails, set this higher
     set_time_limit(300);
-    
+
     $upgrade->add_tables(0.15);
     $upgrade->rename_tables(0.2);
     $upgrade->alter_tables(0.3);
     $upgrade->migrate_data(0.9);
-    
+
     setBar($prgbar, 1.0);
     return $warn;
 }

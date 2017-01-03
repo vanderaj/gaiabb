@@ -5,11 +5,11 @@
  * http://www.GaiaBB.com
  *
  * Based off UltimaBB's installer (ajv)
- * Copyright (c) 2004 - 2007 The UltimaBB Group 
+ * Copyright (c) 2004 - 2007 The UltimaBB Group
  * (defunct)
  *
  * This file is part of GaiaBB
- * 
+ *
  *    GaiaBB is free software: you can redistribute it and/or modify
  *    it under the terms of the GNU General Public License as published by
  *    the Free Software Foundation, either version 3 of the License, or
@@ -19,12 +19,12 @@
  *    but WITHOUT ANY WARRANTY; without even the implied warranty of
  *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  *    GNU General Public License for more details.
- * 
+ *
  *    You should have received a copy of the GNU General Public License
  *    along with GaiaBB.  If not, see <http://www.gnu.org/licenses/>.
  *
  **/
-if (! defined('IN_PROGRAM') && (defined('DEBUG') && DEBUG == false)) {
+if (!defined('IN_PROGRAM') && (defined('DEBUG') && DEBUG == false)) {
     exit('This file is not designed to be called directly');
 }
 
@@ -77,31 +77,8 @@ class convert
      * @return type, what the return does
      */
     function close()
-    {}
-
-    /**
-     * function() - short description of function
-     *
-     * TODO: Long description of function
-     *
-     * @param $varname type,
-     *            what it does
-     * @return type, what the return does
-     */
-    function disableBoards()
-    {}
-
-    /**
-     * function() - short description of function
-     *
-     * TODO: Long description of function
-     *
-     * @param $varname type,
-     *            what it does
-     * @return type, what the return does
-     */
-    function isAuth()
-    {}
+    {
+    }
 
     /**
      * function() - short description of function
@@ -143,8 +120,9 @@ class convert
      *            what it does
      * @return type, what the return does
      */
-    function members()
-    {}
+    function isAuth()
+    {
+    }
 
     /**
      * function() - short description of function
@@ -155,128 +133,9 @@ class convert
      *            what it does
      * @return type, what the return does
      */
-    function posts()
-    {}
-
-    /**
-     * function() - short description of function
-     *
-     * TODO: Long description of function
-     *
-     * @param $varname type,
-     *            what it does
-     * @return type, what the return does
-     */
-    function polls()
-    {}
-
-    /**
-     * function() - short description of function
-     *
-     * TODO: Long description of function
-     *
-     * @param $varname type,
-     *            what it does
-     * @return type, what the return does
-     */
-    function ranks()
-    {}
-
-    /**
-     * function() - short description of function
-     *
-     * TODO: Long description of function
-     *
-     * @param $varname type,
-     *            what it does
-     * @return type, what the return does
-     */
-    function threads()
-    {}
-
-    /**
-     * function() - short description of function
-     *
-     * TODO: Long description of function
-     *
-     * @param $varname type,
-     *            what it does
-     * @return type, what the return does
-     */
-    function forums()
-    {}
-
-    /**
-     * function() - short description of function
-     *
-     * TODO: Long description of function
-     *
-     * @param $varname type,
-     *            what it does
-     * @return type, what the return does
-     */
-    function attachments()
-    {}
-
-    /**
-     * function() - short description of function
-     *
-     * TODO: Long description of function
-     *
-     * @param $varname type,
-     *            what it does
-     * @return type, what the return does
-     */
-    function addresses()
-    {}
-
-    /**
-     * function() - short description of function
-     *
-     * TODO: Long description of function
-     *
-     * @param $varname type,
-     *            what it does
-     * @return type, what the return does
-     */
-    function favorites()
-    {}
-
-    /**
-     * function() - short description of function
-     *
-     * TODO: Long description of function
-     *
-     * @param $varname type,
-     *            what it does
-     * @return type, what the return does
-     */
-    function subscriptions()
-    {}
-
-    /**
-     * function() - short description of function
-     *
-     * TODO: Long description of function
-     *
-     * @param $varname type,
-     *            what it does
-     * @return type, what the return does
-     */
-    function censors()
-    {}
-
-    /**
-     * function() - short description of function
-     *
-     * TODO: Long description of function
-     *
-     * @param $varname type,
-     *            what it does
-     * @return type, what the return does
-     */
-    function banned()
-    {}
+    function disableBoards()
+    {
+    }
 
     /**
      * function() - short description of function
@@ -288,7 +147,164 @@ class convert
      * @return type, what the return does
      */
     function settings()
-    {}
+    {
+    }
+
+    /**
+     * function() - short description of function
+     *
+     * TODO: Long description of function
+     *
+     * @param $varname type,
+     *            what it does
+     * @return type, what the return does
+     */
+    function members()
+    {
+    }
+
+    /**
+     * function() - short description of function
+     *
+     * TODO: Long description of function
+     *
+     * @param $varname type,
+     *            what it does
+     * @return type, what the return does
+     */
+    function forums()
+    {
+    }
+
+    /**
+     * function() - short description of function
+     *
+     * TODO: Long description of function
+     *
+     * @param $varname type,
+     *            what it does
+     * @return type, what the return does
+     */
+    function threads()
+    {
+    }
+
+    /**
+     * function() - short description of function
+     *
+     * TODO: Long description of function
+     *
+     * @param $varname type,
+     *            what it does
+     * @return type, what the return does
+     */
+    function posts()
+    {
+    }
+
+    /**
+     * function() - short description of function
+     *
+     * TODO: Long description of function
+     *
+     * @param $varname type,
+     *            what it does
+     * @return type, what the return does
+     */
+    function polls()
+    {
+    }
+
+    /**
+     * function() - short description of function
+     *
+     * TODO: Long description of function
+     *
+     * @param $varname type,
+     *            what it does
+     * @return type, what the return does
+     */
+    function ranks()
+    {
+    }
+
+    /**
+     * function() - short description of function
+     *
+     * TODO: Long description of function
+     *
+     * @param $varname type,
+     *            what it does
+     * @return type, what the return does
+     */
+    function attachments()
+    {
+    }
+
+    /**
+     * function() - short description of function
+     *
+     * TODO: Long description of function
+     *
+     * @param $varname type,
+     *            what it does
+     * @return type, what the return does
+     */
+    function addresses()
+    {
+    }
+
+    /**
+     * function() - short description of function
+     *
+     * TODO: Long description of function
+     *
+     * @param $varname type,
+     *            what it does
+     * @return type, what the return does
+     */
+    function favorites()
+    {
+    }
+
+    /**
+     * function() - short description of function
+     *
+     * TODO: Long description of function
+     *
+     * @param $varname type,
+     *            what it does
+     * @return type, what the return does
+     */
+    function subscriptions()
+    {
+    }
+
+    /**
+     * function() - short description of function
+     *
+     * TODO: Long description of function
+     *
+     * @param $varname type,
+     *            what it does
+     * @return type, what the return does
+     */
+    function censors()
+    {
+    }
+
+    /**
+     * function() - short description of function
+     *
+     * TODO: Long description of function
+     *
+     * @param $varname type,
+     *            what it does
+     * @return type, what the return does
+     */
+    function banned()
+    {
+    }
 
     /**
      * function() - short description of function
@@ -300,7 +316,8 @@ class convert
      * @return type, what the return does
      */
     function messages()
-    {}
+    {
+    }
 }
 
 /**
@@ -311,7 +328,7 @@ class convert
  * @param $varname type,
  *            what it does
  * @return type, what the return does
- *        
+ *
  */
 function process_convert_index($path)
 {
@@ -329,7 +346,7 @@ function process_convert_index($path)
  * @param $varname type,
  *            what it does
  * @return type, what the return does
- *        
+ *
  */
 function process_convert_details($path)
 {
@@ -350,62 +367,62 @@ function convert_forum($path, $prgbar)
     ini_set('memory_limit', '64M'); // Need lots of memory
     $warn = false;
     setBar($prgbar, 0.01);
-    
+
     $database = $pconnect = $dbname = $dbhost = '';
     $tablepre = $dbuser = $dbpw = '';
-    
-    require_once ('config.php');
-    if ($database == 'DBTYPE' || ! file_exists(ROOT . "db/$database.php")) {
+
+    require_once('config.php');
+    if ($database == 'DBTYPE' || !file_exists(ROOT . "db/$database.php")) {
         setCol($prgbar, '#ff0000');
         print_error('Database connection', 'Please ensure that you have successfully installed GaiaBB prior to running this convertion.');
     }
-    require_once ("../db/mysql5php.php");
-    
+    require_once("../db/mysql5php.php");
+
     setBar($prgbar, 0.05);
-    
+
     define('X_PREFIX', $tablepre);
-    
+
     $db = new mysql5Php5();
     $db->connect($dbhost, $dbuser, $dbpw, $dbname, $pconnect, true, true);
-    
+
     setBar($prgbar, 0.07);
-    
-    if (! isInstalled($db)) {
+
+    if (!isInstalled($db)) {
         setCol($prgbar, '#ff0000');
         print_error('Installation error', 'Please ensure that you have successfully installed GaiaBB prior to running this convertion.', true);
         exit();
     }
-    
+
     if (is_priv_db_user($_SESSION['dbuser'])) {
         setCol($prgbar, '#ffff00');
         print_error('Security notice', 'Connecting to the database as a highly privileged user is strongly discouraged.', false);
         $warn = true;
     }
-    
+
     setBar($prgbar, 0.1);
-    
+
     define('X_PREFIX2', $_SESSION['tablepre']);
-    
+
     $db2 = new mysql5Php5();
     $db2->connect($_SESSION['dbhost'], $_SESSION['dbuser'], $_SESSION['dbpw'], $_SESSION['dbname'], 0, true, true, X_PREFIX2);
-    
+
     setBar($prgbar, 0.11);
-    
-    if (! is_admin($db, $tablepre)) {
+
+    if (!is_admin($db, $tablepre)) {
         setCol($prgbar, '#ff0000');
         print_error('Convertion error', 'You are not a Super Administrator at your GaiaBB forum. The convertion can not continue.', true);
         exit();
     }
     setBar($prgbar, 0.12);
-    
+
     switch ($path) {
         case 'convertxmb':
         default:
-            include ('convert.xmb19x.php');
+            include('convert.xmb19x.php');
             break;
     }
     setBar($prgbar, 0.15);
-    
+
     $convertclass = X_CONVERT;
     $convert = new $convertclass($prgbar, $db2, $db);
     $convert->init();

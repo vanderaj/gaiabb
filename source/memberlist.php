@@ -5,7 +5,7 @@
  * http://www.GaiaBB.com
  *
  * Based off UltimaBB
- * Copyright (c) 2004 - 2007 The UltimaBB Group 
+ * Copyright (c) 2004 - 2007 The UltimaBB Group
  * (defunct)
  *
  * Based off XMB
@@ -13,7 +13,7 @@
  * http://forums.xmbforum2.com/
  *
  * This file is part of GaiaBB
- * 
+ *
  *    GaiaBB is free software: you can redistribute it and/or modify
  *    it under the terms of the GNU General Public License as published by
  *    the Free Software Foundation, either version 3 of the License, or
@@ -23,17 +23,14 @@
  *    but WITHOUT ANY WARRANTY; without even the implied warranty of
  *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  *    GNU General Public License for more details.
- * 
+ *
  *    You should have received a copy of the GNU General Public License
  *    along with GaiaBB.  If not, see <http://www.gnu.org/licenses/>.
  *
  **/
 
 
-
-
-
-require_once ('header.php');
+require_once('header.php');
 
 loadtpl('memberlist_row', 'memberlist', 'memberlist_admin', 'memberlist_multipage', 'memberlist_separator', 'memberlist_results_none');
 
@@ -70,7 +67,7 @@ $srchip = $db->escape(stripslashes(urldecode(getRequestVar('srchip'))));
 $list = getRequestVar('list');
 if ($list != '' && $list != 'misc') {
     $list = substr($list, 0, 1);
-    if (! eregi('^[a-z]', $list)) {
+    if (!eregi('^[a-z]', $list)) {
         $list = '';
     }
 }
@@ -86,7 +83,7 @@ switch ($action) {
         if ($CONFIG['memliststatus'] == 'off') {
             error($lang['fnasorry']);
         }
-        
+
         if (X_GUEST) {
             error($lang['textnoaction']);
         }
@@ -124,10 +121,10 @@ switch ($action) {
             'Z',
             $lang['lettermisc']
         );
-        
+
         $lettersort = '<tr>';
-        
-        if (! empty($list)) {
+
+        if (!empty($list)) {
             if ($THEME['celloverfx'] == 'on') {
                 $lettersort .= "<td class=\"ctrtablerow\" bgcolor=\"$THEME[altbg2]\" onmouseover=\"this.style.backgroundColor='$THEME[altbg1]';\" onmouseout=\"this.style.backgroundColor='$THEME[altbg2]';\" onclick=\"location.href='memberlist.php?action=list'\" style=\"cursor:hand\"><a href=\"memberlist.php?action=list\"><u><strong>$lang[letterall]</strong></u></a></td>";
             } else {
@@ -136,8 +133,8 @@ switch ($action) {
         } else {
             $lettersort .= '<td class="ctrtablerow" bgcolor="' . $THEME['altbg1'] . '">[ <strong>' . $lang['letterall'] . '</strong> ]</td>';
         }
-        
-        for ($i = 0; $i < count($letters); $i ++) {
+
+        for ($i = 0; $i < count($letters); $i++) {
             if ($list == strtolower($letters[$i])) {
                 $lettersort .= '<td class="ctrtablerow" bgcolor="' . $THEME['altbg1'] . '">[ <strong>' . $letters[$i] . '</strong> ]</td>';
             } else {
@@ -148,39 +145,39 @@ switch ($action) {
                 }
             }
         }
-        
+
         $lettersort .= '</tr>';
-        
+
         $ltrqry = '';
         if ($list != '' && $list != 'misc') {
             $ltrqry = "WHERE username LIKE '$list%'";
         }
-        
+
         if ($list == 'misc') {
             $ltrqry = "WHERE username NOT LIKE 'A%' ";
-            for ($i = 0; $i < count($letters); $i ++) {
+            for ($i = 0; $i < count($letters); $i++) {
                 $ltrqry .= "AND username NOT LIKE '$letters[$i]%' ";
             }
         }
-        
+
         $listsort = '';
         if ($list != '' && $list != 'misc') {
             $listsort = '&amp;list=' . $list;
         }
-        
+
         $start_limit = ($page > 1) ? (($page - 1) * $CONFIG['memberperpage']) : 0;
-        
+
         if ($order != 'username' && $order != 'postnum' && $order != 'status' && $order != 'threadnum' && $order != 'lastvisit') {
             $orderby = 'uid';
             $order = 'uid';
-        } else 
+        } else
             if ($order == 'status') {
                 $orderby = "if (status = 'Super Administrator',1, if (status = 'Administrator', 2, if (status = 'Super Moderator', 3, if (status = 'Moderator', 4, if (status = 'member', 5, if (status = 'banned', 6, 7))))))";
             } else {
                 $orderby = $db->escape($order);
             }
-        
-        if (! X_SADMIN) {
+
+        if (!X_SADMIN) {
             $srchip = '';
             $srchemail = '';
             $memberlist_template = 'memberlist';
@@ -189,13 +186,13 @@ switch ($action) {
             $where = array();
             $memberlist_template = 'memberlist_admin';
         }
-        
+
         $ext = array(
             '&amp;order=' . urlencode(stripslashes($order))
         );
-        
-        if (! empty($srchemail)) {
-            if (! X_SADMIN) {
+
+        if (!empty($srchemail)) {
+            if (!X_SADMIN) {
                 $where[] = " email LIKE '%" . $srchemail . "%'";
                 $where[] = " showemail = 'yes'";
             } else {
@@ -206,24 +203,24 @@ switch ($action) {
         } else {
             $srchemail = '';
         }
-        
-        if (! empty($srchip)) {
+
+        if (!empty($srchip)) {
             $where[] = " regip LIKE '%" . $srchip . "%'";
             $ext[] = 'srchip=' . urlencode(stripslashes($srchip));
             $srchip = htmlspecialchars(stripslashes($srchip));
         } else {
             $srchip = '';
         }
-        
-        if (! empty($srchmem)) {
+
+        if (!empty($srchmem)) {
             $where[] = " username LIKE '%$srchmem%'";
             $ext[] = 'srchmem=' . urlencode(stripslashes($srchmem));
             $srchmem = htmlspecialchars(stripslashes($srchmem));
         } else {
             $srchmem = '';
         }
-        
-        if (! empty($where) && isset($where[0]) && ! empty($where[0])) {
+
+        if (!empty($where) && isset($where[0]) && !empty($where[0])) {
             $q = implode(' AND', $where);
             $num = $db->result($db->query("SELECT COUNT(uid) FROM " . X_PREFIX . "members WHERE $q"), 0);
             $qmem = $db->query("SELECT * FROM " . X_PREFIX . "members WHERE $q ORDER BY $orderby $desc LIMIT $start_limit, $CONFIG[memberperpage]");
@@ -231,11 +228,11 @@ switch ($action) {
             $num = $db->result($db->query("SELECT COUNT(uid) FROM " . X_PREFIX . "members $ltrqry"), 0);
             $qmem = $db->query("SELECT * FROM " . X_PREFIX . "members $ltrqry ORDER BY $orderby $desc LIMIT $start_limit, $CONFIG[memberperpage]");
         }
-        
+
         $ext = implode('&amp;', $ext);
-        
+
         $adjTime = ($self['timeoffset'] * 3600) + $self['daylightsavings'];
-        
+
         $members = $oldst = '';
         if ($db->num_rows($qmem) == 0) {
             $db->free_result($qmem);
@@ -243,33 +240,33 @@ switch ($action) {
         } else {
             while (($member = $db->fetch_array($qmem)) != false) {
                 $member['regdate'] = gmdate($self['dateformat'], $member['regdate'] + $adjTime);
-                
-                if (! ($member['lastvisit'] > 0)) {
+
+                if (!($member['lastvisit'] > 0)) {
                     $lastmembervisittext = $lang['textpendinglogin'];
                 } else {
                     $lastvisitdate = gmdate($self['dateformat'], $member['lastvisit'] + $adjTime);
                     $lastvisittime = gmdate($self['timecode'], $member['lastvisit'] + $adjTime);
                     $lastmembervisittext = $lastvisitdate . ' ' . $lang['textat'] . ' ' . $lastvisittime;
                 }
-                
-                if (! empty($member['customstatus'])) {
+
+                if (!empty($member['customstatus'])) {
                     $member['customstatus'] = censor($member['customstatus']);
                     $member['customstatus'] = stripslashes($member['customstatus']);
                 } else {
                     $member['customstatus'] = $lang['profilenoinformation'];
                 }
-                
-                if (! empty($member['firstname']) || ! empty($member['lastname']) && $member['showname'] == 'yes') {
+
+                if (!empty($member['firstname']) || !empty($member['lastname']) && $member['showname'] == 'yes') {
                     $member['firstname'] = censor($member['firstname']);
                     $member['firstname'] = stripslashes($member['firstname']);
                     $member['lastname'] = censor($member['lastname']);
                     $member['lastname'] = stripslashes($member['lastname']);
-                } else 
+                } else
                     if (empty($member['firstname']) || empty($member['lastname']) && $member['showname'] == 'no') {
                         $member['firstname'] = $lang['profilenoinformation'];
                         $member['lastname'] = '';
                     }
-                
+
                 $icon = $pre = $suff = '';
                 switch ($member['status']) {
                     case 'Super Administrator':
@@ -328,7 +325,7 @@ switch ($action) {
                         }
                         break;
                 }
-                
+
                 $memurl = $icon . '<a href="viewprofile.php?memberid=' . intval($member['uid']) . '">' . $pre . '' . trim($member['username']) . '' . $suff . '</a>';
                 $mouseover = celloverfx('viewprofile.php?memberid=' . intval($member['uid']) . '');
                 if ($order == 'status') {
@@ -342,17 +339,17 @@ switch ($action) {
             }
             $db->free_result($qmem);
         }
-        
-        if (! isset($CONFIG['memberperpage'])) {
+
+        if (!isset($CONFIG['memberperpage'])) {
             $CONFIG['memberperpage'] = $CONFIG['postperpage'];
         }
-        
+
         $mpurl = 'memberlist.php?action=list' . $listsort . '&amp;desc=' . $desc . '' . $ext;
         $multipage = '';
         if (($multipage = multi($num, $CONFIG['memberperpage'], $page, $mpurl)) !== false) {
             eval('$multipage = "' . template('memberlist_multipage') . '";');
         }
-        
+
         switch ($desc) {
             case 'desc':
                 $init['ascdesc'] = 'asc';

@@ -5,7 +5,7 @@
  * http://www.GaiaBB.com
  *
  * Based off UltimaBB
- * Copyright (c) 2004 - 2007 The UltimaBB Group 
+ * Copyright (c) 2004 - 2007 The UltimaBB Group
  * (defunct)
  *
  * Based off XMB
@@ -13,7 +13,7 @@
  * http://forums.xmbforum2.com/
  *
  * This file is part of GaiaBB
- * 
+ *
  *    GaiaBB is free software: you can redistribute it and/or modify
  *    it under the terms of the GNU General Public License as published by
  *    the Free Software Foundation, either version 3 of the License, or
@@ -23,7 +23,7 @@
  *    but WITHOUT ANY WARRANTY; without even the implied warranty of
  *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  *    GNU General Public License for more details.
- * 
+ *
  *    You should have received a copy of the GNU General Public License
  *    along with GaiaBB.  If not, see <http://www.gnu.org/licenses/>.
  *
@@ -32,8 +32,8 @@ define('ROOT', '../');
 define('ROOTINC', '../include/');
 define('ROOTCLASS', '../class/');
 
-require_once ('../header.php');
-require_once ('../include/admincp.inc.php');
+require_once('../header.php');
+require_once('../include/admincp.inc.php');
 
 loadtpl('cp_header', 'cp_footer', 'cp_message', 'cp_error');
 
@@ -72,7 +72,7 @@ btitle($lang['templates']);
 
 eval('echo "' . template('cp_header') . '";');
 
-if (! X_SADMIN) {
+if (!X_SADMIN) {
     error($lang['superadminonly'], false);
 }
 
@@ -96,7 +96,7 @@ if ($action == 'templates') {
         $query = $db->query("SELECT * FROM " . X_PREFIX . "templates ORDER BY name");
         $templatelist[] = '<option value="default" selected="selected">' . $lang['selecttemplate'] . '</option>';
         while (($template = $db->fetch_array($query)) != false) {
-            if (! empty($template['name'])) {
+            if (!empty($template['name'])) {
                 $templatelist[] = '<option value="' . $template['id'] . '">' . $template['name'] . '</option>';
             }
         }
@@ -104,96 +104,99 @@ if ($action == 'templates') {
         $templatelist = implode("\n", $templatelist);
         $db->free_result($query);
         ?>
-<form method="post" action="cp_templates.php?action=templates">
-	<input type="hidden" name="token"
-		value="<?php echo $oToken->get_new_token()?>" />
-	<table cellspacing="0px" cellpadding="0px" border="0px" width="100%"
-		align="center">
-		<tr>
-			<td bgcolor="<?php echo $THEME['bordercolor']?>">
-				<table border="0px" cellspacing="<?php echo $THEME['borderwidth']?>"
-					cellpadding="<?php echo $THEME['tablespace']?>" width="100%">
-					<tr class="category">
-						<td class="title"><?php echo $lang['templates']?></td>
-					</tr>
-					<tr class="tablerow">
-						<td bgcolor="<?php echo $THEME['altbg2']?>"><input type="text"
-							name="newtemplatename" size="30" maxlength="50" value="" />&nbsp;&nbsp;<input
-							type="submit" class="submit" name="new"
-							value="<?php echo $lang['newtemplate']?>" /></td>
-					</tr>
-					<tr class="tablerow">
-						<td bgcolor="<?php echo $THEME['altbg2']?>"><?php echo $templatelist?></td>
-					</tr>
-					<tr class="tablerow">
-						<td bgcolor="<?php echo $THEME['altbg2']?>"><input type="submit"
-							class="submit" name="edit" value="<?php echo $lang['textedit']?>" />&nbsp;
-							<input type="submit" class="submit" name="delete"
-							value="<?php echo $lang['deletebutton']?>" />&nbsp; <input
-							type="submit" class="submit" name="rename"
-							value="<?php echo $lang['template_button']?>" />&nbsp; <input
-							type="submit" class="submit" name="restore"
-							value="<?php echo $lang['textrestoredeftemps']?>" />&nbsp; <input
-							type="submit" class="submit" name="download"
-							value="<?php echo $lang['textdownloadtemps']?>" /></td>
-					</tr>
-					<tr class="tablerow">
-						<td bgcolor="<?php echo $THEME['altbg1']?>"><?php echo $lang['templatedef_note']?></td>
-					</tr>
-					<tr class="tablerow">
-						<td bgcolor="<?php echo $THEME['altbg2']?>"><input type="submit"
-							class="submit" name="backup_cur"
-							value="<?php echo $lang['template_backupcur']?>" />&nbsp; <input
-							type="submit" class="submit" name="restore_cur"
-							value="<?php echo $lang['template_restorecur']?>" /></td>
-					</tr>
-				</table>
-			</td>
-		</tr>
-	</table>
-        <?php echo $shadow2?>
+        <form method="post" action="cp_templates.php?action=templates">
+            <input type="hidden" name="token"
+                   value="<?php echo $oToken->get_new_token() ?>"/>
+            <table cellspacing="0px" cellpadding="0px" border="0px" width="100%"
+                   align="center">
+                <tr>
+                    <td bgcolor="<?php echo $THEME['bordercolor'] ?>">
+                        <table border="0px" cellspacing="<?php echo $THEME['borderwidth'] ?>"
+                               cellpadding="<?php echo $THEME['tablespace'] ?>" width="100%">
+                            <tr class="category">
+                                <td class="title"><?php echo $lang['templates'] ?></td>
+                            </tr>
+                            <tr class="tablerow">
+                                <td bgcolor="<?php echo $THEME['altbg2'] ?>"><input type="text"
+                                                                                    name="newtemplatename" size="30"
+                                                                                    maxlength="50" value=""/>&nbsp;&nbsp;<input
+                                            type="submit" class="submit" name="new"
+                                            value="<?php echo $lang['newtemplate'] ?>"/></td>
+                            </tr>
+                            <tr class="tablerow">
+                                <td bgcolor="<?php echo $THEME['altbg2'] ?>"><?php echo $templatelist ?></td>
+                            </tr>
+                            <tr class="tablerow">
+                                <td bgcolor="<?php echo $THEME['altbg2'] ?>"><input type="submit"
+                                                                                    class="submit" name="edit"
+                                                                                    value="<?php echo $lang['textedit'] ?>"/>&nbsp;
+                                    <input type="submit" class="submit" name="delete"
+                                           value="<?php echo $lang['deletebutton'] ?>"/>&nbsp; <input
+                                            type="submit" class="submit" name="rename"
+                                            value="<?php echo $lang['template_button'] ?>"/>&nbsp; <input
+                                            type="submit" class="submit" name="restore"
+                                            value="<?php echo $lang['textrestoredeftemps'] ?>"/>&nbsp; <input
+                                            type="submit" class="submit" name="download"
+                                            value="<?php echo $lang['textdownloadtemps'] ?>"/></td>
+                            </tr>
+                            <tr class="tablerow">
+                                <td bgcolor="<?php echo $THEME['altbg1'] ?>"><?php echo $lang['templatedef_note'] ?></td>
+                            </tr>
+                            <tr class="tablerow">
+                                <td bgcolor="<?php echo $THEME['altbg2'] ?>"><input type="submit"
+                                                                                    class="submit" name="backup_cur"
+                                                                                    value="<?php echo $lang['template_backupcur'] ?>"/>&nbsp;
+                                    <input
+                                            type="submit" class="submit" name="restore_cur"
+                                            value="<?php echo $lang['template_restorecur'] ?>"/></td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+            </table>
+            <?php echo $shadow2 ?>
         </form>
-</td>
-</tr>
-</table>
-<?php
+        </td>
+        </tr>
+        </table>
+        <?php
     }
-    
+
     if (onSubmit('restore')) {
         ?>
-<form method="post" action="cp_templates.php?action=templates">
-	<input type="hidden" name="token"
-		value="<?php echo $oToken->get_new_token()?>" />
-	<table cellspacing="0px" cellpadding="0px" border="0px" width="100%"
-		align="center">
-		<tr>
-			<td bgcolor="<?php echo $THEME['bordercolor']?>">
-				<table border="0px" cellspacing="<?php echo $THEME['borderwidth']?>"
-					cellpadding="<?php echo $THEME['tablespace']?>" width="100%">
-					<tr class="category">
-						<td class="title"><?php echo $lang['templates']?></td>
-					</tr>
-					<tr class="ctrtablerow">
-						<td bgcolor="<?php echo $THEME['altbg1']?>"><?php echo $lang['templaterestoreconfirm']?></td>
-					</tr>
-					<tr bgcolor="<?php echo $THEME['altbg2']?>" class="ctrtablerow">
-						<td><input type="submit" class="submit" name="restoresubmit"
-							value="<?php echo $lang['textyes']?>" /></td>
-					</tr>
-				</table>
-			</td>
-		</tr>
-	</table>
-        <?php echo $shadow2?>
+        <form method="post" action="cp_templates.php?action=templates">
+            <input type="hidden" name="token"
+                   value="<?php echo $oToken->get_new_token() ?>"/>
+            <table cellspacing="0px" cellpadding="0px" border="0px" width="100%"
+                   align="center">
+                <tr>
+                    <td bgcolor="<?php echo $THEME['bordercolor'] ?>">
+                        <table border="0px" cellspacing="<?php echo $THEME['borderwidth'] ?>"
+                               cellpadding="<?php echo $THEME['tablespace'] ?>" width="100%">
+                            <tr class="category">
+                                <td class="title"><?php echo $lang['templates'] ?></td>
+                            </tr>
+                            <tr class="ctrtablerow">
+                                <td bgcolor="<?php echo $THEME['altbg1'] ?>"><?php echo $lang['templaterestoreconfirm'] ?></td>
+                            </tr>
+                            <tr bgcolor="<?php echo $THEME['altbg2'] ?>" class="ctrtablerow">
+                                <td><input type="submit" class="submit" name="restoresubmit"
+                                           value="<?php echo $lang['textyes'] ?>"/></td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+            </table>
+            <?php echo $shadow2 ?>
         </form>
-</td>
-</tr>
-</table>
-<?php
+        </td>
+        </tr>
+        </table>
+        <?php
     }
-    
+
     if (onSubmit('restoresubmit')) {
-        if (! file_exists('./templates.gbb')) {
+        if (!file_exists('./templates.gbb')) {
             cp_error($lang['no_templates'], false, '', '</td></tr></table>');
         }
         $db->query("TRUNCATE " . X_PREFIX . "templates");
@@ -212,54 +215,57 @@ if ($action == 'templates') {
         $db->query("DELETE FROM " . X_PREFIX . "templates WHERE name = ''");
         cp_message($lang['templatesrestoredone'], false, '', '</td></tr></table>', 'cp_templates.php?action=templates', true, false, true);
     }
-    
+
     if (onSubmit('edit') && noSubmit('editsubmit')) {
         if ($tid == "default") {
             cp_error($lang['selecttemplate'], false, '', '</td></tr></table>');
         }
         ?>
-<form method="post"
-	action="cp_templates.php?action=templates&amp;tid=<?php echo $tid?>">
-	<input type="hidden" name="token"
-		value="<?php echo $oToken->get_new_token()?>" />
-	<table cellspacing="0px" cellpadding="0px" border="0px" width="100%"
-		align="center">
-		<tr>
-			<td bgcolor="<?php echo $THEME['bordercolor']?>">
-				<table border="0px" cellspacing="<?php echo $THEME['borderwidth']?>"
-					cellpadding="<?php echo $THEME['tablespace']?>" width="100%">
-					<tr class="category">
-						<td class="title"><?php echo $lang['templates']?></td>
-					</tr>
-        <?php
-        $query = $db->query("SELECT * FROM " . X_PREFIX . "templates WHERE id = '$tid' ORDER BY name");
-        $template = $db->fetch_array($query);
-        $template['template'] = stripslashes(htmlspecialchars($template['template']));
-        ?>
-        <tr class="ctrtablerow">
-						<td bgcolor="<?php echo $THEME['altbg2']?>"><?php echo $lang['templatename']?>&nbsp;<strong><?php echo $template['name']?></strong></td>
-					</tr>
-					<tr class="ctrtablerow">
-						<td bgcolor="<?php echo $THEME['altbg2']?>"><textarea
-								style="width: 100%" rows="20" name="templatenew"><?php echo $template['template']?></textarea></td>
-					</tr>
-					<tr class="ctrtablerow">
-						<td bgcolor="<?php echo $THEME['altbg2']?>"><input type="submit"
-							name="editsubmit" class="submit"
-							value="<?php echo $lang['textsubmitchanges']?>" /></strong></td>
-					</tr>
-				</table>
-			</td>
-		</tr>
-	</table>
-        <?php echo $shadow2?>
+        <form method="post"
+              action="cp_templates.php?action=templates&amp;tid=<?php echo $tid ?>">
+            <input type="hidden" name="token"
+                   value="<?php echo $oToken->get_new_token() ?>"/>
+            <table cellspacing="0px" cellpadding="0px" border="0px" width="100%"
+                   align="center">
+                <tr>
+                    <td bgcolor="<?php echo $THEME['bordercolor'] ?>">
+                        <table border="0px" cellspacing="<?php echo $THEME['borderwidth'] ?>"
+                               cellpadding="<?php echo $THEME['tablespace'] ?>" width="100%">
+                            <tr class="category">
+                                <td class="title"><?php echo $lang['templates'] ?></td>
+                            </tr>
+                            <?php
+                            $query = $db->query("SELECT * FROM " . X_PREFIX . "templates WHERE id = '$tid' ORDER BY name");
+                            $template = $db->fetch_array($query);
+                            $template['template'] = stripslashes(htmlspecialchars($template['template']));
+                            ?>
+                            <tr class="ctrtablerow">
+                                <td bgcolor="<?php echo $THEME['altbg2'] ?>"><?php echo $lang['templatename'] ?>
+                                    &nbsp;<strong><?php echo $template['name'] ?></strong></td>
+                            </tr>
+                            <tr class="ctrtablerow">
+                                <td bgcolor="<?php echo $THEME['altbg2'] ?>"><textarea
+                                            style="width: 100%" rows="20"
+                                            name="templatenew"><?php echo $template['template'] ?></textarea></td>
+                            </tr>
+                            <tr class="ctrtablerow">
+                                <td bgcolor="<?php echo $THEME['altbg2'] ?>"><input type="submit"
+                                                                                    name="editsubmit" class="submit"
+                                                                                    value="<?php echo $lang['textsubmitchanges'] ?>"/></strong>
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+            </table>
+            <?php echo $shadow2 ?>
         </form>
-</td>
-</tr>
-</table>
-<?php
+        </td>
+        </tr>
+        </table>
+        <?php
     }
-    
+
     if (onSubmit('editsubmit')) {
         $templatenew = $db->escape(formVar('templatenew'));
         $namenew = $db->escape(formVar('namenew'));
@@ -277,100 +283,103 @@ if ($action == 'templates') {
         } else {
             $db->query("UPDATE " . X_PREFIX . "templates SET template = '$templatenew' WHERE id = '$tid'");
         }
-        
+
         cp_message($lang['templatesupdate'], false, '', '</td></tr></table>', 'cp_templates.php?action=templates', true, false, true);
     }
-    
+
     if (onSubmit('delete')) {
         if ($tid == 'default') {
             cp_error($lang['selecttemplate'], false, '', '</td></tr></table>');
         }
         ?>
-<form method="post"
-	action="cp_templates.php?action=templates&amp;tid=<?php echo $tid?>">
-	<input type="hidden" name="token"
-		value="<?php echo $oToken->get_new_token()?>" />
-	<table cellspacing="0px" cellpadding="0px" border="0px" width="100%"
-		align="center">
-		<tr>
-			<td bgcolor="<?php echo $THEME['bordercolor']?>">
-				<table border="0px" cellspacing="<?php echo $THEME['borderwidth']?>"
-					cellpadding="<?php echo $THEME['tablespace']?>" width="100%">
-					<tr class="category">
-						<td class="title"><?php echo $lang['templates']?></td>
-					</tr>
-					<tr class="ctrtablerow">
-						<td bgcolor="<?php echo $THEME['altbg1']?>"><?php echo $lang['templatedelconfirm']?></td>
-					</tr>
-					<tr class="ctrtablerow">
-						<td bgcolor="<?php echo $THEME['altbg2']?>"><input type="submit"
-							class="submit" name="deletesubmit"
-							value="<?php echo $lang['textyes']?>" /></td>
-					</tr>
-				</table>
-			</td>
-		</tr>
-	</table>
-        <?php echo $shadow2?>
+        <form method="post"
+              action="cp_templates.php?action=templates&amp;tid=<?php echo $tid ?>">
+            <input type="hidden" name="token"
+                   value="<?php echo $oToken->get_new_token() ?>"/>
+            <table cellspacing="0px" cellpadding="0px" border="0px" width="100%"
+                   align="center">
+                <tr>
+                    <td bgcolor="<?php echo $THEME['bordercolor'] ?>">
+                        <table border="0px" cellspacing="<?php echo $THEME['borderwidth'] ?>"
+                               cellpadding="<?php echo $THEME['tablespace'] ?>" width="100%">
+                            <tr class="category">
+                                <td class="title"><?php echo $lang['templates'] ?></td>
+                            </tr>
+                            <tr class="ctrtablerow">
+                                <td bgcolor="<?php echo $THEME['altbg1'] ?>"><?php echo $lang['templatedelconfirm'] ?></td>
+                            </tr>
+                            <tr class="ctrtablerow">
+                                <td bgcolor="<?php echo $THEME['altbg2'] ?>"><input type="submit"
+                                                                                    class="submit" name="deletesubmit"
+                                                                                    value="<?php echo $lang['textyes'] ?>"/>
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+            </table>
+            <?php echo $shadow2 ?>
         </form>
-</td>
-</tr>
-</table>
-<?php
+        </td>
+        </tr>
+        </table>
+        <?php
     }
-    
+
     if (onSubmit('deletesubmit')) {
         $db->query("DELETE FROM " . X_PREFIX . "templates WHERE id = '$tid'");
         cp_message($lang['templatesdelete'], false, '', '</td></tr></table>', 'cp_templates.php?action=templates', true, false, true);
     }
-    
+
     if (onSubmit('rename') && noSubmit('renamesubmit')) {
         if ($tid == 'default') {
             cp_error($lang['selecttemplate'], false, '', '</td></tr></table>');
         }
         ?>
-<form method="post"
-	action="cp_templates.php?action=templates&amp;tid=<?php echo $tid?>">
-	<input type="hidden" name="token"
-		value="<?php echo $oToken->get_new_token()?>" />
-	<table cellspacing="0px" cellpadding="0px" border="0px" width="100%"
-		align="center">
-		<tr>
-			<td bgcolor="<?php echo $THEME['bordercolor']?>">
-				<table border="0px" cellspacing="<?php echo $THEME['borderwidth']?>"
-					cellpadding="<?php echo $THEME['tablespace']?>" width="100%">
-					<tr class="category">
-						<td class="title" colspan="2"><?php echo $lang['templates']?></td>
-					</tr>
-        <?php
-        $query = $db->query("SELECT * FROM " . X_PREFIX . "templates WHERE id = '$tid' ORDER BY name");
-        $template_info = $db->fetch_array($query);
-        ?>
-        <tr class="tablerow">
-						<td bgcolor="<?php echo $THEME['altbg1']?>"><?php echo $lang['textfrom']?></td>
-						<td bgcolor="<?php echo $THEME['altbg2']?>"><?php echo $template_info['name']?></td>
-					</tr>
-					<tr class="tablerow">
-						<td bgcolor="<?php echo $THEME['altbg1']?>"><?php echo $lang['textto']?></td>
-						<td bgcolor="<?php echo $THEME['altbg2']?>"><input type="text"
-							name="new_name" size="30" value="" /></td>
-					</tr>
-					<tr bgcolor="<?php echo $THEME['altbg2']?>" class="ctrtablerow">
-						<td colspan="2"><input type="submit" name="renamesubmit"
-							class="submit" value="<?php echo $lang['template_button']?>" /></td>
-					</tr>
-				</table>
-			</td>
-		</tr>
-	</table>
-        <?php echo $shadow2?>
+        <form method="post"
+              action="cp_templates.php?action=templates&amp;tid=<?php echo $tid ?>">
+            <input type="hidden" name="token"
+                   value="<?php echo $oToken->get_new_token() ?>"/>
+            <table cellspacing="0px" cellpadding="0px" border="0px" width="100%"
+                   align="center">
+                <tr>
+                    <td bgcolor="<?php echo $THEME['bordercolor'] ?>">
+                        <table border="0px" cellspacing="<?php echo $THEME['borderwidth'] ?>"
+                               cellpadding="<?php echo $THEME['tablespace'] ?>" width="100%">
+                            <tr class="category">
+                                <td class="title" colspan="2"><?php echo $lang['templates'] ?></td>
+                            </tr>
+                            <?php
+                            $query = $db->query("SELECT * FROM " . X_PREFIX . "templates WHERE id = '$tid' ORDER BY name");
+                            $template_info = $db->fetch_array($query);
+                            ?>
+                            <tr class="tablerow">
+                                <td bgcolor="<?php echo $THEME['altbg1'] ?>"><?php echo $lang['textfrom'] ?></td>
+                                <td bgcolor="<?php echo $THEME['altbg2'] ?>"><?php echo $template_info['name'] ?></td>
+                            </tr>
+                            <tr class="tablerow">
+                                <td bgcolor="<?php echo $THEME['altbg1'] ?>"><?php echo $lang['textto'] ?></td>
+                                <td bgcolor="<?php echo $THEME['altbg2'] ?>"><input type="text"
+                                                                                    name="new_name" size="30" value=""/>
+                                </td>
+                            </tr>
+                            <tr bgcolor="<?php echo $THEME['altbg2'] ?>" class="ctrtablerow">
+                                <td colspan="2"><input type="submit" name="renamesubmit"
+                                                       class="submit" value="<?php echo $lang['template_button'] ?>"/>
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+            </table>
+            <?php echo $shadow2 ?>
         </form>
-</td>
-</tr>
-</table>
-<?php
+        </td>
+        </tr>
+        </table>
+        <?php
     }
-    
+
     if (onSubmit('renamesubmit') && noSubmit('rename')) {
         $new_name = $db->escape(formVar('new_name'));
         $check_newname = $db->query("SELECT name FROM " . X_PREFIX . "templates WHERE name = '$new_name'");
@@ -381,42 +390,42 @@ if ($action == 'templates') {
             cp_message($lang['template_renamed'], false, '', '</td></tr></table>', 'cp_templates.php?action=templates', true, false, true);
         }
     }
-    
+
     if (onSubmit('backup_cur')) {
         ?>
-<form method="post" action="cp_templates.php?action=templates">
-	<input type="hidden" name="token"
-		value="<?php echo $oToken->get_new_token()?>" />
-	<table cellspacing="0px" cellpadding="0px" border="0px" width="100%"
-		align="center">
-		<tr>
-			<td bgcolor="<?php echo $THEME['bordercolor']?>">
-				<table border="0px" cellspacing="<?php echo $THEME['borderwidth']?>"
-					cellpadding="<?php echo $THEME['tablespace']?>" width="100%">
-					<tr class="category">
-						<td class="title"><?php echo $lang['templates']?></td>
-					</tr>
-					<tr class="ctrtablerow">
-						<td bgcolor="<?php echo $THEME['altbg1']?>"><?php echo $lang['template_baccur_text']?></td>
-					</tr>
-					<tr bgcolor="<?php echo $THEME['altbg2']?>" class="ctrtablerow">
-						<td><input type="submit" class="submit" name="backup_curyes"
-							value="<?php echo $lang['textyes']?>" /></td>
-					</tr>
-				</table>
-			</td>
-		</tr>
-	</table>
-        <?php echo $shadow2?>
+        <form method="post" action="cp_templates.php?action=templates">
+            <input type="hidden" name="token"
+                   value="<?php echo $oToken->get_new_token() ?>"/>
+            <table cellspacing="0px" cellpadding="0px" border="0px" width="100%"
+                   align="center">
+                <tr>
+                    <td bgcolor="<?php echo $THEME['bordercolor'] ?>">
+                        <table border="0px" cellspacing="<?php echo $THEME['borderwidth'] ?>"
+                               cellpadding="<?php echo $THEME['tablespace'] ?>" width="100%">
+                            <tr class="category">
+                                <td class="title"><?php echo $lang['templates'] ?></td>
+                            </tr>
+                            <tr class="ctrtablerow">
+                                <td bgcolor="<?php echo $THEME['altbg1'] ?>"><?php echo $lang['template_baccur_text'] ?></td>
+                            </tr>
+                            <tr bgcolor="<?php echo $THEME['altbg2'] ?>" class="ctrtablerow">
+                                <td><input type="submit" class="submit" name="backup_curyes"
+                                           value="<?php echo $lang['textyes'] ?>"/></td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+            </table>
+            <?php echo $shadow2 ?>
         </form>
-</td>
-</tr>
-</table>
-<?php
+        </td>
+        </tr>
+        </table>
+        <?php
     }
-    
+
     if (onSubmit('backup_curyes')) {
-        if (! is_writable('./templates/')) {
+        if (!is_writable('./templates/')) {
             cp_error($lang['template_nowrite'], false, '', '</td></tr></table>');
         } else {
             $code = '';
@@ -432,42 +441,42 @@ if ($action == 'templates') {
         }
         cp_message($lang['template_current_bac'], false, '', '</td></tr></table>', 'cp_templates.php?action=templates', true, false, true);
     }
-    
+
     if (onSubmit('restore_cur')) {
         ?>
-<form method="post" action="cp_templates.php?action=templates">
-	<input type="hidden" name="token"
-		value="<?php echo $oToken->get_new_token()?>" />
-	<table cellspacing="0px" cellpadding="0px" border="0px" width="100%"
-		align="center">
-		<tr>
-			<td bgcolor="<?php echo $THEME['bordercolor']?>">
-				<table border="0px" cellspacing="<?php echo $THEME['borderwidth']?>"
-					cellpadding="<?php echo $THEME['tablespace']?>" width="100%">
-					<tr class="category">
-						<td class="title"><?php echo $lang['templates']?></td>
-					</tr>
-					<tr class="ctrtablerow">
-						<td bgcolor="<?php echo $THEME['altbg1']?>"><?php echo $lang['template_rescur_text']?></td>
-					</tr>
-					<tr bgcolor="<?php echo $THEME['altbg2']?>" class="ctrtablerow">
-						<td><input type="submit" class="submit" name="restore_curyes"
-							value="<?php echo $lang['textyes']?>" /></td>
-					</tr>
-				</table>
-			</td>
-		</tr>
-	</table>
-        <?php echo $shadow2?>
+        <form method="post" action="cp_templates.php?action=templates">
+            <input type="hidden" name="token"
+                   value="<?php echo $oToken->get_new_token() ?>"/>
+            <table cellspacing="0px" cellpadding="0px" border="0px" width="100%"
+                   align="center">
+                <tr>
+                    <td bgcolor="<?php echo $THEME['bordercolor'] ?>">
+                        <table border="0px" cellspacing="<?php echo $THEME['borderwidth'] ?>"
+                               cellpadding="<?php echo $THEME['tablespace'] ?>" width="100%">
+                            <tr class="category">
+                                <td class="title"><?php echo $lang['templates'] ?></td>
+                            </tr>
+                            <tr class="ctrtablerow">
+                                <td bgcolor="<?php echo $THEME['altbg1'] ?>"><?php echo $lang['template_rescur_text'] ?></td>
+                            </tr>
+                            <tr bgcolor="<?php echo $THEME['altbg2'] ?>" class="ctrtablerow">
+                                <td><input type="submit" class="submit" name="restore_curyes"
+                                           value="<?php echo $lang['textyes'] ?>"/></td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+            </table>
+            <?php echo $shadow2 ?>
         </form>
-</td>
-</tr>
-</table>
-<?php
+        </td>
+        </tr>
+        </table>
+        <?php
     }
-    
+
     if (onSubmit('restore_curyes')) {
-        if (! file_exists('./templates/templates-current.gbb')) {
+        if (!file_exists('./templates/templates-current.gbb')) {
             cp_error($lang['template_current_no'], false, '', '</td></tr></table>');
         } else {
             $db->query("TRUNCATE " . X_PREFIX . "templates");
@@ -483,7 +492,7 @@ if ($action == 'templates') {
                     $db->query("INSERT INTO " . X_PREFIX . "templates (id, name, template) VALUES ('', '" . addslashes($template[0]) . "', '" . addslashes($template[1]) . "')");
                 }
             }
-            
+
             if (is_writable('./templates/')) {
                 $code = '';
                 $templates = $db->query("SELECT * FROM " . X_PREFIX . "templates");
@@ -500,46 +509,47 @@ if ($action == 'templates') {
             cp_message($lang['template_current_up'], false, '', '</td></tr></table>', 'cp_templates.php?action=templates', true, false, true);
         }
     }
-    
+
     if (onSubmit('new')) {
         $newtemplatename = $db->escape(formVar('newtemplatename'));
         ?>
-<form method="post"
-	action="cp_templates.php?action=templates&amp;tid=new">
-	<input type="hidden" name="token"
-		value="<?php echo $oToken->get_new_token()?>" />
-	<table cellspacing="0px" cellpadding="0px" border="0px" width="100%"
-		align="center">
-		<tr>
-			<td bgcolor="<?php echo $THEME['bordercolor']?>">
-				<table border="0px" cellspacing="<?php echo $THEME['borderwidth']?>"
-					cellpadding="<?php echo $THEME['tablespace']?>" width="100%">
-					<tr class="category">
-						<td class="title"><?php echo $lang['templates']?></td>
-					</tr>
-					<tr class="ctrtablerow">
-						<td bgcolor="<?php echo $THEME['altbg2']?>"><?php echo $lang['templatename']?>&nbsp;<input
-							type="text" name="namenew" size="30"
-							value="<?php echo $newtemplatename?>" /></td>
-					</tr>
-					<tr class="ctrtablerow">
-						<td bgcolor="<?php echo $THEME['altbg2']?>"><textarea
-								style="width: 100%" rows="20" name="templatenew"></textarea></td>
-					</tr>
-					<tr bgcolor="<?php echo $THEME['altbg2']?>" class="ctrtablerow">
-						<td><input type="submit" name="editsubmit"
-							value="<?php echo $lang['textsubmitchanges']?>" class="submit" /></td>
-					</tr>
-				</table>
-			</td>
-		</tr>
-	</table>
-        <?php echo $shadow2?>
+        <form method="post"
+              action="cp_templates.php?action=templates&amp;tid=new">
+            <input type="hidden" name="token"
+                   value="<?php echo $oToken->get_new_token() ?>"/>
+            <table cellspacing="0px" cellpadding="0px" border="0px" width="100%"
+                   align="center">
+                <tr>
+                    <td bgcolor="<?php echo $THEME['bordercolor'] ?>">
+                        <table border="0px" cellspacing="<?php echo $THEME['borderwidth'] ?>"
+                               cellpadding="<?php echo $THEME['tablespace'] ?>" width="100%">
+                            <tr class="category">
+                                <td class="title"><?php echo $lang['templates'] ?></td>
+                            </tr>
+                            <tr class="ctrtablerow">
+                                <td bgcolor="<?php echo $THEME['altbg2'] ?>"><?php echo $lang['templatename'] ?>
+                                    &nbsp;<input
+                                            type="text" name="namenew" size="30"
+                                            value="<?php echo $newtemplatename ?>"/></td>
+                            </tr>
+                            <tr class="ctrtablerow">
+                                <td bgcolor="<?php echo $THEME['altbg2'] ?>"><textarea
+                                            style="width: 100%" rows="20" name="templatenew"></textarea></td>
+                            </tr>
+                            <tr bgcolor="<?php echo $THEME['altbg2'] ?>" class="ctrtablerow">
+                                <td><input type="submit" name="editsubmit"
+                                           value="<?php echo $lang['textsubmitchanges'] ?>" class="submit"/></td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+            </table>
+            <?php echo $shadow2 ?>
         </form>
-</td>
-</tr>
-</table>
-<?php
+        </td>
+        </tr>
+        </table>
+        <?php
     }
 }
 

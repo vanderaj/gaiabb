@@ -5,11 +5,11 @@
  * http://www.GaiaBB.com
  *
  * Based off UltimaBB's installer (ajv)
- * Copyright (c) 2004 - 2007 The UltimaBB Group 
+ * Copyright (c) 2004 - 2007 The UltimaBB Group
  * (defunct)
  *
  * This file is part of GaiaBB
- * 
+ *
  *    GaiaBB is free software: you can redistribute it and/or modify
  *    it under the terms of the GNU General Public License as published by
  *    the Free Software Foundation, either version 3 of the License, or
@@ -19,7 +19,7 @@
  *    but WITHOUT ANY WARRANTY; without even the implied warranty of
  *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  *    GNU General Public License for more details.
- * 
+ *
  *    You should have received a copy of the GNU General Public License
  *    along with GaiaBB.  If not, see <http://www.gnu.org/licenses/>.
  *
@@ -28,18 +28,18 @@ define('IN_PROGRAM', true);
 
 session_start();
 
-require_once ('constants.php');
-require_once ('common.view.php');
-require_once ('common.model.php');
-require_once ('schema.php');
-require_once ('install.model.php');
-require_once ('install.view.php');
-require_once ('upgrade.model.php');
-require_once ('upgrade.view.php');
-require_once ('repair.model.php');
-require_once ('repair.view.php');
-require_once ('convert.model.php');
-require_once ('convert.view.php');
+require_once('constants.php');
+require_once('common.view.php');
+require_once('common.model.php');
+require_once('schema.php');
+require_once('install.model.php');
+require_once('install.view.php');
+require_once('upgrade.model.php');
+require_once('upgrade.view.php');
+require_once('repair.model.php');
+require_once('repair.view.php');
+require_once('convert.model.php');
+require_once('convert.view.php');
 
 $path = $step = '';
 $action = getVar('action');
@@ -86,7 +86,7 @@ switch ($path) {
                 view_header('Installing GaiaBB', $path);
                 $prgbar = view_install_index();
                 $warn = install_forum($prgbar);
-                if (! $warn) {
+                if (!$warn) {
                     setCol($prgbar, '#00ff00');
                     view_install_complete();
                 } else {
@@ -100,7 +100,7 @@ switch ($path) {
                 break;
         }
         break;
-    
+
     case 'upgrade':
         switch ($step) {
             case 'preflight':
@@ -124,7 +124,7 @@ switch ($path) {
                 view_header('Upgrading GaiaBB', $path);
                 $prgbar = view_upgrade_action();
                 $warn = upgrade_forum($path, $prgbar);
-                if (! $warn) {
+                if (!$warn) {
                     setCol($prgbar, '#00ff00');
                     view_upgrade_complete();
                 } else {
@@ -174,7 +174,7 @@ switch ($path) {
                 view_header('Repairing GaiaBB', $path);
                 $prgbar = view_repair_action();
                 $warn = repair_forum($path, $prgbar);
-                if (! $warn) {
+                if (!$warn) {
                     setCol($prgbar, '#00ff00');
                     view_repair_complete();
                 } else {
@@ -212,7 +212,7 @@ switch ($path) {
                 view_header('Converting XMB', $path);
                 $prgbar = view_convert_action($boardtype);
                 $warn = convert_forum($path, $prgbar);
-                if (! $warn) {
+                if (!$warn) {
                     setCol($prgbar, '#00ff00');
                     view_convert_complete($boardtype);
                 } else {

@@ -5,7 +5,7 @@
  * http://www.GaiaBB.com
  *
  * Based off UltimaBB
- * Copyright (c) 2004 - 2007 The UltimaBB Group 
+ * Copyright (c) 2004 - 2007 The UltimaBB Group
  * (defunct)
  *
  * Based off XMB
@@ -13,7 +13,7 @@
  * http://forums.xmbforum2.com/
  *
  * This file is part of GaiaBB
- * 
+ *
  *    GaiaBB is free software: you can redistribute it and/or modify
  *    it under the terms of the GNU General Public License as published by
  *    the Free Software Foundation, either version 3 of the License, or
@@ -23,7 +23,7 @@
  *    but WITHOUT ANY WARRANTY; without even the implied warranty of
  *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  *    GNU General Public License for more details.
- * 
+ *
  *    You should have received a copy of the GNU General Public License
  *    along with GaiaBB.  If not, see <http://www.gnu.org/licenses/>.
  *
@@ -31,8 +31,7 @@
 
 define('CACHECONTROL', 'public');
 
-
-require_once ('header.php');
+require_once('header.php');
 
 loadtpl('error_nologinsession');
 
@@ -128,12 +127,12 @@ switch ($page) {
         eval('$faq = "' . template('error_nologinsession') . '";');
         $faq .= '<br />';
         break;
-    
+
     case 'forumrules':
         $rquery = $db->query("SELECT * FROM " . X_PREFIX . "faq WHERE type = 'rulesset' LIMIT 0, 1");
         $orules = $db->fetch_array($rquery);
         $db->free_result($rquery);
-        
+
         $faq .= '
         <form method="post" action="faq.php?page=agreerules">
         <input type="hidden" name="token" value="$oToken->get_new_token()" />
@@ -143,7 +142,7 @@ switch ($page) {
         <tr class="category">
         <td class="title">' . $lang['textbbrules'] . '</td>
         </tr>';
-        if (! empty($CONFIG['bbrulestxt'])) {
+        if (!empty($CONFIG['bbrulestxt'])) {
             $CONFIG['bbrulestxt'] = stripslashes(stripslashes($CONFIG['bbrulestxt']));
             $therules = postify($CONFIG['bbrulestxt'], '', '', $orules['allowsmilies'], $orules['allowbbcode'], $orules['allowimgcode']);
             $faq .= '<tr>
@@ -154,7 +153,7 @@ switch ($page) {
         }
         $faq .= '</table></td></tr></table></form>' . $shadow . '<br />';
         break;
-    
+
     case 'agreerules':
         $faq .= '
         <form method="post" action="faq.php?page=agreerules">
@@ -170,14 +169,14 @@ switch ($page) {
             $rquery = $db->query("SELECT * FROM " . X_PREFIX . "faq WHERE type = 'rulesset' LIMIT 0, 1");
             $orules = $db->fetch_array($rquery);
             $db->free_result($rquery);
-            
-            if (! empty($orules['name']) && ! empty($CONFIG['bbrulestxt'])) {
+
+            if (!empty($orules['name']) && !empty($CONFIG['bbrulestxt'])) {
                 $orules['name'] = stripslashes(stripslashes($orules['name']));
                 $TopRules = postify($orules['name'], '', '', $orules['allowsmilies'], $orules['allowbbcode'], $orules['allowimgcode']);
                 $faq .= '<tr><td width="100%" class="tablerow" bgcolor="' . $THEME['altbg2'] . '">' . stripslashes($TopRules) . '</td></tr>';
             }
-            
-            if (! empty($CONFIG['bbrulestxt'])) {
+
+            if (!empty($CONFIG['bbrulestxt'])) {
                 $CONFIG['bbrulestxt'] = stripslashes(stripslashes($CONFIG['bbrulestxt']));
                 $therules = postify($CONFIG['bbrulestxt'], '', '', $orules['allowsmilies'], $orules['allowbbcode'], $orules['allowimgcode']);
                 $faq .= '<tr>
@@ -194,7 +193,7 @@ switch ($page) {
             }
             $faq .= '</table></td></tr></table></form>' . $shadow . '<br />';
         }
-        
+
         if (onSubmit('agreesubmit')) {
             $config_cache->expire('settings');
             $moderators_cache->expire('moderators');
@@ -209,7 +208,7 @@ switch ($page) {
             redirect($ref, 0);
         }
         break;
-    
+
     default:
         if ($faqid == 0) {
             $groups = array();
@@ -235,10 +234,10 @@ switch ($page) {
                     $itemlist[$i]['fid'] = $selItems['fid'];
                     $itemlist[$i]['name'] = $selItems['name'];
                 }
-                $i ++;
+                $i++;
             }
             $db->free_result($query);
-            
+
             foreach ($groups as $group) {
                 $faq .= '
                 <table cellspacing="0px" cellpadding="0px" border="0px" width="' . $THEME['tablewidth'] . '" align="center">
@@ -258,7 +257,7 @@ switch ($page) {
                 $faq .= '</ul></td></tr></table></td></tr></table>' . $shadow . '<br />';
             }
         }
-        
+
         if ($faqid > 0) {
             $groups = array();
             $items = array();
@@ -290,10 +289,10 @@ switch ($page) {
                     $itemlist[$i]['fid'] = $selItems['fid'];
                     $itemlist[$i]['name'] = $selItems['name'];
                 }
-                $i ++;
+                $i++;
             }
             $db->free_result($query);
-            
+
             foreach ($groups as $group) {
                 $groupname = stripslashes($group['name']);
                 nav($groupname);
@@ -314,7 +313,7 @@ switch ($page) {
                     }
                 }
                 $faq .= '</ul></td></tr></table></td></tr></table>' . $shadow . '<br />';
-                
+
                 if (array_key_exists($group['fid'], $items)) {
                     foreach ($items[$group['fid']] as $item) {
                         $desc = stripslashes(stripslashes($item['description']));
@@ -348,7 +347,7 @@ switch ($page) {
                         </table>
                         ' . $shadow . '
                         <br />';
-                        
+
                         if (isset($item['view']) && ($item['view'] == 1 || $item['view'] == 3)) {
                             $fmsctr = '0';
                             $faq .= '
@@ -364,7 +363,7 @@ switch ($page) {
                             </tr>';
                             $querysmilie = $db->query("SELECT * FROM " . X_PREFIX . "smilies WHERE type = 'smiley'");
                             while (($smilie = $db->fetch_array($querysmilie)) != false) {
-                                $fmsctr ++;
+                                $fmsctr++;
                                 if ($fmsctr == 1) {
                                     $faq .= '<tr>';
                                 }
@@ -381,7 +380,7 @@ switch ($page) {
                             }
                             $faq .= '</table></td></tr></table>' . $shadow . '<br />';
                         }
-                        
+
                         if (isset($item['view']) && ($item['view'] == 2 || $item['view'] == 3)) {
                             $faq .= '<table cellspacing="0px" cellpadding="0px" border="0px" width="' . $THEME['tablewidth'] . '" align="center">
                             <tr>

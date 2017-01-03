@@ -5,7 +5,7 @@
  * http://www.GaiaBB.com
  *
  * Based off UltimaBB
- * Copyright (c) 2004 - 2007 The UltimaBB Group 
+ * Copyright (c) 2004 - 2007 The UltimaBB Group
  * (defunct)
  *
  * Based off XMB
@@ -13,7 +13,7 @@
  * http://forums.xmbforum2.com/
  *
  * This file is part of GaiaBB
- * 
+ *
  *    GaiaBB is free software: you can redistribute it and/or modify
  *    it under the terms of the GNU General Public License as published by
  *    the Free Software Foundation, either version 3 of the License, or
@@ -23,14 +23,14 @@
  *    but WITHOUT ANY WARRANTY; without even the implied warranty of
  *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  *    GNU General Public License for more details.
- * 
+ *
  *    You should have received a copy of the GNU General Public License
  *    along with GaiaBB.  If not, see <http://www.gnu.org/licenses/>.
  *
  **/
 
 // check to ensure no direct viewing of page
-if (! defined('IN_PROGRAM') && (defined('DEBUG') && DEBUG == false)) {
+if (!defined('IN_PROGRAM') && (defined('DEBUG') && DEBUG == false)) {
     exit('mysql - This file is not designed to be called directly');
 }
 
@@ -61,7 +61,7 @@ class mysql5Php5
     private $queryStr = '';
 
     private $force = false; // Used to force connections. When you want to panic, set to true, otherwise
-                            // it will soft error
+    // it will soft error
     private $tablepre = '';
 
     /**
@@ -92,28 +92,28 @@ class mysql5Php5
     function connect($dbhost = "localhost", $dbuser, $dbpw, $dbname, $pconnect = 0, $force_db = false, $new_link = false, $tablepre = '')
     {
         try {
-            if (! empty($tablepre)) {
+            if (!empty($tablepre)) {
                 $this->tablepre = $tablepre;
             } else {
                 $this->tablepre = X_PREFIX;
             }
-            
+
             $this->force = $force_db;
-            
+
             if ((version_compare(phpversion(), "5.4.0")) < 0) {
                 throw new Exception("Unsupported PHP version");
             }
-            
+
             $this->conn = new mysqli($dbhost, $dbuser, $dbpw);
-            
+
             if ($this->conn->connect_error) {
                 throw new Exception("Could not connect to the database server:" . $this->conn->connect_error . "(" . $this->conn->connect_errno . ")");
             }
-            
-            if ((version_compare($this->getVersion(), "5.1.0")) == - 1) {
+
+            if ((version_compare($this->getVersion(), "5.1.0")) == -1) {
                 throw new Exception("Unsupported MySQL version");
             }
-            
+
             if ($this->select_db($dbname, $force_db) === false) {
                 throw new Exception("Could not select the database");
             }
@@ -121,7 +121,7 @@ class mysql5Php5
             $this->panic("Database connection error", $error);
             return false;
         }
-        
+
         unset($GLOBALS['dbhost'], $GLOBALS['dbuser'], $GLOBALS['dbpw']);
         return true;
     }
@@ -139,42 +139,44 @@ class mysql5Php5
     function panic($head, $msg)
     {
         global $CONFIG;
-        
+
         // TODO: make this configurable as not every host has mail configured
         // TODO: make this use the SMTP classes, if possible
         if (isset($CONFIG['adminemail']) && isset($CONFIG['bbname'])) {
             mail($CONFIG['adminemail'], 'GaiaBB :: Database panic from ' . $CONFIG['bbname'], $msg->getMessage() . "\r\n" . $this->conn->error);
         }
-        
+
         $this->view_header($head);
         ?>
-<table cellspacing="0" cellpadding="0" border="0" width="97%"
-	align="center" bgcolor="#5176B5">
-	<tr>
-		<td>
-			<table border="0" cellspacing="1px" cellpadding="5px" width="100%">
-				<tr>
-					<td class="category"><font color="#000000"><strong><?php echo $head?></strong></font></td>
-				</tr>
-				<tr>
-	<?php
-        if (DEBUG) {
-            ?>
-        <td class="tablerow" bgcolor="#ffffff" align="left"><?php echo $msg->getMessage()?></td>
-	<?php
-        } else {
-            ?>
-        <td class="tablerow" bgcolor="#ffffff" align="left">A suffusion
-						of yellow. Please wait a few minutes and try again</td>
-	<?php } ?> 
-        </tr>
-			</table>
-		</td>
-	</tr>
-</table>
-<?php
+        <table cellspacing="0" cellpadding="0" border="0" width="97%"
+               align="center" bgcolor="#5176B5">
+            <tr>
+                <td>
+                    <table border="0" cellspacing="1px" cellpadding="5px" width="100%">
+                        <tr>
+                            <td class="category"><font color="#000000"><strong><?php echo $head ?></strong></font></td>
+                        </tr>
+                        <tr>
+                            <?php
+                            if (DEBUG) {
+                                ?>
+                                <td class="tablerow" bgcolor="#ffffff"
+                                    align="left"><?php echo $msg->getMessage() ?></td>
+                                <?php
+                            } else {
+                                ?>
+                                <td class="tablerow" bgcolor="#ffffff" align="left">A suffusion
+                                    of yellow. Please wait a few minutes and try again
+                                </td>
+                            <?php } ?>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+        </table>
+        <?php
         $this->view_shadow();
-        
+
         // DEBUG mode is a security issue, but with panic() we have no database context
         // => no X_SADMIN, so no error messages possible. So this code warns of bad things
         // with DEBUG
@@ -185,49 +187,51 @@ class mysql5Php5
                 $errmsg = "No MySQL error";
             }
             ?>
-<table cellspacing="0" cellpadding="0" border="0" width="97%"
-	align="center" bgcolor="#5176B5">
-	<tr>
-		<td>
-			<table border="0" cellspacing="1px" cellpadding="5px" width="100%">
-				<tr>
-					<td class="category"><font color="#000000"><strong>Detailed
-								Debugging Information</strong></font></td>
-				</tr>
-				<tr>
-					<td class="tablerow" bgcolor="#ffffff" align="left">Security
-						warning: DEBUG should be set to false in production</td>
-				</tr>
-				<tr>
-					<td class="tablerow" bgcolor="#ffffff" align="left">
-            MySQL error <?php echo $errnum?>, Error Message: <?php echo $errmsg?></td>
-				
-				
-				<tr>
-					<td class="tablerow" bgcolor="#ffffff" align="left">
-            Exception code <?php echo $msg->getCode()?> occurred on line <?php echo $msg->getLine()?> in file <?php echo $msg->getFile()?>
-            </td>
-				</tr>
-				<tr>
-					<td class="tablerow" bgcolor="#ffffff" align="left">Last Query:<br />
-            <?php echo $this->queryStr; ?>
-            </td>
-				</tr>
-				<tr>
-					<td class="tablerow" bgcolor="#ffffff" align="left">Stack trace:<br />
+            <table cellspacing="0" cellpadding="0" border="0" width="97%"
+                   align="center" bgcolor="#5176B5">
+                <tr>
+                    <td>
+                        <table border="0" cellspacing="1px" cellpadding="5px" width="100%">
+                            <tr>
+                                <td class="category"><font color="#000000"><strong>Detailed
+                                            Debugging Information</strong></font></td>
+                            </tr>
+                            <tr>
+                                <td class="tablerow" bgcolor="#ffffff" align="left">Security
+                                    warning: DEBUG should be set to false in production
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="tablerow" bgcolor="#ffffff" align="left">
+                                    MySQL error <?php echo $errnum ?>, Error Message: <?php echo $errmsg ?></td>
+
+
+                            <tr>
+                                <td class="tablerow" bgcolor="#ffffff" align="left">
+                                    Exception code <?php echo $msg->getCode() ?> occurred on
+                                    line <?php echo $msg->getLine() ?> in file <?php echo $msg->getFile() ?>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="tablerow" bgcolor="#ffffff" align="left">Last Query:<br/>
+                                    <?php echo $this->queryStr; ?>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="tablerow" bgcolor="#ffffff" align="left">Stack trace:<br/>
+                                    <?php
+                                    $traces = explode('#', $msg->getTraceAsString());
+                                    foreach ($traces as $trace) {
+                                        echo $trace . '<br />';
+                                    }
+                                    ?>
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+            </table>
             <?php
-            $traces = explode('#', $msg->getTraceAsString());
-            foreach ($traces as $trace) {
-                echo $trace . '<br />';
-            }
-            ?>
-            </td>
-				</tr>
-			</table>
-		</td>
-	</tr>
-</table>
-<?php
             $this->view_shadow();
         } // end debug
         ?>
@@ -250,7 +254,7 @@ class mysql5Php5
             if ($this->conn->select_db($this->db) === false) {
                 throw new Exception("Could not locate the database. Please check the configuration.");
             }
-            
+
             if ($this->force && $this->find_database($this->db) === false) {
                 throw new Exception('Could not find any database containing the needed tables. Please reconfigure config.php or install GaiaBB');
             }
@@ -261,7 +265,7 @@ class mysql5Php5
             $this->panic("Database connection error", $error);
             return false;
         }
-        
+
         return true;
     }
 
@@ -279,7 +283,7 @@ class mysql5Php5
         if ($tables === false) {
             return false;
         }
-        
+
         return in_array($this->tablepre . 'settings', $tables);
     }
 
@@ -316,7 +320,7 @@ class mysql5Php5
         if ($this->result !== null && $this->result !== false && $this->result !== true) {
             @$this->result->free();
         }
-        
+
         $this->result = null;
         return true;
     }
@@ -334,11 +338,11 @@ class mysql5Php5
     {
         if ($query !== null || $query !== false) {
             return $query->fetch_array($type);
-        } else 
+        } else
             if ($this->result != null && $this->result !== true && $this->result !== false) {
                 return $this->result->fetch_array($type);
             }
-        
+
         return false;
     }
 
@@ -449,25 +453,25 @@ class mysql5Php5
     {
         try {
             $this->queryStr = $sql;
-            
-            if (! $this->conn) {
+
+            if (!$this->conn) {
                 throw new Exception("The database server is not connected.");
             }
-            
+
             $this->start_timer();
-            
+
             $this->result = $this->conn->query($sql);
-            
+
             if ($this->result === false || $this->conn->errno !== 0) {
                 throw new Exception("The database server has not processed the query. Please try again.");
             }
-            
-            $this->querynum ++;
+
+            $this->querynum++;
             if (DEBUG) {
                 $this->querylist[] = $sql;
             }
             $this->querytimes[] = $this->stop_timer();
-            
+
             return $this->result;
         } catch (Exception $error) {
             $this->result = null;
@@ -479,11 +483,11 @@ class mysql5Php5
     /**
      * result() - return a single value from a single value query
      *
-     * @param $result, record
+     * @param $result , record
      *            set obtained from a previous query
-     * @param $row, the
+     * @param $row , the
      *            row to use. Typically, it's 0
-     * @param $field, the
+     * @param $field , the
      *            named field you'd like back
      * @return a mixed result based upon the query, false if no data
      */
@@ -492,18 +496,18 @@ class mysql5Php5
         if ($result === false || $result === null) {
             $result = $this->result;
         }
-        
+
         $result->data_seek($row);
         if ($field == NULL) {
             $field = 0;
         }
         $tmp = $result->fetch_array();
-        
+
         // In MySQL 4, result() returned false, so we do too.
         if ($tmp == null) {
             return false;
         }
-        
+
         $tmp = $tmp[$field];
         return ($tmp);
     }
@@ -519,7 +523,7 @@ class mysql5Php5
     {
         if ($result) {
             return $result->num_rows;
-        } else 
+        } else
             if ($this->result) {
                 return $this->result->num_rows;
             }
@@ -537,7 +541,7 @@ class mysql5Php5
     {
         if ($result !== null && $result !== false) {
             return $result->field_count;
-        } else 
+        } else
             if ($this->result !== null && $this->result !== false) {
                 return $this->result->field_count;
             }
@@ -564,12 +568,12 @@ class mysql5Php5
      */
     function getNextId($table = '')
     {
-        if (! empty($table)) {
+        if (!empty($table)) {
             $table = $this->tablepre . $table;
             $query = $this->query("SHOW TABLE STATUS FROM $this->db LIKE '$table'");
             $column = $this->fetch_array($query);
-            $retval = (int) $column['Auto_increment'];
-            
+            $retval = (int)$column['Auto_increment'];
+
             return $retval;
         }
         return false;
@@ -578,7 +582,7 @@ class mysql5Php5
     /**
      * fetch_row() - fetch a row from the result set
      *
-     * @param $result, result
+     * @param $result , result
      *            set from the user
      * @return array of strings, the row
      */
@@ -586,7 +590,7 @@ class mysql5Php5
     {
         if ($result) {
             return $result->fetch_row();
-        } else 
+        } else
             if ($this->result) {
                 return $this->result->fetch_row();
             }
@@ -596,14 +600,14 @@ class mysql5Php5
     /**
      * time() - create a SQL timestamp
      *
-     * @param $time, optional,
+     * @param $time , optional,
      *            an arbitrary point in time
      * @return string, the left padded timestamp suitable for SQL queries
      */
     function time($time = NULL)
     {
         global $onlinetime;
-        
+
         if ($time === NULL) {
             $time = $onlinetime;
         }
@@ -653,24 +657,24 @@ class mysql5Php5
     {
         $tables = array();
         try {
-            if (! $this->conn) {
+            if (!$this->conn) {
                 throw new Exception("Not connected to the database");
             }
-            
+
             if (empty($this->db)) {
                 throw new Exception("No database selected.");
             }
-            
+
             $result = $this->conn->query("SHOW TABLES FROM " . $this->db);
-            
+
             if ($result == null) {
                 throw new Exception("No database tables can be found in the database.");
             }
-            
+
             while (($table = $result->fetch_array()) != false) {
                 $tables[] = $table[0];
             }
-            
+
             $result->free_result();
         } catch (Exception $error) {
             if ($this->force) {
@@ -678,7 +682,7 @@ class mysql5Php5
             }
             return false;
         }
-        
+
         return $tables;
     }
 
@@ -725,15 +729,15 @@ class mysql5Php5
      */
     function escape($str, $length = -1, $like = false)
     {
-        if ($length != - 1 && strlen($str) >= $length) {
+        if ($length != -1 && strlen($str) >= $length) {
             $str = substr($str, 0, $length);
         }
-        
+
         // Purposely slow down crap configurations to ensure consistency
         if (get_magic_quotes_gpc() == 1) {
             stripslashes($str);
         }
-        
+
         // Get rid of two more suspects only used in LIKE clauses.
         if ($like == false) {
             $str = str_replace('%', '\%', $str);
@@ -752,27 +756,27 @@ class mysql5Php5
     {
         try {
             $insert_sql = "INSERT INTO " . $table . " (aid, tid, pid, filename, filetype, filesize, fileheight, filewidth, attachment, downloads) VALUES (?,?,?,?,?,?,?,?,?,?)";
-            
+
             $statement = $this->conn->prepare($insert_sql);
             if ($statement === false) {
                 throw new Exception("Cannot prepare attachment for insertion");
             }
-            
+
             $retval = $statement->bind_param("iiissiiibi", $aid, $tid, $pid, $filename, $filetype, $filesize, $fileheight, $filewidth, $attachment, $downloads);
             if ($retval === false) {
                 throw new Exception("Cannot bind attachment for insertion");
             }
-            
+
             $retval = $statement->execute();
             if ($retval === false) {
                 throw new Exception("Failed to execute attachment insertion");
             }
-            
+
             $statement->reset();
         } catch (Exception $error) {
             $this->panic("Failed to insert attachment: " . $statement->error, $error);
         }
-        
+
         return $retval;
     }
 
@@ -792,88 +796,94 @@ class mysql5Php5
         $css = 'images/prored/style.css';
         $imgpath = 'images/prored/';
         ?>
-<!DOCTYPE html>
-<html>
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />
-<title>
-            <?php echo $title?>
+        <!DOCTYPE html>
+        <html>
+        <head>
+            <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"/>
+            <title>
+                <?php echo $title ?>
             </title>
-<link rel=stylesheet type="text/css" href="<?php echo $css?>"
-	title="Stylesheet">
-<style type="text/css">
-@import url("<?php echo $css ?>");
-</style>
-</head>
-<body bgcolor="#C9675D" text="#000000">
-	<a name="top"></a>
-	<table cellspacing="0" cellpadding="0" border="0" width="100%"
-		bgcolor="#BB6255" align="center">
-		<tr>
-			<td><table border="0" cellspacing="1px" cellpadding="5px"
-					width="100%" align="center">
-					<tr>
-						<td bgcolor="#FFFFFF" align="center"><br />
-							<table cellspacing="0" cellpadding="0" border="0" width="97%"
-								align="center">
-								<tr>
-									<td bgcolor="#BB6255"><table border="0" cellspacing="1"
-											cellpadding="6" width="100%">
-											<tr>
-												<td width="74%" style="background-image: url(<?php echo $imgpath?>topbg.gif); text-align: left"><table
-														border="0" width="100%" cellpadding="0" cellspacing="0">
-														<tr>
-															<td valign="top" rowspan="2"><a href="index.php"><img
-																	src="<?php echo $imgpath?>logo.png" alt="Your Forums"
-																	title="Your Forums" border="0" /></a></td>
-															<td align="right" valign="top"><font class="smalltxt">Last
-																	active: Never<br />
-															</font></td>
-														</tr>
-														<tr>
-															<td align="right" valign="bottom"><font class="smalltxt">[ <?php echo $navtext?> ]</font></td>
-														</tr>
-													</table></td>
-											</tr>
-											<tr>
-												<td class="navtd">
-													<table width="100%" cellpadding="0" cellspacing="0">
-														<tr>
-															<td align="right"><a href="<?php echo ROOT?>index.php"><font
-																	class="navtd">Back to: <img
-																		src="<?php echo $imgpath?>home.gif" border="0"
-																		alt="Your Forums" title="Your Forums" /></font></a></td>
-														</tr>
-													</table>
-												</td>
-											</tr>
-										</table></td>
-								</tr>
-							</table>
-							<table cellspacing="0" cellpadding="0" border="0" width="97%"
-								align="center">
-								<tr>
-									<td width="100%" align="left"><img
-										src="<?php echo $imgpath?>shadow.gif" border="0" alt=""
-										title="" /></td>
-								</tr>
-							</table>
-							<table cellspacing="0" cellpadding="1" border="0" width="97%"
-								align="center">
-								<tr>
-									<td>
-										<table width="100%" cellspacing="0" cellpadding="2"
-											align="center">
-											<tr>
-												<td class="nav" align="left"><a href="index.php"><?php echo $navtext?></a>
-												</td>
-												<td align="right">&nbsp;</td>
-											</tr>
-										</table>
-									</td>
-								</tr>
-							</table> <br />
-            <?php
+            <link rel=stylesheet type="text/css" href="<?php echo $css ?>"
+                  title="Stylesheet">
+            <style type="text/css">
+                @import url("<?php echo $css ?>");
+            </style>
+        </head>
+        <body bgcolor="#C9675D" text="#000000">
+        <a name="top"></a>
+        <table cellspacing="0" cellpadding="0" border="0" width="100%"
+        bgcolor="#BB6255" align="center">
+        <tr>
+        <td><table border="0" cellspacing="1px" cellpadding="5px"
+        width="100%" align="center">
+        <tr>
+        <td bgcolor="#FFFFFF" align="center"><br/>
+        <table cellspacing="0" cellpadding="0" border="0" width="97%"
+               align="center">
+            <tr>
+                <td bgcolor="#BB6255">
+                    <table border="0" cellspacing="1"
+                           cellpadding="6" width="100%">
+                        <tr>
+                            <td width="74%"
+                                style="background-image: url(<?php echo $imgpath ?>topbg.gif); text-align: left">
+                                <table
+                                        border="0" width="100%" cellpadding="0" cellspacing="0">
+                                    <tr>
+                                        <td valign="top" rowspan="2"><a href="index.php"><img
+                                                        src="<?php echo $imgpath ?>logo.png" alt="Your Forums"
+                                                        title="Your Forums" border="0"/></a></td>
+                                        <td align="right" valign="top"><font class="smalltxt">Last
+                                                active: Never<br/>
+                                            </font></td>
+                                    </tr>
+                                    <tr>
+                                        <td align="right" valign="bottom"><font
+                                                    class="smalltxt">[ <?php echo $navtext ?> ]</font></td>
+                                    </tr>
+                                </table>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="navtd">
+                                <table width="100%" cellpadding="0" cellspacing="0">
+                                    <tr>
+                                        <td align="right"><a href="<?php echo ROOT ?>index.php"><font
+                                                        class="navtd">Back to: <img
+                                                            src="<?php echo $imgpath ?>home.gif" border="0"
+                                                            alt="Your Forums" title="Your Forums"/></font></a></td>
+                                    </tr>
+                                </table>
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+        </table>
+        <table cellspacing="0" cellpadding="0" border="0" width="97%"
+               align="center">
+            <tr>
+                <td width="100%" align="left"><img
+                            src="<?php echo $imgpath ?>shadow.gif" border="0" alt=""
+                            title=""/></td>
+            </tr>
+        </table>
+        <table cellspacing="0" cellpadding="1" border="0" width="97%"
+               align="center">
+            <tr>
+                <td>
+                    <table width="100%" cellspacing="0" cellpadding="2"
+                           align="center">
+                        <tr>
+                            <td class="nav" align="left"><a href="index.php"><?php echo $navtext ?></a>
+                            </td>
+                            <td align="right">&nbsp;</td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+        </table> <br/>
+        <?php
     }
 
     /**
@@ -888,21 +898,21 @@ class mysql5Php5
     function view_footer()
     {
         ?>
-            <table align="center">
-								<tr>
-									<td align="center" class="smalltxt"><br /> <br /> Powered by
-										GaiaBB <br /> Copyright &copy; 2011-2017 The GaiaBB Group. All
-										rights reserved. <br /> <br /></td>
-								</tr>
-							</table> <br /></td>
-					</tr>
-				</table></td>
-		</tr>
-	</table>
-	<a id="bottom" name="bottom"></a>
-</body>
-</html>
-<?php
+        <table align="center">
+            <tr>
+                <td align="center" class="smalltxt"><br/> <br/> Powered by
+                    GaiaBB <br/> Copyright &copy; 2011-2017 The GaiaBB Group. All
+                    rights reserved. <br/> <br/></td>
+            </tr>
+        </table> <br/></td>
+        </tr>
+        </table></td>
+        </tr>
+        </table>
+        <a id="bottom" name="bottom"></a>
+        </body>
+        </html>
+        <?php
     }
 
     /**
@@ -917,15 +927,15 @@ class mysql5Php5
     function view_shadow()
     {
         ?>
-<table cellspacing="0" cellpadding="0" border="0" width="97%"
-	align="center">
-	<tr>
-		<td width="100%" align="left"><img
-			src="<?php echo ROOT?>images/prored/shadow.gif" border="0" alt=""
-			title="" /></td>
-	</tr>
-</table>
-<?php
+        <table cellspacing="0" cellpadding="0" border="0" width="97%"
+               align="center">
+            <tr>
+                <td width="100%" align="left"><img
+                            src="<?php echo ROOT ?>images/prored/shadow.gif" border="0" alt=""
+                            title=""/></td>
+            </tr>
+        </table>
+        <?php
     }
 }
 

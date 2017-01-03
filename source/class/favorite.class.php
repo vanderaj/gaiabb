@@ -5,7 +5,7 @@
  * http://www.GaiaBB.com
  *
  * Based off UltimaBB
- * Copyright (c) 2004 - 2007 The UltimaBB Group 
+ * Copyright (c) 2004 - 2007 The UltimaBB Group
  * (defunct)
  *
  * Based off XMB
@@ -13,7 +13,7 @@
  * http://forums.xmbforum2.com/
  *
  * This file is part of GaiaBB
- * 
+ *
  *    GaiaBB is free software: you can redistribute it and/or modify
  *    it under the terms of the GNU General Public License as published by
  *    the Free Software Foundation, either version 3 of the License, or
@@ -23,12 +23,12 @@
  *    but WITHOUT ANY WARRANTY; without even the implied warranty of
  *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  *    GNU General Public License for more details.
- * 
+ *
  *    You should have received a copy of the GNU General Public License
  *    along with GaiaBB.  If not, see <http://www.gnu.org/licenses/>.
  *
  **/
-if (! defined('IN_PROGRAM') && (defined('DEBUG') && DEBUG == false)) {
+if (!defined('IN_PROGRAM') && (defined('DEBUG') && DEBUG == false)) {
     exit('This file is not designed to be called directly');
 }
 
@@ -62,31 +62,31 @@ class favorite
     function exists($tid)
     {
         global $db, $self;
-        
+
         $retval = false;
-        
+
         if ($tid == 0) {
             return false;
         }
-        
+
         $query = $db->query("SELECT tid FROM " . X_PREFIX . "favorites WHERE tid = '" . intval($tid) . "' AND username = '" . $db->escape($self['username']) . "' AND type = 'favorite'");
         if ($query && $db->num_rows($query) == 1) {
             $this->tid = $tid;
             $retval = true;
         }
         $db->free_result($query);
-        
+
         return $retval;
     }
 
     function update()
     {
         global $db, $self;
-        
+
         if ($this->dirty) {
             $db->query("INSERT INTO " . X_PREFIX . "favorites (tid, username, type) VALUES ('" . intval($this->tid) . "', '" . $db->escape($self['username']) . "', 'favorite')");
             $this->dirty = false;
-            
+
             return true;
         }
         return false;
@@ -106,7 +106,7 @@ class favorite
     function deleteByTid($tid)
     {
         global $db, $self;
-        
+
         if ($tid === 0) {
             return false;
         }
@@ -116,22 +116,22 @@ class favorite
     function deleteByUid($uid)
     {
         global $db;
-        
+
         if ($uid === 0) {
             return false;
         }
-        
+
         $owner = $db->escape(member::findUsernameByUid($uid));
-        
+
         $db->query("DELETE FROM " . X_PREFIX . "favorites WHERE username = '$owner'");
     }
 
     function deleteByFormTids()
     {
         global $db, $self;
-        
+
         $toDelete = array();
-        
+
         $query = $db->query("SELECT tid FROM " . X_PREFIX . "favorites WHERE username = '" . $self['username'] . "' AND type='favorite'");
         while (($sub = $db->fetch_array($query)) != false) {
             $delete = formInt("delete" . $sub['tid'] . "");
@@ -140,8 +140,8 @@ class favorite
             }
         }
         $db->free_result($query);
-        
-        if (! empty($toDelete)) {
+
+        if (!empty($toDelete)) {
             $in = implode(' ,', $toDelete);
             $db->query("DELETE FROM " . X_PREFIX . "favorites WHERE username = '" . $db->escape($self['username']) . "' AND type='favorite' AND tid in (" . $in . ")");
         }

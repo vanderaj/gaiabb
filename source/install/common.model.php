@@ -5,11 +5,11 @@
  * http://www.GaiaBB.com
  *
  * Based off UltimaBB's installer (ajv)
- * Copyright (c) 2004 - 2007 The UltimaBB Group 
+ * Copyright (c) 2004 - 2007 The UltimaBB Group
  * (defunct)
  *
  * This file is part of GaiaBB
- * 
+ *
  *    GaiaBB is free software: you can redistribute it and/or modify
  *    it under the terms of the GNU General Public License as published by
  *    the Free Software Foundation, either version 3 of the License, or
@@ -19,12 +19,12 @@
  *    but WITHOUT ANY WARRANTY; without even the implied warranty of
  *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  *    GNU General Public License for more details.
- * 
+ *
  *    You should have received a copy of the GNU General Public License
  *    along with GaiaBB.  If not, see <http://www.gnu.org/licenses/>.
  *
  **/
-if (! defined('IN_PROGRAM') && (defined('DEBUG') && DEBUG == false)) {
+if (!defined('IN_PROGRAM') && (defined('DEBUG') && DEBUG == false)) {
     exit('This file is not designed to be called directly');
 }
 
@@ -34,11 +34,10 @@ if (! defined('IN_PROGRAM') && (defined('DEBUG') && DEBUG == false)) {
  * This will work as long as the DNS is good.
  *
  * @return type, the board's URL from headers
- *        
+ *
  */
 function get_boardurl()
 {
-    //
     $boardurl = isset($_SERVER['HTTP_HOST']) ? $_SERVER['HTTP_HOST'] : $_SERVER['SERVER_NAME'];
     $self = $_SERVER['PHP_SELF']; // which we need to strip off /install from the back
     $i = strpos($self, "install/index.php");
@@ -54,7 +53,7 @@ function get_boardurl()
                 $boardurl = "https://" . $boardurl . $self;
                 break;
             default:
-                
+
                 // for the purposes of $boardurl, it is not really that important to get the
                 // protocol right
                 $boardurl = "http://" . $boardurl . ':' . $_SERVER['SERVER_PORT'] . $self;
@@ -72,7 +71,7 @@ function get_boardurl()
  * @param $varname type,
  *            what it does
  * @return type, what the return does
- *        
+ *
  */
 function get_config()
 {
@@ -83,7 +82,7 @@ function get_config()
     $dbhost = $_SESSION['dbhost'];
     $dbtype = $_SESSION['dbtype'];
     $tablepre = $_SESSION['tablepre'];
-    
+
     $config = "<?php\n" . "if (!defined('IN_PROGRAM')){ exit(\"This file is not designed to be called directly\"); }\n" . "\$dbname = '" . $dbname . "';\n" . "\$dbuser = '" . $dbuser . "';\n" . "\$dbpw = '" . $dbpw . "';\n" . "\$dbhost = '" . $dbhost . "';\n" . "\$database = '" . $dbtype . "';\n" . "\$pconnect = 0;\n" . "\$tablepre = '" . $tablepre . "';\n?>";
     return $config;
 }
@@ -96,23 +95,23 @@ function get_config()
  * @param $varname type,
  *            what it does
  * @return type, what the return does
- *        
+ *
  */
 function create_config($config)
 {
     $retval = false;
     $handle = @fopen('config.php', "w");
-    if (! $handle) {
+    if (!$handle) {
         return false;
     }
-    
+
     $retval = @fwrite($handle, $config);
     if ($retval !== false) {
         $retval = true;
     }
     fflush($handle);
     fclose($handle);
-    
+
     // set the file read-only and not world readable (dangerous on shared hosts)
     @chmod('config.php', 0440);
     return $retval;
@@ -126,7 +125,7 @@ function create_config($config)
  * @param $varname type,
  *            what it does
  * @return type, what the return does
- *        
+ *
  */
 // Create the select list for the database
 function get_db_array()
@@ -147,7 +146,7 @@ function get_db_array()
  * @param $varname type,
  *            what it does
  * @return type, what the return does
- *        
+ *
  */
 function get_databases()
 {
@@ -155,11 +154,11 @@ function get_databases()
     array_multisort($dbs, SORT_ASC, SORT_STRING);
     $types = array();
     foreach ($dbs as $db) {
-        if (! empty($db)) {
+        if (!empty($db)) {
             $types[] = "<option name=\"" . $db['file'] . "\">" . $db['name'] . "</option>";
         }
     }
-    
+
     return '<select name="db_type">' . implode("\n", $types) . '</select>';
 }
 
@@ -171,7 +170,7 @@ function get_databases()
  * @param $varname type,
  *            what it does
  * @return type, what the return does
- *        
+ *
  */
 function check_folders()
 {
@@ -195,15 +194,15 @@ function check_folders()
         'images/ricons',
         'images/smilies'
     );
-    
+
     $retval = true;
     foreach ($dirs as $dir) {
-        if (! file_exists(ROOT . $dir)) {
+        if (!file_exists(ROOT . $dir)) {
             $retval = $dir;
             break;
         }
     }
-    
+
     return $retval;
 }
 
@@ -220,14 +219,14 @@ function find_nonwritable_folders()
         'images/avatars/',
         'images/photos/'
     );
-    
+
     $retval = array();
     foreach ($dirs as $dir) {
-        if (! is_writable(ROOT . $dir)) {
+        if (!is_writable(ROOT . $dir)) {
             $retval[] = ROOT . $dir;
         }
     }
-    
+
     return $retval;
 }
 
@@ -239,7 +238,7 @@ function find_nonwritable_folders()
  * @param $varname type,
  *            what it does
  * @return type, what the return does
- *        
+ *
  */
 function check_files()
 {
@@ -357,7 +356,6 @@ function check_files()
         'js/index.html',
         'js/popup.js',
         'js/progressbar.js',
-        'include/address.inc.php',
         'include/admincp.inc.php',
         'include/captcha/mpl1.gdf',
         'include/captcha/mpl2.gdf',
@@ -376,10 +374,10 @@ function check_files()
         'include/validate.inc.php',
         'lang/English.lang.php'
     );
-    
+
     $retval = true;
     foreach ($files as $file) {
-        if (! file_exists(ROOT . $file)) {
+        if (!file_exists(ROOT . $file)) {
             $retval = $file;
             break;
         }
@@ -395,7 +393,7 @@ function check_files()
  * @param $varname type,
  *            what it does
  * @return type, what the return does
- *        
+ *
  */
 // Check to see if there is an existing board already configured
 function isInstalled($db = false)
@@ -408,16 +406,16 @@ function isInstalled($db = false)
         $dbname = 'DBNAME';
         $dbpw = '';
         $pconnect = false;
-        include_once ('../config.php');
-        
+        include_once('../config.php');
+
         if ($dbname !== "DBNAME" && file_exists("../db/mysql5php5.php")) {
             // Okay, it's safe to check the database as per config.php
             define('X_PREFIX', $tablepre);
-            include_once ("../db/mysql5php5.php");
-            
+            include_once("../db/mysql5php5.php");
+
             $db = new mysql5Php5();
             $db->connect($dbhost, $dbuser, $dbpw, $dbname, $pconnect, false);
-            
+
             if (@in_array(X_PREFIX . 'settings', $db->getTables())) {
                 $db->close();
                 return true;
@@ -426,11 +424,11 @@ function isInstalled($db = false)
             return false;
         }
     }
-    
+
     if (@in_array(X_PREFIX . 'settings', $db->getTables())) {
         return true;
     }
-    
+
     return false;
 }
 
@@ -442,13 +440,13 @@ function isInstalled($db = false)
  * @param $varname type,
  *            what it does
  * @return type, what the return does
- *        
+ *
  */
 function is_admin($db, $tablepre)
 {
     $admin = $db->escape($_SESSION['admin']);
     $adminpw = $_SESSION['adminpw'];
-    
+
     $query = $db->query("SELECT username, password, status FROM " . X_PREFIX . "members WHERE username = '$admin'");
     if ($query === false) {
         return false;
@@ -470,7 +468,7 @@ function is_admin($db, $tablepre)
  * @param $varname type,
  *            what it does
  * @return type, what the return does
- *        
+ *
  */
 function is_admin_pw_same()
 {
@@ -478,14 +476,14 @@ function is_admin_pw_same()
     if ($path == 'repair' || $path == 'upgrade') {
         return true;
     }
-    
+
     $adminpw = formVar('frmPassword');
     $adminpwcfg = formVar('frmPasswordCfm');
-    
+
     if ($adminpw == '' || $adminpwcfg == '') {
         return false;
     }
-    
+
     return ($adminpw === $adminpwcfg);
 }
 
@@ -497,15 +495,15 @@ function is_admin_pw_same()
  * @param $varname type,
  *            what it does
  * @return type, what the return does
- *        
+ *
  */
 function process_admin_creds($path)
 {
-    if (! is_admin_pw_same()) {
+    if (!is_admin_pw_same()) {
         view_header('Error: Administrator Credentials', $path);
         print_error('Error', 'Administration passwords do not match or are blank. Please go back and try again.');
     }
-    
+
     $_SESSION['admin'] = formVar('frmUsername');
     $_SESSION['adminpw'] = md5(formVar('frmPassword'));
     $_SESSION['adminemail'] = formVar('frmEmail');
@@ -519,13 +517,13 @@ function process_admin_creds($path)
  * @param $varname type,
  *            what it does
  * @return type, what the return does
- *        
+ *
  */
 function process_db($path)
 {
     $dbtype = formVar('db_type');
     $dbs = get_db_array();
-    
+
     $found = false;
     foreach ($dbs as $db) {
         if (strpos($db['name'], $dbtype) !== false) {
@@ -534,12 +532,12 @@ function process_db($path)
             break;
         }
     }
-    
-    if (! $found) {
+
+    if (!$found) {
         view_header('Error: Database Configuration', $path);
         print_error('Error', 'The supplied database type is not available on this host.');
     }
-    
+
     $_SESSION['dbtype'] = $file;
     $_SESSION['dbhost'] = formVar('db_host');
     $_SESSION['dbname'] = formVar('db_name');
@@ -556,7 +554,7 @@ function process_db($path)
  * @param $varname type,
  *            what it does
  * @return type, what the return does
- *        
+ *
  */
 function process_config($path)
 {
@@ -565,30 +563,30 @@ function process_config($path)
         view_header('Configuration', $path);
         print_error('Configuration Error', 'Invalid configuration option supplied:' . $confMethod);
     }
-    
+
     if ($confMethod == 'skip') {
         return;
     }
-    
-    if ($path == 'repair' && ! file_exists('./emergency.php')) {
+
+    if ($path == 'repair' && !file_exists('./emergency.php')) {
         view_header('Configuration', $path);
         print_error('Configuration Warning', 'Cannot process repair configuration as emergency.php does not exist.');
         return;
     }
-    
+
     if ($path == 'install' && isInstalled()) {
         view_header('Configuration', $path);
         print_error('Configuration Error', 'Forum is already installed, cannot process configuration.');
         exit();
     }
-    
+
     $_SESSION['fullurl'] = formVar('fullurl');
-    
+
     $config = get_config();
-    
+
     switch ($confMethod) {
         case 'create':
-            if (! create_config($config)) {
+            if (!create_config($config)) {
                 view_header('Configuration', $path);
                 print_error('File system permissions', 'Could not write out config.php. Please check permissions or write manually', false);
                 view_footer();
@@ -607,7 +605,7 @@ function process_config($path)
             break;
         default:
             view_header('Configuration', $path);
-            print_error('Configuration Error', 'Invalid configuration option supplied: '. $confMethod);
+            print_error('Configuration Error', 'Invalid configuration option supplied: ' . $confMethod);
             break;
     }
 }
@@ -620,7 +618,7 @@ function process_config($path)
  * @param $varname type,
  *            what it does
  * @return type, what the return does
- *        
+ *
  */
 function process_backup($path)
 {
@@ -638,7 +636,7 @@ function process_backup($path)
  * @param $varname type,
  *            what it does
  * @return type, what the return does
- *        
+ *
  */
 function createsa($db, $tablepre)
 {
@@ -651,7 +649,7 @@ function createsa($db, $tablepre)
     $adminRegdate = $db->time(time());
     $db->query("INSERT INTO " . $tablepre . "members (username, password, regdate, email, status, langfile) VALUES ('" . $admin . "','" . $adminpw . "',$adminRegdate,'" . $adminEmail . "','Super Administrator', 'English')");
     $db->query("UPDATE " . $tablepre . "settings SET config_value = '$adminEmail' WHERE config_name = 'adminemail'");
-    
+
     return false;
 }
 
@@ -663,7 +661,7 @@ function createsa($db, $tablepre)
  * @param $varname type,
  *            what it does
  * @return type, what the return does
- *        
+ *
  */
 function disable_gbb($db, $tablepre)
 {

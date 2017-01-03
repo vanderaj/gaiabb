@@ -4,7 +4,7 @@
  * http://www.GaiaBB.com
  *
  * Based off UltimaBB
- * Copyright (c) 2004 - 2007 The UltimaBB Group 
+ * Copyright (c) 2004 - 2007 The UltimaBB Group
  * (defunct)
  *
  * Based off XMB
@@ -12,7 +12,7 @@
  * http://www.xmbforum.com
  *
  * This file is part of GaiaBB
- * 
+ *
  *    GaiaBB is free software: you can redistribute it and/or modify
  *    it under the terms of the GNU General Public License as published by
  *    the Free Software Foundation, either version 3 of the License, or
@@ -22,7 +22,7 @@
  *    but WITHOUT ANY WARRANTY; without even the implied warranty of
  *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  *    GNU General Public License for more details.
- * 
+ *
  *    You should have received a copy of the GNU General Public License
  *    along with GaiaBB.  If not, see <http://www.gnu.org/licenses/>.
  *
@@ -86,7 +86,7 @@ function wrapText(prePend, apPend, el) {
 }
 
 function hasSelection(el) {
-    if (el.selectionEnd-el.selectionStart > 0) {
+    if (el.selectionEnd - el.selectionStart > 0) {
         return true;
     } else {
         return false;
@@ -130,9 +130,9 @@ function email() {
                             }
                         } else {
                             if (address == fetchSelection(messageElement)) {
-                                wrapText('[email=', ']'+desc+'[/email]', messageElement);
+                                wrapText('[email=', ']' + desc + '[/email]', messageElement);
                             } else {
-                                AddText('[email='+address+']', '[/email]', desc, messageElement);
+                                AddText('[email=' + address + ']', '[/email]', desc, messageElement);
                             }
                         }
                     }
@@ -148,9 +148,9 @@ function email() {
                     desc = prompt(bbcode_prompt_email_desc, fetchSelection(messageElement));
                     if (desc != undefined) {
                         if (desc == fetchSelection(messageElement)) {
-                            wrapText('[email='+address+']', '[/email]', messageElement);
+                            wrapText('[email=' + address + ']', '[/email]', messageElement);
                         } else {
-                            AddText('[email='+address+']', '[/email]', desc, messageElement);
+                            AddText('[email=' + address + ']', '[/email]', desc, messageElement);
                         }
                     }
                 }
@@ -168,7 +168,7 @@ function email() {
                     if (desc.length == 0) {
                         AddText('[email]', '[/email]', address, messageElement);
                     } else {
-                        AddText('[email='+address+']', '[/email]', desc, messageElement);
+                        AddText('[email=' + address + ']', '[/email]', desc, messageElement);
                     }
                 }
             }
@@ -181,24 +181,24 @@ function chsize(size) {
         alert(bbcode_help_size);
     } else if (advmode) {
         if (hasSelection(messageElement)) {
-            wrapText('[size='+size+']', '[/size]', messageElement);
+            wrapText('[size=' + size + ']', '[/size]', messageElement);
         } else {
-            AddText('[size='+size+']', '[/size]', ' ', messageElement);
+            AddText('[size=' + size + ']', '[/size]', ' ', messageElement);
         }
     } else {
         if (hasSelection(messageElement)) {
-            text = prompt(bbcode_prompt_size+size, fetchSelection(messageElement));
+            text = prompt(bbcode_prompt_size + size, fetchSelection(messageElement));
             if (text != '' && text != undefined) {
                 if (text == fetchSelection(messageElement)) {
-                    wrapText('[size='+size+']', '[/size]', messageElement);
+                    wrapText('[size=' + size + ']', '[/size]', messageElement);
                 } else {
-                    AddText('[size='+size+']', '[/size]', text, messageElement);
+                    AddText('[size=' + size + ']', '[/size]', text, messageElement);
                 }
             }
         } else {
-            text = prompt(bbcode_prompt_size+size, "Text");
+            text = prompt(bbcode_prompt_size + size, "Text");
             if (text != '' && text != undefined) {
-                AddText('[size='+size+']', '[/size]', text, messageElement);
+                AddText('[size=' + size + ']', '[/size]', text, messageElement);
             }
         }
     }
@@ -209,24 +209,24 @@ function chfont(font) {
         alert(bbcode_help_font);
     } else if (advmode) {
         if (hasSelection(messageElement)) {
-            wrapText('[font='+font+']', '[/font]', messageElement);
+            wrapText('[font=' + font + ']', '[/font]', messageElement);
         } else {
-            AddText('[font='+font+']', '[/font]', ' ', messageElement);
+            AddText('[font=' + font + ']', '[/font]', ' ', messageElement);
         }
     } else {
         if (hasSelection(messageElement)) {
-            text = prompt(bbcode_prompt_font+font, fetchSelection(messageElement));
+            text = prompt(bbcode_prompt_font + font, fetchSelection(messageElement));
             if (text != '' && text != undefined) {
                 if (text == fetchSelection(messageElement)) {
-                    wrapText('[font='+font+']', '[/font]', messageElement);
+                    wrapText('[font=' + font + ']', '[/font]', messageElement);
                 } else {
-                    AddText('[font='+font+']', '[/font]', text, messageElement);
+                    AddText('[font=' + font + ']', '[/font]', text, messageElement);
                 }
             }
         } else {
-            text = prompt(bbcode_prompt_font+font, "Text");
+            text = prompt(bbcode_prompt_font + font, "Text");
             if (text != '' && text != undefined) {
-                AddText('[font='+font+']', '[/font]', text, messageElement);
+                AddText('[font=' + font + ']', '[/font]', text, messageElement);
             }
         }
     }
@@ -237,24 +237,24 @@ function chcolor(color) {
         alert(bbcode_help_color);
     } else if (advmode) {
         if (hasSelection(messageElement)) {
-            wrapText('[color='+color+']', '[/color]', messageElement);
+            wrapText('[color=' + color + ']', '[/color]', messageElement);
         } else {
-            AddText('[color='+color+']', '[/color]', ' ', messageElement);
+            AddText('[color=' + color + ']', '[/color]', ' ', messageElement);
         }
     } else {
         if (hasSelection(messageElement)) {
-            text = prompt(bbcode_prompt_color+color, fetchSelection(messageElement));
+            text = prompt(bbcode_prompt_color + color, fetchSelection(messageElement));
             if (text != '' && text != undefined) {
                 if (text == fetchSelection(messageElement)) {
-                    wrapText('[color='+color+']', '[/color]', messageElement);
+                    wrapText('[color=' + color + ']', '[/color]', messageElement);
                 } else {
-                    AddText('[color='+color+']', '[/color]', text, messageElement);
+                    AddText('[color=' + color + ']', '[/color]', text, messageElement);
                 }
             }
         } else {
-            text = prompt(bbcode_prompt_color+color, "Text");
+            text = prompt(bbcode_prompt_color + color, "Text");
             if (text != '' && text != undefined) {
-                AddText('[color='+color+']', '[/color]', text, messageElement);
+                AddText('[color=' + color + ']', '[/color]', text, messageElement);
             }
         }
     }
@@ -405,24 +405,24 @@ function quote() {
         alert(bbcode_help_quote);
     } else if (advmode) {
         if (hasSelection(messageElement)) {
-            wrapText("\r\n"+'[quote]'+"\r\n", '[/quote]'+"\r\n", messageElement);
+            wrapText("\r\n" + '[quote]' + "\r\n", '[/quote]' + "\r\n", messageElement);
         } else {
-            AddText("\r\n"+'[quote]'+"\r\n", '[/quote]'+"\r\n", ' ', messageElement);
+            AddText("\r\n" + '[quote]' + "\r\n", '[/quote]' + "\r\n", ' ', messageElement);
         }
     } else {
         if (hasSelection(messageElement)) {
             text = prompt(bbcode_prompt_quote, fetchSelection(messageElement));
             if (text != '' && text != undefined) {
                 if (text == fetchSelection(messageElement)) {
-                    wrapText("\r\n"+'[quote]'+"\r\n", '[/quote]'+"\r\n", messageElement);
+                    wrapText("\r\n" + '[quote]' + "\r\n", '[/quote]' + "\r\n", messageElement);
                 } else {
-                    AddText("\r\n"+'[quote]'+"\r\n", '[/quote]'+"\r\n", text, messageElement);
+                    AddText("\r\n" + '[quote]' + "\r\n", '[/quote]' + "\r\n", text, messageElement);
                 }
             }
         } else {
             text = prompt(bbcode_prompt_quote, 'Text');
             if (text != '' && text != undefined) {
-                AddText("\r\n"+'[quote]'+"\r\n", '[/quote]'+"\r\n", text, messageElement);
+                AddText("\r\n" + '[quote]' + "\r\n", '[/quote]' + "\r\n", text, messageElement);
             }
         }
     }
@@ -433,24 +433,24 @@ function code() {
         alert(bbcode_help_code);
     } else if (advmode) {
         if (hasSelection(messageElement)) {
-            wrapText("\r\n"+'[code]', '[/code]'+"\r\n", messageElement);
+            wrapText("\r\n" + '[code]', '[/code]' + "\r\n", messageElement);
         } else {
-            AddText("\r\n"+'[code]', '[/code]'+"\r\n", ' ', messageElement);
+            AddText("\r\n" + '[code]', '[/code]' + "\r\n", ' ', messageElement);
         }
     } else {
         if (hasSelection(messageElement)) {
             text = prompt(bbcode_prompt_code, fetchSelection(messageElement));
             if (text != '' && text != undefined) {
                 if (text == fetchSelection(messageElement)) {
-                    wrapText("\r\n"+'[code]', '[/code]'+"\r\n", messageElement);
+                    wrapText("\r\n" + '[code]', '[/code]' + "\r\n", messageElement);
                 } else {
-                    AddText("\r\n"+'[code]', '[/code]'+"\r\n", text, messageElement);
+                    AddText("\r\n" + '[code]', '[/code]' + "\r\n", text, messageElement);
                 }
             }
         } else {
             text = prompt(bbcode_prompt_code, 'Text');
             if (text != '' && text != undefined) {
-                AddText("\r\n"+'[code]', '[/code]'+"\r\n", text, messageElement);
+                AddText("\r\n" + '[code]', '[/code]' + "\r\n", text, messageElement);
             }
         }
     }
@@ -475,7 +475,7 @@ function hyperlink() {
                 var url = prompt(bbcode_prompt_link2, fetchSelection(messageElement));
                 if (url != undefined) {
                     while (url.length == 0 || url.match(URL_REGEXP_GOES_HERE) == undefined) {
-                        url = prompt(bbcode_prompt_link_url_error , fetchSelection(messageElement));
+                        url = prompt(bbcode_prompt_link_url_error, fetchSelection(messageElement));
                     }
                 }
                 if (url != undefined) {
@@ -489,9 +489,9 @@ function hyperlink() {
                             }
                         } else {
                             if (url == fetchSelection(messageElement)) {
-                                wrapText('[url=', ']'+desc+'[/url]', messageElement);
+                                wrapText('[url=', ']' + desc + '[/url]', messageElement);
                             } else {
-                               AddText('[url='+url+']', '[/url]', desc, messageElement);
+                                AddText('[url=' + url + ']', '[/url]', desc, messageElement);
                             }
                         }
                     }
@@ -507,9 +507,9 @@ function hyperlink() {
                     var desc = prompt(bbcode_prompt_link_desc, fetchSelection(messageElement));
                     if (desc != undefined) {
                         if (desc == fetchSelection(messageElement)) {
-                            wrapText('[url='+url+']', '[/url]', messageElement);
+                            wrapText('[url=' + url + ']', '[/url]', messageElement);
                         } else {
-                            AddText('[url='+url+']', '[/url]', desc, messageElement);
+                            AddText('[url=' + url + ']', '[/url]', desc, messageElement);
                         }
                     }
                 }
@@ -526,7 +526,7 @@ function hyperlink() {
                 var desc = prompt(bbcode_prompt_link_desc, '');
                 if (desc != undefined) {
                     if (desc.length > 0) {
-                        AddText('[url='+url+']', '[/url]', desc, messageElement);
+                        AddText('[url=' + url + ']', '[/url]', desc, messageElement);
                     } else {
                         AddText('[url]', '[/url]', url, messageElement);
                     }
@@ -546,11 +546,11 @@ function list() {
             var result;
             var returnStr = '';
             while (undefined != (result = listReg.exec(selection))) {
-                returnStr += '[*]'+result[1]+"\r\n";
+                returnStr += '[*]' + result[1] + "\r\n";
             }
             AddText('[list]', '[/list]', returnStr, messageElement);
         } else {
-            AddText('[list]', '[/list]', '[*]'+"\r\n"+'[*]'+"\r\n"+'[*]'+"\r\n", messageElement);
+            AddText('[list]', '[/list]', '[*]' + "\r\n" + '[*]' + "\r\n" + '[*]' + "\r\n", messageElement);
         }
     } else {
         if (hasSelection(messageElement)) {
@@ -564,35 +564,35 @@ function list() {
                 var listReg = new RegExp('(?:^|\r|\n)([^\r\n]+)(?=\r|\n|$)', 'g');
                 var result;
                 var returnStr = '';
-                var endStr = '[list'+((type == '' || type == undefined) ? ']' : '='+type+']');
+                var endStr = '[list' + ((type == '' || type == undefined) ? ']' : '=' + type + ']');
                 while (undefined != (result = listReg.exec(selection))) {
-                    returnStr = prompt(bbcode_prompt_list_item+bbcode_prompt_list_end, result[1]);
+                    returnStr = prompt(bbcode_prompt_list_item + bbcode_prompt_list_end, result[1]);
                     if (returnStr != undefined) {
                         if (returnStr != result[1] && returnStr != '') {
                             while (returnStr != result[1] && returnStr != '' && returnStr != undefined) {
-                                endStr += '[*]'+returnStr+"\r\n";
-                                returnStr = prompt(bbcode_prompt_list_item+bbcode_prompt_list_end, result[1]);
+                                endStr += '[*]' + returnStr + "\r\n";
+                                returnStr = prompt(bbcode_prompt_list_item + bbcode_prompt_list_end, result[1]);
                                 if (returnStr != undefined) {
                                     if (returnStr == '') {
                                         break;
                                     } else {
-                                        endStr += '[*]'+returnStr+"\r\n";
+                                        endStr += '[*]' + returnStr + "\r\n";
                                     }
                                 }
                             }
                         } else if (returnStr == '') {
                             break;
                         } else {
-                            endStr += '[*]'+returnStr+"\r\n";
+                            endStr += '[*]' + returnStr + "\r\n";
                         }
                     }
                 }
                 if (result == undefined) {
                     while ('' != (returnStr = prompt(bbcode_prompt_list_end, ''))) {
-                        endStr += '[*]'+returnStr+"\r\n";
+                        endStr += '[*]' + returnStr + "\r\n";
                     }
                 }
-                endStr += '[/list'+((type == '' || type == undefined) ? ']' : '='+type+']');
+                endStr += '[/list' + ((type == '' || type == undefined) ? ']' : '=' + type + ']');
                 AddText('', '', endStr, messageElement);
             }
         } else {
@@ -604,11 +604,11 @@ function list() {
                     type = prompt(bbcode_prompt_list_error, type);
                     var cType = type.toLowerCase();
                 }
-                var endStr = '[list'+((type == '' || type == undefined) ? ']' : '='+type+']');
+                var endStr = '[list' + ((type == '' || type == undefined) ? ']' : '=' + type + ']');
                 while (undefined != (returnStr = prompt(bbcode_prompt_list_end, '')) && returnStr != '') {
-                    endStr += '[*]'+returnStr+"\r\n";
+                    endStr += '[*]' + returnStr + "\r\n";
                 }
-                endStr += '[/list'+((type == '' || type == undefined) ? ']' : '='+type+']');
+                endStr += '[/list' + ((type == '' || type == undefined) ? ']' : '=' + type + ']');
 
                 AddText('', '', endStr, messageElement);
             }

@@ -5,7 +5,7 @@
  * http://www.GaiaBB.com
  *
  * Based off UltimaBB
- * Copyright (c) 2004 - 2007 The UltimaBB Group 
+ * Copyright (c) 2004 - 2007 The UltimaBB Group
  * (defunct)
  *
  * Based off XMB
@@ -13,7 +13,7 @@
  * http://forums.xmbforum2.com/
  *
  * This file is part of GaiaBB
- * 
+ *
  *    GaiaBB is free software: you can redistribute it and/or modify
  *    it under the terms of the GNU General Public License as published by
  *    the Free Software Foundation, either version 3 of the License, or
@@ -23,12 +23,12 @@
  *    but WITHOUT ANY WARRANTY; without even the implied warranty of
  *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  *    GNU General Public License for more details.
- * 
+ *
  *    You should have received a copy of the GNU General Public License
  *    along with GaiaBB.  If not, see <http://www.gnu.org/licenses/>.
  *
  **/
-if (! defined('IN_PROGRAM') && (defined('DEBUG') && DEBUG == false)) {
+if (!defined('IN_PROGRAM') && (defined('DEBUG') && DEBUG == false)) {
     exit('This file is not designed to be called directly');
 }
 
@@ -36,45 +36,52 @@ class Forum
 {
 
     function Forum()
-    {}
+    {
+    }
 
     function init()
-    {}
+    {
+    }
 
     function findById()
-    {}
+    {
+    }
 
     function save()
-    {}
+    {
+    }
 
     function exists()
-    {}
+    {
+    }
 
     function update()
-    {}
+    {
+    }
 
     function delete()
-    {}
+    {
+    }
 
     function fixLastPost()
     {
         global $db;
-        
-        if (! ((bool) ini_get('safe_mode'))) {
+
+        if (!((bool)ini_get('safe_mode'))) {
             set_time_limit(0);
         }
-        
+
         // Forums
         $query = $db->query("SELECT fid FROM " . X_PREFIX . "forums ORDER BY fid DESC");
         while (($forums = $db->fetch_array($query)) != false) {
             $posts = $db->query("SELECT tid FROM " . X_PREFIX . "posts WHERE fid = '$forums[fid]' ORDER BY pid DESC LIMIT 0,1");
             $lp2 = $db->fetch_array($posts);
             $lp = $lp2['tid'];
-            
+
             $db->query("UPDATE " . X_PREFIX . "forums SET lastpost = '$lp' WHERE fid = '$forums[fid]' LIMIT 1");
         }
         $db->free_result($query);
-        
+
         // Threads
         $query = $db->query("SELECT tid FROM " . X_PREFIX . "threads ORDER BY tid DESC");
         while (($threads = $db->fetch_array($query)) != false) {
@@ -84,7 +91,7 @@ class Forum
             $db->query("UPDATE " . X_PREFIX . "lastposts SET uid = '$lp[uid]', username = '$lp[author]', dateline = '$lp[dateline]', pid = '$lp[pid]' WHERE tid = '$threads[tid]' LIMIT 1");
         }
         $db->free_result($query);
-        
+
         // NULL Threads -> If these exist, they'll cause double forums and such.
         $query = $db->query("DELETE FROM " . X_PREFIX . "lastposts WHERE tid = '0'");
         $db->free_result($query);
@@ -93,14 +100,14 @@ class Forum
     function updateLPFUP($fup = 0, $fid = 0)
     {
         global $db;
-        
-        if (! empty($fid) && ! empty($fup)) {
+
+        if (!empty($fid) && !empty($fup)) {
             $posts = $db->query("SELECT tid FROM " . X_PREFIX . "posts WHERE fid = '$fid' ORDER BY pid DESC LIMIT 0,1");
             $lp2 = $db->fetch_array($posts);
             $lp = $lp2['tid'];
-            
+
             $db->query("UPDATE " . X_PREFIX . "forums SET lastpost = '$lp' WHERE fid = '$fup'");
-            
+
             return TRUE;
         }
         return FALSE;
@@ -109,7 +116,7 @@ class Forum
     function fixThreadPostCount()
     {
         global $db;
-        
+
         $query = $db->query("SELECT fid FROM " . X_PREFIX . "forums WHERE type = 'forum'");
         while (($forum = $db->fetch_array($query)) != false) {
             $threadnum = $postnum = $sub_threadnum = $sub_postnum = 0;

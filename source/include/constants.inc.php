@@ -5,7 +5,7 @@
  * http://www.GaiaBB.com
  *
  * Based off UltimaBB
- * Copyright (c) 2004 - 2007 The UltimaBB Group 
+ * Copyright (c) 2004 - 2007 The UltimaBB Group
  * (defunct)
  *
  * Based off XMB
@@ -13,7 +13,7 @@
  * http://forums.xmbforum2.com/
  *
  * This file is part of GaiaBB
- * 
+ *
  *    GaiaBB is free software: you can redistribute it and/or modify
  *    it under the terms of the GNU General Public License as published by
  *    the Free Software Foundation, either version 3 of the License, or
@@ -23,14 +23,14 @@
  *    but WITHOUT ANY WARRANTY; without even the implied warranty of
  *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  *    GNU General Public License for more details.
- * 
+ *
  *    You should have received a copy of the GNU General Public License
  *    along with GaiaBB.  If not, see <http://www.gnu.org/licenses/>.
  *
  **/
 
 // check to ensure no direct viewing of page
-if (! defined('IN_PROGRAM') && (defined('DEBUG') && DEBUG == false)) {
+if (!defined('IN_PROGRAM') && (defined('DEBUG') && DEBUG == false)) {
     exit('This file is not designed to be called directly');
 }
 
@@ -54,7 +54,7 @@ if (! defined('IN_PROGRAM') && (defined('DEBUG') && DEBUG == false)) {
 define('DEBUG', true);
 
 // Production
-if (! defined('DEBUG')) {
+if (!defined('DEBUG')) {
     define('DEBUG', false);
 }
 
@@ -65,7 +65,7 @@ if (! defined('DEBUG')) {
 define('DEBUGLEVEL', 1);
 
 // Production
-if (! defined('DEBUGLEVEL')) {
+if (!defined('DEBUGLEVEL')) {
     define('DEBUGLEVEL', 0);
 }
 
@@ -117,13 +117,12 @@ $newpmmsg = '';
 $meta = '';
 $quickjump = '';
 $cssadd = '';
-
-$tpp = 0;
-$ppp = 0;
 $filesize = 0;
 $forumtheme = 0;
 
 $self = array();
+$self['tpp'] = 0;
+$self['ppp'] = 0;
 $footerstuff = array();
 $CONFIG = array();
 $THEME = array();
@@ -142,7 +141,7 @@ define('GAIABB_BUILD', $versionbuild);
 define('GAIABB_COPYRIGHT', $versioncopyright);
 
 // Cache-control
-if (! defined('CACHECONTROL')) {
+if (!defined('CACHECONTROL')) {
     define('CACHECONTROL', 'public');
 }
 
@@ -153,7 +152,7 @@ if (! defined('CACHECONTROL')) {
 define('X_GZIP', true);
 
 // leave this alone unless you know what you are doing
-if (! defined('X_GZIP')) {
+if (!defined('X_GZIP')) {
     define('X_GZIP', false);
 }
 

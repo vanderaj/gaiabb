@@ -5,11 +5,11 @@
  * http://www.GaiaBB.com
  *
  * Based off UltimaBB's installer (ajv)
- * Copyright (c) 2004 - 2007 The UltimaBB Group 
+ * Copyright (c) 2004 - 2007 The UltimaBB Group
  * (defunct)
  *
  * This file is part of GaiaBB
- * 
+ *
  *    GaiaBB is free software: you can redistribute it and/or modify
  *    it under the terms of the GNU General Public License as published by
  *    the Free Software Foundation, either version 3 of the License, or
@@ -19,12 +19,12 @@
  *    but WITHOUT ANY WARRANTY; without even the implied warranty of
  *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  *    GNU General Public License for more details.
- * 
+ *
  *    You should have received a copy of the GNU General Public License
  *    along with GaiaBB.  If not, see <http://www.gnu.org/licenses/>.
  *
  **/
-if (! defined('IN_PROGRAM') && (defined('DEBUG') && DEBUG == false)) {
+if (!defined('IN_PROGRAM') && (defined('DEBUG') && DEBUG == false)) {
     exit('This file is not designed to be called directly');
 }
 
@@ -43,8 +43,8 @@ define('X_REDIRECT_JS', 2);
 
 define('SCHEMAVER', 41);
 
-require_once ('../include/validate.inc.php');
-require_once ('../include/functions.inc.php');
+require_once('../include/validate.inc.php');
+require_once('../include/functions.inc.php');
 
 // DEBUG flag, useful for tracking down serious technical issues.
 
@@ -73,5 +73,5 @@ if (DEBUG) {
     $debug_log = array();
 } else {
     // Production
-    error_reporting(E_ALL & ~ E_NOTICE);
+    error_reporting(E_ALL & ~E_NOTICE);
 }

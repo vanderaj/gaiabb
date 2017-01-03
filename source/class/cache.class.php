@@ -5,7 +5,7 @@
  * http://www.GaiaBB.com
  *
  * Based off UltimaBB
- * Copyright (c) 2004 - 2007 The UltimaBB Group 
+ * Copyright (c) 2004 - 2007 The UltimaBB Group
  * (defunct)
  *
  * Based off XMB
@@ -13,7 +13,7 @@
  * http://forums.xmbforum2.com/
  *
  * This file is part of GaiaBB
- * 
+ *
  *    GaiaBB is free software: you can redistribute it and/or modify
  *    it under the terms of the GNU General Public License as published by
  *    the Free Software Foundation, either version 3 of the License, or
@@ -23,12 +23,12 @@
  *    but WITHOUT ANY WARRANTY; without even the implied warranty of
  *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  *    GNU General Public License for more details.
- * 
+ *
  *    You should have received a copy of the GNU General Public License
  *    along with GaiaBB.  If not, see <http://www.gnu.org/licenses/>.
  *
  **/
-if (! defined('IN_PROGRAM') && (defined('DEBUG') && DEBUG == false)) {
+if (!defined('IN_PROGRAM') && (defined('DEBUG') && DEBUG == false)) {
     exit('This file is not designed to be called directly');
 }
 
@@ -44,10 +44,10 @@ class cacheable
     function cacheable($prefix, $maxlife)
     {
         global $onlinetime;
-        
+
         $this->maxlife = $maxlife;
         $this->prefix = $prefix;
-        
+
         if (isset($_SESSION[$prefix . '__expiry'])) {
             $this->expiry = $_SESSION[$prefix . '__expiry'];
         } else {
@@ -56,21 +56,11 @@ class cacheable
         }
     }
 
-    function isStale($name)
-    {
-        global $onlinetime;
-        
-        if (isset($this->expiry[$name])) {
-            return ($onlinetime > $this->expiry[$name]) ? true : false;
-        }
-        return true;
-    }
-
     function getWorkDir($reset = 'no')
     {
         $full = dirname($_SERVER['PHP_SELF']);
         $pos = strrpos($full, '/');
-        $pos ++;
+        $pos++;
         $workdir = substr($full, $pos);
         if (isset($reset) && $reset == 'yes') {
             $this->setData('workdir', $workdir);
@@ -78,8 +68,18 @@ class cacheable
         return $workdir;
     }
 
+    function setData($name, $object)
+    {
+        global $onlinetime;
+
+        $_SESSION[$this->prefix . $name] = serialize($object);
+        $this->expiry[$name] = $onlinetime + $this->maxlife;
+        $_SESSION[$this->prefix . '__expiry'] = $this->expiry;
+    }
+
     function refresh()
-    {}
+    {
+    }
 
     function getData($name)
     {
@@ -87,20 +87,21 @@ class cacheable
             $this->expire($name);
             return false;
         }
-        
+
         if (isset($_SESSION[$this->prefix . $name])) {
             return unserialize($_SESSION[$this->prefix . $name]);
         }
         return false;
     }
 
-    function setData($name, $object)
+    function isStale($name)
     {
         global $onlinetime;
-        
-        $_SESSION[$this->prefix . $name] = serialize($object);
-        $this->expiry[$name] = $onlinetime + $this->maxlife;
-        $_SESSION[$this->prefix . '__expiry'] = $this->expiry;
+
+        if (isset($this->expiry[$name])) {
+            return ($onlinetime > $this->expiry[$name]) ? true : false;
+        }
+        return true;
     }
 
     function expire($name)

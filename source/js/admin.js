@@ -4,7 +4,7 @@
  * http://www.GaiaBB.com
  *
  * Based off UltimaBB
- * Copyright (c) 2004 - 2007 The UltimaBB Group 
+ * Copyright (c) 2004 - 2007 The UltimaBB Group
  * (defunct)
  *
  * Based off XMB
@@ -12,7 +12,7 @@
  * http://www.xmbforum.com
  *
  * This file is part of GaiaBB
- * 
+ *
  *    GaiaBB is free software: you can redistribute it and/or modify
  *    it under the terms of the GNU General Public License as published by
  *    the Free Software Foundation, either version 3 of the License, or
@@ -22,27 +22,23 @@
  *    but WITHOUT ANY WARRANTY; without even the implied warranty of
  *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  *    GNU General Public License for more details.
- * 
+ *
  *    You should have received a copy of the GNU General Public License
  *    along with GaiaBB.  If not, see <http://www.gnu.org/licenses/>.
  *
  **/
 
-function viewset(FieldID)
-{
+function viewset(FieldID) {
     layer = document.getElementById(FieldID);
-    layer.className=((layer.className=="shown")?"hidden":"shown");
+    layer.className = ((layer.className == "shown") ? "hidden" : "shown");
 }
 
-function setCheckboxes(the_form, the_elements, do_check)
-{
+function setCheckboxes(the_form, the_elements, do_check) {
     var elts = document.forms[the_form].elements[the_elements]
     var elts_cnt = elts.length;
 
-    if (elts_cnt)
-    {
-        for (var i = 0; i < elts_cnt; i++)
-        {
+    if (elts_cnt) {
+        for (var i = 0; i < elts_cnt; i++) {
             elts[i].checked = do_check;
         }
     }
@@ -50,21 +46,16 @@ function setCheckboxes(the_form, the_elements, do_check)
     return true;
 }
 
-function invertSelection(the_form, element_name)
-{
+function invertSelection(the_form, element_name) {
     var elements = document.forms[the_form].elements[element_name];
     var count = elements.length;
 
-    if (count)
-    {
-        for (var i = 0; i < count; i++)
-        {
-            if (elements[i].checked == true)
-            {
+    if (count) {
+        for (var i = 0; i < count; i++) {
+            if (elements[i].checked == true) {
                 elements[i].checked = false;
             }
-            else
-            {
+            else {
                 elements[i].checked = true;
             }
         }

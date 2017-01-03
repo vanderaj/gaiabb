@@ -5,7 +5,7 @@
  * http://www.GaiaBB.com
  *
  * Based off UltimaBB
- * Copyright (c) 2004 - 2007 The UltimaBB Group 
+ * Copyright (c) 2004 - 2007 The UltimaBB Group
  * (defunct)
  *
  * Based off XMB
@@ -13,7 +13,7 @@
  * http://forums.xmbforum2.com/
  *
  * This file is part of GaiaBB
- * 
+ *
  *    GaiaBB is free software: you can redistribute it and/or modify
  *    it under the terms of the GNU General Public License as published by
  *    the Free Software Foundation, either version 3 of the License, or
@@ -23,18 +23,15 @@
  *    but WITHOUT ANY WARRANTY; without even the implied warranty of
  *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  *    GNU General Public License for more details.
- * 
+ *
  *    You should have received a copy of the GNU General Public License
  *    along with GaiaBB.  If not, see <http://www.gnu.org/licenses/>.
  *
  **/
 
 
-
-
-
-require_once ('header.php');
-require_once ('theme.inc.php');
+require_once('header.php');
+require_once('include/theme.inc.php');
 
 loadtpl('viewprofile', 'viewprofile_email', 'viewprofile_aka', 'viewprofile_sig', 'viewprofile_pm');
 
@@ -76,7 +73,7 @@ if ($memberinfo['uid'] == '') {
     error($lang['nomember']);
 } else {
     eval('echo "' . template('header') . '";');
-    
+
     $encodeuser = rawurlencode($memberinfo['username']);
     $daysreg = ($onlinetime - $memberinfo['regdate']) / (24 * 3600);
     if ($daysreg > 1) {
@@ -88,7 +85,7 @@ if ($memberinfo['uid'] == '') {
         $tpd = $memberinfo['threadnum'];
         $ppd = $memberinfo['postnum'];
     }
-    
+
     $icon = $pre = $suff = '';
     switch ($memberinfo['status']) {
         case 'Super Administrator':
@@ -157,65 +154,64 @@ if ($memberinfo['uid'] == '') {
             }
             break;
     }
-    
+
     $memberinfo['regdate'] = gmdate($self['dateformat'], $memberinfo['regdate'] + ($self['timeoffset'] * 3600) + $self['daylightsavings']);
-    
-    if (! empty($memberinfo['theme']) && $memberinfo['theme'] != 0) {
+
+    if (!empty($memberinfo['theme']) && $memberinfo['theme'] != 0) {
         $membertheme = ${'theme' . $memberinfo['theme']};
     } else {
-        $membertheme = ${'theme' . $CONFIG['theme']} . $lang['defaulttheme'];
-        ;
+        $membertheme = ${'theme' . $CONFIG['theme']} . $lang['defaulttheme'];;
     }
-    
+
     if (strpos($memberinfo['site'], 'http') === false) {
         $memberinfo['site'] = "http://$memberinfo[site]";
     }
-    
+
     if ($memberinfo['site'] != 'http://') {
         $memberinfo['site'] = censor($memberinfo['site']);
         $memberinfo['site'] = '<a href="' . $memberinfo['site'] . '" target="_blank">' . $memberinfo['site'] . '</a>';
     } else {
         $memberinfo['site'] = $lang['profilenoinformation'];
     }
-    
+
     if (strpos($memberinfo['blog'], 'http') === false) {
         $memberinfo['blog'] = "http://$memberinfo[blog]";
     }
-    
+
     if ($memberinfo['blog'] != 'http://') {
         $memberinfo['blog'] = censor($memberinfo['blog']);
         $memberinfo['blog'] = '<a href="' . $memberinfo['blog'] . '" target="_blank">' . $memberinfo['blog'] . '</a>';
     } else {
         $memberinfo['blog'] = $lang['profilenoinformation'];
     }
-    
-    if (! empty($rank['avatarrank'])) {
+
+    if (!empty($rank['avatarrank'])) {
         $rank['avatarrank'] = '<img src="' . $rank['avatarrank'] . '" alt="' . $lang['Rank_Avatar_Alt'] . '" title="' . $lang['Rank_Avatar_Alt'] . '" border="0px" />';
     } else {
         $rank['avatarrank'] = '';
     }
-    
-    if (! empty($memberinfo['avatar'])) {
+
+    if (!empty($memberinfo['avatar'])) {
         $memberinfo['avatar'] = censor($memberinfo['avatar']);
         $memberinfo['avatar'] = '<img src="' . $memberinfo['avatar'] . '" alt="' . $lang['altavatar'] . '" title="' . $lang['altavatar'] . '" border="0px" />';
     } else {
         $memberinfo['avatar'] = '<img src="./images/no_avatar.gif" alt="' . $lang['altnoavatar'] . '" title="' . $lang['altnoavatar'] . '" border="0px" />';
     }
-    
-    if (! empty($memberinfo['photo'])) {
+
+    if (!empty($memberinfo['photo'])) {
         $memberinfo['photo'] = censor($memberinfo['photo']);
         $memberinfo['photo'] = '<img src="' . $memberinfo['photo'] . '" alt="' . $lang['photoalt'] . '" title="' . $lang['photoalt'] . '" border="0px" />';
     } else {
         $memberinfo['photo'] = '<img src="./images/no_avatar.gif" alt="' . $lang['altnophoto'] . '" title="' . $lang['altnophoto'] . '" border="0px" />';
     }
-    
+
     $akablock = '';
-    if (! empty($memberinfo['firstname']) || ! empty($memberinfo['lastname']) && $memberinfo['showname'] == 'yes') {
+    if (!empty($memberinfo['firstname']) || !empty($memberinfo['lastname']) && $memberinfo['showname'] == 'yes') {
         $memberinfo['firstname'] = censor($memberinfo['firstname']);
         $memberinfo['lastname'] = censor($memberinfo['lastname']);
         eval('$akablock = "' . template('viewprofile_aka') . '";');
     }
-    
+
     switch ($memberinfo['status']) {
         case 'Moderator':
             $star = 'star_mod.gif';
@@ -234,9 +230,9 @@ if ($memberinfo['uid'] == '') {
             break;
     }
     $stars = str_repeat('<img src="' . $THEME['imgdir'] . '/' . $star . '" alt="*" title="*" border="0px" />', $rank['stars']);
-    
+
     $q = $db->fetch_array($db->query("SELECT invisible FROM " . X_PREFIX . "whosonline WHERE username='$member'"));
-    if (! $q) {
+    if (!$q) {
         $onlinenow = $lang['memberisoff'];
     } else {
         switch ($q['invisible']) {
@@ -251,27 +247,27 @@ if ($memberinfo['uid'] == '') {
                 break;
         }
     }
-    
-    if (! empty($memberinfo['customstatus'])) {
+
+    if (!empty($memberinfo['customstatus'])) {
         $showtitle = $rank['title'];
         $customstatus = '<br />' . censor($memberinfo['customstatus']);
     } else {
         $showtitle = $rank['title'];
         $customstatus = '';
     }
-    
-    if (! ($memberinfo['lastvisit'] > 0)) {
+
+    if (!($memberinfo['lastvisit'] > 0)) {
         $lastmembervisittext = $lang['textpendinglogin'];
     } else {
         $lastvisitdate = gmdate($self['dateformat'], $memberinfo['lastvisit'] + ($self['timeoffset'] * 3600) + $self['daylightsavings']);
         $lastvisittime = gmdate($self['timecode'], $memberinfo['lastvisit'] + ($self['timeoffset'] * 3600) + $self['daylightsavings']);
         $lastmembervisittext = $lastvisitdate . ' ' . $lang['textat'] . ' ' . $lastvisittime;
     }
-    
+
     $query = $db->query("SELECT COUNT(tid) FROM " . X_PREFIX . "threads");
     $threads = $db->result($query, 0);
     $db->free_result($query);
-    
+
     $threadtot = $threads;
     if ($threadtot == 0 || $memberinfo['threadnum'] == 0) {
         $t_percent = 0;
@@ -279,11 +275,11 @@ if ($memberinfo['uid'] == '') {
         $t_percent = $memberinfo['threadnum'] * 100 / $threadtot;
         $t_percent = round($t_percent, 2);
     }
-    
+
     $query = $db->query("SELECT COUNT(pid) FROM " . X_PREFIX . "posts");
     $posts = $db->result($query, 0);
     $db->free_result($query);
-    
+
     $posttot = $posts;
     if ($posttot == 0 || $memberinfo['postnum'] == 0) {
         $percent = 0;
@@ -291,89 +287,89 @@ if ($memberinfo['uid'] == '') {
         $percent = ($memberinfo['postnum'] * 100) / $posttot;
         $percent = round($percent, 2);
     }
-    
-    if (! empty($memberinfo['bio'])) {
+
+    if (!empty($memberinfo['bio'])) {
         $memberinfo['bio'] = postify($memberinfo['bio']);
         $memberinfo['bio'] = censor($memberinfo['bio']);
     } else {
         $memberinfo['bio'] = $lang['profilenoinformation'];
     }
-    
+
     $emailblock = '';
-    if (X_MEMBER && ! empty($memberinfo['email']) && $memberinfo['showemail'] == 'yes') {
+    if (X_MEMBER && !empty($memberinfo['email']) && $memberinfo['showemail'] == 'yes') {
         $memberinfo['email'] = censor($memberinfo['email']);
         eval('$emailblock = "' . template('viewprofile_email') . '";');
     }
-    
+
     $pmblock = '';
-    if (X_MEMBER && ! ($CONFIG['pmstatus'] == 'off' && isset($self['status']) && $self['status'] == 'Member')) {
+    if (X_MEMBER && !($CONFIG['pmstatus'] == 'off' && isset($self['status']) && $self['status'] == 'Member')) {
         eval('$pmblock = "' . template('viewprofile_pm') . '";');
     }
-    
+
     $sigblock = '';
-    if (! empty($memberinfo['sig'])) {
+    if (!empty($memberinfo['sig'])) {
         $memberinfo['sig'] = postify($memberinfo['sig']);
         $memberinfo['sig'] = censor($memberinfo['sig']);
         eval('$sigblock = "' . template('viewprofile_sig') . '";');
     }
-    
+
     $admin_edit = NULL;
     if (X_SADMIN) {
         $admin_edit = ' - ' . $lang['adminoption'] . ' <a href="editprofile.php?memberid=' . $memberinfo['uid'] . '">' . $lang['admin_edituseraccount'] . '</a>';
     }
-    
-    if (! empty($memberinfo['mood'])) {
+
+    if (!empty($memberinfo['mood'])) {
         $memberinfo['mood'] = postify($memberinfo['mood'], 'no', 'no', 'yes', 'yes', false, 'yes', 'yes');
         $memberinfo['mood'] = censor($memberinfo['mood']);
     } else {
         $memberinfo['mood'] = $lang['profilenoinformation'];
     }
-    
-    if (! empty($memberinfo['location'])) {
+
+    if (!empty($memberinfo['location'])) {
         $memberinfo['location'] = censor($memberinfo['location']);
     } else {
         $memberinfo['location'] = $lang['profilenoinformation'];
     }
-    
-    if (! empty($memberinfo['aim'])) {
+
+    if (!empty($memberinfo['aim'])) {
         $memberinfo['aim'] = censor($memberinfo['aim']);
     } else {
         $memberinfo['aim'] = $lang['profilenoinformation'];
     }
-    
-    if (! empty($memberinfo['icq'])) {
+
+    if (!empty($memberinfo['icq'])) {
         $memberinfo['icq'] = censor($memberinfo['icq']);
         $memberinfo['icq'] = '<a href="http://web.icq.com/whitepages/about_me/1,,,00.html?Uin=' . $memberinfo['icq'] . '" target="_blank">' . $memberinfo['icq'] . '</a>';
     } else {
         $memberinfo['icq'] = $lang['profilenoinformation'];
     }
-    
-    if (! empty($memberinfo['yahoo'])) {
+
+    if (!empty($memberinfo['yahoo'])) {
         $memberinfo['yahoo'] = censor($memberinfo['yahoo']);
         $memberinfo['yahoo'] = '<a href="http://profiles.yahoo.com/' . $memberinfo['yahoo'] . '" target="_blank">' . $memberinfo['yahoo'] . '</a>';
     } else {
         $memberinfo['yahoo'] = $lang['profilenoinformation'];
     }
-    
-    if (! empty($memberinfo['msn'])) {
+
+    if (!empty($memberinfo['msn'])) {
         $memberinfo['msn'] = censor($memberinfo['msn']);
         $memberinfo['msn'] = '<a href="http://members.msn.com/' . $memberinfo['msn'] . '" target="_blank">' . $memberinfo['msn'] . '</a>';
     } else {
         $memberinfo['msn'] = $lang['profilenoinformation'];
     }
-    
-    if (! empty($memberinfo['occupation'])) {
+
+    if (!empty($memberinfo['occupation'])) {
         $memberinfo['occupation'] = censor($memberinfo['occupation']);
     } else {
         $memberinfo['occupation'] = $lang['profilenoinformation'];
     }
-    
-    if (! empty($memberinfo['bday'])) {
+
+    if (!empty($memberinfo['bday'])) {
         $memberinfo['bday'] = censor($memberinfo['bday']);
     } else {
         $memberinfo['bday'] = $lang['profilenoinformation'];
     }
-    
+
     $restrict = '';
     switch ($self['status']) {
         case 'Member':
@@ -389,17 +385,17 @@ if ($memberinfo['uid'] == '') {
             $restrict .= " f.private!='5' AND f.private!='3' AND f.private!='2' AND f.userlist='' AND f.password='' AND";
             break;
     }
-    
+
     $query = $db->query("SELECT f.name, p.fid, COUNT(DISTINCT p.pid) as posts FROM " . X_PREFIX . "posts p LEFT JOIN " . X_PREFIX . "forums f ON p.fid=f.fid WHERE $restrict p.author='$member' GROUP BY p.fid ORDER BY posts DESC LIMIT 1");
     $forum = $db->fetch_array($query);
     $db->free_result($query);
-    
+
     if ($forum['posts'] < 1 || $memberinfo['postnum'] < 1) {
         $topforum = $lang['textnopostsyet'];
     } else {
         $topforum = '<a href="viewforum.php?fid=' . intval($forum['fid']) . '">' . $forum['name'] . '</a> (' . intval($forum['posts']) . ' ' . $lang['textdeleteposts'] . ') [ ' . round(($forum['posts'] / $memberinfo['postnum']) * 100, 1) . '% ' . $lang['textoftotposts'] . ' ]';
     }
-    
+
     $query = $db->query("SELECT t.tid, t.subject, p.dateline FROM (" . X_PREFIX . "posts p, " . X_PREFIX . "threads t) LEFT JOIN " . X_PREFIX . "forums f ON p.fid=f.fid WHERE $restrict t.author='$member' AND p.tid=t.tid ORDER BY t.tid DESC LIMIT 1");
     if (($thread = $db->fetch_array($query)) != false) {
         $lastthreaddate = gmdate($self['dateformat'], $thread['dateline'] + ($self['timeoffset'] * 3600) + $self['daylightsavings']);
@@ -411,15 +407,15 @@ if ($memberinfo['uid'] == '') {
         $lastthread = $lang['textnothreadsyet'];
     }
     $db->free_result($query);
-    
+
     $query = $db->query("SELECT t.tid, t.subject, p.dateline, p.pid FROM (" . X_PREFIX . "posts p, " . X_PREFIX . "threads t) LEFT JOIN " . X_PREFIX . "forums f ON p.fid=f.fid WHERE $restrict p.author='$member' AND p.tid=t.tid ORDER BY p.dateline DESC LIMIT 1");
     if (($post = $db->fetch_array($query)) != false) {
         $posts = $db->result($db->query("SELECT COUNT(pid) FROM " . X_PREFIX . "posts WHERE tid = '$post[tid]' AND pid < '$post[pid]'"), 0) + 1;
-        
+
         validatePpp();
-        
+
         $page = quickpage($posts, $self['ppp']);
-        
+
         $lastpostdate = gmdate($self['dateformat'], $post['dateline'] + ($self['timeoffset'] * 3600) + $self['daylightsavings']);
         $lastposttime = gmdate($self['timecode'], $post['dateline'] + ($self['timeoffset'] * 3600) + $self['daylightsavings']);
         $lastposttext = $lastpostdate . ' ' . $lang['textat'] . ' ' . $lastposttime;
@@ -429,9 +425,9 @@ if ($memberinfo['uid'] == '') {
         $lastpost = $lang['textnopostsyet'];
     }
     $db->free_result($query);
-    
+
     $lang['searchusermsg'] = str_replace('*USER*', $memberinfo['username'], $lang['searchusermsg']);
-    
+
     eval('echo stripslashes("' . template('viewprofile') . '");');
 }
 

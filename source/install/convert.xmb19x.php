@@ -5,11 +5,11 @@
  * http://www.GaiaBB.com
  *
  * Based off UltimaBB's installer (ajv)
- * Copyright (c) 2004 - 2007 The UltimaBB Group 
+ * Copyright (c) 2004 - 2007 The UltimaBB Group
  * (defunct)
  *
  * This file is part of GaiaBB
- * 
+ *
  *    GaiaBB is free software: you can redistribute it and/or modify
  *    it under the terms of the GNU General Public License as published by
  *    the Free Software Foundation, either version 3 of the License, or
@@ -19,12 +19,12 @@
  *    but WITHOUT ANY WARRANTY; without even the implied warranty of
  *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  *    GNU General Public License for more details.
- * 
+ *
  *    You should have received a copy of the GNU General Public License
  *    along with GaiaBB.  If not, see <http://www.gnu.org/licenses/>.
  *
  **/
-if (! defined('IN_PROGRAM') && (defined('DEBUG') && DEBUG == false)) {
+if (!defined('IN_PROGRAM') && (defined('DEBUG') && DEBUG == false)) {
     exit('This file is not designed to be called directly');
 }
 
@@ -49,7 +49,7 @@ class xmb19x extends convert
             setCol($this->prgbar, '#ff0000');
             print_error('Conversion Error', 'Please make sure your ' . X_PREFIX2 . 'settings table at XMB is intact. There was a problem turning your board off.', true);
         }
-        
+
         $bboff2 = $this->toDbHost->query("UPDATE " . X_PREFIX . "settings SET bbstatus='off'");
         if ($bboff2 === false) {
             setCol($this->prgbar, '#ff0000');
@@ -71,7 +71,7 @@ class xmb19x extends convert
     {
         $admin = $this->fromDbHost->escape($_SESSION['admin_user']);
         $adminpw = md5($_SESSION['admin_pass']);
-        
+
         $query = $this->fromDbHost->query("SELECT username, password, status,email FROM " . X_PREFIX2 . "members WHERE username = '$admin'");
         if ($query === false) {
             setCol($this->prgbar, '#ff0000');
@@ -80,12 +80,12 @@ class xmb19x extends convert
         $user = $this->fromDbHost->fetch_array($query);
         $rows = $this->fromDbHost->num_rows($query);
         $this->fromDbHost->free_result($query);
-        
+
         if ($rows != 1 || $admin != $user['username'] || $adminpw != $user['password'] || $user['status'] != 'Super Administrator') {
             setCol($this->prgbar, '#ff0000');
             print_error('Conversion Error', 'You are not a Super Administrator at your XMB forum. The conversion can not continue.', true);
         }
-        
+
         setBar($this->prgbar, 0.2);
     }
 
@@ -105,9 +105,9 @@ class xmb19x extends convert
             setCol($this->prgbar, '#ff0000');
             print_error('Conversion Error', 'Please make sure your ' . X_PREFIX2 . 'members table at XMB is intact. There was a problem querying for your members.', true);
         }
-        
+
         $this->toDbHost->query("TRUNCATE " . X_PREFIX . "members");
-        
+
         while (($row = $this->fromDbHost->fetch_array($memfromquery)) != false) {
             $meminsert = $this->toDbHost->query("INSERT INTO `" . X_PREFIX . "members` (
             uid,
@@ -186,7 +186,7 @@ class xmb19x extends convert
             '" . $this->toDbHost->escape($row['saveogu2u']) . "',
             '" . $this->toDbHost->escape($row['emailonu2u']) . "'
           )");
-            
+
             if ($meminsert === false) {
                 setCol($this->prgbar, '#ff0000');
                 print_error('Conversion Error', 'Please make sure that GaiaBB had successfully installed. There was a problem inserting into the ' . X_PREFIX . 'members table.', true);
@@ -212,7 +212,7 @@ class xmb19x extends convert
             setCol($this->prgbar, '#ff0000');
             print_error('Conversion Error', 'Please make sure your ' . X_PREFIX2 . 'posts table at XMB is intact. There was a problem querying for your members.', true);
         }
-        
+
         $this->toDbHost->query("TRUNCATE TABLE " . X_PREFIX . "posts");
         while (($row = $this->fromDbHost->fetch_array($postquery)) != false) {
             $posts_insert = $this->toDbHost->query("INSERT INTO " . X_PREFIX . "posts (fid, tid, pid, author, message, subject, dateline, icon, usesig, useip, bbcodeoff, smileyoff) VALUES ('$row[fid]','$row[tid]','$row[pid]','" . $this->toDbHost->escape($row['author']) . "','" . $this->toDbHost->escape($row['message']) . "','" . $this->toDbHost->escape(stripslashes($row['subject'])) . "','$row[dateline]','$row[icon]','$row[usesig]','$row[useip]','$row[bbcodeoff]','$row[smileyoff]')");
@@ -239,7 +239,7 @@ class xmb19x extends convert
         $this->toDbHost->query("TRUNCATE TABLE " . X_PREFIX . "vote_desc");
         $this->toDbHost->query("TRUNCATE TABLE " . X_PREFIX . "vote_results");
         $this->toDbHost->query("TRUNCATE TABLE " . X_PREFIX . "vote_voters");
-        
+
         // Find all the threads which have non-blank polls
         $pollquery = $this->toDbHost->query("SELECT tid, pollopts, subject FROM " . X_PREFIX . "threads WHERE pollopts != ''");
         if ($pollquery) {
@@ -251,16 +251,16 @@ class xmb19x extends convert
                 // Grab the thread name for the poll name
                 $tid = $row['tid'];
                 $subject = $row['subject']; // it's already censored and addslashed
-                                            // crack pollopt
+                // crack pollopt
                 $pollentry = explode('#|#', stripslashes($row['pollopts']));
                 $cResults = count($pollentry) - 1;
                 $results = array();
-                for ($i = 0; $i < $cResults; $i ++) {
+                for ($i = 0; $i < $cResults; $i++) {
                     $answer = array();
                     $answer = explode('||~|~||', $pollentry[$i]);
                     $results[$i][0] = $i + 1;
                     $results[$i][1] = $this->toDbHost->escape(trim($answer[0]));
-                    $results[$i][2] = (int) $answer[1];
+                    $results[$i][2] = (int)$answer[1];
                 }
                 // create the poll description
                 $vote_desc_insert = $this->toDbHost->query("INSERT INTO " . X_PREFIX . "vote_desc (topic_id, vote_text) VALUES ('$tid', '$subject')");
@@ -269,10 +269,10 @@ class xmb19x extends convert
                     print_error('Conversion Error', 'Please make sure that GaiaBB had successfully installed. There was a problem inserting into the ' . X_PREFIX . 'vote_desc table.', true);
                 }
                 $vote_id = $this->toDbHost->insert_id();
-                
+
                 foreach ($results as $r => $result) {
                     $vote_results_insert = $this->toDbHost->query("INSERT INTO " . X_PREFIX . "vote_results (vote_id, vote_option_id, vote_option_text, vote_result) VALUES ('$vote_id','$result[0]', '$result[1]', '$result[2]')");
-                    
+
                     if ($vote_results_insert === false) {
                         setCol($this->prgbar, '#ff0000');
                         print_error('Conversion Error', 'Please make sure that GaiaBB had successfully installed. There was a problem inserting into the ' . X_PREFIX . 'vote_results table.', true);
@@ -330,7 +330,7 @@ class xmb19x extends convert
             setCol($this->prgbar, '#ff0000');
             print_error('Conversion Error', 'Please make sure your ' . X_PREFIX2 . 'ranks table at XMB is intact. There was a problem querying for your ranks.', true);
         }
-        
+
         $this->toDbHost->query("TRUNCATE TABLE " . X_PREFIX . "ranks");
         while (($row = $this->fromDbHost->fetch_array($ranksquery)) != false) {
             $ranks_insert = $this->toDbHost->query("INSERT INTO " . X_PREFIX . "ranks (title, posts, id, stars, allowavatars, avatarrank) VALUES ('" . $this->toDbHost->escape($row['title']) . "', '$row[posts]', '$row[id]', '$row[stars]', '$row[allowavatars]', '$row[avatarrank]')");
@@ -340,7 +340,7 @@ class xmb19x extends convert
             }
         }
         $this->fromDbHost->free_result($ranksquery);
-        
+
         // Add back special ranks if they've been removed
         $query = $this->toDbHost->query("SELECT title FROM `" . X_PREFIX . "ranks` WHERE title in ('Moderator', 'Super Moderator', 'Administrator', 'Super Administrator')");
         if ($query) {
@@ -352,7 +352,7 @@ class xmb19x extends convert
                 $this->toDbHost->query("INSERT INTO `" . X_PREFIX . "ranks` (title, posts, stars, allowavatars) VALUES ('Super Administrator', -1, 9, 'yes')");
             }
         }
-        
+
         setBar($this->prgbar, 0.75);
     }
 
@@ -372,7 +372,7 @@ class xmb19x extends convert
             setCol($this->prgbar, '#ff0000');
             print_error('Conversion Error', 'Please make sure your ' . X_PREFIX2 . 'threads table at XMB is intact. There was a problem querying for your threads.', true);
         }
-        
+
         $this->toDbHost->query("TRUNCATE TABLE " . X_PREFIX . "threads");
         while (($row = $this->fromDbHost->fetch_array($threadsquery)) != false) {
             $threads_insert = $this->toDbHost->query("INSERT INTO " . X_PREFIX . "threads (tid, fid, subject, icon, lastpost, views, replies, author, closed, topped, pollopts) VALUES ('$row[tid]','$row[fid]','" . $this->toDbHost->escape($row['subject']) . "','$row[icon]','$row[lastpost]','$row[views]','$row[replies]','$row[author]','$row[closed]','$row[topped]','" . $this->toDbHost->escape($row['pollopts']) . "')");
@@ -436,7 +436,7 @@ class xmb19x extends convert
             $newgroupfid = $this->toDbHost->insert_id();
             $this->toDbHost->query("UPDATE `" . X_PREFIX . "forums` SET fup='" . $newgroupfid . "' WHERE fup='0' AND type='forum'");
         }
-        
+
         $this->fromDbHost->free_result($forumsquery);
         setBar($this->prgbar, 0.4);
     }
@@ -459,24 +459,24 @@ class xmb19x extends convert
         }
         $rows = $this->fromDbHost->num_rows($attachquery);
         $this->fromDbHost->free_result($attachquery);
-        
+
         if ($rows > 1000) {
             $secs = $rows / 100; // Rough speed guess
             print_error('Attachment Conversion', 'Converting ' . $rows . ' attachments will take approximately ' . $secs . ' seconds.', false);
         }
-        
+
         // Clear out the new table
         $this->toDbHost->query("TRUNCATE TABLE " . X_PREFIX . "attachments");
-        
+
         // This query processes approximately 100 images per second
         $this->toDbHost->query("INSERT INTO " . X_PREFIX . "attachments (aid, tid, pid, filename, filetype, filesize, attachment, downloads) SELECT aid, tid, pid, filename, filetype, filesize, attachment, downloads FROM " . X_PREFIX2 . "attachments");
-        
+
         if ($rows > 1000) {
             $secs = $rows / 100; // Rough speed guess
             print_error('Attachment Conversion', 'Adding image sizes to the attachments will take approximately another ' . $secs . ' seconds.', false);
             $now = time();
         }
-        
+
         $attachquery = $this->toDbHost->query("SELECT aid, filetype, attachment  FROM " . X_PREFIX . "attachments");
         while (($row = $this->toDbHost->fetch_array($attachquery)) != false) {
             if (strpos($row['filetype'], 'image') !== false) {
@@ -487,7 +487,7 @@ class xmb19x extends convert
                     print_error('Conversion Error', 'Please make sure that GaiaBB had successfully installed. There was a problem inserting into the ' . X_PREFIX . 'attachments table.', true);
                 }
             }
-            
+
             $row['attachment'] = null; // free up the blob
             $row = null;
         }
@@ -511,7 +511,7 @@ class xmb19x extends convert
             setCol($this->prgbar, '#ff0000');
             print_error('Conversion Error', 'Please make sure your ' . X_PREFIX2 . 'buddys table at XMB is intact. There was a problem querying for your buddys.', true);
         }
-        
+
         $this->toDbHost->query("TRUNCATE TABLE " . X_PREFIX . "addresses");
         while (($row = $this->fromDbHost->fetch_array($addressquery)) != false) {
             $address_insert = $this->toDbHost->query("INSERT INTO " . X_PREFIX . "addresses (username, addressname) VALUES ('" . $this->toDbHost->escape($row['username']) . "','" . $this->toDbHost->escape($row['buddyname']) . "')");
@@ -540,7 +540,7 @@ class xmb19x extends convert
             setCol($this->prgbar, '#ff0000');
             print_error('Conversion Error', 'Please make sure your ' . X_PREFIX2 . 'favorites table at XMB is intact. There was a problem querying for your favorites.', true);
         }
-        
+
         $this->toDbHost->query("TRUNCATE TABLE " . X_PREFIX . "favorites");
         while (($row = $this->fromDbHost->fetch_array($favquery)) != false) {
             $favorites_insert = $this->toDbHost->query("INSERT INTO " . X_PREFIX . "favorites (tid, username, type) VALUES ('$row[tid]','" . $this->toDbHost->escape($row['username']) . "','$row[type]')");
@@ -569,7 +569,7 @@ class xmb19x extends convert
             setCol($this->prgbar, '#ff0000');
             print_error('Conversion Error', 'Please make sure your ' . X_PREFIX2 . 'favorites table at XMB is intact. There was a problem querying for your favorites.', true);
         }
-        
+
         $this->toDbHost->query("TRUNCATE TABLE " . X_PREFIX . "subscriptions");
         while (($row = $this->fromDbHost->fetch_array($subquery)) != false) {
             $subs_insert = $this->toDbHost->query("INSERT INTO " . X_PREFIX . "subscriptions (tid, username, type) VALUES ('$row[tid]','" . $this->toDbHost->escape($row['username']) . "','$row[type]')");
@@ -598,7 +598,7 @@ class xmb19x extends convert
             setCol($this->prgbar, '#ff0000');
             print_error('Conversion Error', 'Please make sure your ' . X_PREFIX2 . 'words table at XMB is intact. There was a problem querying for your wordlist.', true);
         }
-        
+
         $this->toDbHost->query("TRUNCATE TABLE " . X_PREFIX . "words");
         while (($row = $this->fromDbHost->fetch_array($censorquery)) != false) {
             $word_insert = $this->toDbHost->query("INSERT INTO " . X_PREFIX . "words (find, replace1, id) VALUES ('" . $this->toDbHost->escape($row['find']) . "','" . $this->toDbHost->escape($row['replace1']) . "','$row[id]')");
@@ -627,7 +627,7 @@ class xmb19x extends convert
             setCol($this->prgbar, '#ff0000');
             print_error('Conversion Error', 'Please make sure your ' . X_PREFIX2 . 'banned table at XMB is intact. There was a problem querying for your banned users.', true);
         }
-        
+
         $this->toDbHost->query("TRUNCATE TABLE " . X_PREFIX . "banned");
         while (($row = $this->fromDbHost->fetch_array($banquery)) != false) {
             $ban_insert = $this->toDbHost->query("INSERT INTO " . X_PREFIX . "banned (ip1, ip2, ip3, ip4, dateline, id) VALUES ('$row[ip1]','$row[ip2]','$row[ip3]','$row[ip4]','$row[dateline]','$row[id]')");
@@ -638,6 +638,43 @@ class xmb19x extends convert
         }
         $this->fromDbHost->free_result($banquery);
         setBar($this->prgbar, 0.92);
+    }
+
+    /**
+     * function() - short description of function
+     *
+     * TODO: Long description of function
+     *
+     * @param $varname type,
+     *            what it does
+     * @return type, what the return does
+     */
+    function settings()
+    {
+        $settingsquery = $this->fromDbHost->query("SELECT * FROM `" . X_PREFIX2 . "settings`");
+        if ($settingsquery === false) {
+            setCol($this->prgbar, '#ff0000');
+            print_error('Conversion Error', 'Please make sure your ' . X_PREFIX2 . 'settings table at XMB is intact. There was a problem querying for your settings.', true);
+        }
+        $oldsettings = $this->fromDbHost->fetch_array($settingsquery);
+
+        $settings_sql = "UPDATE `" . X_PREFIX . "settings` SET " . "bbname='" . $this->toDbHost->escape($oldsettings['bbname']) . "', " . "sitename='" . $this->toDbHost->escape($oldsettings['sitename']) . "', " . "bboffreason='" . $this->toDbHost->escape($oldsettings['bboffreason']) . "', " . "bbrulestxt='" . $this->toDbHost->escape($oldsettings['bbrulestxt']) . "', " . "siteurl='" . $this->toDbHost->escape($oldsettings['siteurl']) . "', " . "indexnewstxt='" . $this->toDbHost->escape($oldsettings['tickercontents']) . "', " . "sitename='" . $this->toDbHost->escape($oldsettings['sitename']) . "', " . "adminemail='" . $this->toDbHost->escape($oldsettings['adminemail']) . "', " .
+
+            // Integers
+            "postperpage='" . intval($oldsettings['postperpage']) . "', " . "topicperpage='" . intval($oldsettings['topicperpage']) . "', " . "hottopic='" . intval($oldsettings['hottopic']) . "', " . "u2uquota='" . intval($oldsettings['u2uquota']) . "', " .
+
+            // on / off (XMB has many varients on this, but we try to do as best we can
+            "whosonlinestatus='" . $this->valOnOff($oldsettings['whosonlinestatus']) . "', " . "regstatus='" . $this->valOnOff($oldsettings['regstatus']) . "', " . "regviewonly='" . $this->valOnOff($oldsettings['regviewonly']) . "', " . "hideprivate='" . $this->valOnOff($oldsettings['hideprivate']) . "', " . "emailcheck='" . $this->valOnOff($oldsettings['emailcheck']) . "', " .
+
+            "searchstatus='" . $this->valOnOff($oldsettings['searchstatus']) . "', " . "faqstatus='" . $this->valOnOff($oldsettings['faqstatus']) . "', " . "memliststatus='" . $this->valOnOff($oldsettings['memliststatus']) . "', " . "avastatus='" . $this->valOnOff($oldsettings['avastatus']) . "', " . "bbrules='" . $this->valOnOff($oldsettings['bbrules']) . "', " . "coppa='" . $this->valOnOff($oldsettings['coppa']) . "', " . "sigbbcode='" . $this->valOnOff($oldsettings['sigbbcode']) . "', " . "reportpost='" . $this->valOnOff($oldsettings['reportpost']) . "', " . "bbinsert='" . $this->valOnOff($oldsettings['bbinsert']) . "', " . "smileyinsert='" . $this->valOnOff($oldsettings['smileyinsert']) . "', " . "doublee='" . $this->valOnOff($oldsettings['doublee']) . "', " . "editedby='" . $this->valOnOff($oldsettings['editedby']) . "', " . "dotfolders='" . $this->valOnOff($oldsettings['dotfolders']) . "', " . "attachimgpost='" . $this->valOnOff($oldsettings['attachimgpost']) . "', " . "topicactivity_status='" . $this->valOnOff($oldsettings['todaysposts']) . "', " . "stats='" . $this->valOnOff($oldsettings['statsstatus']) . "'";
+
+        $settings_update = $this->toDbHost->query($settings_sql);
+        if ($settings_update === false) {
+            setCol($this->prgbar, '#ff0000');
+            print_error('Conversion Error', 'Please make sure that GaiaBB had successfully installed. There was a problem updating the ' . X_PREFIX . 'settings table', true);
+        }
+        $this->fromDbHost->free_result($settingsquery);
+        setBar($this->prgbar, 0.26);
     }
 
     /**
@@ -666,43 +703,6 @@ class xmb19x extends convert
      *            what it does
      * @return type, what the return does
      */
-    function settings()
-    {
-        $settingsquery = $this->fromDbHost->query("SELECT * FROM `" . X_PREFIX2 . "settings`");
-        if ($settingsquery === false) {
-            setCol($this->prgbar, '#ff0000');
-            print_error('Conversion Error', 'Please make sure your ' . X_PREFIX2 . 'settings table at XMB is intact. There was a problem querying for your settings.', true);
-        }
-        $oldsettings = $this->fromDbHost->fetch_array($settingsquery);
-        
-        $settings_sql = "UPDATE `" . X_PREFIX . "settings` SET " . "bbname='" . $this->toDbHost->escape($oldsettings['bbname']) . "', " . "sitename='" . $this->toDbHost->escape($oldsettings['sitename']) . "', " . "bboffreason='" . $this->toDbHost->escape($oldsettings['bboffreason']) . "', " . "bbrulestxt='" . $this->toDbHost->escape($oldsettings['bbrulestxt']) . "', " . "siteurl='" . $this->toDbHost->escape($oldsettings['siteurl']) . "', " . "indexnewstxt='" . $this->toDbHost->escape($oldsettings['tickercontents']) . "', " . "sitename='" . $this->toDbHost->escape($oldsettings['sitename']) . "', " . "adminemail='" . $this->toDbHost->escape($oldsettings['adminemail']) . "', " . 
-        
-        // Integers
-        "postperpage='" . intval($oldsettings['postperpage']) . "', " . "topicperpage='" . intval($oldsettings['topicperpage']) . "', " . "hottopic='" . intval($oldsettings['hottopic']) . "', " . "u2uquota='" . intval($oldsettings['u2uquota']) . "', " . 
-        
-        // on / off (XMB has many varients on this, but we try to do as best we can
-        "whosonlinestatus='" . $this->valOnOff($oldsettings['whosonlinestatus']) . "', " . "regstatus='" . $this->valOnOff($oldsettings['regstatus']) . "', " . "regviewonly='" . $this->valOnOff($oldsettings['regviewonly']) . "', " . "hideprivate='" . $this->valOnOff($oldsettings['hideprivate']) . "', " . "emailcheck='" . $this->valOnOff($oldsettings['emailcheck']) . "', " . 
-
-        "searchstatus='" . $this->valOnOff($oldsettings['searchstatus']) . "', " . "faqstatus='" . $this->valOnOff($oldsettings['faqstatus']) . "', " . "memliststatus='" . $this->valOnOff($oldsettings['memliststatus']) . "', " . "avastatus='" . $this->valOnOff($oldsettings['avastatus']) . "', " . "bbrules='" . $this->valOnOff($oldsettings['bbrules']) . "', " . "coppa='" . $this->valOnOff($oldsettings['coppa']) . "', " . "sigbbcode='" . $this->valOnOff($oldsettings['sigbbcode']) . "', " . "reportpost='" . $this->valOnOff($oldsettings['reportpost']) . "', " . "bbinsert='" . $this->valOnOff($oldsettings['bbinsert']) . "', " . "smileyinsert='" . $this->valOnOff($oldsettings['smileyinsert']) . "', " . "doublee='" . $this->valOnOff($oldsettings['doublee']) . "', " . "editedby='" . $this->valOnOff($oldsettings['editedby']) . "', " . "dotfolders='" . $this->valOnOff($oldsettings['dotfolders']) . "', " . "attachimgpost='" . $this->valOnOff($oldsettings['attachimgpost']) . "', " . "topicactivity_status='" . $this->valOnOff($oldsettings['todaysposts']) . "', " . "stats='" . $this->valOnOff($oldsettings['statsstatus']) . "'";
-        
-        $settings_update = $this->toDbHost->query($settings_sql);
-        if ($settings_update === false) {
-            setCol($this->prgbar, '#ff0000');
-            print_error('Conversion Error', 'Please make sure that GaiaBB had successfully installed. There was a problem updating the ' . X_PREFIX . 'settings table', true);
-        }
-        $this->fromDbHost->free_result($settingsquery);
-        setBar($this->prgbar, 0.26);
-    }
-
-    /**
-     * function() - short description of function
-     *
-     * TODO: Long description of function
-     *
-     * @param $varname type,
-     *            what it does
-     * @return type, what the return does
-     */
     function messages()
     {
         $u2uquery = $this->fromDbHost->query("SELECT * FROM " . X_PREFIX2 . "u2u");
@@ -710,7 +710,7 @@ class xmb19x extends convert
             setCol($this->prgbar, '#ff0000');
             print_error('Conversion Error', 'Please make sure your ' . X_PREFIX2 . 'u2u table at XMB is intact. There was a problem querying for your U2Us.', true);
         }
-        
+
         $this->toDbHost->query("TRUNCATE TABLE " . X_PREFIX . "u2u");
         while (($row = $this->fromDbHost->fetch_array($u2uquery)) != false) {
             $u2u_insert = $this->toDbHost->query("INSERT INTO " . X_PREFIX . "u2u (u2uid, msgto, msgfrom, type, owner, folder, subject, message, dateline, readstatus, sentstatus) VALUES ('$row[u2uid]', '" . $this->toDbHost->escape($row['msgto']) . "', '" . $this->toDbHost->escape($row['msgfrom']) . "', '$row[type]', '" . $this->toDbHost->escape($row['owner']) . "', '" . $this->toDbHost->escape($row['folder']) . "', '" . $this->toDbHost->escape($row['subject']) . "', '" . $this->toDbHost->escape($row['message']) . "', '$row[dateline]', '$row[readstatus]', '$row[sentstatus]')");

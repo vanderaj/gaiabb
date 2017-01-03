@@ -5,7 +5,7 @@
  * http://www.GaiaBB.com
  *
  * Based off UltimaBB
- * Copyright (c) 2004 - 2007 The UltimaBB Group 
+ * Copyright (c) 2004 - 2007 The UltimaBB Group
  * (defunct)
  *
  * Based off XMB
@@ -13,7 +13,7 @@
  * http://forums.xmbforum2.com/
  *
  * This file is part of GaiaBB
- * 
+ *
  *    GaiaBB is free software: you can redistribute it and/or modify
  *    it under the terms of the GNU General Public License as published by
  *    the Free Software Foundation, either version 3 of the License, or
@@ -23,16 +23,15 @@
  *    but WITHOUT ANY WARRANTY; without even the implied warranty of
  *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  *    GNU General Public License for more details.
- * 
+ *
  *    You should have received a copy of the GNU General Public License
  *    along with GaiaBB.  If not, see <http://www.gnu.org/licenses/>.
  *
  **/
 
 
-
-require_once ('header.php');
-require_once ('pm.inc.php');
+require_once('header.php');
+require_once('include/pm.inc.php');
 
 loadtpl('pm_nav', 'pm', 'pm_folderlink', 'pm_inbox', 'pm_outbox', 'pm_drafts', 'pm_row', 'pm_row_none', 'pm_view', 'pm_ignore', 'pm_send', 'pm_send_preview', 'pm_folders', 'pm_main', 'pm_multipage', 'pm_quotabar', 'pm_printable', 'pm_attachmentbox', 'pm_attachment', 'pm_sig', 'pm_trash', 'pm_send_preview_sig', 'pm_attachmentimage', 'functions_smilieinsert', 'functions_smilieinsert_smilie', 'functions_bbcodeinsert', 'functions_bbcode');
 
@@ -100,20 +99,20 @@ if ($CONFIG['pmstatus'] == 'off' && isset($self['status']) && $self['status'] ==
 $pmCommand = new pmModel();
 
 $page = getInt('page');
-if (! $page)
+if (!$page)
     $page = 1;
-    
-    // If there's a new folder coming in from the URL, let's parse it.
+
+// If there's a new folder coming in from the URL, let's parse it.
 $folder = getRequestVar('folder');
-if (! empty($folder)) {
+if (!empty($folder)) {
     $folder = checkInput($folder);
     $_SESSION['folder'] = $folder;
-} else 
-    if (empty($folder) || ! isset($folder)) {
+} else
+    if (empty($folder) || !isset($folder)) {
         if ($action == 'view' || $action == 'modif') {
             $folder = '';
         }
-        if ($action == '' || ! isset($action)) {
+        if ($action == '' || !isset($action)) {
             $folder = 'Inbox';
             $_SESSION['folder'] = $folder;
         }
@@ -199,7 +198,7 @@ switch ($action) {
     case 'mod':
         switch ($modaction) {
             case 'delete':
-                
+
                 if (empty($pm_select)) {
                     error($lang['textnonechosen'], false, '', '', 'pm.php', true, false, true);
                 }
@@ -209,7 +208,7 @@ switch ($action) {
                 if (empty($tofolder)) {
                     error($lang['textnofolder'], false, '', '', 'pm.php', true, false, true);
                 }
-                
+
                 if ($pm_select == '') {
                     error($lang['textnonechosen'], false, '', '', 'pm.php', true, false, true);
                 }
@@ -224,17 +223,17 @@ switch ($action) {
         }
         break;
     case 'send':
-        if (! X_STAFF && isset($self['postnum']) && $self['postnum'] < $CONFIG['pmposts']) {
+        if (!X_STAFF && isset($self['postnum']) && $self['postnum'] < $CONFIG['pmposts']) {
             error($lang['pminsufficentposts'], false, '', '', 'pm.php', true, false, true);
         }
-        
+
         if (isset($_GET['memberid'])) {
             $memberid = getInt('memberid');
             $gmem_query = $db->query("SELECT username FROM " . X_PREFIX . "members WHERE uid = '$memberid' LIMIT 1");
             $gmem_array = $db->fetch_array($gmem_query);
             $username = $gmem_array['username'];
         }
-        
+
         $leftpane = $pmCommand->send($pmid, $msgto, $subject, $message, $pmpreview);
         break;
     case 'view':
@@ -252,32 +251,32 @@ switch ($action) {
         }
         break;
     case 'attachment':
-        if (! ($pmid > 0)) {
+        if (!($pmid > 0)) {
             error($lang['textnonechosen'], false, '', '', 'pm.php', true, false, true);
         }
-        
+
         $query = $db->query("SELECT * FROM " . X_PREFIX . "pm_attachments WHERE pmid = '$pmid' AND aid = '$aid' AND owner = '$self[username]'");
         $file = $db->fetch_array($query);
         $db->free_result($query);
-        
+
         if ($file['filesize'] != strlen($file['attachment'])) {
             error($lang['File_Corrupt'], false, '', '', false, true, false, true);
         }
-        
+
         $type = $file['filetype'];
         $name = str_replace(' ', '_', $file['filename']);
-        $size = (int) $file['filesize'];
+        $size = (int)$file['filesize'];
         $type = (strtolower($type) == 'text/html') ? 'text/plain' : $type;
-        
+
         header("Content-type: $type");
         header("Content-length: $size");
         header("Content-Disposition: inline; filename = $name");
         header("Content-Description: PHP Generated Attachments");
         header("Cache-Control: public; max-age=604800");
         header("Expires: 604800");
-        
+
         echo $file['attachment'];
-        
+
         exit();
         break;
     case 'ignore':
@@ -299,8 +298,8 @@ switch ($action) {
         break;
 }
 
-if (! X_STAFF) {
-    $percentage = (0 == $CONFIG['pmquota']) ? 0 : (float) (($pmcount / $CONFIG['pmquota']) * 100);
+if (!X_STAFF) {
+    $percentage = (0 == $CONFIG['pmquota']) ? 0 : (float)(($pmcount / $CONFIG['pmquota']) * 100);
     if (100 < $percentage) {
         $barwidth = 100;
         eval($lang['evaluqinfo_over']);

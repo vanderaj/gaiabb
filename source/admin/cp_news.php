@@ -5,7 +5,7 @@
  * http://www.GaiaBB.com
  *
  * Based off UltimaBB
- * Copyright (c) 2004 - 2007 The UltimaBB Group 
+ * Copyright (c) 2004 - 2007 The UltimaBB Group
  * (defunct)
  *
  * Based off XMB
@@ -13,7 +13,7 @@
  * http://forums.xmbforum2.com/
  *
  * This file is part of GaiaBB
- * 
+ *
  *    GaiaBB is free software: you can redistribute it and/or modify
  *    it under the terms of the GNU General Public License as published by
  *    the Free Software Foundation, either version 3 of the License, or
@@ -23,7 +23,7 @@
  *    but WITHOUT ANY WARRANTY; without even the implied warranty of
  *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  *    GNU General Public License for more details.
- * 
+ *
  *    You should have received a copy of the GNU General Public License
  *    along with GaiaBB.  If not, see <http://www.gnu.org/licenses/>.
  *
@@ -34,9 +34,9 @@ define('ROOTINC', '../include/');
 define('ROOTCLASS', '../class/');
 define('ROOTHELPER', '../helper/');
 
-require_once ('../header.php');
-require_once ('../include/admincp.inc.php');
-require_once ('../helper/formHelper.php');
+require_once('../header.php');
+require_once('../include/admincp.inc.php');
+require_once('../helper/formHelper.php');
 
 loadtpl('cp_header', 'cp_footer', 'cp_message', 'cp_error', 'functions_bbcode', 'functions_bbcodeinsert');
 
@@ -59,7 +59,7 @@ if ($bbcode_js != '') {
 eval('$bbcodescript = "' . template('functions_bbcode') . '";');
 eval('echo "' . template('cp_header') . '";');
 
-if (! X_ADMIN) {
+if (!X_ADMIN) {
     adminaudit($self['username'], '', 0, 0, 'Authorization failed');
     error($lang['adminonly'], false);
 }
@@ -70,73 +70,75 @@ smcwcache();
 function viewPanel()
 {
     global $shadow2, $lang, $db, $THEME, $oToken, $CONFIG;
-    
+
     $bbcodeinsert = bbcodeinsert();
-    
+
     $indexnewson = $indexnewsoff = '';
     formHelper::getSettingOnOffHtml('indexnews', $indexnewson, $indexnewsoff);
-    
+
     $CONFIG['indexnewstxt'] = stripslashes($CONFIG['indexnewstxt']);
     ?>
-<form method="post" action="cp_news.php">
-	<input type="hidden" name="token"
-		value="<?php echo $oToken->get_new_token()?>" />
-	<table cellspacing="0px" cellpadding="0px" border="0px" width="100%"
-		align="center">
-		<tr>
-			<td bgcolor="<?php echo $THEME['bordercolor']?>">
-				<table border="0px" cellspacing="<?php echo $THEME['borderwidth']?>"
-					cellpadding="<?php echo $THEME['tablespace']?>" width="100%">
-					<tr class="category">
-						<td class="title" colspan="2"><?php echo $lang['indexnewscp']?></td>
-					</tr>
-    <?php
-    formHelper::formSelectOnOff($lang['set_indexnews'], 'indexnewsnew', $indexnewson, $indexnewsoff);
-    echo $bbcodeinsert;
-    ?>
-    <tr class="tablerow">
-						<td bgcolor="<?php echo $THEME['altbg1']?>" valign="top"
-							width="50%"><?php echo $lang['set_indexnewstxt']?></td>
-						<td bgcolor="<?php echo $THEME['altbg2']?>" width="50%"><textarea
-								rows="12" name="indexnewstxtnew" cols="60" id="message"
-								onselect="storeCaret(this);" onclick="storeCaret(this);"
-								onkeyup="storeCaret(this);"><?php echo $CONFIG['indexnewstxt']?></textarea></td>
-					</tr>
-					<tr class="ctrtablerow" bgcolor="<?php echo $THEME['altbg2']?>">
-						<td colspan="2"><input class="submit" type="submit"
-							name="newssubmit" value="<?php echo $lang['textsubmitchanges']?>" /></td>
-					</tr>
-				</table>
-			</td>
-		</tr>
-	</table>
-    <?php echo $shadow2?>
+    <form method="post" action="cp_news.php">
+        <input type="hidden" name="token"
+               value="<?php echo $oToken->get_new_token() ?>"/>
+        <table cellspacing="0px" cellpadding="0px" border="0px" width="100%"
+               align="center">
+            <tr>
+                <td bgcolor="<?php echo $THEME['bordercolor'] ?>">
+                    <table border="0px" cellspacing="<?php echo $THEME['borderwidth'] ?>"
+                           cellpadding="<?php echo $THEME['tablespace'] ?>" width="100%">
+                        <tr class="category">
+                            <td class="title" colspan="2"><?php echo $lang['indexnewscp'] ?></td>
+                        </tr>
+                        <?php
+                        formHelper::formSelectOnOff($lang['set_indexnews'], 'indexnewsnew', $indexnewson, $indexnewsoff);
+                        echo $bbcodeinsert;
+                        ?>
+                        <tr class="tablerow">
+                            <td bgcolor="<?php echo $THEME['altbg1'] ?>" valign="top"
+                                width="50%"><?php echo $lang['set_indexnewstxt'] ?></td>
+                            <td bgcolor="<?php echo $THEME['altbg2'] ?>" width="50%"><textarea
+                                        rows="12" name="indexnewstxtnew" cols="60" id="message"
+                                        onselect="storeCaret(this);" onclick="storeCaret(this);"
+                                        onkeyup="storeCaret(this);"><?php echo $CONFIG['indexnewstxt'] ?></textarea>
+                            </td>
+                        </tr>
+                        <tr class="ctrtablerow" bgcolor="<?php echo $THEME['altbg2'] ?>">
+                            <td colspan="2"><input class="submit" type="submit"
+                                                   name="newssubmit" value="<?php echo $lang['textsubmitchanges'] ?>"/>
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+        </table>
+        <?php echo $shadow2 ?>
     </form>
-</td>
-</tr>
-</table>
-<?php
+    </td>
+    </tr>
+    </table>
+    <?php
 }
 
 function doPanel()
 {
     global $lang, $db, $oToken;
-    
+
     $oToken->assert_token();
-    
+
     $indexnewsnew = formOnOff('indexnewsnew');
     $indexnewstxtnew = $db->escape(formVar('indexnewstxtnew'));
-    
+
     $config_array = array(
         'indexnews' => $indexnewsnew,
         'indexnewstxt' => $indexnewstxtnew
     );
-    
+
     // execute query
     foreach ($config_array as $key => $value) {
         $db->query("UPDATE " . X_PREFIX . "settings SET config_value = '$value' WHERE config_name = '$key' LIMIT 1");
     }
-    
+
     cp_message($lang['textsettingsupdate'], false, '', '</td></tr></table>', 'index.php', true, false, true);
 }
 
@@ -158,5 +160,5 @@ if (onSubmit('newssubmit')) {
 }
 
 loadtime();
-eval('echo "' . template('cp_footer').'";');
+eval('echo "' . template('cp_footer') . '";');
 ?>

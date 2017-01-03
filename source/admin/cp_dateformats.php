@@ -5,7 +5,7 @@
  * http://www.GaiaBB.com
  *
  * Based off UltimaBB
- * Copyright (c) 2004 - 2007 The UltimaBB Group 
+ * Copyright (c) 2004 - 2007 The UltimaBB Group
  * (defunct)
  *
  * Based off XMB
@@ -13,7 +13,7 @@
  * http://forums.xmbforum2.com/
  *
  * This file is part of GaiaBB
- * 
+ *
  *    GaiaBB is free software: you can redistribute it and/or modify
  *    it under the terms of the GNU General Public License as published by
  *    the Free Software Foundation, either version 3 of the License, or
@@ -23,7 +23,7 @@
  *    but WITHOUT ANY WARRANTY; without even the implied warranty of
  *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  *    GNU General Public License for more details.
- * 
+ *
  *    You should have received a copy of the GNU General Public License
  *    along with GaiaBB.  If not, see <http://www.gnu.org/licenses/>.
  *
@@ -33,8 +33,8 @@ define('ROOT', '../');
 define('ROOTINC', '../include/');
 define('ROOTCLASS', '../class/');
 
-require_once ('../header.php');
-require_once ('../include/admincp.inc.php');
+require_once('../header.php');
+require_once('../include/admincp.inc.php');
 
 loadtpl('cp_header', 'cp_footer', 'cp_message', 'cp_error');
 
@@ -49,7 +49,7 @@ btitle($lang['Date_Format_Settings']);
 eval('$css = "' . template('css') . '";');
 eval('echo "' . template('cp_header') . '";');
 
-if (! X_ADMIN) {
+if (!X_ADMIN) {
     adminaudit($self['username'], '', 0, 0, 'Authorization failed');
     error($lang['adminonly'], false);
 }
@@ -62,67 +62,67 @@ function viewPanel($queryd)
     global $THEME, $lang, $shadow2, $oToken, $db;
     global $gbblva, $self;
     ?>
-<form method="post" action="cp_dateformats.php">
-	<input type="hidden" name="token"
-		value="<?php echo $oToken->get_new_token()?>" />
-	<table cellspacing="0px" cellpadding="0px" border="0px" width="100%"
-		align="center">
-		<tr>
-			<td bgcolor="<?php echo $THEME['bordercolor']?>">
-				<table border="0px" cellspacing="<?php echo $THEME['borderwidth']?>"
-					cellpadding="<?php echo $THEME['tablespace']?>" width="100%">
-					<tr class="category">
-						<td class="title" align="center"><?php echo $lang['textdeleteques']?></td>
-						<td class="title"><?php echo $lang['dateformats']?></td>
-						<td class="title"><?php echo $lang['exdateformat']?></td>
-					</tr>
-    <?php
-    while (($dformat = $db->fetch_array($queryd)) != false) {
-        if ($dformat['did'] != 1) {
-            ?>
-            <tr bgcolor="<?php echo $THEME['altbg2']?>">
-						<td class="ctrtablerow"><input type="checkbox"
-							name="delete<?php echo $dformat['did']?>"
-							value="<?php echo $dformat['did']?>" /></td>
-						<td class="tablerow"><input type="text" size="20"
-							name="find<?php echo $dformat['did']?>"
-							value="<?php echo $dformat['dateformat']?>" /></td>
-						<td class="tablerow"><?php echo gmdate(formatDate($dformat['dateformat']), $gbblva + ($self['timeoffset'] * 3600) + $self['daylightsavings'])?></td>
-					</tr>
-            <?php
-        }
-    }
-    $db->free_result($queryd);
-    ?>
-    <tr bgcolor="<?php echo $THEME['altbg1']?>" class="ctrtablerow">
-						<td colspan="3"><?php echo $lang['textnewcode']?>&nbsp;<input
-							type="text" size="20" name="newfind" value="" /></td>
-					</tr>
-					<tr bgcolor="<?php echo $THEME['altbg2']?>" class="ctrtablerow">
-						<td colspan="3"><input type="submit" class="submit"
-							name="datesubmit" value="<?php echo $lang['textsubmitchanges']?>" />&nbsp;<input
-							type="submit" class="submit" name="daterestore"
-							value="<?php echo $lang['daterestore']?>" /></td>
-					</tr>
-				</table>
-			</td>
-		</tr>
-	</table>
-    <?php echo $shadow2?>
+    <form method="post" action="cp_dateformats.php">
+        <input type="hidden" name="token"
+               value="<?php echo $oToken->get_new_token() ?>"/>
+        <table cellspacing="0px" cellpadding="0px" border="0px" width="100%"
+               align="center">
+            <tr>
+                <td bgcolor="<?php echo $THEME['bordercolor'] ?>">
+                    <table border="0px" cellspacing="<?php echo $THEME['borderwidth'] ?>"
+                           cellpadding="<?php echo $THEME['tablespace'] ?>" width="100%">
+                        <tr class="category">
+                            <td class="title" align="center"><?php echo $lang['textdeleteques'] ?></td>
+                            <td class="title"><?php echo $lang['dateformats'] ?></td>
+                            <td class="title"><?php echo $lang['exdateformat'] ?></td>
+                        </tr>
+                        <?php
+                        while (($dformat = $db->fetch_array($queryd)) != false) {
+                            if ($dformat['did'] != 1) {
+                                ?>
+                                <tr bgcolor="<?php echo $THEME['altbg2'] ?>">
+                                    <td class="ctrtablerow"><input type="checkbox"
+                                                                   name="delete<?php echo $dformat['did'] ?>"
+                                                                   value="<?php echo $dformat['did'] ?>"/></td>
+                                    <td class="tablerow"><input type="text" size="20"
+                                                                name="find<?php echo $dformat['did'] ?>"
+                                                                value="<?php echo $dformat['dateformat'] ?>"/></td>
+                                    <td class="tablerow"><?php echo gmdate(formatDate($dformat['dateformat']), $gbblva + ($self['timeoffset'] * 3600) + $self['daylightsavings']) ?></td>
+                                </tr>
+                                <?php
+                            }
+                        }
+                        $db->free_result($queryd);
+                        ?>
+                        <tr bgcolor="<?php echo $THEME['altbg1'] ?>" class="ctrtablerow">
+                            <td colspan="3"><?php echo $lang['textnewcode'] ?>&nbsp;<input
+                                        type="text" size="20" name="newfind" value=""/></td>
+                        </tr>
+                        <tr bgcolor="<?php echo $THEME['altbg2'] ?>" class="ctrtablerow">
+                            <td colspan="3"><input type="submit" class="submit"
+                                                   name="datesubmit" value="<?php echo $lang['textsubmitchanges'] ?>"/>&nbsp;<input
+                                        type="submit" class="submit" name="daterestore"
+                                        value="<?php echo $lang['daterestore'] ?>"/></td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+        </table>
+        <?php echo $shadow2 ?>
     </form>
-</td>
-</tr>
-</table>
-<?php
+    </td>
+    </tr>
+    </table>
+    <?php
 }
 
 function doPanel($querydate)
 {
     global $shadow2, $lang, $db, $THEME;
     global $oToken;
-    
+
     $oToken->assert_token();
-    
+
     while (($dformat = $db->fetch_array($querydate)) != false) {
         $find = "find" . $dformat['did'];
         $find = $db->escape(formVar($find));
@@ -134,7 +134,7 @@ function doPanel($querydate)
         $db->query("UPDATE " . X_PREFIX . "dateformats SET dateformat='$find' WHERE did='$dformat[did]'");
     }
     $db->free_result($querydate);
-    
+
     $newfind = $db->escape(formVar('newfind'));
     if (isset($newfind) && $newfind != '') {
         $db->query("INSERT INTO " . X_PREFIX . "dateformats (`dateformat`) VALUES ('$newfind')");
@@ -145,7 +145,7 @@ function doPanel($querydate)
 function dateRestoreTable()
 {
     global $db, $lang;
-    
+
     $db->query("DROP TABLE IF EXISTS " . X_PREFIX . "dateformats");
     $db->query("CREATE TABLE " . X_PREFIX . "dateformats (`dateformat` varchar(10) NOT NULL default '', `did` int(3) NOT NULL auto_increment, PRIMARY KEY (`did`)) TYPE=MyISAM");
     $db->query("INSERT INTO " . X_PREFIX . "dateformats (`dateformat`) VALUES ('dd-mm-yy');");
@@ -167,35 +167,35 @@ function viewDateRestore()
     global $shadow2, $lang, $db, $THEME;
     global $oToken;
     ?>
-<form method="post" action="cp_dateformats.php">
-	<input type="hidden" name="token"
-		value="<?php echo $oToken->get_new_token()?>" />
-	<table cellspacing="0px" cellpadding="0px" border="0px" width="100%"
-		align="center">
-		<tr>
-			<td bgcolor="<?php echo $THEME['bordercolor']?>">
-				<table border="0px" cellspacing="<?php echo $THEME['borderwidth']?>"
-					cellpadding="<?php echo $THEME['tablespace']?>" width="100%">
-					<tr class="category">
-						<td class="title"><?php echo $lang['dateformats']?></td>
-					</tr>
-					<tr bgcolor="<?php echo $THEME['altbg2']?>" class="ctrtablerow">
-						<td><?php echo $lang['daterestoreconfirm']?><br />
-						<input type="submit" class="submit" name="daterestoresubmit"
-							value="<?php echo $lang['textyes']?>" />&nbsp;-&nbsp;<input
-							type="submit" class="submit" name="no"
-							value="<?php echo $lang['textno']?>" /></td>
-					</tr>
-				</table>
-			</td>
-		</tr>
-	</table>
-    <?php echo $shadow2?>
+    <form method="post" action="cp_dateformats.php">
+        <input type="hidden" name="token"
+               value="<?php echo $oToken->get_new_token() ?>"/>
+        <table cellspacing="0px" cellpadding="0px" border="0px" width="100%"
+               align="center">
+            <tr>
+                <td bgcolor="<?php echo $THEME['bordercolor'] ?>">
+                    <table border="0px" cellspacing="<?php echo $THEME['borderwidth'] ?>"
+                           cellpadding="<?php echo $THEME['tablespace'] ?>" width="100%">
+                        <tr class="category">
+                            <td class="title"><?php echo $lang['dateformats'] ?></td>
+                        </tr>
+                        <tr bgcolor="<?php echo $THEME['altbg2'] ?>" class="ctrtablerow">
+                            <td><?php echo $lang['daterestoreconfirm'] ?><br/>
+                                <input type="submit" class="submit" name="daterestoresubmit"
+                                       value="<?php echo $lang['textyes'] ?>"/>&nbsp;-&nbsp;<input
+                                        type="submit" class="submit" name="no"
+                                        value="<?php echo $lang['textno'] ?>"/></td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+        </table>
+        <?php echo $shadow2 ?>
     </form>
-</td>
-</tr>
-</table>
-<?php
+    </td>
+    </tr>
+    </table>
+    <?php
 }
 
 displayAdminPanel();
@@ -203,7 +203,7 @@ displayAdminPanel();
 // Ensure the database is okay
 $tables = $db->getTables();
 $tablename = X_PREFIX . "dateformats";
-if (! in_array($tablename, $tables)) {
+if (!in_array($tablename, $tables)) {
     dateRestoreTable();
 }
 
@@ -227,5 +227,5 @@ if (onSubmit('daterestoresubmit')) {
 }
 
 loadtime();
-eval('echo "' . template('cp_footer').'";');
+eval('echo "' . template('cp_footer') . '";');
 ?>

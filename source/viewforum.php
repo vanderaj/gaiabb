@@ -5,7 +5,7 @@
  * http://www.GaiaBB.com
  *
  * Based off UltimaBB
- * Copyright (c) 2004 - 2007 The UltimaBB Group 
+ * Copyright (c) 2004 - 2007 The UltimaBB Group
  * (defunct)
  *
  * Based off XMB
@@ -13,7 +13,7 @@
  * http://forums.xmbforum2.com/
  *
  * This file is part of GaiaBB
- * 
+ *
  *    GaiaBB is free software: you can redistribute it and/or modify
  *    it under the terms of the GNU General Public License as published by
  *    the Free Software Foundation, either version 3 of the License, or
@@ -23,17 +23,14 @@
  *    but WITHOUT ANY WARRANTY; without even the implied warranty of
  *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  *    GNU General Public License for more details.
- * 
+ *
  *    You should have received a copy of the GNU General Public License
  *    along with GaiaBB.  If not, see <http://www.gnu.org/licenses/>.
  *
  **/
 
 
-
-
-
-require_once ('header.php');
+require_once('header.php');
 
 loadtpl('massmod_openclose', 'massmod_topuntop', 'massmod_bump', 'massmod_copy', 'massmod_merge', 'massmod_delete', 'massmod_empty', 'massmod_move', 'massmod_markthread', 'viewforum_newtopic', 'viewforum_newpoll', 'viewforum_password', 'viewforum_thread', 'viewforum_invalidforum', 'viewforum_nothreads', 'viewforum', 'viewforum_subforum_lastpost', 'viewforum_thread_lastpost', 'viewforum_admin', 'viewforum_thread_admin', 'viewforum_subforum', 'viewforum_subforums', 'viewforum_multipage_admin', 'viewforum_multipage', 'viewforum_subforum_nolastpost', 'viewforum_dotfolders', 'viewforum_search', 'viewforum_rules', 'viewforum_mpn_info', 'viewforum_nothreads_admin');
 
@@ -62,16 +59,16 @@ if (isset($forum['type']) && $forum['type'] == 'sub') {
     $query = $db->query("SELECT private, userlist, name, fid FROM " . X_PREFIX . "forums WHERE fid = '$forum[fup]'");
     $fup = $db->fetch_array($query);
     $db->free_result($query);
-    if (! privfcheck($fup['private'], $fup['userlist'])) {
+    if (!privfcheck($fup['private'], $fup['userlist'])) {
         error($lang['privforummsg']);
     }
-} else 
+} else
     if (isset($forum['type']) && $forum['type'] != 'forum') {
         error($lang['textnoforum']);
     }
 
 $authorization = privfcheck($forum['private'], $forum['userlist']);
-if (! $authorization) {
+if (!$authorization) {
     error($lang['privforummsg']);
 }
 
@@ -80,7 +77,7 @@ pwverify($forum['password'], 'viewforum.php?fid=' . $fid, $fid, true);
 if (isset($forum['type']) && $forum['type'] == 'forum') {
     nav(stripslashes($forum['name']));
     btitle(stripslashes($forum['name']));
-} else 
+} else
     if (isset($forum['type']) && $forum['type'] == 'sub') {
         nav('<a href="viewforum.php?fid=' . intval($fup['fid']) . '">' . stripslashes($fup['name']) . '</a>');
         nav(stripslashes($forum['name']));
@@ -89,7 +86,7 @@ if (isset($forum['type']) && $forum['type'] == 'forum') {
     }
 
 // check if member has enough posts to access forum if set
-if (isset($forum['mpfa']) && $forum['mpfa'] != 0 && isset($self['postnum']) && $self['postnum'] < $forum['mpfa'] && ! X_SADMIN) {
+if (isset($forum['mpfa']) && $forum['mpfa'] != 0 && isset($self['postnum']) && $self['postnum'] < $forum['mpfa'] && !X_SADMIN) {
     $message = str_replace("*posts*", $forum['mpfa'], $lang['mpfae']);
     error($message);
 }
@@ -98,7 +95,7 @@ eval('echo "' . template('header') . '";');
 
 // display forum rules if set
 $forumrules = '';
-if (isset($forum['frules_status']) && $forum['frules_status'] == 'on' && ! empty($forum['frules'])) {
+if (isset($forum['frules_status']) && $forum['frules_status'] == 'on' && !empty($forum['frules'])) {
     $forum['frules'] = postify($forum['frules']);
     $forum['frules'] = stripslashes($forum['frules']);
     eval('$forumrules = "' . template('viewforum_rules') . '";');
@@ -107,7 +104,7 @@ if (isset($forum['frules_status']) && $forum['frules_status'] == 'on' && ! empty
 $subforums = $forumlist = '';
 if (count($fup) == 0) {
     $query = $db->query("SELECT f.*, l.uid AS lp_uid, l.username AS lp_user, l.dateline AS lp_dateline, l.pid AS lp_pid FROM " . X_PREFIX . "forums f LEFT  JOIN " . X_PREFIX . "lastposts l ON l.tid = f.lastpost WHERE f.type =  'sub' AND f.fup =  '$fid' AND f.status =  'on' ORDER  BY f.displayorder");
-    
+
     if ($db->num_rows($query) != 0) {
         $fulist = $forum['userlist'];
         while (($sub = $db->fetch_array($query)) != false) {
@@ -120,7 +117,7 @@ if (count($fup) == 0) {
 }
 
 $newtopiclink = $newpolllink = '';
-if (! postperm($forum, 'thread')) {
+if (!postperm($forum, 'thread')) {
     $newtopiclink = $newpolllink = '';
 } else {
     if (X_GUEST && isset($forum['guestposting']) && $forum['guestposting'] != 'on') {
@@ -142,23 +139,23 @@ if (isset($forum['mpnp']) && $forum['mpnp'] != 0 || isset($forum['mpnt']) && $fo
         $showfi .= $lang['mpfai'];
         $Ffie = '<br />';
     }
-    
+
     if (isset($forum['mpnp']) && $forum['mpnp'] != 0) {
         $lang['mpnpi'] = str_replace("*posts*", $forum['mpnp'], $lang['mpnpi']);
         $showfi .= $Ffie;
         $showfi .= $lang['mpnpi'];
         $Ffie = '<br />';
-        
-        if (isset($forum['mpnp']) && isset($self['postnum']) && $self['postnum'] < $forum['mpnp'] && ! X_SADMIN) {
+
+        if (isset($forum['mpnp']) && isset($self['postnum']) && $self['postnum'] < $forum['mpnp'] && !X_SADMIN) {
             $replylink = '';
         }
     }
-    
+
     if (isset($forum['mpnt']) && $forum['mpnt'] != 0) {
         $lang['mpnti'] = str_replace("*posts*", $forum['mpnt'], $lang['mpnti']);
         $showfi .= $Ffie;
         $showfi .= $lang['mpnti'];
-        if (isset($forum['mpnt']) && isset($self['postnum']) && $self['postnum'] < $forum['mpnt'] && ! X_SADMIN) {
+        if (isset($forum['mpnt']) && isset($self['postnum']) && $self['postnum'] < $forum['mpnt'] && !X_SADMIN) {
             $newpolllink = $newtopiclink = '';
         }
     }
@@ -258,7 +255,7 @@ switch ($order) {
 }
 
 $page = getInt('page');
-$page = (isset($page) && is_numeric($page)) ? ($page < 1 ? 1 : ((int) $page)) : 1;
+$page = (isset($page) && is_numeric($page)) ? ($page < 1 ? 1 : ((int)$page)) : 1;
 $start_limit = ($page > 1) ? (($page - 1) * $self['tpp']) : 0;
 
 $dotadd1 = $dotadd2 = '';
@@ -272,14 +269,14 @@ $viewforum_thread = 'viewforum_thread';
 $status1 = '';
 if (X_STAFF && isset($self['status']) && $self['status'] != 'Moderator') {
     $status1 = 'Moderator';
-} else 
+} else
     if (isset($self['status']) && $self['status'] == 'Moderator') {
         $status1 = modcheck($forum['moderator']);
     }
 
 if ($status1 == 'Moderator') {
     $viewforum_thread = 'viewforum_thread_admin';
-    include_once ('mass_mod.inc.php');
+    include_once('mass_mod.inc.php');
 }
 
 $topicsnum = 0;
@@ -288,13 +285,13 @@ $querytop = $db->query("SELECT $dotadd1 t.*, m.uid, l.uid as lp_uid, l.username 
 while (($thread = $db->fetch_array($querytop)) != false) {
     $thread['subject'] = shortenString(censor($thread['subject']), 80, X_SHORTEN_SOFT | X_SHORTEN_HARD, '...');
     $tmOffset = ($self['timeoffset'] * 3600) + $self['daylightsavings'];
-    
-    if (! empty($thread['icon']) && file_exists($THEME['smdir'] . '/' . $thread['icon'])) {
+
+    if (!empty($thread['icon']) && file_exists($THEME['smdir'] . '/' . $thread['icon'])) {
         $thread['icon'] = '<img src="' . $THEME['smdir'] . '/' . $thread['icon'] . '" alt="' . $thread['icon'] . '" title="' . $thread['icon'] . '" border="0px" />';
     } else {
         $thread['icon'] = '';
     }
-    
+
     if ($thread['author'] != $lang['textanonymous']) {
         if (X_MEMBER) {
             $authorlink = '<a href="viewprofile.php?memberid=' . intval($thread['uid']) . '"><strong>' . trim($thread['author']) . '</strong></a>';
@@ -304,9 +301,9 @@ while (($thread = $db->fetch_array($querytop)) != false) {
     } else {
         $authorlink = $lang['textanonymous'];
     }
-    
+
     $dalast = trim($thread['lp_dateline']);
-    
+
     if ($thread['lp_user'] != $lang['textanonymous'] && $thread['lp_user'] != '') {
         if (X_MEMBER) {
             $thread['lp_user'] = '<a href="viewprofile.php?memberid=' . intval($thread['lp_uid']) . '"><strong>' . trim($thread['lp_user']) . '</strong></a>';
@@ -316,43 +313,43 @@ while (($thread = $db->fetch_array($querytop)) != false) {
     } else {
         $thread['lp_user'] = $lang['textanonymous'];
     }
-    
+
     $lastPid = isset($thread['lp_pid']) ? $thread['lp_pid'] : 0;
     $lastreplydate = gmdate($self['dateformat'], $thread['lp_dateline'] + $tmOffset);
     $lastreplytime = gmdate($self['timecode'], $thread['lp_dateline'] + $tmOffset);
     $lastpost = $lang['lastreply1'] . ' ' . $lastreplydate . ' ' . $lang['textat'] . ' ' . $lastreplytime . '<br />' . $lang['textby'] . ' ' . $thread['lp_user'];
-    
+
     if ($thread['replies'] >= $CONFIG['hottopic']) {
         $folder = 'hot_folder.gif';
-    } else 
+    } else
         if ($thread['pollopts'] == 1) {
             $folder = 'folder_poll.gif';
         } else {
             $folder = 'folder.gif';
         }
-    
+
     $oldtopics = isset($_COOKIE['oldtopics']) ? $_COOKIE['oldtopics'] : '';
-    
+
     if (($oT = strpos($oldtopics, '|' . $lastPid . '|')) === false && $thread['replies'] >= $CONFIG['hottopic'] && $lastvisit < $dalast) {
         $folder = 'hot_red_folder.gif';
-    } else 
+    } else
         if ($lastvisit < $dalast && $oT === false && $thread['pollopts'] == 1) {
             $folder = 'folder_new_poll.gif';
-        } else 
+        } else
             if ($lastvisit < $dalast && $oT === false) {
                 $folder = 'red_folder.gif';
             }
-    
+
     if ($CONFIG['dotfolders'] == 'on' && isset($thread['dotauthor']) == $self['username'] && X_MEMBER) {
         $folder = 'dot_' . $folder;
     }
-    
+
     $folder = '<img src="' . $THEME['imgdir'] . '/' . $folder . '" alt="' . $lang['altfolder'] . '" title="' . $lang['altfolder'] . '" border="0px" />';
-    
+
     if ($thread['closed'] == 'yes') {
         $folder = '<img src="' . $THEME['imgdir'] . '/lock_folder.gif" alt="' . $lang['altclosedtopic'] . '" title="' . $lang['altclosedtopic'] . '" border="0px" />';
     }
-    
+
     $prefix = '';
     $moved = explode('|', $thread['closed']);
     if ($moved[0] == 'moved') {
@@ -370,17 +367,17 @@ while (($thread = $db->fetch_array($querytop)) != false) {
     } else {
         $thread['realtid'] = intval($thread['tid']);
     }
-    
+
     eval('$lastpostrow = "' . template('viewforum_thread_lastpost') . '";');
-    
+
     if ($thread['pollopts'] == 1) {
         $prefix = $lang['pollprefix'] . ' ';
     }
-    
+
     if ($thread['topped'] == 1) {
         $prefix = $lang['toppedprefix'] . ' ';
     }
-    
+
     $postnum = $thread['replies'] + 1;
     if ($postnum > $self['ppp']) {
         $pagelinks = multi($postnum, $self['ppp'], 0, 'viewtopic.php?tid=' . intval($thread['tid']));
@@ -388,11 +385,11 @@ while (($thread = $db->fetch_array($querytop)) != false) {
     } else {
         $pagelinks = $multipage2 = '';
     }
-    
+
     $mouseover = celloverfx('viewtopic.php?tid=' . intval($thread['tid']));
     eval('$threadlist .= "' . template($viewforum_thread) . '";');
     $prefix = '';
-    $topicsnum ++;
+    $topicsnum++;
 }
 $db->free_result($querytop);
 

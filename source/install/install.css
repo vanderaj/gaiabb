@@ -23,7 +23,7 @@ hr {
 
 .divider {
     background-color: #5176B5;
-    padding:1px 0 0 0;
+    padding: 1px 0 0 0;
     margin: 2px 0 5px 0;
 }
 
@@ -186,10 +186,10 @@ textarea, select, input, object {
 }
 
 .sig {
-     border-top: 1px dashed #5176B5;
-     padding: 13px 0 0 3px;
-     font-family: Tahoma, Arial, Helvetica, Verdana, arial, helvetica, sans-serif;
-     font-size: 11px;
+    border-top: 1px dashed #5176B5;
+    padding: 13px 0 0 3px;
+    font-family: Tahoma, Arial, Helvetica, Verdana, arial, helvetica, sans-serif;
+    font-size: 11px;
 }
 
 .smalltxt {

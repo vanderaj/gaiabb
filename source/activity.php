@@ -5,7 +5,7 @@
  * http://www.GaiaBB.com
  *
  * Based off UltimaBB
- * Copyright (c) 2004 - 2007 The UltimaBB Group 
+ * Copyright (c) 2004 - 2007 The UltimaBB Group
  * (defunct)
  *
  * Based off XMB
@@ -13,7 +13,7 @@
  * http://forums.xmbforum2.com/
  *
  * This file is part of GaiaBB
- * 
+ *
  *    GaiaBB is free software: you can redistribute it and/or modify
  *    it under the terms of the GNU General Public License as published by
  *    the Free Software Foundation, either version 3 of the License, or
@@ -23,15 +23,21 @@
  *    but WITHOUT ANY WARRANTY; without even the implied warranty of
  *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  *    GNU General Public License for more details.
- * 
+ *
  *    You should have received a copy of the GNU General Public License
  *    along with GaiaBB.  If not, see <http://www.gnu.org/licenses/>.
  *
  **/
 
-require_once ('header.php');
+require_once('header.php');
 
-loadtpl('topic_activity', 'topic_activity_dotfolders', 'topic_activity_multipage', 'topic_activity_none', 'topic_activity_threads');
+loadtpl(
+    'topic_activity',
+    'topic_activity_dotfolders',
+    'topic_activity_multipage',
+    'topic_activity_none',
+    'topic_activity_threads'
+);
 
 $shadow = shadowfx();
 $meta = metaTags();
@@ -174,7 +180,7 @@ $query = $db->query("SELECT $dotadd1 t.*, m.uid as authorid, f.name, l.uid as lp
 while (($thread = $db->fetch_array($query)) != false) {
     $thread['subject'] = shortenString(censor($thread['subject']), 80, X_SHORTEN_SOFT | X_SHORTEN_HARD, '...');
     $tmOffset = ($self['timeoffset'] * 3600) + $self['daylightsavings'];
-    
+
     if ($thread['author'] != $lang['textanonymous']) {
         if (X_MEMBER) {
             $author = '<a href="viewprofile.php?memberid=' . intval($thread['authorid']) . '"><strong>' . trim($thread['author']) . '</strong></a>';
@@ -184,11 +190,11 @@ while (($thread = $db->fetch_array($query)) != false) {
     } else {
         $author = $lang['textanonymous'];
     }
-    
+
     $dalast = trim($thread['lp_dateline']);
-    
+
     if ($thread['lp_user'] != $lang['textanonymous'] && $thread['lp_user'] != '') {
-        
+
         if (X_MEMBER) {
             $lastpostauthor = '<a href="viewprofile.php?memberid=' . intval($thread['lp_uid']) . '"><strong>' . trim($thread['lp_user']) . '</strong></a>';
         } else {
@@ -197,49 +203,48 @@ while (($thread = $db->fetch_array($query)) != false) {
     } else {
         $lastpostauthor = $lang['textanonymous'];
     }
-    
+
     $lastPid = isset($thread['lp_pid']) ? $thread['lp_pid'] : 0;
     $lastpostdate = gmdate($self['dateformat'], $thread['lp_dateline'] + $tmOffset);
     $lastposttime = gmdate($self['timecode'], $thread['lp_dateline'] + $tmOffset);
     $lastpost = $lang['lastreply1'] . ' ' . $lastpostdate . ' ' . $lang['textat'] . ' ' . $lastposttime . '<br />' . $lang['textby'] . ' ' . $lastpostauthor;
-    
-    if (! empty($thread['icon']) && file_exists($THEME['smdir'] . '/' . $thread['icon'])) {
+
+    if (!empty($thread['icon']) && file_exists($THEME['smdir'] . '/' . $thread['icon'])) {
         $posticon = '<img src="' . $THEME['smdir'] . '/' . $thread['icon'] . '" alt="' . $thread['icon'] . '" title="' . $thread['icon'] . '" border="0px" />';
     } else {
         $posticon = '';
     }
-    
+
     if ($thread['replies'] >= $CONFIG['hottopic']) {
         $folder = 'hot_folder.gif';
-    } else 
-        if ($thread['pollopts'] == 1) {
-            $folder = 'folder_poll.gif';
-        } else {
-            $folder = 'folder.gif';
-        }
-    
+    } else if ($thread['pollopts'] == 1) {
+        $folder = 'folder_poll.gif';
+    } else {
+        $folder = 'folder.gif';
+    }
+
     $oldtopics = isset($_COOKIE['oldtopics']) ? $_COOKIE['oldtopics'] : '';
-    
+
     if (($oT = strpos($oldtopics, '|' . $lastPid . '|')) === false && $thread['replies'] >= $CONFIG['hottopic'] && $lastvisit < $dalast) {
         $folder = 'hot_red_folder.gif';
-    } else 
-        if ($lastvisit < $dalast && $oT === false && $thread['pollopts'] == 1) {
-            $folder = 'folder_new_poll.gif';
-        } else 
-            if ($lastvisit < $dalast && $oT === false) {
-                $folder = 'red_folder.gif';
-            }
-    
+    } else if ($lastvisit < $dalast && $oT === false && $thread['pollopts'] == 1) {
+        $folder = 'folder_new_poll.gif';
+    } else if ($lastvisit < $dalast && $oT === false) {
+        $folder = 'red_folder.gif';
+    } else {
+        $folder = $folder;
+    }
+
     if ($CONFIG['dotfolders'] == 'on' && isset($thread['dotauthor']) == $self['username'] && X_MEMBER) {
         $folder = 'dot_' . $folder;
     }
-    
+
     $folder = '<img src="' . $THEME['imgdir'] . '/' . $folder . '" alt="' . $lang['altfolder'] . '" title="' . $lang['altfolder'] . '" border="0px" />';
-    
+
     if ($thread['closed'] == 'yes') {
         $folder = '<img src="' . $THEME['imgdir'] . '/lock_folder.gif" alt="' . $lang['altclosedtopic'] . '" title="' . $lang['altclosedtopic'] . '" border="0px" />';
     }
-    
+
     $prefix = '';
     $moved = explode('|', $thread['closed']);
     if ($moved[0] == 'moved') {
@@ -257,15 +262,15 @@ while (($thread = $db->fetch_array($query)) != false) {
     } else {
         $thread['realtid'] = intval($thread['tid']);
     }
-    
+
     if ($thread['pollopts'] == 1) {
         $prefix = $lang['pollprefix'] . ' ';
     }
-    
+
     if ($thread['topped'] == 1) {
         $prefix = $lang['toppedprefix'] . ' ';
     }
-    
+
     $postnum = $thread['replies'] + 1;
     if ($postnum > $self['ppp']) {
         $pagelinks = multi($postnum, $self['ppp'], 0, 'viewtopic.php?tid=' . intval($thread['tid']));
@@ -273,11 +278,11 @@ while (($thread = $db->fetch_array($query)) != false) {
     } else {
         $pagelinks = $pages = '';
     }
-    
+
     $mouseover = celloverfx('viewtopic.php?tid=' . intval($thread['tid'] . ''));
     eval('$threads .= "' . template('topic_activity_threads') . '";');
     $prefix = '';
-    $threadcount ++;
+    $threadcount++;
 }
 $db->free_result($query);
 

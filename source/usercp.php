@@ -5,7 +5,7 @@
  * http://www.GaiaBB.com
  *
  * Based off UltimaBB
- * Copyright (c) 2004 - 2007 The UltimaBB Group 
+ * Copyright (c) 2004 - 2007 The UltimaBB Group
  * (defunct)
  *
  * Based off XMB
@@ -13,7 +13,7 @@
  * http://forums.xmbforum2.com/
  *
  * This file is part of GaiaBB
- * 
+ *
  *    GaiaBB is free software: you can redistribute it and/or modify
  *    it under the terms of the GNU General Public License as published by
  *    the Free Software Foundation, either version 3 of the License, or
@@ -23,14 +23,14 @@
  *    but WITHOUT ANY WARRANTY; without even the implied warranty of
  *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  *    GNU General Public License for more details.
- * 
+ *
  *    You should have received a copy of the GNU General Public License
  *    along with GaiaBB.  If not, see <http://www.gnu.org/licenses/>.
  *
  **/
 
-require_once ('header.php');
-require_once ('usercp.inc.php');
+require_once('header.php');
+require_once('include/usercp.inc.php');
 
 if (X_GUEST) {
     redirect('login.php', 0);
@@ -110,7 +110,7 @@ switch ($action) {
         nav('<a href="usercp.php">' . $lang['textusercp'] . '</a>');
         btitle($lang['textusercp']);
         $type = formVar('type');
-        if (! isset($type)) {
+        if (!isset($type)) {
             nav($lang['avatargallery']);
             btitle($lang['avatargallery']);
         } else {
@@ -155,24 +155,24 @@ switch ($action) {
     case 'notepad':
         eval('echo "' . template('header') . '";');
         makenav($action);
-        
+
         if ($CONFIG['notepadstatus'] == 'off') {
             error($lang['fnasorry'], false);
         }
-        
+
         if (noSubmit('savesubmit') && noSubmit('clearsubmit')) {
             $notes = htmlentities(stripslashes($self['notepad'])); // Output is htmlentities, not addslashes
             eval('$output = "' . template('usercp_notepad') . '";');
             eval('echo stripslashes("' . template('usercp_home_layout') . '");');
         }
-        
+
         if (onSubmit('savesubmit')) {
             $db->query("UPDATE " . X_PREFIX . "members SET notepad = '" . $db->escape(formVar('notes')) . "' WHERE username = '" . $self['username'] . "'");
             $output = table_msg($lang['notepadsuccess']);
             eval('echo stripslashes("' . template('usercp_home_layout') . '");');
             redirect('usercp.php?action=notepad', 2.5, X_REDIRECT_JS);
         }
-        
+
         if (onSubmit('clearsubmit')) {
             $db->query("UPDATE " . X_PREFIX . "members SET notepad = '' WHERE username = '" . $self['username'] . "'");
             $output = table_msg($lang['notepadcleared']);
@@ -183,11 +183,11 @@ switch ($action) {
     case 'profile':
         eval('echo "' . template('header') . '";');
         makenav($action);
-        
+
         if (noSubmit('profilesubmit')) {
             $userObj->viewProfile();
         }
-        
+
         if (onSubmit('profilesubmit')) {
             $userObj->submitProfile();
         }
@@ -195,11 +195,11 @@ switch ($action) {
     case 'options':
         eval('echo "' . template('header') . '";');
         makenav($action);
-        
+
         if (noSubmit('optionsubmit')) {
             $userObj->viewOption();
         }
-        
+
         if (onSubmit('optionsubmit')) {
             $userObj->submitOption();
         }
@@ -207,13 +207,13 @@ switch ($action) {
     case 'email':
         eval('echo "' . template('header') . '";');
         makenav($action);
-        
+
         if (noSubmit('emailsubmit')) {
             $member = $self;
             eval('$output = "' . template('usercp_email') . '";');
             eval('echo stripslashes("' . template('usercp_home_layout') . '");');
         }
-        
+
         if (onSubmit('emailsubmit')) {
             $userObj->submitEmail();
         }
@@ -221,15 +221,15 @@ switch ($action) {
     case 'avatar':
         eval('echo "' . template('header') . '";');
         makenav($action);
-        
+
         if ($CONFIG['avastatus'] == 'off' && $CONFIG['avatar_whocanupload'] == 'off') {
             error($lang['fnasorry'], false);
         }
-        
+
         if (noSubmit('avatarsubmit')) {
             $userObj->viewAvatar();
         }
-        
+
         if (onSubmit('avatarsubmit')) {
             $userObj->submitAvatar();
         }
@@ -237,15 +237,15 @@ switch ($action) {
     case 'photo':
         eval('echo "' . template('header') . '";');
         makenav($action);
-        
+
         if ($CONFIG['photostatus'] == 'off' && $CONFIG['photo_whocanupload'] == 'off') {
             error($lang['fnasorry'], false);
         }
-        
+
         if (noSubmit('photosubmit')) {
             $userObj->viewPhoto();
         }
-        
+
         if (onSubmit('photosubmit')) {
             $userObj->submitPhoto();
         }
@@ -253,13 +253,13 @@ switch ($action) {
     case 'password':
         eval('echo "' . template('header') . '";');
         makenav($action);
-        
+
         if (noSubmit('passwordsubmit')) {
             $member = $self;
             eval('$output = "' . template('usercp_password') . '";');
             eval('echo stripslashes("' . template('usercp_home_layout') . '");');
         }
-        
+
         if (onSubmit('passwordsubmit')) {
             $userObj->submitPassword();
         }
@@ -267,11 +267,11 @@ switch ($action) {
     case 'signature':
         eval('echo "' . template('header') . '";');
         makenav($action);
-        
+
         if (noSubmit('sigsubmit')) {
             $userObj->viewSignature();
         }
-        
+
         if (onSubmit('sigsubmit')) {
             $userObj->submitSignature();
         }
@@ -279,15 +279,15 @@ switch ($action) {
     case 'gallery':
         eval('echo "' . template('header') . '";');
         makenav($action);
-        
+
         if ($CONFIG['avatars_status'] == 'off') {
             error($lang['avatarfeaturedisabled'], false);
         }
-        
+
         if (noSubmit('avatarsubmit')) {
             $userObj->viewAvatarGallery();
         }
-        
+
         if (onSubmit('avatarsubmit')) {
             $userObj->submitAvatarGallery();
         }
@@ -295,17 +295,17 @@ switch ($action) {
     case 'favorites':
         eval('echo "' . template('header') . '";');
         makenav($action);
-        
+
         $favadd = intval(getRequestVar('favadd'));
-        
-        if (noSubmit('favsubmit') && ! empty($favadd) && is_numeric($favadd)) {
+
+        if (noSubmit('favsubmit') && !empty($favadd) && is_numeric($favadd)) {
             $userObj->submitAddFavorite($favadd);
         }
-        
+
         if (empty($favadd) && noSubmit('favsubmit')) {
             $userObj->viewFavorites();
         }
-        
+
         if (empty($favadd) && onSubmit('favsubmit')) {
             $userObj->submitManageFavorites();
         }
@@ -313,15 +313,15 @@ switch ($action) {
     case 'subscriptions':
         eval('echo "' . template('header') . '";');
         makenav($action);
-        
+
         $subadd = intval(getRequestVar('subadd'));
-        
+
         if (empty($subadd) && noSubmit('subsubmit')) {
             $userObj->viewSubscriptions();
-        } else 
-            if (! empty($subadd) && noSubmit('subsubmit')) {
+        } else
+            if (!empty($subadd) && noSubmit('subsubmit')) {
                 $userObj->submitAddSubscription($subadd);
-            } else 
+            } else
                 if (empty($subadd) && onSubmit('subsubmit')) {
                     $userObj->submitManageSubscriptions();
                 }
@@ -329,7 +329,7 @@ switch ($action) {
     default:
         eval('echo "' . template('header') . '";');
         makenav($action);
-        
+
         $userObj->viewUserCP();
         break;
 }
