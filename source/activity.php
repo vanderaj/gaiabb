@@ -2,7 +2,7 @@
 /**
  * GaiaBB
  * Copyright (c) 2011-2019 The GaiaBB Group
- * http://www.GaiaBB.com
+ * https://github.com/vanderaj/gaiabb
  *
  * Based off UltimaBB
  * Copyright (c) 2004 - 2007 The UltimaBB Group

@@ -1,8 +1,8 @@
 <?php
 /**
  * GaiaBB
- * Copyright (c) 2011-2017 The GaiaBB Group
- * http://www.GaiaBB.com
+ * Copyright (c) 2011-2019 The GaiaBB Project
+ * https://github.com/vanderaj/gaiabb
  *
  * Based off UltimaBB's installer (ajv)
  * Copyright (c) 2004 - 2007 The UltimaBB Group
@@ -859,7 +859,7 @@ function schema_insert_settings($db, $tablepre)
     $db->query("INSERT INTO `" . $tablepre . "settings` (`config_name`,`config_value`) VALUES ('bbrules','off')");
     $db->query("INSERT INTO `" . $tablepre . "settings` (`config_name`,`config_value`) VALUES ('bbrulestxt','')");
     $db->query("INSERT INTO `" . $tablepre . "settings` (`config_name`,`config_value`) VALUES ('bbstatus','on')");
-    $db->query("INSERT INTO `" . $tablepre . "settings` (`config_name`,`config_value`) VALUES ('boardurl','http://www.gaiabb.com/')");
+    $db->query("INSERT INTO `" . $tablepre . "settings` (`config_name`,`config_value`) VALUES ('boardurl','https://github.com/vanderaj/gaiabb/')");
     $db->query("INSERT INTO `" . $tablepre . "settings` (`config_name`,`config_value`) VALUES ('captcha_colortype','multiple')");
     $db->query("INSERT INTO `" . $tablepre . "settings` (`config_name`,`config_value`) VALUES ('captcha_fontpath','include/captcha')");
     $db->query("INSERT INTO `" . $tablepre . "settings` (`config_name`,`config_value`) VALUES ('captcha_maxattempts','5')");
@@ -938,7 +938,7 @@ function schema_insert_settings($db, $tablepre)
     $db->query("INSERT INTO `" . $tablepre . "settings` (`config_name`,`config_value`) VALUES ('show_full_info','off')");
     $db->query("INSERT INTO `" . $tablepre . "settings` (`config_name`,`config_value`) VALUES ('sigbbcode','on')");
     $db->query("INSERT INTO `" . $tablepre . "settings` (`config_name`,`config_value`) VALUES ('sitename','GaiaBB')");
-    $db->query("INSERT INTO `" . $tablepre . "settings` (`config_name`,`config_value`) VALUES ('siteurl','http://www.gaiabb.com/')");
+    $db->query("INSERT INTO `" . $tablepre . "settings` (`config_name`,`config_value`) VALUES ('siteurl','https://github.com/vanderaj/gaiabb/')");
     $db->query("INSERT INTO `" . $tablepre . "settings` (`config_name`,`config_value`) VALUES ('smcols','4')");
     $db->query("INSERT INTO `" . $tablepre . "settings` (`config_name`,`config_value`) VALUES ('smileyinsert','on')");
     $db->query("INSERT INTO `" . $tablepre . "settings` (`config_name`,`config_value`) VALUES ('smtotal','16')");

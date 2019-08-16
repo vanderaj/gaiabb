@@ -1,8 +1,8 @@
 <?php
 /**
  * GaiaBB
- * Copyright (c) 2011-2017 The GaiaBB Group
- * http://www.GaiaBB.com
+ * Copyright (c) 2011-2019 The GaiaBB Project
+ * https://github.com/vanderaj/gaiabb
  *
  * Based off UltimaBB
  * Copyright (c) 2004 - 2007 The UltimaBB Group

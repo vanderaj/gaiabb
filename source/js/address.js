@@ -1,7 +1,7 @@
 /**
  * GaiaBB
  * Copyright (c) 2009 The GaiaBB Group
- * http://www.GaiaBB.com
+ * https://github.com/vanderaj/gaiabb
  *
  * Based off UltimaBB
  * Copyright (c) 2004 - 2007 The UltimaBB Group
