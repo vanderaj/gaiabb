@@ -1,7 +1,7 @@
 <?php
 /**
  * GaiaBB
- * Copyright (c) 2011-2019 The GaiaBB Project
+ * Copyright (c) 2011-2020 The GaiaBB Project
  * https://github.com/vanderaj/gaiabb
  *
  * Based off UltimaBB
@@ -901,7 +901,7 @@ class mysql5Php5
         <table align="center">
             <tr>
                 <td align="center" class="smalltxt"><br/> <br/> Powered by
-                    GaiaBB <br/> Copyright &copy; 2011-2017 The GaiaBB Group. All
+                    GaiaBB <br/> Copyright &copy; 2011-2020 The GaiaBB Group. All
                     rights reserved. <br/> <br/></td>
             </tr>
         </table> <br/></td>
