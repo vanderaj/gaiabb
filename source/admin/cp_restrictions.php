@@ -1,7 +1,7 @@
 <?php
 /**
  * GaiaBB
- * Copyright (c) 2011-2020 The GaiaBB Project
+ * Copyright (c) 2009-2020 The GaiaBB Project
  * https://github.com/vanderaj/gaiabb
  *
  * Based off UltimaBB
@@ -34,9 +34,9 @@ define('ROOTINC', '../include/');
 define('ROOTCLASS', '../class/');
 define('ROOTHELPER', '../helper/');
 
-require_once('../header.php');
-require_once('../include/admincp.inc.php');
-require_once('../helper/formHelper.php');
+require_once '../header.php';
+require_once '../include/admincp.inc.php';
+require_once '../helper/formHelper.php';
 
 loadtpl('cp_header', 'cp_footer', 'cp_message', 'cp_error');
 
@@ -79,51 +79,51 @@ function viewPanel()
                             <td class="title" align="center"><?php echo $lang['restrictpartialmatch'] ?></td>
                         </tr>
                         <?php
-                        $query = $db->query("SELECT * FROM " . X_PREFIX . "restricted ORDER BY id");
-                        $rowsFound = $db->num_rows($query);
-                        while (($restricted = $db->fetch_array($query)) != false) {
+$query = $db->query("SELECT * FROM " . X_PREFIX . "restricted ORDER BY id");
+    $rowsFound = $db->num_rows($query);
+    while (($restricted = $db->fetch_array($query)) != false) {
 
-                            $case_check = $partial_check = '';
-                            if ($restricted['case_sensitivity'] == 1) {
-                                $case_check = $cheHTML;
-                            }
+        $case_check = $partial_check = '';
+        if ($restricted['case_sensitivity'] == 1) {
+            $case_check = $cheHTML;
+        }
 
-                            if ($restricted['partial'] == 1) {
-                                $partial_check = $cheHTML;
-                            }
-                            $restricted['name'] = htmlspecialchars($restricted['name']);
-                            ?>
+        if ($restricted['partial'] == 1) {
+            $partial_check = $cheHTML;
+        }
+        $restricted['name'] = htmlspecialchars($restricted['name']);
+        ?>
                             <tr class="ctrtablerow" bgcolor="<?php echo $THEME['altbg2'] ?>">
                                 <td>
                                     <?php
-                                    formHelper::formCheckBox("delete" . $restricted['id'], $restricted['id'], '', '');
-                                    ?>
+formHelper::formCheckBox("delete" . $restricted['id'], $restricted['id'], '', '');
+        ?>
                                 </td>
                                 <td><input type="text" size="30"
                                            name="name<?php echo $restricted['id'] ?>"
                                            value="<?php echo $restricted['name'] ?>"/></td>
                                 <td>
                                     <?php
-                                    formHelper::formCheckBox("case" . $restricted['id'], 'on', $case_check, '');
-                                    ?>
+formHelper::formCheckBox("case" . $restricted['id'], 'on', $case_check, '');
+        ?>
                                 </td>
                                 <td>
                                     <?php
-                                    formHelper::formCheckBox("partial" . $restricted['id'], 'on', $partial_check, '');
-                                    ?>
+formHelper::formCheckBox("partial" . $restricted['id'], 'on', $partial_check, '');
+        ?>
                                 </td>
                             </tr>
                             <?php
-                        }
-                        $db->free_result($query);
-                        if ($rowsFound < 1) {
-                            ?>
+}
+    $db->free_result($query);
+    if ($rowsFound < 1) {
+        ?>
                             <tr bgcolor="<?php echo $THEME['altbg1'] ?>" class="ctrtablerow">
                                 <td colspan="4"><?php echo $lang['pluglinknone'] ?></td>
                             </tr>
                             <?php
-                        }
-                        ?>
+}
+    ?>
                         <tr>
                             <td bgcolor="<?php echo $THEME['altbg2'] ?>" colspan="4"><span
                                         class="smalltxt"><?php echo $lang['newrestrictionwhy'] ?>
@@ -137,13 +137,13 @@ function viewPanel()
                             <td><input type="text" size="30" name="newname" value=""/></td>
                             <td>
                                 <?php
-                                formHelper::formCheckBox('newcase', 'on', $cheHTML, '');
-                                ?>
+formHelper::formCheckBox('newcase', 'on', $cheHTML, '');
+    ?>
                             </td>
                             <td>
                                 <?php
-                                formHelper::formCheckBox('newpartial', 'on', $cheHTML, '');
-                                ?>
+formHelper::formCheckBox('newpartial', 'on', $cheHTML, '');
+    ?>
                             </td>
                         </tr>
                         <tr class="ctrtablerow" bgcolor="<?php echo $THEME['altbg2'] ?>">

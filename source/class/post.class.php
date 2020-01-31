@@ -1,7 +1,7 @@
 <?php
 /**
  * GaiaBB
- * Copyright (c) 2011-2020 The GaiaBB Project
+ * Copyright (c) 2009-2020 The GaiaBB Project
  * https://github.com/vanderaj/gaiabb
  *
  * Based off UltimaBB
@@ -35,39 +35,39 @@ if (!defined('IN_PROGRAM') && (defined('DEBUG') && DEBUG == false)) {
 class post
 {
 
-    function __construct()
+    public function __construct()
     {
     }
 
-    function init()
+    public function init()
     {
     }
 
-    function findById()
+    public function findById()
     {
     }
 
-    function exists()
+    public function exists()
     {
     }
 
-    function update()
+    public function update()
     {
     }
 
-    function delete()
+    public function delete()
     {
     }
 
-    function addAttachment()
+    public function addAttachment()
     {
     }
 
-    function replaceAttachment()
+    public function replaceAttachment()
     {
     }
 
-    function deleteAttachment()
+    public function deleteAttachment()
     {
     }
 }

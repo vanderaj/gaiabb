@@ -1,7 +1,7 @@
 <?php
 /**
  * GaiaBB
- * Copyright (c) 2011-2020 The GaiaBB Project
+ * Copyright (c) 2009-2020 The GaiaBB Project
  * https://github.com/vanderaj/gaiabb
  *
  * Based off UltimaBB
@@ -29,9 +29,8 @@
  *
  **/
 
-
-require_once('header.php');
-require_once('include/theme.inc.php');
+require_once 'header.php';
+require_once 'include/theme.inc.php';
 
 loadtpl('viewprofile', 'viewprofile_email', 'viewprofile_aka', 'viewprofile_sig', 'viewprofile_pm');
 
@@ -160,7 +159,7 @@ if ($memberinfo['uid'] == '') {
     if (!empty($memberinfo['theme']) && $memberinfo['theme'] != 0) {
         $membertheme = ${'theme' . $memberinfo['theme']};
     } else {
-        $membertheme = ${'theme' . $CONFIG['theme']} . $lang['defaulttheme'];;
+        $membertheme = ${'theme' . $CONFIG['theme']} . $lang['defaulttheme'];
     }
 
     if (strpos($memberinfo['site'], 'http') === false) {
@@ -313,7 +312,7 @@ if ($memberinfo['uid'] == '') {
         eval('$sigblock = "' . template('viewprofile_sig') . '";');
     }
 
-    $admin_edit = NULL;
+    $admin_edit = null;
     if (X_SADMIN) {
         $admin_edit = ' - ' . $lang['adminoption'] . ' <a href="editprofile.php?memberid=' . $memberinfo['uid'] . '">' . $lang['admin_edituseraccount'] . '</a>';
     }

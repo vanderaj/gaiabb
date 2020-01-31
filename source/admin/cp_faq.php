@@ -1,7 +1,7 @@
 <?php
 /**
  * GaiaBB
- * Copyright (c) 2011-2020 The GaiaBB Project
+ * Copyright (c) 2009-2020 The GaiaBB Project
  * https://github.com/vanderaj/gaiabb
  *
  * Based off UltimaBB
@@ -32,8 +32,8 @@ define('ROOT', '../');
 define('ROOTINC', '../include/');
 define('ROOTCLASS', '../class/');
 
-require_once('../header.php');
-require_once('../class/admincp.inc.php');
+require_once '../header.php';
+require_once '../class/admincp.inc.php';
 
 loadtpl('cp_header', 'cp_footer', 'cp_message', 'cp_error', 'functions_bbcode', 'functions_bbcodeinsert');
 
@@ -84,17 +84,17 @@ function viewPanel()
             $groups[$i]['fup'] = $selItems['fup'];
             $groups[$i]['code'] = $selItems['code'];
         } else
-            if ($selItems['type'] == 'item') {
-                $id = (empty($selItems['fup'])) ? 0 : $selItems['fup'];
-                $items[$id][$i]['fid'] = $selItems['fid'];
-                $items[$id][$i]['name'] = $selItems['name'];
-                $items[$id][$i]['displayorder'] = $selItems['displayorder'];
-                $items[$id][$i]['status'] = $selItems['status'];
-                $items[$id][$i]['fup'] = $selItems['fup'];
-                $items[$id][$i]['view'] = $selItems['view'];
-                $itemlist[$i]['fid'] = $selItems['fid'];
-                $itemlist[$i]['name'] = $selItems['name'];
-            }
+        if ($selItems['type'] == 'item') {
+            $id = (empty($selItems['fup'])) ? 0 : $selItems['fup'];
+            $items[$id][$i]['fid'] = $selItems['fid'];
+            $items[$id][$i]['name'] = $selItems['name'];
+            $items[$id][$i]['displayorder'] = $selItems['displayorder'];
+            $items[$id][$i]['status'] = $selItems['status'];
+            $items[$id][$i]['fup'] = $selItems['fup'];
+            $items[$id][$i]['view'] = $selItems['view'];
+            $itemlist[$i]['fid'] = $selItems['fid'];
+            $itemlist[$i]['name'] = $selItems['name'];
+        }
         $i++;
     }
     $db->free_result($query);
@@ -130,14 +130,14 @@ function viewPanel()
                             <td class="title"><?php echo $lang['faq_I'] ?></td>
                         </tr>
                         <?php
-                        foreach ($items['0'] as $item) {
-                            $on = $off = '';
-                            if ($item['status'] == 'on') {
-                                $on = $selHTML;
-                            } else {
-                                $off = $selHTML;
-                            }
-                            ?>
+foreach ($items['0'] as $item) {
+        $on = $off = '';
+        if ($item['status'] == 'on') {
+            $on = $selHTML;
+        } else {
+            $off = $selHTML;
+        }
+        ?>
                             <tr bgcolor="<?php echo $THEME['altbg2'] ?>" class="tablerow">
                                 <td class="smalltxt"><input type="checkbox"
                                                             name="delete<?php echo $item['fid'] ?>"
@@ -158,25 +158,25 @@ function viewPanel()
                                                 value="" selected="selected">-<?php echo $lang['textnone'] ?>-
                                         </option>
                                         <?php
-                                        foreach ($groups as $moveforum) {
-                                            echo '<option value="' . $moveforum['fid'] . '">' . stripslashes($moveforum['name']) . '</option>';
-                                        }
-                                        ?>
+foreach ($groups as $moveforum) {
+            echo '<option value="' . $moveforum['fid'] . '">' . stripslashes($moveforum['name']) . '</option>';
+        }
+        ?>
                                     </select> <a title="<?php echo stripslashes($item['name']) ?>"
                                                  href="cp_faq.php?fdetails=<?php echo $item['fid'] ?>"><?php echo $lang['faq_F'] ?></a>
                                 </td>
                             </tr>
                             <?php
-                        }
+}
 
-                        foreach ($groups as $group) {
-                            $on = $off = '';
-                            if ($group['status'] == 'on') {
-                                $on = $selHTML;
-                            } else {
-                                $off = $selHTML;
-                            }
-                            ?>
+    foreach ($groups as $group) {
+        $on = $off = '';
+        if ($group['status'] == 'on') {
+            $on = $selHTML;
+        } else {
+            $off = $selHTML;
+        }
+        ?>
                             <tr bgcolor="<?php echo $THEME['altbg2'] ?>" class="tablerow">
                                 <td>&nbsp;</td>
                             </tr>
@@ -199,15 +199,15 @@ function viewPanel()
                                 </td>
                             </tr>
                             <?php
-                            if (array_key_exists($group['fid'], $items)) {
-                                foreach ($items[$group['fid']] as $item) {
-                                    $on = $off = '';
-                                    if ($item['status'] == 'on') {
-                                        $on = $selHTML;
-                                    } else {
-                                        $off = $selHTML;
-                                    }
-                                    ?>
+if (array_key_exists($group['fid'], $items)) {
+            foreach ($items[$group['fid']] as $item) {
+                $on = $off = '';
+                if ($item['status'] == 'on') {
+                    $on = $selHTML;
+                } else {
+                    $off = $selHTML;
+                }
+                ?>
                                     <tr bgcolor="<?php echo $THEME['altbg2'] ?>"
                                         class="tablerow">
                                         <td class="smalltxt">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <input
@@ -226,25 +226,25 @@ function viewPanel()
                                                         value="">-<?php echo $lang['textnone'] ?>-
                                                 </option>
                                                 <?php
-                                                foreach ($groups as $moveforum) {
-                                                    if ($moveforum['fid'] == $item['fup']) {
-                                                        $curgroup = $selHTML;
-                                                    } else {
-                                                        $curgroup = '';
-                                                    }
-                                                    echo '<option value="' . $moveforum['fid'] . '" ' . $curgroup . '>' . stripslashes($moveforum['name']) . '</option>';
-                                                }
-                                                ?>
+foreach ($groups as $moveforum) {
+                    if ($moveforum['fid'] == $item['fup']) {
+                        $curgroup = $selHTML;
+                    } else {
+                        $curgroup = '';
+                    }
+                    echo '<option value="' . $moveforum['fid'] . '" ' . $curgroup . '>' . stripslashes($moveforum['name']) . '</option>';
+                }
+                ?>
                                             </select> <a
                                                     title="<?php echo stripslashes($item['name']) ?>"
                                                     href="cp_faq.php?fdetails=<?php echo $item['fid'] ?>"><?php echo $lang['faq_F'] ?></a>
                                         </td>
                                     </tr>
                                     <?php
-                                }
-                            }
-                        }
-                        ?>
+}
+        }
+    }
+    ?>
                         <tr>
                             <td bgcolor="<?php echo $THEME['altbg2'] ?>" class="ctrtablerow"><input
                                         class="submit" type="submit" name="faqsubmit"
@@ -290,10 +290,10 @@ function viewPanel()
                                             selected="selected">-<?php echo $lang['textnone'] ?>-
                                     </option>
                                     <?php
-                                    foreach ($groups as $group) {
-                                        echo '<option value="' . $group['fid'] . '">' . stripslashes($group['name']) . '</option>';
-                                    }
-                                    ?>
+foreach ($groups as $group) {
+        echo '<option value="' . $group['fid'] . '">' . stripslashes($group['name']) . '</option>';
+    }
+    ?>
                                 </select></td>
                         </tr>
                         <tr>
@@ -331,35 +331,35 @@ function dogDetailsPanel($gdetails)
                             <td class="title" colspan="2"><?php echo $lang['faq_E'] ?></td>
                         </tr>
                         <?php
-                        $queryg = $db->query("SELECT fid, name, status, displayorder, code FROM " . X_PREFIX . "faq WHERE fid = '$gdetails'");
-                        $group = $db->fetch_array($queryg);
-                        $db->free_result($queryg);
+$queryg = $db->query("SELECT fid, name, status, displayorder, code FROM " . X_PREFIX . "faq WHERE fid = '$gdetails'");
+    $group = $db->fetch_array($queryg);
+    $db->free_result($queryg);
 
-                        $group['name'] = stripslashes($group['name']);
+    $group['name'] = stripslashes($group['name']);
 
-                        $ic00 = $ic01 = $ic02 = $ic03 = $ic04 = '';
-                        if ($group['code'] == 'usermaint') {
-                            $ic01 = $selHTML;
-                        } else
-                            if ($group['code'] == 'using') {
-                                $ic02 = $selHTML;
-                            } else
-                                if ($group['code'] == 'messages') {
-                                    $ic03 = $selHTML;
-                                } else
-                                    if ($group['code'] == 'misc') {
-                                        $ic04 = $selHTML;
-                                    } else {
-                                        $ic00 = $selHTML;
-                                    }
+    $ic00 = $ic01 = $ic02 = $ic03 = $ic04 = '';
+    if ($group['code'] == 'usermaint') {
+        $ic01 = $selHTML;
+    } else
+    if ($group['code'] == 'using') {
+        $ic02 = $selHTML;
+    } else
+    if ($group['code'] == 'messages') {
+        $ic03 = $selHTML;
+    } else
+    if ($group['code'] == 'misc') {
+        $ic04 = $selHTML;
+    } else {
+        $ic00 = $selHTML;
+    }
 
-                        $on = $off = '';
-                        if ($group['status'] == 'on') {
-                            $on = $selHTML;
-                        } else {
-                            $off = $selHTML;
-                        }
-                        ?>
+    $on = $off = '';
+    if ($group['status'] == 'on') {
+        $on = $selHTML;
+    } else {
+        $off = $selHTML;
+    }
+    ?>
                         <tr class="tablerow">
                             <td bgcolor="<?php echo $THEME['altbg1'] ?>"><?php echo $lang['faq_P'] ?></td>
                             <td bgcolor="<?php echo $THEME['altbg2'] ?>"><input type="text"
@@ -452,44 +452,44 @@ function dofDetailsPanel($fdetails)
                             <td class="title" colspan="2"><?php echo $lang['faq_E'] ?></td>
                         </tr>
                         <?php
-                        $queryg = $db->query("SELECT * FROM " . X_PREFIX . "faq WHERE fid = '$fdetails'");
-                        $item = $db->fetch_array($queryg);
-                        $db->free_result($queryg);
+$queryg = $db->query("SELECT * FROM " . X_PREFIX . "faq WHERE fid = '$fdetails'");
+    $item = $db->fetch_array($queryg);
+    $db->free_result($queryg);
 
-                        if ($item['allowsmilies'] == 'yes') {
-                            $checked3 = $cheHTML;
-                        } else {
-                            $checked3 = '';
-                        }
+    if ($item['allowsmilies'] == 'yes') {
+        $checked3 = $cheHTML;
+    } else {
+        $checked3 = '';
+    }
 
-                        if ($item['allowbbcode'] == 'yes') {
-                            $checked4 = $cheHTML;
-                        } else {
-                            $checked4 = '';
-                        }
+    if ($item['allowbbcode'] == 'yes') {
+        $checked4 = $cheHTML;
+    } else {
+        $checked4 = '';
+    }
 
-                        if ($item['allowimgcode'] == 'yes') {
-                            $checked5 = $cheHTML;
-                        } else {
-                            $checked5 = '';
-                        }
+    if ($item['allowimgcode'] == 'yes') {
+        $checked5 = $cheHTML;
+    } else {
+        $checked5 = '';
+    }
 
-                        $ic00 = $ic01 = $ic02 = $ic03 = '';
-                        if ($item['view'] == 1) {
-                            $ic01 = $selHTML;
-                        } else
-                            if ($item['view'] == 2) {
-                                $ic02 = $selHTML;
-                            } else
-                                if ($item['view'] == 3) {
-                                    $ic03 = $selHTML;
-                                } else {
-                                    $ic00 = $selHTML;
-                                }
+    $ic00 = $ic01 = $ic02 = $ic03 = '';
+    if ($item['view'] == 1) {
+        $ic01 = $selHTML;
+    } else
+    if ($item['view'] == 2) {
+        $ic02 = $selHTML;
+    } else
+    if ($item['view'] == 3) {
+        $ic03 = $selHTML;
+    } else {
+        $ic00 = $selHTML;
+    }
 
-                        $item['name'] = stripslashes($item['name']);
-                        $item['description'] = stripslashes($item['description']);
-                        ?>
+    $item['name'] = stripslashes($item['name']);
+    $item['description'] = stripslashes($item['description']);
+    ?>
                         <tr class="tablerow">
                             <td bgcolor="<?php echo $THEME['altbg1'] ?>"><?php echo $lang['faq_C'] ?></td>
                             <td bgcolor="<?php echo $THEME['altbg2'] ?>"><input type="text"
@@ -662,10 +662,10 @@ if ($fdetails > 0) {
     if (noSubmit('faqsubmit')) {
         dofDetailsPanel($fdetails);
     } else
-        if (onSubmit('faqsubmit')) {
-            $oToken->assert_token();
-            faqSubmit($fdetails);
-        }
+    if (onSubmit('faqsubmit')) {
+        $oToken->assert_token();
+        faqSubmit($fdetails);
+    }
 } else if ($gdetails > 0) {
     if (noSubmit('faqsubmit')) {
         dogDetailsPanel($gdetails);

@@ -1,7 +1,7 @@
 <?php
 /**
  * GaiaBB
- * Copyright (c) 2011-2020 The GaiaBB Project
+ * Copyright (c) 2009-2020 The GaiaBB Project
  * https://github.com/vanderaj/gaiabb
  *
  * Based off UltimaBB
@@ -42,4 +42,3 @@ $dbhost = 'localhost'; // Database host, usually 'localhost'
 $database = 'mysql5php5.class'; // Database type. mysql5php5.class
 $pconnect = 0; // Persistent connection, 1 = on, 0 = off, use if 'too many connections'-errors appear
 $tablepre = 'gaiabb_'; // Used in case you want to host multiple forums in the one database
-

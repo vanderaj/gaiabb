@@ -1,7 +1,7 @@
 <?php
 /**
  * GaiaBB
- * Copyright (c) 2011-2020 The GaiaBB Project
+ * Copyright (c) 2009-2020 The GaiaBB Project
  * https://github.com/vanderaj/gaiabb
  *
  * Based off UltimaBB
@@ -29,8 +29,7 @@
  *
  **/
 
-
-require_once('header.php');
+require_once 'header.php';
 
 loadtpl('search', 'search_results_row', 'search_results_none', 'search_results', 'search_nextlink');
 
@@ -127,7 +126,7 @@ if (noSubmit('searchsubmit')) {
 
     if ($srchfrom) {
         $sql .= " AND p.dateline >= '$srchfrom'";
-        $ext[] = 'srchfrom' . ((int)$srchfromold);
+        $ext[] = 'srchfrom' . ((int) $srchfromold);
     }
 
     $sql .= " GROUP BY dateline ORDER BY dateline DESC LIMIT $start, $end";
@@ -166,7 +165,7 @@ if (noSubmit('searchsubmit')) {
                         '_ ',
                         ' _',
                         '% ',
-                        ' %'
+                        ' %',
                     ), '', $srchtxt);
                     $position = strpos($message, $srchtxt, 0);
                     $show_num = 100;
@@ -235,7 +234,7 @@ if (noSubmit('searchsubmit')) {
                     '_ ',
                     ' _',
                     '% ',
-                    ' %'
+                    ' %',
                 ), '', $srchtxt);
 
                 $position = 0;
@@ -303,4 +302,3 @@ if (noSubmit('searchsubmit')) {
 
 loadtime();
 eval('echo "' . template('footer') . '";');
-

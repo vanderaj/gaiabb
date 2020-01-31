@@ -1,7 +1,7 @@
 <?php
 /**
  * GaiaBB
- * Copyright (c) 2011-2020 The GaiaBB Project
+ * Copyright (c) 2009-2020 The GaiaBB Project
  * https://github.com/vanderaj/gaiabb
  *
  * Based off UltimaBB
@@ -39,7 +39,7 @@ class favorite
 
     public $dirty;
 
-    function favorite($tid = 0)
+    public function favorite($tid = 0)
     {
         if ($tid === 0) {
             $this->dirty = false;
@@ -49,7 +49,7 @@ class favorite
         $this->findById($tid);
     }
 
-    function findById($tid)
+    public function findById($tid)
     {
         if ($this->exists($tid)) {
             $this->tid = $tid;
@@ -59,7 +59,7 @@ class favorite
         return false;
     }
 
-    function exists($tid)
+    public function exists($tid)
     {
         global $db, $self;
 
@@ -79,7 +79,7 @@ class favorite
         return $retval;
     }
 
-    function update()
+    public function update()
     {
         global $db, $self;
 
@@ -92,7 +92,7 @@ class favorite
         return false;
     }
 
-    function delete()
+    public function delete()
     {
         if ($this->dirty && $this->tid > 0) {
             $this->deleteByTid($this->tid);
@@ -103,7 +103,7 @@ class favorite
         return false;
     }
 
-    function deleteByTid($tid)
+    public function deleteByTid($tid)
     {
         global $db, $self;
 
@@ -113,7 +113,7 @@ class favorite
         return $db->query("DELETE FROM " . X_PREFIX . "favorites WHERE username = '" . $self['username'] . "' AND type='favorite' AND tid = '" . intval($tid) . "'");
     }
 
-    function deleteByUid($uid)
+    public function deleteByUid($uid)
     {
         global $db;
 
@@ -126,7 +126,7 @@ class favorite
         $db->query("DELETE FROM " . X_PREFIX . "favorites WHERE username = '$owner'");
     }
 
-    function deleteByFormTids()
+    public function deleteByFormTids()
     {
         global $db, $self;
 

@@ -1,7 +1,7 @@
 <?php
 /**
  * GaiaBB
- * Copyright (c) 2011-2020 The GaiaBB Project
+ * Copyright (c) 2009-2020 The GaiaBB Project
  * https://github.com/vanderaj/gaiabb
  *
  * Based off UltimaBB
@@ -33,8 +33,8 @@ define('ROOT', '../');
 define('ROOTINC', '../include/');
 define('ROOTCLASS', '../class/');
 
-require_once('../header.php');
-require_once('../include/admincp.inc.php');
+require_once '../header.php';
+require_once '../include/admincp.inc.php';
 
 loadtpl('cp_header', 'cp_footer', 'cp_message', 'cp_error');
 
@@ -82,38 +82,38 @@ function viewPanel()
                             <td class="title" align="center"><?php echo $lang['textavatar'] ?></td>
                         </tr>
                         <?php
-                        $avatarno = $avataryes = '';
-                        $query = $db->query("SELECT * FROM " . X_PREFIX . "ranks ORDER BY id");
-                        while (($rank = $db->fetch_array($query)) != false) {
-                            $staff_disable = '';
-                            switch ($rank['title']) {
-                                case 'Super Administrator':
-                                    $staff_disable = 'disabled="disabled"';
-                                    break;
-                                case 'Administrator':
-                                    $staff_disable = 'disabled="disabled"';
-                                    break;
-                                case 'Super Moderator':
-                                    $staff_disable = 'disabled="disabled"';
-                                    break;
-                                case 'Moderator':
-                                    $staff_disable = 'disabled="disabled"';
-                                    break;
-                                default:
-                                    $staff_disable = '';
-                                    break;
-                            }
+$avatarno = $avataryes = '';
+    $query = $db->query("SELECT * FROM " . X_PREFIX . "ranks ORDER BY id");
+    while (($rank = $db->fetch_array($query)) != false) {
+        $staff_disable = '';
+        switch ($rank['title']) {
+            case 'Super Administrator':
+                $staff_disable = 'disabled="disabled"';
+                break;
+            case 'Administrator':
+                $staff_disable = 'disabled="disabled"';
+                break;
+            case 'Super Moderator':
+                $staff_disable = 'disabled="disabled"';
+                break;
+            case 'Moderator':
+                $staff_disable = 'disabled="disabled"';
+                break;
+            default:
+                $staff_disable = '';
+                break;
+        }
 
-                            $avataryes = $avatarno = '';
-                            switch ($rank['allowavatars']) {
-                                case 'yes':
-                                    $avataryes = $selHTML;
-                                    break;
-                                default:
-                                    $avatarno = $selHTML;
-                                    break;
-                            }
-                            ?>
+        $avataryes = $avatarno = '';
+        switch ($rank['allowavatars']) {
+            case 'yes':
+                $avataryes = $selHTML;
+                break;
+            default:
+                $avatarno = $selHTML;
+                break;
+        }
+        ?>
                             <tr class="ctrtablerow" bgcolor="<?php echo $THEME['altbg2'] ?>">
                                 <td><input type="checkbox" name="delete[<?php echo $rank['id'] ?>]"
                                            value="1" <?php echo $staff_disable ?> /></td>
@@ -134,9 +134,9 @@ function viewPanel()
                                            size="20"/></td>
                             </tr>
                             <?php
-                        }
-                        $db->free_result($query);
-                        ?>
+}
+    $db->free_result($query);
+    ?>
                         <tr class="tablerow" bgcolor="<?php echo $THEME['altbg1'] ?>">
                             <td colspan="6">&nbsp;</td>
                         </tr>
@@ -197,13 +197,13 @@ function doPanel()
     $delete = formArray('delete');
     foreach ($id as $key => $val) {
         if (isset($delete[$key]) && $delete[$key] == 1) {
-            $delete_keys[] = (int)$key;
+            $delete_keys[] = (int) $key;
             continue;
         }
         if ($stars[$key] < 1 || $stars[$key] > 20) {
             $stars[$key] = 1;
         }
-        $posts[$key] = (in_array($title[$key], $staffranks)) ? (int)-1 : $posts[$key];
+        $posts[$key] = (in_array($title[$key], $staffranks)) ? (int)  - 1 : $posts[$key];
         if ($posts[$key] < -1) {
             $posts[$key] = 0;
         }

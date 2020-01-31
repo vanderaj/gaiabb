@@ -1,7 +1,7 @@
 <?php
 /**
  * GaiaBB
- * Copyright (c) 2011-2020 The GaiaBB Project
+ * Copyright (c) 2009-2020 The GaiaBB Project
  * https://github.com/vanderaj/gaiabb
  *
  * Based off UltimaBB
@@ -33,8 +33,8 @@ define('ROOT', '../');
 define('ROOTINC', '../include/');
 define('ROOTCLASS', '../class/');
 
-require_once('../header.php');
-require_once('../include/admincp.inc.php');
+require_once '../header.php';
+require_once '../include/admincp.inc.php';
 
 loadtpl('cp_header', 'cp_footer', 'cp_message', 'cp_error');
 
@@ -79,18 +79,18 @@ function viewPanel()
                             <td class="title" align="center"><?php echo $lang['textadded'] ?></td>
                         </tr>
                         <?php
-                        $query = $db->query("SELECT * FROM " . X_PREFIX . "banned ORDER BY dateline");
-                        $rowsFound = $db->num_rows($query);
-                        while (($ipaddress = $db->fetch_array($query)) != false) {
-                            for ($i = 1; $i <= 4; ++$i) {
-                                $j = "ip" . $i;
-                                if ($ipaddress[$j] == -1) {
-                                    $ipaddress[$j] = "*";
-                                }
-                            }
-                            $ipdate = gmdate($self['dateformat'], $ipaddress['dateline'] + ($self['timeoffset'] * 3600) + $self['daylightsavings']) . ' ' . $lang['textat'] . ' ' . gmdate($self['timecode'], $ipaddress['dateline'] + ($self['timeoffset'] * 3600) + $self['daylightsavings']);
-                            $theip = "$ipaddress[ip1].$ipaddress[ip2].$ipaddress[ip3].$ipaddress[ip4]";
-                            ?>
+$query = $db->query("SELECT * FROM " . X_PREFIX . "banned ORDER BY dateline");
+    $rowsFound = $db->num_rows($query);
+    while (($ipaddress = $db->fetch_array($query)) != false) {
+        for ($i = 1; $i <= 4; ++$i) {
+            $j = "ip" . $i;
+            if ($ipaddress[$j] == -1) {
+                $ipaddress[$j] = "*";
+            }
+        }
+        $ipdate = gmdate($self['dateformat'], $ipaddress['dateline'] + ($self['timeoffset'] * 3600) + $self['daylightsavings']) . ' ' . $lang['textat'] . ' ' . gmdate($self['timecode'], $ipaddress['dateline'] + ($self['timeoffset'] * 3600) + $self['daylightsavings']);
+        $theip = "$ipaddress[ip1].$ipaddress[ip2].$ipaddress[ip3].$ipaddress[ip4]";
+        ?>
                             <tr class="tablerow" bgcolor="<?php echo $THEME['altbg2'] ?>">
                                 <td><input type="checkbox"
                                            name="delete<?php echo $ipaddress['id'] ?>" value="on"/></td>
@@ -99,26 +99,26 @@ function viewPanel()
                                 <td><?php echo $ipdate ?></td>
                             </tr>
                             <?php
-                        }
-                        $db->free_result($query);
+}
+    $db->free_result($query);
 
-                        $query = $db->query("SELECT id FROM " . X_PREFIX . "banned WHERE (ip1 = '$ips[0]' OR ip1 = '-1') AND (ip2 = '$ips[1]' OR ip2 = '-1') AND (ip3 = '$ips[2]' OR ip3 = '-1') AND (ip4 = '$ips[3]' OR ip4 = '-1')");
-                        $result = $db->fetch_array($query);
+    $query = $db->query("SELECT id FROM " . X_PREFIX . "banned WHERE (ip1 = '$ips[0]' OR ip1 = '-1') AND (ip2 = '$ips[1]' OR ip2 = '-1') AND (ip3 = '$ips[2]' OR ip3 = '-1') AND (ip4 = '$ips[3]' OR ip4 = '-1')");
+    $result = $db->fetch_array($query);
 
-                        if ($result) {
-                            $warning = $lang['ipwarning'];
-                        } else {
-                            $warning = '';
-                        }
+    if ($result) {
+        $warning = $lang['ipwarning'];
+    } else {
+        $warning = '';
+    }
 
-                        if ($rowsFound < 1) {
-                            ?>
+    if ($rowsFound < 1) {
+        ?>
                             <tr bgcolor="<?php echo $THEME['altbg2'] ?>" class="ctrtablerow">
                                 <td colspan="4"><?php echo $lang['textnone'] ?></td>
                             </tr>
                             <?php
-                        }
-                        ?>
+}
+    ?>
                         <tr class="tablerow">
                             <td bgcolor="<?php echo $THEME['altbg1'] ?>" colspan="4"><span
                                         class="smalltxt"><?php echo $lang['currentip'] ?>
@@ -180,7 +180,7 @@ function doPanel()
             $ip[$i] = -1;
         }
 
-        $ip[$i] = (int)$ip[$i];
+        $ip[$i] = (int) $ip[$i];
         if ($ip[$i] < -1 || $ip[$i] > 255) {
             $msg = $lang['invalidip'];
             break;

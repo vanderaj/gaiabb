@@ -1,7 +1,7 @@
 <?php
 /**
  * GaiaBB
- * Copyright (c) 2011-2020 The GaiaBB Project
+ * Copyright (c) 2009-2020 The GaiaBB Project
  * https://github.com/vanderaj/gaiabb
  *
  * Based off UltimaBB
@@ -73,7 +73,7 @@ class mysql5Php5
      *            what it does
      * @return type, what the return does
      */
-    function mysql5Php5()
+    public function mysql5Php5()
     {
         $this->db = '';
         $this->conn = null;
@@ -89,7 +89,7 @@ class mysql5Php5
      *            what it does
      * @return type, what the return does
      */
-    function connect($dbhost = "localhost", $dbuser, $dbpw, $dbname, $pconnect = 0, $force_db = false, $new_link = false, $tablepre = '')
+    public function connect($dbhost = "localhost", $dbuser, $dbpw, $dbname, $pconnect = 0, $force_db = false, $new_link = false, $tablepre = '')
     {
         try {
             if (!empty($tablepre)) {
@@ -136,7 +136,7 @@ class mysql5Php5
      *            the message to display
      * @return Does not return
      */
-    function panic($head, $msg)
+    public function panic($head, $msg)
     {
         global $CONFIG;
 
@@ -158,24 +158,24 @@ class mysql5Php5
                         </tr>
                         <tr>
                             <?php
-                            if (DEBUG) {
-                                ?>
+if (DEBUG) {
+            ?>
                                 <td class="tablerow" bgcolor="#ffffff"
                                     align="left"><?php echo $msg->getMessage() ?></td>
                                 <?php
-                            } else {
-                                ?>
+} else {
+            ?>
                                 <td class="tablerow" bgcolor="#ffffff" align="left">A suffusion
                                     of yellow. Please wait a few minutes and try again
                                 </td>
-                            <?php } ?>
+                            <?php }?>
                         </tr>
                     </table>
                 </td>
             </tr>
         </table>
         <?php
-        $this->view_shadow();
+$this->view_shadow();
 
         // DEBUG mode is a security issue, but with panic() we have no database context
         // => no X_SADMIN, so no error messages possible. So this code warns of bad things
@@ -220,11 +220,11 @@ class mysql5Php5
                             <tr>
                                 <td class="tablerow" bgcolor="#ffffff" align="left">Stack trace:<br/>
                                     <?php
-                                    $traces = explode('#', $msg->getTraceAsString());
-                                    foreach ($traces as $trace) {
-                                        echo $trace . '<br />';
-                                    }
-                                    ?>
+$traces = explode('#', $msg->getTraceAsString());
+            foreach ($traces as $trace) {
+                echo $trace . '<br />';
+            }
+            ?>
                                 </td>
                             </tr>
                         </table>
@@ -232,11 +232,11 @@ class mysql5Php5
                 </tr>
             </table>
             <?php
-            $this->view_shadow();
+$this->view_shadow();
         } // end debug
         ?>
         <?php
-        $this->view_footer();
+$this->view_footer();
         exit();
     }
 
@@ -247,7 +247,7 @@ class mysql5Php5
      *            - the database name to select
      * @return true if success, exits if not (this is a panic)
      */
-    function select_db($database)
+    public function select_db($database)
     {
         try {
             $this->db = $database;
@@ -277,7 +277,7 @@ class mysql5Php5
      *
      * @return bool, true if success, false if fail
      */
-    function find_database()
+    public function find_database()
     {
         $tables = $this->getTables();
         if ($tables === false) {
@@ -294,7 +294,7 @@ class mysql5Php5
      *
      * @return string, the error message
      */
-    function error()
+    public function error()
     {
         if ($this->conn) {
             return $this->conn->error;
@@ -312,7 +312,7 @@ class mysql5Php5
      *            result set requiring to be freed
      * @return bool, true = success, false = failure
      */
-    function free_result($result = null)
+    public function free_result($result = null)
     {
         if ($result) {
             @$result->free();
@@ -334,14 +334,14 @@ class mysql5Php5
      *            set from a previously executed query
      * @return array of results, or null if no more results or false if no previous result set
      */
-    function fetch_array($query, $type = MYSQLI_ASSOC)
+    public function fetch_array($query, $type = MYSQLI_ASSOC)
     {
         if ($query !== null || $query !== false) {
             return $query->fetch_array($type);
         } else
-            if ($this->result != null && $this->result !== true && $this->result !== false) {
-                return $this->result->fetch_array($type);
-            }
+        if ($this->result != null && $this->result !== true && $this->result !== false) {
+            return $this->result->fetch_array($type);
+        }
 
         return false;
     }
@@ -357,7 +357,7 @@ class mysql5Php5
      *            the field you'd like the type of
      * @return string, the field name, false fail
      */
-    function field_type($result, $field)
+    public function field_type($result, $field)
     {
         $result->field_seek($field);
         $fieldInfo = $result->fetch_field();
@@ -375,7 +375,7 @@ class mysql5Php5
      *            the field you'd like the name of
      * @return string, the field name, false fail
      */
-    function field_name($result, $field)
+    public function field_name($result, $field)
     {
         $result->field_seek($field);
         $fieldInfo = $result->fetch_field();
@@ -393,7 +393,7 @@ class mysql5Php5
      *            the field you'd like the length of
      * @return string, the field name, false fail
      */
-    function field_len($result, $field)
+    public function field_len($result, $field)
     {
         $result->field_seek($field);
         $fieldInfo = $result->fetch_field();
@@ -411,7 +411,7 @@ class mysql5Php5
      *            the field you'd like the flags of
      * @return string, the field name, false fail
      */
-    function field_flags($result, $field)
+    public function field_flags($result, $field)
     {
         $result->field_seek($field);
         $fieldInfo = $result->fetch_field();
@@ -429,7 +429,7 @@ class mysql5Php5
      *            the field you'd like the tablename of
      * @return string, the field name, false fail
      */
-    function field_table($result, $field)
+    public function field_table($result, $field)
     {
         $result->field_seek($field);
         $fieldInfo = $result->fetch_field();
@@ -449,7 +449,7 @@ class mysql5Php5
      *            SQL query
      * @return result set if good, false if bad
      */
-    function query($sql)
+    public function query($sql)
     {
         try {
             $this->queryStr = $sql;
@@ -491,14 +491,14 @@ class mysql5Php5
      *            named field you'd like back
      * @return a mixed result based upon the query, false if no data
      */
-    function result($result, $row = 0, $field = NULL)
+    public function result($result, $row = 0, $field = null)
     {
         if ($result === false || $result === null) {
             $result = $this->result;
         }
 
         $result->data_seek($row);
-        if ($field == NULL) {
+        if ($field == null) {
             $field = 0;
         }
         $tmp = $result->fetch_array();
@@ -519,14 +519,14 @@ class mysql5Php5
      *            resource
      * @return int, number of rows, false if failed
      */
-    function num_rows($result)
+    public function num_rows($result)
     {
         if ($result) {
             return $result->num_rows;
         } else
-            if ($this->result) {
-                return $this->result->num_rows;
-            }
+        if ($this->result) {
+            return $this->result->num_rows;
+        }
         return false;
     }
 
@@ -537,14 +537,14 @@ class mysql5Php5
      *            result from the previous successful query
      * @return int, number of fields, false if failed
      */
-    function num_fields($result)
+    public function num_fields($result)
     {
         if ($result !== null && $result !== false) {
             return $result->field_count;
         } else
-            if ($this->result !== null && $this->result !== false) {
-                return $this->result->field_count;
-            }
+        if ($this->result !== null && $this->result !== false) {
+            return $this->result->field_count;
+        }
         return false;
     }
 
@@ -553,7 +553,7 @@ class mysql5Php5
      *
      * @return int if success, false if fail
      */
-    function insert_id()
+    public function insert_id()
     {
         if ($this->conn) {
             return $this->conn->insert_id;
@@ -566,13 +566,13 @@ class mysql5Php5
      *
      * @return int if success, false if fail
      */
-    function getNextId($table = '')
+    public function getNextId($table = '')
     {
         if (!empty($table)) {
             $table = $this->tablepre . $table;
             $query = $this->query("SHOW TABLE STATUS FROM $this->db LIKE '$table'");
             $column = $this->fetch_array($query);
-            $retval = (int)$column['Auto_increment'];
+            $retval = (int) $column['Auto_increment'];
 
             return $retval;
         }
@@ -586,14 +586,14 @@ class mysql5Php5
      *            set from the user
      * @return array of strings, the row
      */
-    function fetch_row($result)
+    public function fetch_row($result)
     {
         if ($result) {
             return $result->fetch_row();
         } else
-            if ($this->result) {
-                return $this->result->fetch_row();
-            }
+        if ($this->result) {
+            return $this->result->fetch_row();
+        }
         return false;
     }
 
@@ -604,11 +604,11 @@ class mysql5Php5
      *            an arbitrary point in time
      * @return string, the left padded timestamp suitable for SQL queries
      */
-    function time($time = NULL)
+    public function time($time = null)
     {
         global $onlinetime;
 
-        if ($time === NULL) {
+        if ($time === null) {
             $time = $onlinetime;
         }
         return "LPAD('" . $time . "', '15', '0')";
@@ -619,7 +619,7 @@ class mysql5Php5
      *
      * @return always returns true
      */
-    function start_timer()
+    public function start_timer()
     {
         $mtime = explode(' ', microtime());
         $this->timer = $mtime[1] + $mtime[0];
@@ -631,7 +631,7 @@ class mysql5Php5
      *
      * @return double, the number of seconds taken for this set of queries
      */
-    function stop_timer()
+    public function stop_timer()
     {
         $mtime = explode(' ', microtime());
         $endtime = $mtime[1] + $mtime[0];
@@ -653,7 +653,7 @@ class mysql5Php5
      *            the database name
      * @return array of strings, a list of tables
      */
-    function getTables()
+    public function getTables()
     {
         $tables = array();
         try {
@@ -693,7 +693,7 @@ class mysql5Php5
      * But when a page is exited, that happens anyway, so
      * don't get too worried about calling me
      */
-    function close()
+    public function close()
     {
         if ($this->conn) {
             $this->conn->close();
@@ -708,7 +708,7 @@ class mysql5Php5
      *
      * @return string, the version in "5.x.x" format
      */
-    function getVersion()
+    public function getVersion()
     {
         if ($this->conn) {
             return $this->conn->get_server_info();
@@ -727,7 +727,7 @@ class mysql5Php5
      *            max length of the data (this function will truncate it to that)
      * @return string, the sanitized string
      */
-    function escape($str, $length = -1, $like = false)
+    public function escape($str, $length = -1, $like = false)
     {
         if ($length != -1 && strlen($str) >= $length) {
             $str = substr($str, 0, $length);
@@ -752,7 +752,7 @@ class mysql5Php5
         return $str;
     }
 
-    function insertAttachment($table, $aid, $tid, $pid, $filename, $filetype, $filesize, $fileheight, $filewidth, & $attachment, $downloads = 0)
+    public function insertAttachment($table, $aid, $tid, $pid, $filename, $filetype, $filesize, $fileheight, $filewidth, &$attachment, $downloads = 0)
     {
         try {
             $insert_sql = "INSERT INTO " . $table . " (aid, tid, pid, filename, filetype, filesize, fileheight, filewidth, attachment, downloads) VALUES (?,?,?,?,?,?,?,?,?,?)";
@@ -789,7 +789,7 @@ class mysql5Php5
      *            what it does
      * @return type, what the return does
      */
-    function view_header($title = "Data Abstraction Layer")
+    public function view_header($title = "Data Abstraction Layer")
     {
         $logo = 'images/prored/logo.png';
         $navtext = "Data Abstraction Layer";
@@ -884,7 +884,7 @@ class mysql5Php5
             </tr>
         </table> <br/>
         <?php
-    }
+}
 
     /**
      * function() - short description of function
@@ -895,13 +895,13 @@ class mysql5Php5
      *            what it does
      * @return type, what the return does
      */
-    function view_footer()
+    public function view_footer()
     {
         ?>
         <table align="center">
             <tr>
                 <td align="center" class="smalltxt"><br/> <br/> Powered by
-                    GaiaBB <br/> Copyright &copy; 2011-2020 The GaiaBB Group. All
+                    GaiaBB <br/> Copyright &copy; 2009-2020 The GaiaBB Group. All
                     rights reserved. <br/> <br/></td>
             </tr>
         </table> <br/></td>
@@ -913,7 +913,7 @@ class mysql5Php5
         </body>
         </html>
         <?php
-    }
+}
 
     /**
      * function() - short description of function
@@ -924,7 +924,7 @@ class mysql5Php5
      *            what it does
      * @return type, what the return does
      */
-    function view_shadow()
+    public function view_shadow()
     {
         ?>
         <table cellspacing="0" cellpadding="0" border="0" width="97%"
@@ -936,7 +936,7 @@ class mysql5Php5
             </tr>
         </table>
         <?php
-    }
+}
 }
 
 /**

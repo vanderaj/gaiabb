@@ -1,7 +1,7 @@
 <?php
 /**
  * GaiaBB
- * Copyright (c) 2011-2020 The GaiaBB Project
+ * Copyright (c) 2009-2020 The GaiaBB Project
  * https://github.com/vanderaj/gaiabb
  *
  * Based off UltimaBB
@@ -33,8 +33,8 @@ define('ROOT', '../');
 define('ROOTINC', '../include/');
 define('ROOTCLASS', '../class/');
 
-require_once('../header.php');
-require_once('../include/admincp.inc.php');
+require_once '../header.php';
+require_once '../include/admincp.inc.php';
 
 loadtpl('cp_header', 'cp_footer', 'cp_message', 'cp_error');
 
@@ -87,10 +87,10 @@ function viewPanel()
                             <td align="center" class="title"><?php echo $lang['textcensorreplace'] ?></td>
                         </tr>
                         <?php
-                        $query = $db->query("SELECT * FROM " . X_PREFIX . "words ORDER BY id");
-                        $rowsFound = $db->num_rows($query);
-                        while (($censor = $db->fetch_array($query)) != false) {
-                            ?>
+$query = $db->query("SELECT * FROM " . X_PREFIX . "words ORDER BY id");
+    $rowsFound = $db->num_rows($query);
+    while (($censor = $db->fetch_array($query)) != false) {
+        ?>
                             <tr bgcolor="<?php echo $THEME['altbg2'] ?>" class="ctrtablerow">
                                 <td><input type="checkbox" name="delete<?php echo $censor['id'] ?>"
                                            value="<?php echo $censor['id'] ?>"/></td>
@@ -102,17 +102,17 @@ function viewPanel()
                                            value="<?php echo $censor['replace1'] ?>"/></td>
                             </tr>
                             <?php
-                        }
-                        $db->free_result($query);
+}
+    $db->free_result($query);
 
-                        if ($rowsFound < 1) {
-                            ?>
+    if ($rowsFound < 1) {
+        ?>
                             <tr bgcolor="<?php echo $THEME['altbg1'] ?>" class="ctrtablerow">
                                 <td colspan="3"><?php echo $lang['textnone'] ?></td>
                             </tr>
                             <?php
-                        }
-                        ?>
+}
+    ?>
                         <tr bgcolor="<?php echo $THEME['altbg2'] ?>" class="ctrtablerow">
                             <td><strong><?php echo $lang['textnewcode'] ?></strong></td>
                             <td><input type="text" size="20" name="newfind"/></td>

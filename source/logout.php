@@ -1,7 +1,7 @@
 <?php
 /**
  * GaiaBB
- * Copyright (c) 2011-2020 The GaiaBB Project
+ * Copyright (c) 2009-2020 The GaiaBB Project
  * https://github.com/vanderaj/gaiabb
  *
  * Based off UltimaBB
@@ -29,11 +29,9 @@
  *
  **/
 
-
 define('CACHECONTROL', 'nocache');
 
-
-require_once('header.php');
+require_once 'header.php';
 
 if (X_GUEST) {
     redirect('index.php', 0);

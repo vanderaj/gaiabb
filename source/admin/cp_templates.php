@@ -1,7 +1,7 @@
 <?php
 /**
  * GaiaBB
- * Copyright (c) 2011-2020 The GaiaBB Project
+ * Copyright (c) 2009-2020 The GaiaBB Project
  * https://github.com/vanderaj/gaiabb
  *
  * Based off UltimaBB
@@ -32,8 +32,8 @@ define('ROOT', '../');
 define('ROOTINC', '../include/');
 define('ROOTCLASS', '../class/');
 
-require_once('../header.php');
-require_once('../include/admincp.inc.php');
+require_once '../header.php';
+require_once '../include/admincp.inc.php';
 
 loadtpl('cp_header', 'cp_footer', 'cp_message', 'cp_error');
 
@@ -160,7 +160,7 @@ if ($action == 'templates') {
         </tr>
         </table>
         <?php
-    }
+}
 
     if (onSubmit('restore')) {
         ?>
@@ -193,7 +193,7 @@ if ($action == 'templates') {
         </tr>
         </table>
         <?php
-    }
+}
 
     if (onSubmit('restoresubmit')) {
         if (!file_exists('./templates.gbb')) {
@@ -235,10 +235,10 @@ if ($action == 'templates') {
                                 <td class="title"><?php echo $lang['templates'] ?></td>
                             </tr>
                             <?php
-                            $query = $db->query("SELECT * FROM " . X_PREFIX . "templates WHERE id = '$tid' ORDER BY name");
-                            $template = $db->fetch_array($query);
-                            $template['template'] = stripslashes(htmlspecialchars($template['template']));
-                            ?>
+$query = $db->query("SELECT * FROM " . X_PREFIX . "templates WHERE id = '$tid' ORDER BY name");
+        $template = $db->fetch_array($query);
+        $template['template'] = stripslashes(htmlspecialchars($template['template']));
+        ?>
                             <tr class="ctrtablerow">
                                 <td bgcolor="<?php echo $THEME['altbg2'] ?>"><?php echo $lang['templatename'] ?>
                                     &nbsp;<strong><?php echo $template['name'] ?></strong></td>
@@ -264,7 +264,7 @@ if ($action == 'templates') {
         </tr>
         </table>
         <?php
-    }
+}
 
     if (onSubmit('editsubmit')) {
         $templatenew = $db->escape(formVar('templatenew'));
@@ -324,7 +324,7 @@ if ($action == 'templates') {
         </tr>
         </table>
         <?php
-    }
+}
 
     if (onSubmit('deletesubmit')) {
         $db->query("DELETE FROM " . X_PREFIX . "templates WHERE id = '$tid'");
@@ -350,9 +350,9 @@ if ($action == 'templates') {
                                 <td class="title" colspan="2"><?php echo $lang['templates'] ?></td>
                             </tr>
                             <?php
-                            $query = $db->query("SELECT * FROM " . X_PREFIX . "templates WHERE id = '$tid' ORDER BY name");
-                            $template_info = $db->fetch_array($query);
-                            ?>
+$query = $db->query("SELECT * FROM " . X_PREFIX . "templates WHERE id = '$tid' ORDER BY name");
+        $template_info = $db->fetch_array($query);
+        ?>
                             <tr class="tablerow">
                                 <td bgcolor="<?php echo $THEME['altbg1'] ?>"><?php echo $lang['textfrom'] ?></td>
                                 <td bgcolor="<?php echo $THEME['altbg2'] ?>"><?php echo $template_info['name'] ?></td>
@@ -378,7 +378,7 @@ if ($action == 'templates') {
         </tr>
         </table>
         <?php
-    }
+}
 
     if (onSubmit('renamesubmit') && noSubmit('rename')) {
         $new_name = $db->escape(formVar('new_name'));
@@ -422,7 +422,7 @@ if ($action == 'templates') {
         </tr>
         </table>
         <?php
-    }
+}
 
     if (onSubmit('backup_curyes')) {
         if (!is_writable('./templates/')) {
@@ -473,7 +473,7 @@ if ($action == 'templates') {
         </tr>
         </table>
         <?php
-    }
+}
 
     if (onSubmit('restore_curyes')) {
         if (!file_exists('./templates/templates-current.gbb')) {
@@ -550,7 +550,7 @@ if ($action == 'templates') {
         </tr>
         </table>
         <?php
-    }
+}
 }
 
 loadtime();

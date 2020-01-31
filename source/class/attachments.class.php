@@ -1,7 +1,7 @@
 <?php
 /**
  * GaiaBB
- * Copyright (c) 2011-2020 The GaiaBB Project
+ * Copyright (c) 2009-2020 The GaiaBB Project
  * https://github.com/vanderaj/gaiabb
  *
  * Based off UltimaBB
@@ -32,34 +32,34 @@ if (!defined('IN_PROGRAM') && (defined('DEBUG') && DEBUG == false)) {
     exit('This file is not designed to be called directly');
 }
 
-require_once('mimetypes.inc.php');
+require_once 'mimetypes.inc.php';
 
 class attachment
 {
 
     public $attachments;
 
-    function attachment()
+    public function attachment()
     {
     }
 
-    function findByID()
+    public function findByID()
     {
     }
 
-    function update()
+    public function update()
     {
     }
 
-    function delete()
+    public function delete()
     {
     }
 
-    function init()
+    public function init()
     {
     }
 
-    function get_attachments($tid)
+    public function get_attachments($tid)
     {
         global $db, $start_limit, $self;
 
@@ -96,7 +96,7 @@ class attachment
         return true;
     }
 
-    function get_post_attachments($pid)
+    public function get_post_attachments($pid)
     {
         global $CONFIG, $THEME, $lang, $post, $forum, $tid;
         global $n_height, $n_width, $attachicon, $postauthor;
@@ -124,55 +124,55 @@ class attachment
                     if ($CONFIG['viewattach'] == 'no' && X_GUEST) {
                         eval("\$post['message'] .= \"" . template('viewtopic_post_attachment_none') . "\";");
                     } else
-                        if ($CONFIG['attachimgpost'] == 'on' && ($extension == 'jpg' || $extension == 'jpeg' || $extension == 'gif' || $extension == 'png' || $extension == 'bmp')) {
-                            if ($attach['fileheight'] != '' && $attach['filewidth'] != '') {
-                                $CONFIG['max_attheight'] = (int)$CONFIG['max_attheight'];
-                                $CONFIG['max_attwidth'] = (int)$CONFIG['max_attwidth'];
-                                $h_ratio = $CONFIG['max_attheight'] / $attach['fileheight'];
-                                $w_ratio = $CONFIG['max_attwidth'] / $attach['filewidth'];
-                                if (($attach['fileheight'] <= $CONFIG['max_attheight']) && ($attach['filewidth'] <= $CONFIG['max_attwidth'])) {
-                                    $n_height = $attach['fileheight'];
-                                    $n_width = $attach['filewidth'];
-                                } else
-                                    if (($w_ratio * $attach['fileheight']) < $CONFIG['max_attheight']) {
-                                        $n_height = ceil($w_ratio * $attach['fileheight']);
-                                        $n_width = $CONFIG['max_attwidth'];
-                                    } else {
-                                        $n_height = $CONFIG['max_attheight'];
-                                        $n_width = ceil($h_ratio * $attach['filewidth']);
-                                    }
-                            }
-
-                            if ($CONFIG['attachborder'] == 'on') {
-                                if ($CONFIG['attachicon_status'] == 'on') {
-                                    $attachicon = getMimeType($extension);
-                                }
-                                eval("\$post['message'] .= \"" . template('viewtopic_post_attachmentimage') . "\";");
+                    if ($CONFIG['attachimgpost'] == 'on' && ($extension == 'jpg' || $extension == 'jpeg' || $extension == 'gif' || $extension == 'png' || $extension == 'bmp')) {
+                        if ($attach['fileheight'] != '' && $attach['filewidth'] != '') {
+                            $CONFIG['max_attheight'] = (int) $CONFIG['max_attheight'];
+                            $CONFIG['max_attwidth'] = (int) $CONFIG['max_attwidth'];
+                            $h_ratio = $CONFIG['max_attheight'] / $attach['fileheight'];
+                            $w_ratio = $CONFIG['max_attwidth'] / $attach['filewidth'];
+                            if (($attach['fileheight'] <= $CONFIG['max_attheight']) && ($attach['filewidth'] <= $CONFIG['max_attwidth'])) {
+                                $n_height = $attach['fileheight'];
+                                $n_width = $attach['filewidth'];
+                            } else
+                            if (($w_ratio * $attach['fileheight']) < $CONFIG['max_attheight']) {
+                                $n_height = ceil($w_ratio * $attach['fileheight']);
+                                $n_width = $CONFIG['max_attwidth'];
                             } else {
-                                if ($CONFIG['attachicon_status'] == 'on') {
-                                    $attachicon = getMimeType($extension);
-                                }
-                                eval("\$post['message'] .= \"" . template('viewtopic_post_attimg_noborder') . "\";");
-                            }
-                        } else {
-                            if ($CONFIG['attachborder'] == 'on') {
-                                if ($CONFIG['attachicon_status'] == 'on') {
-                                    $attachicon = getMimeType($extension);
-                                }
-                                eval("\$post['message'] .= \"" . template('viewtopic_post_attachment') . "\";");
-                            } else {
-                                if ($CONFIG['attachicon_status'] == 'on') {
-                                    $attachicon = getMimeType($extension);
-                                }
-                                eval("\$post['message'] .= \"" . template('viewtopic_post_attach_noborder') . "\";");
+                                $n_height = $CONFIG['max_attheight'];
+                                $n_width = ceil($h_ratio * $attach['filewidth']);
                             }
                         }
+
+                        if ($CONFIG['attachborder'] == 'on') {
+                            if ($CONFIG['attachicon_status'] == 'on') {
+                                $attachicon = getMimeType($extension);
+                            }
+                            eval("\$post['message'] .= \"" . template('viewtopic_post_attachmentimage') . "\";");
+                        } else {
+                            if ($CONFIG['attachicon_status'] == 'on') {
+                                $attachicon = getMimeType($extension);
+                            }
+                            eval("\$post['message'] .= \"" . template('viewtopic_post_attimg_noborder') . "\";");
+                        }
+                    } else {
+                        if ($CONFIG['attachborder'] == 'on') {
+                            if ($CONFIG['attachicon_status'] == 'on') {
+                                $attachicon = getMimeType($extension);
+                            }
+                            eval("\$post['message'] .= \"" . template('viewtopic_post_attachment') . "\";");
+                        } else {
+                            if ($CONFIG['attachicon_status'] == 'on') {
+                                $attachicon = getMimeType($extension);
+                            }
+                            eval("\$post['message'] .= \"" . template('viewtopic_post_attach_noborder') . "\";");
+                        }
+                    }
                 }
             }
         }
     }
 
-    function upgrade_attachment(& $attach)
+    public function upgrade_attachment(&$attach)
     {
         global $db;
 
@@ -194,23 +194,23 @@ class attachment
         $db->query("UPDATE " . X_PREFIX . "attachments SET fileheight = " . $attach['fileheight'] . ", filewidth = " . $attach['filewidth'] . " WHERE aid = " . $aid);
     }
 
-    function format_attach($bytes)
+    public function format_attach($bytes)
     {
         if ($bytes >= 1073741824) {
             $bytes = round($bytes / 1073741824 * 100) / 100 . "gb";
         } else
-            if ($bytes >= 1048576) {
-                $bytes = round($bytes / 1048576 * 100) / 100 . "mb";
-            } else
-                if ($bytes >= 1024) {
-                    $bytes = round($bytes / 1024 * 100) / 100 . "kb";
-                } else {
-                    $bytes = $bytes . "b";
-                }
+        if ($bytes >= 1048576) {
+            $bytes = round($bytes / 1048576 * 100) / 100 . "mb";
+        } else
+        if ($bytes >= 1024) {
+            $bytes = round($bytes / 1024 * 100) / 100 . "kb";
+        } else {
+            $bytes = $bytes . "b";
+        }
         return $bytes;
     }
 
-    function fixOrphans(&$count, &$count2)
+    public function fixOrphans(&$count, &$count2)
     {
         global $db;
 
@@ -229,4 +229,3 @@ class attachment
         $db->free_result($query);
     }
 }
-

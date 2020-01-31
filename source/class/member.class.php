@@ -1,7 +1,7 @@
 <?php
 /**
  * GaiaBB
- * Copyright (c) 2011-2020 The GaiaBB Project
+ * Copyright (c) 2009-2020 The GaiaBB Project
  * https://github.com/vanderaj/gaiabb
  *
  * Based off UltimaBB
@@ -32,13 +32,13 @@ if (!defined('IN_PROGRAM') && (defined('DEBUG') && DEBUG == false)) {
     exit('This file is not designed to be called directly');
 }
 
-require_once('attachments.class.php');
-require_once('forum.class.php');
-require_once('thread.class.php');
-require_once('post.class.php');
-require_once('favorite.class.php');
-require_once('subscription.class.php');
-require_once('pm.class.php');
+require_once 'attachments.class.php';
+require_once 'forum.class.php';
+require_once 'thread.class.php';
+require_once 'post.class.php';
+require_once 'favorite.class.php';
+require_once 'subscription.class.php';
+require_once 'pm.class.php';
 
 /**
  * This object creates a nice wrapper for dealing with members.
@@ -94,7 +94,7 @@ class member
 
     public $extracol;
 
-    function __construct($memberId = 0)
+    public function __construct($memberId = 0)
     {
         $this->extracol = array();
 
@@ -109,7 +109,7 @@ class member
         }
     }
 
-    function init()
+    public function init()
     {
         $this->dirty = true;
         $this->record = array(
@@ -164,13 +164,13 @@ class member
             'views' => '',
             'expview' => '',
             'threadnum' => '',
-            'readrules' => ''
+            'readrules' => '',
         );
         $this->processExtraCol();
         $this->uid = 0;
     }
 
-    function processExtraCol($type = '')
+    public function processExtraCol($type = '')
     {
         global $db;
 
@@ -220,7 +220,7 @@ class member
         }
     }
 
-    function findById($uid)
+    public function findById($uid)
     {
         global $db;
 
@@ -236,7 +236,7 @@ class member
         return false;
     }
 
-    function findByName($name)
+    public function findByName($name)
     {
         global $db;
 
@@ -252,7 +252,7 @@ class member
         return false;
     }
 
-    function findUsernameByUid($uid)
+    public function findUsernameByUid($uid)
     {
         global $db;
 
@@ -270,7 +270,7 @@ class member
         return $username;
     }
 
-    function findUidByUsername($username)
+    public function findUidByUsername($username)
     {
         global $db;
 
@@ -288,7 +288,7 @@ class member
         return $uid;
     }
 
-    function exists($name, $email = '')
+    public function exists($name, $email = '')
     {
         global $db;
 
@@ -306,7 +306,7 @@ class member
 
     // TODO: remove and merge with above
 
-    function isRestricted($username, $email, &$fail, &$efail)
+    public function isRestricted($username, $email, &$fail, &$efail)
     {
         global $db;
 
@@ -345,7 +345,7 @@ class member
         return ($fail || $efail);
     }
 
-    function deleteAll($uid = 0)
+    public function deleteAll($uid = 0)
     {
         if ($this->uid === 0 && $uid === 0) {
             return false;
@@ -375,7 +375,7 @@ class member
         $this->delete($uid);
     }
 
-    function deletePosts($uid = 0)
+    public function deletePosts($uid = 0)
     {
         global $db;
 
@@ -388,7 +388,7 @@ class member
         }
 
         // Needs a lot of time
-        if (!((bool)ini_get('safe_mode'))) {
+        if (!((bool) ini_get('safe_mode'))) {
             set_time_limit(0);
         }
 
@@ -415,7 +415,7 @@ class member
         $forumObj->fixLastPost();
     }
 
-    function update()
+    public function update()
     {
         global $db;
 
@@ -524,7 +524,7 @@ class member
      *            the UID of the user you'd like to delete (optional)
      * @return mixed the query resource if $uid is set, false otherwise
      */
-    function delete($uid = 0)
+    public function delete($uid = 0)
     {
         global $db;
 
@@ -538,7 +538,7 @@ class member
         return @$db->query("DELETE FROM " . X_PREFIX . "members WHERE uid = '" . intval($this->uid) . "'");
     }
 
-    function rename($userfrom, $userto)
+    public function rename($userfrom, $userto)
     {
         global $db, $lang, $self;
 
@@ -577,7 +577,7 @@ class member
         }
 
         // we're good to go, rename user
-        if (!((bool)ini_get('safe_mode'))) {
+        if (!((bool) ini_get('safe_mode'))) {
             set_time_limit(180);
         }
 
@@ -639,7 +639,7 @@ class member
         // update forum last posts
         $query = $db->query("SELECT fid, lastpost from " . X_PREFIX . "forums WHERE lastpost like '%$userfrom'");
         while (($result = $db->fetch_array($query)) != false) {
-            list ($posttime, $lastauthor) = explode('|', $result['lastpost']);
+            list($posttime, $lastauthor) = explode('|', $result['lastpost']);
             if ($lastauthor == $userfrom) {
                 $newlastpost = $posttime . '|' . $userto;
                 $db->query("UPDATE " . X_PREFIX . "forums SET lastpost = '$newlastpost' WHERE fid = '" . $result['fid'] . "'");
@@ -650,7 +650,7 @@ class member
         return (($self['username'] == $userfrom) ? $lang['admin_rename_warn_self'] : '') . $lang['admin_rename_success'];
     }
 
-    function check_restricted($userto)
+    public function check_restricted($userto)
     {
         global $db;
 
@@ -688,7 +688,7 @@ class member
         return $nameokay;
     }
 
-    function fixPostTotals()
+    public function fixPostTotals()
     {
         global $db;
 
@@ -702,7 +702,7 @@ class member
         $db->free_result($query);
     }
 
-    function fixThreadTotals()
+    public function fixThreadTotals()
     {
         global $db;
 

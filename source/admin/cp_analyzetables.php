@@ -1,7 +1,7 @@
 <?php
 /**
  * GaiaBB
- * Copyright (c) 2011-2020 The GaiaBB Project
+ * Copyright (c) 2009-2020 The GaiaBB Project
  * https://github.com/vanderaj/gaiabb
  *
  * Based off UltimaBB
@@ -29,8 +29,8 @@
  *
  **/
 
-require_once('../header.php');
-require_once('../class/admincp.inc.php');
+require_once '../header.php';
+require_once '../class/admincp.inc.php';
 
 loadtpl('cp_header', 'cp_footer', 'cp_message', 'cp_error');
 
@@ -127,23 +127,23 @@ function doPanel()
                 <table border="0px" cellspacing="<?php echo $THEME['borderwidth'] ?>"
                        cellpadding="<?php echo $THEME['tablespace'] ?>" width="100%">
                     <?php
-                    if (!((bool)ini_get('safe_mode'))) {
-                        set_time_limit(180);
-                    }
+if (!((bool) ini_get('safe_mode'))) {
+        set_time_limit(180);
+    }
 
-                    $tables = $db->getTables();
+    $tables = $db->getTables();
 
-                    $q = array();
-                    $start = true;
-                    foreach ($tables as $key => $val) {
-                        if ($start) {
-                            dump_query($db->query('ANALYZE TABLE `' . $val . '`'));
-                            $start = false;
-                        } else {
-                            dump_query($db->query('ANALYZE TABLE `' . $val . '`'), false);
-                        }
-                    }
-                    ?>
+    $q = array();
+    $start = true;
+    foreach ($tables as $key => $val) {
+        if ($start) {
+            dump_query($db->query('ANALYZE TABLE `' . $val . '`'));
+            $start = false;
+        } else {
+            dump_query($db->query('ANALYZE TABLE `' . $val . '`'), false);
+        }
+    }
+    ?>
                 </table>
             </td>
         </tr>

@@ -1,6 +1,6 @@
 /**
  * GaiaBB
- * Copyright (c) 2009 The GaiaBB Group
+ * Copyright (c) 2009-2020 The GaiaBB Group
  * https://github.com/vanderaj/gaiabb
  *
  * Based off UltimaBB

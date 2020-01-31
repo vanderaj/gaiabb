@@ -1,7 +1,7 @@
 <?php
 /**
  * GaiaBB
- * Copyright (c) 2011-2020 The GaiaBB Project
+ * Copyright (c) 2009-2020 The GaiaBB Project
  * https://github.com/vanderaj/gaiabb
  *
  * Based off UltimaBB
@@ -41,7 +41,7 @@ class cacheable
 
     public $expiry;
 
-    function cacheable($prefix, $maxlife)
+    public function cacheable($prefix, $maxlife)
     {
         global $onlinetime;
 
@@ -56,7 +56,7 @@ class cacheable
         }
     }
 
-    function getWorkDir($reset = 'no')
+    public function getWorkDir($reset = 'no')
     {
         $full = dirname($_SERVER['PHP_SELF']);
         $pos = strrpos($full, '/');
@@ -68,7 +68,7 @@ class cacheable
         return $workdir;
     }
 
-    function setData($name, $object)
+    public function setData($name, $object)
     {
         global $onlinetime;
 
@@ -77,11 +77,11 @@ class cacheable
         $_SESSION[$this->prefix . '__expiry'] = $this->expiry;
     }
 
-    function refresh()
+    public function refresh()
     {
     }
 
-    function getData($name)
+    public function getData($name)
     {
         if ($this->isStale($name)) {
             $this->expire($name);
@@ -94,7 +94,7 @@ class cacheable
         return false;
     }
 
-    function isStale($name)
+    public function isStale($name)
     {
         global $onlinetime;
 
@@ -104,7 +104,7 @@ class cacheable
         return true;
     }
 
-    function expire($name)
+    public function expire($name)
     {
         if (isset($_SESSION[$this->prefix . $name])) {
             unset($_SESSION[$this->prefix . $name]);

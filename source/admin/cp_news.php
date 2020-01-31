@@ -1,7 +1,7 @@
 <?php
 /**
  * GaiaBB
- * Copyright (c) 2011-2020 The GaiaBB Project
+ * Copyright (c) 2009-2020 The GaiaBB Project
  * https://github.com/vanderaj/gaiabb
  *
  * Based off UltimaBB
@@ -34,9 +34,9 @@ define('ROOTINC', '../include/');
 define('ROOTCLASS', '../class/');
 define('ROOTHELPER', '../helper/');
 
-require_once('../header.php');
-require_once('../include/admincp.inc.php');
-require_once('../helper/formHelper.php');
+require_once '../header.php';
+require_once '../include/admincp.inc.php';
+require_once '../helper/formHelper.php';
 
 loadtpl('cp_header', 'cp_footer', 'cp_message', 'cp_error', 'functions_bbcode', 'functions_bbcodeinsert');
 
@@ -91,9 +91,9 @@ function viewPanel()
                             <td class="title" colspan="2"><?php echo $lang['indexnewscp'] ?></td>
                         </tr>
                         <?php
-                        formHelper::formSelectOnOff($lang['set_indexnews'], 'indexnewsnew', $indexnewson, $indexnewsoff);
-                        echo $bbcodeinsert;
-                        ?>
+formHelper::formSelectOnOff($lang['set_indexnews'], 'indexnewsnew', $indexnewson, $indexnewsoff);
+    echo $bbcodeinsert;
+    ?>
                         <tr class="tablerow">
                             <td bgcolor="<?php echo $THEME['altbg1'] ?>" valign="top"
                                 width="50%"><?php echo $lang['set_indexnewstxt'] ?></td>
@@ -131,7 +131,7 @@ function doPanel()
 
     $config_array = array(
         'indexnews' => $indexnewsnew,
-        'indexnewstxt' => $indexnewstxtnew
+        'indexnewstxt' => $indexnewstxtnew,
     );
 
     // execute query

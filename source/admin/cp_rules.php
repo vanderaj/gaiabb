@@ -1,7 +1,7 @@
 <?php
 /**
  * GaiaBB
- * Copyright (c) 2011-2020 The GaiaBB Project
+ * Copyright (c) 2009-2020 The GaiaBB Project
  * https://github.com/vanderaj/gaiabb
  *
  * Based off UltimaBB
@@ -34,9 +34,9 @@ define('ROOTINC', '../include/');
 define('ROOTCLASS', '../class/');
 define('ROOTHELPER', '../helper/');
 
-require_once('../header.php');
-require_once('../include/admincp.inc.php');
-require_once('../helper/formHelper.php');
+require_once '../header.php';
+require_once '../include/admincp.inc.php';
+require_once '../helper/formHelper.php';
 
 loadtpl('cp_header', 'cp_footer', 'cp_message', 'cp_error', 'functions_bbcode', 'functions_bbcodeinsert');
 
@@ -102,40 +102,40 @@ function viewPanel()
                             <td colspan="2" class="title"><?php echo $lang['textbbrules'] ?></td>
                         </tr>
                         <?php
-                        $ruleson = $rulesoff = '';
-                        formHelper::getSettingOnOffHtml('bbrules', $ruleson, $rulesoff);
+$ruleson = $rulesoff = '';
+    formHelper::getSettingOnOffHtml('bbrules', $ruleson, $rulesoff);
 
-                        $queryg = $db->query("SELECT * FROM " . X_PREFIX . "faq WHERE type = 'rulesset'");
-                        $frules = $db->fetch_array($queryg);
-                        $db->free_result($queryg);
+    $queryg = $db->query("SELECT * FROM " . X_PREFIX . "faq WHERE type = 'rulesset'");
+    $frules = $db->fetch_array($queryg);
+    $db->free_result($queryg);
 
-                        if ($frules['allowsmilies'] == 'yes') {
-                            $checked1 = $cheHTML;
-                        } else
-                            if ($frules['allowsmilies'] == 'no') {
-                                $checked1 = '';
-                            }
+    if ($frules['allowsmilies'] == 'yes') {
+        $checked1 = $cheHTML;
+    } else
+    if ($frules['allowsmilies'] == 'no') {
+        $checked1 = '';
+    }
 
-                        if ($frules['allowbbcode'] == 'yes') {
-                            $checked2 = $cheHTML;
-                        } else
-                            if ($frules['allowbbcode'] == 'no') {
-                                $checked2 = '';
-                            }
+    if ($frules['allowbbcode'] == 'yes') {
+        $checked2 = $cheHTML;
+    } else
+    if ($frules['allowbbcode'] == 'no') {
+        $checked2 = '';
+    }
 
-                        if ($frules['allowimgcode'] == 'yes') {
-                            $checked3 = $cheHTML;
-                        } else
-                            if ($frules['allowimgcode'] == 'no') {
-                                $checked3 = '';
-                            }
+    if ($frules['allowimgcode'] == 'yes') {
+        $checked3 = $cheHTML;
+    } else
+    if ($frules['allowimgcode'] == 'no') {
+        $checked3 = '';
+    }
 
-                        $nameo = stripslashes($frules['name']);
-                        $CONFIG['bbrulestxt'] = stripslashes($CONFIG['bbrulestxt']);
+    $nameo = stripslashes($frules['name']);
+    $CONFIG['bbrulestxt'] = stripslashes($CONFIG['bbrulestxt']);
 
-                        formHelper::formSelectOnOff($lang['board_rules_status'], 'bbrulesnew', $ruleson, $rulesoff);
-                        echo $bbcodeinsert;
-                        ?>
+    formHelper::formSelectOnOff($lang['board_rules_status'], 'bbrulesnew', $ruleson, $rulesoff);
+    echo $bbcodeinsert;
+    ?>
                         <tr class="tablerow">
                             <td bgcolor="<?php echo $THEME['altbg1'] ?>" valign="top"
                                 width="50%"><?php echo $lang['textbbrulestxt'] ?></td>

@@ -1,7 +1,7 @@
 <?php
 /**
  * GaiaBB
- * Copyright (c) 2011-2020 The GaiaBB Project
+ * Copyright (c) 2009-2020 The GaiaBB Project
  * https://github.com/vanderaj/gaiabb
  *
  * Based off UltimaBB
@@ -33,9 +33,9 @@ define('ROOTINC', '../include/');
 define('ROOTCLASS', '../class/');
 define('ROOTHELPER', '../helper/');
 
-require_once('../header.php');
-require_once('../include/admincp.inc.php');
-require_once('../helper/formHelper.php');
+require_once '../header.php';
+require_once '../include/admincp.inc.php';
+require_once '../helper/formHelper.php';
 
 loadtpl('cp_header', 'cp_footer', 'cp_message', 'cp_error');
 
@@ -95,7 +95,7 @@ function doImportTheme()
     global $db, $lang;
     $themebits = readFileAsINI($_FILES['themefile']['tmp_name']);
     if (!is_array($themebits)) {
-        $themebits = (array)$themebits;
+        $themebits = (array) $themebits;
     }
 
     if (!array_key_exists('name', $themebits)) {
@@ -109,9 +109,9 @@ function doImportTheme()
             $val = '';
             continue; // Jump over the identity row for MySQL 5.0
         } else
-            if ($key == 'name') {
-                $name = $val;
-            }
+        if ($key == 'name') {
+            $name = $val;
+        }
         $keysql[] = $key;
         $valsql[] = "'$val'";
     }
@@ -963,35 +963,35 @@ function doDisplayThemePanel()
                             <td class="title" align="center"><?php echo $lang['status'] ?></td>
                         </tr>
                         <?php
-                        // altered theme code to produce a 20x speed increase
-                        $themeMem = array(
-                            0 => 0
-                        );
-                        $tq = $db->query("SELECT theme, COUNT(theme) as cnt FROM " . X_PREFIX . "members GROUP BY theme");
-                        while (($t = $db->fetch_array($tq)) != false) {
-                            $themeMem[((int)$t['theme'])] = $t['cnt'];
-                        }
-                        $db->free_result($tq);
+// altered theme code to produce a 20x speed increase
+    $themeMem = array(
+        0 => 0,
+    );
+    $tq = $db->query("SELECT theme, COUNT(theme) as cnt FROM " . X_PREFIX . "members GROUP BY theme");
+    while (($t = $db->fetch_array($tq)) != false) {
+        $themeMem[((int) $t['theme'])] = $t['cnt'];
+    }
+    $db->free_result($tq);
 
-                        $query = $db->query("SELECT name, themestatus, themeid FROM " . X_PREFIX . "themes ORDER BY name ASC");
-                        while (($themeinfo = $db->fetch_array($query)) != false) {
-                            $themeid = $themeinfo['themeid'];
-                            if (!isset($themeMem[$themeid])) {
-                                $themeMem[$themeid] = 0;
-                            }
+    $query = $db->query("SELECT name, themestatus, themeid FROM " . X_PREFIX . "themes ORDER BY name ASC");
+    while (($themeinfo = $db->fetch_array($query)) != false) {
+        $themeid = $themeinfo['themeid'];
+        if (!isset($themeMem[$themeid])) {
+            $themeMem[$themeid] = 0;
+        }
 
-                            if ($themeinfo['themeid'] == $CONFIG['theme']) {
-                                $members = ($themeMem[$themeid] + $themeMem[0]);
-                            } else {
-                                $members = $themeMem[$themeid];
-                            }
+        if ($themeinfo['themeid'] == $CONFIG['theme']) {
+            $members = ($themeMem[$themeid] + $themeMem[0]);
+        } else {
+            $members = $themeMem[$themeid];
+        }
 
-                            if ($themeinfo['themeid'] == $theme) {
-                                $checked = $cheHTML;
-                            } else {
-                                $checked = 'checked="unchecked"';
-                            }
-                            ?>
+        if ($themeinfo['themeid'] == $theme) {
+            $checked = $cheHTML;
+        } else {
+            $checked = 'checked="unchecked"';
+        }
+        ?>
                             <tr>
                                 <td bgcolor="<?php echo $THEME['altbg1'] ?>" class="ctrtablerow"><input
                                             type="checkbox" name="theme_delete[]"
@@ -1010,9 +1010,9 @@ function doDisplayThemePanel()
                                     class="ctrtablerow"><?php echo $themeinfo['themestatus'] ?></td>
                             </tr>
                             <?php
-                        }
-                        $db->free_result($query);
-                        ?>
+}
+    $db->free_result($query);
+    ?>
                         <tr bgcolor="<?php echo $THEME['altbg1'] ?>" class="tablerow">
                             <td colspan="4"><a
                                         href="./cp_themes.php?action=themes&amp;single=anewtheme1"><strong><?php echo $lang['textnewtheme'] ?></strong></a>
@@ -1077,24 +1077,24 @@ if ($action == 'themes') {
     if (noSubmit('themesubmit') && !isset($single) && noSubmit('importsubmit')) {
         doDisplayThemePanel();
     } else
-        if (onSubmit('importsubmit') && isset($_FILES['themefile']['tmp_name'])) {
-            doImportTheme();
-        } else
-            if (onSubmit('themesubmit')) {
-                doUpdateTheme();
-            } else
-                if (isset($single) && $single != 'submit' && $single != 'anewtheme1') {
-                    doDisplayThemes();
-                } else
-                    if (isset($single) && $single == 'anewtheme1') {
-                        doDisplayANewTheme($single);
-                    } else
-                        if (isset($single) && $single == 'submit' && !isset($newtheme)) {
-                            doThemeUpdateSubmit();
-                        } else
-                            if (isset($single) && $single == 'submit' && isset($newtheme)) {
-                                doNewThemeSubmit();
-                            }
+    if (onSubmit('importsubmit') && isset($_FILES['themefile']['tmp_name'])) {
+        doImportTheme();
+    } else
+    if (onSubmit('themesubmit')) {
+        doUpdateTheme();
+    } else
+    if (isset($single) && $single != 'submit' && $single != 'anewtheme1') {
+        doDisplayThemes();
+    } else
+    if (isset($single) && $single == 'anewtheme1') {
+        doDisplayANewTheme($single);
+    } else
+    if (isset($single) && $single == 'submit' && !isset($newtheme)) {
+        doThemeUpdateSubmit();
+    } else
+    if (isset($single) && $single == 'submit' && isset($newtheme)) {
+        doNewThemeSubmit();
+    }
 }
 
 loadtime();

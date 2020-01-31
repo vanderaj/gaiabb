@@ -1,7 +1,7 @@
 <?php
 /**
  * GaiaBB
- * Copyright (c) 2011-2020 The GaiaBB Project
+ * Copyright (c) 2009-2020 The GaiaBB Project
  * https://github.com/vanderaj/gaiabb
  *
  * Based off UltimaBB
@@ -30,8 +30,8 @@
  **/
 define('CACHECONTROL', 'private');
 
-require_once('header.php');
-require_once('class/forum.class.php');
+require_once 'header.php';
+require_once 'class/forum.class.php';
 
 loadtpl('functions_smilieinsert', 'functions_smilieinsert_smilie', 'functions_bbcodeinsert', 'functions_bbcode', 'post_attachmentbox', 'post_edit', 'post_captcha', 'register_captchajs', 'post_edit_attachment', 'post_loggedin', 'post_newpoll', 'post_newthread', 'post_notloggedin', 'post_preview', 'post_reply', 'post_reply_review_post', 'post_reply_review_toolong', 'post_attach_edit_JS', 'post_edit_attach_JS', 'post_edit_delete', 'post_delete_confirm', 'viewforum_password');
 
@@ -105,7 +105,7 @@ if ($tid !== 0) {
     if ($db->num_rows($query) == 1) {
         $thread = $db->fetch_array($query);
         $thread['subject'] = censor(stripslashes($thread['subject']));
-        $fid = (int)$thread['fid'];
+        $fid = (int) $thread['fid'];
         $db->free_result($query);
     } else {
         error($lang['textnothread'], true, '', '', false, true, false, true);
@@ -320,7 +320,7 @@ if (onSubmit('previewpost')) {
 
 switch ($action) {
     case 'newthread':
-        $fattachnum = (int)$forum['attachnum'];
+        $fattachnum = (int) $forum['attachnum'];
         eval('$attachscript = "' . template('post_attach_edit_JS') . '";');
         $priv = privfcheck($forums['private'], $forums['userlist']);
         if ($poll) {
@@ -536,7 +536,7 @@ switch ($action) {
         break;
 
     case 'reply':
-        $fattachnum = (int)$forum['attachnum'];
+        $fattachnum = (int) $forum['attachnum'];
         eval('$attachscript = "' . template('post_attach_edit_JS') . '";');
         nav('<a href="' . 'viewtopic.php?tid=' . $tid . '">' . $thread['subject'] . '</a>');
         nav($lang['textreply']);
@@ -967,7 +967,7 @@ switch ($action) {
                     "smileyoff" => $smileyoff,
                     "message" => $message,
                     "subject" => $subject,
-                    'icon' => $posticon
+                    'icon' => $posticon,
                 );
                 $query = $db->query("SELECT filename, filesize, downloads FROM " . X_PREFIX . "attachments WHERE pid = '$pid' AND tid = '$tid'");
                 if ($db->num_rows($query) > 0) {
@@ -1334,7 +1334,7 @@ switch ($action) {
         }
         break;
     case 'captcha':
-        require_once('captcha.class.php');
+        require_once 'captcha.class.php';
         $captcha = new captcha();
         break;
     default:
@@ -1344,4 +1344,3 @@ switch ($action) {
 
 loadtime();
 eval('echo "' . template('footer') . '";');
-

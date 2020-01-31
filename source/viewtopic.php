@@ -1,7 +1,7 @@
 <?php
 /**
  * GaiaBB
- * Copyright (c) 2011-2020 The GaiaBB Project
+ * Copyright (c) 2009-2020 The GaiaBB Project
  * https://github.com/vanderaj/gaiabb
  *
  * Based off UltimaBB
@@ -32,10 +32,10 @@ if (isset($GET['action']) && $_GET['action'] == 'attachment') {
     define('CACHECONTROL', 'IMAGE');
 }
 
-require_once('header.php');
-require_once('class/attachments.class.php');
-require_once('class/thread.class.php');
-require_once('include/theme.inc.php');
+require_once 'header.php';
+require_once 'class/attachments.class.php';
+require_once 'class/thread.class.php';
+require_once 'include/theme.inc.php';
 
 validatePpp();
 
@@ -44,7 +44,7 @@ $pid = getInt('pid');
 $aid = getInt('aid');
 
 $page = getInt('page');
-$page = (isset($page) && is_numeric($page)) ? ($page < 1 ? 1 : ((int)$page)) : 1;
+$page = (isset($page) && is_numeric($page)) ? ($page < 1 ? 1 : ((int) $page)) : 1;
 $start_limit = ($page > 1) ? (($page - 1) * $self['ppp']) : 0;
 
 $toptopic = formVar('toptopic');
@@ -65,27 +65,27 @@ if ($goto == 'lastpost') {
         $pid = $db->result($query, 0);
         $db->free_result($query);
     } else
-        if ($fid > 0) {
-            $query = $db->query("SELECT f.lastpost as tid, l.pid FROM " . X_PREFIX . "forums f LEFT JOIN " . X_PREFIX . "lastposts l ON l.tid = f.lastpost WHERE fid = '$fid' LIMIT 1");
-            $lastpost = $db->fetch_array($query);
-            $db->free_result($query);
+    if ($fid > 0) {
+        $query = $db->query("SELECT f.lastpost as tid, l.pid FROM " . X_PREFIX . "forums f LEFT JOIN " . X_PREFIX . "lastposts l ON l.tid = f.lastpost WHERE fid = '$fid' LIMIT 1");
+        $lastpost = $db->fetch_array($query);
+        $db->free_result($query);
 
-            $pid = $lastpost['pid'];
-            $tid = $lastpost['tid'];
+        $pid = $lastpost['pid'];
+        $tid = $lastpost['tid'];
 
-            $query = $db->query("SELECT p.pid, p.tid FROM " . X_PREFIX . "posts p, " . X_PREFIX . "forums f WHERE p.fid = f.fid and (f.fup = '$fid') ORDER BY p.pid DESC LIMIT 0,1");
-            $fupPosts = $db->fetch_array($query);
-            $db->free_result($query);
+        $query = $db->query("SELECT p.pid, p.tid FROM " . X_PREFIX . "posts p, " . X_PREFIX . "forums f WHERE p.fid = f.fid and (f.fup = '$fid') ORDER BY p.pid DESC LIMIT 0,1");
+        $fupPosts = $db->fetch_array($query);
+        $db->free_result($query);
 
-            if ($fupPosts['pid'] > $pid) {
-                $pid = $fupPosts['pid'];
-                $tid = $fupPosts['tid'];
-            }
-
-            $query = $db->query("SELECT COUNT(pid) FROM " . X_PREFIX . "posts WHERE tid = '$tid'");
-            $posts = $db->result($query, 0);
-            $db->free_result($query);
+        if ($fupPosts['pid'] > $pid) {
+            $pid = $fupPosts['pid'];
+            $tid = $fupPosts['tid'];
         }
+
+        $query = $db->query("SELECT COUNT(pid) FROM " . X_PREFIX . "posts WHERE tid = '$tid'");
+        $posts = $db->result($query, 0);
+        $db->free_result($query);
+    }
 
     if (isset($self['psorting']) && $self['psorting'] == 'DESC') {
         $page = 1;
@@ -125,11 +125,11 @@ $oldtopics = isset($_COOKIE['oldtopics']) ? $_COOKIE['oldtopics'] : '';
 if (!$oldtopics) {
     put_cookie('oldtopics', '|' . $lastPid . '|', $onlinetime + 600, $cookiepath, $cookiedomain, null, X_SET_HEADER);
 } else
-    if (false === strpos($oldtopics, '|' . $lastPid . '|')) {
-        $expire = $onlinetime + 600;
-        $oldtopics .= $lastPid . '|';
-        put_cookie('oldtopics', $oldtopics, $expire, $cookiepath, $cookiedomain, null, X_SET_HEADER);
-    }
+if (false === strpos($oldtopics, '|' . $lastPid . '|')) {
+    $expire = $onlinetime + 600;
+    $oldtopics .= $lastPid . '|';
+    put_cookie('oldtopics', $oldtopics, $expire, $cookiepath, $cookiedomain, null, X_SET_HEADER);
+}
 
 $thread['subject'] = shortenString(censor($thread['subject']), 80, X_SHORTEN_SOFT | X_SHORTEN_HARD, '...');
 $fid = intval($thread['fid']);
@@ -168,14 +168,14 @@ if (isset($forum['type']) && $forum['type'] == 'forum') {
     btitle(stripslashes($forum['name']));
     btitle(stripslashes($thread['subject']));
 } else
-    if (isset($forum['type']) && isset($forum['type']) == 'sub') {
-        nav('<a href="viewforum.php?fid=' . $fup['fid'] . '">' . stripslashes($fup['name']) . '</a>');
-        nav('<a href="viewforum.php?fid=' . $fid . '">' . stripslashes($forum['name']) . '</a>');
-        nav(stripslashes($thread['subject']));
-        btitle(stripslashes($fup['name']));
-        btitle(stripslashes($forum['name']));
-        btitle(stripslashes($thread['subject']));
-    }
+if (isset($forum['type']) && isset($forum['type']) == 'sub') {
+    nav('<a href="viewforum.php?fid=' . $fup['fid'] . '">' . stripslashes($fup['name']) . '</a>');
+    nav('<a href="viewforum.php?fid=' . $fid . '">' . stripslashes($forum['name']) . '</a>');
+    nav(stripslashes($thread['subject']));
+    btitle(stripslashes($fup['name']));
+    btitle(stripslashes($forum['name']));
+    btitle(stripslashes($thread['subject']));
+}
 
 $allowimgcode = (isset($forum['allowimgcode']) && $forum['allowimgcode'] == 'yes') ? $lang['texton'] : $lang['textoff'];
 $allowsmilies = (isset($forum['allowsmilies']) && $forum['allowsmilies'] == 'yes') ? $lang['texton'] : $lang['textoff'];
@@ -194,7 +194,7 @@ eval('$bbcodescript = "' . template('functions_bbcode') . '";');
 if ($CONFIG['smileyinsert'] == 'on' && $smiliesnum > 0) {
     $max = ($smiliesnum > 16) ? 16 : $smiliesnum;
 
-    srand((double)microtime() * 1000000);
+    srand((double) microtime() * 1000000);
     $keys = array_rand($smiliecache, $max);
 
     $smilies = array();
@@ -395,7 +395,7 @@ if (empty($action)) {
     $query = $db->query("SELECT vote_id FROM " . X_PREFIX . "vote_desc WHERE topic_id = '$tid'");
     if ($query) {
         $vote_id = $db->fetch_array($query);
-        $vote_id = (int)$vote_id['vote_id'];
+        $vote_id = (int) $vote_id['vote_id'];
     }
     $db->free_result($query);
 
@@ -404,7 +404,7 @@ if (empty($action)) {
             $query = $db->query("SELECT COUNT(vote_id) AS cVotes FROM " . X_PREFIX . "vote_voters WHERE vote_id = '$vote_id' AND vote_user_id = '$self[uid]'");
             if ($query) {
                 $voted = $db->fetch_array($query);
-                $voted = (int)$voted['cVotes'];
+                $voted = (int) $voted['cVotes'];
             }
         }
 
@@ -435,7 +435,7 @@ if (empty($action)) {
                     $orig = round($array['votes'] / $num_votes * 100, 2);
                     $percentage = round($orig, 2);
                     $percentage .= '%';
-                    $poll_length = (int)$orig;
+                    $poll_length = (int) $orig;
                     if ($poll_length > 97) {
                         $poll_length = 97;
                     }
@@ -450,7 +450,7 @@ if (empty($action)) {
             $results = ' - [ <a href="viewtopic.php?tid=' . $tid . '&amp;viewresults=yes"><font color="' . $THEME['cattext'] . '">' . $lang['viewresults'] . '</font></a> ]';
             $query = $db->query("SELECT vote_option_id, vote_option_text FROM " . X_PREFIX . "vote_results WHERE vote_id = '$vote_id'");
             while (($result = $db->fetch_array($query)) != false) {
-                $poll['id'] = (int)$result['vote_option_id'];
+                $poll['id'] = (int) $result['vote_option_id'];
                 $poll['name'] = $result['vote_option_text'];
                 eval('$pollhtml .= "' . template('viewtopic_poll_options') . '";');
             }
@@ -623,24 +623,24 @@ if (empty($action)) {
                 $rank['stars'] = $rankinfo['stars'];
                 $rank['avatarrank'] = $rankinfo['avatarrank'];
             } else
-                if ($post['status'] == 'Banned') {
-                    $rank['allowavatars'] = 'no';
-                    $rank['title'] = $lang['textbanned'];
-                    $rank['stars'] = 0;
-                    $rank['avatarrank'] = '';
-                } else {
-                    $last_max = -1;
-                    foreach ($rankposts as $key => $rankstuff) {
-                        if ($post['postnum'] >= $key && $key > $last_max) {
-                            $last_max = $key;
-                            $rankinfo = $rankstuff;
-                            $rank['allowavatars'] = $rankinfo['allowavatars'];
-                            $rank['title'] = $rankinfo['title'];
-                            $rank['stars'] = $rankinfo['stars'];
-                            $rank['avatarrank'] = $rankinfo['avatarrank'];
-                        }
+            if ($post['status'] == 'Banned') {
+                $rank['allowavatars'] = 'no';
+                $rank['title'] = $lang['textbanned'];
+                $rank['stars'] = 0;
+                $rank['avatarrank'] = '';
+            } else {
+                $last_max = -1;
+                foreach ($rankposts as $key => $rankstuff) {
+                    if ($post['postnum'] >= $key && $key > $last_max) {
+                        $last_max = $key;
+                        $rankinfo = $rankstuff;
+                        $rank['allowavatars'] = $rankinfo['allowavatars'];
+                        $rank['title'] = $rankinfo['title'];
+                        $rank['stars'] = $rankinfo['stars'];
+                        $rank['avatarrank'] = $rankinfo['avatarrank'];
                     }
                 }
+            }
 
             $allowavatars = $rank['allowavatars'];
 
@@ -833,10 +833,10 @@ if (empty($action)) {
                 $post['sig'] = postify($post['sig'], 'no', 'no', $forum['allowsmilies'], $CONFIG['sigbbcode'], $forum['allowimgcode']);
                 eval("\$post['message'] .= \"" . template('viewtopic_post_sig') . "\";");
             } else
-                if (empty($post['sig'])) {
-                    $usesig = false;
-                    eval("\$post['message'] .= \"" . template('viewtopic_post_nosig') . "\";");
-                }
+            if (empty($post['sig'])) {
+                $usesig = false;
+                eval("\$post['message'] .= \"" . template('viewtopic_post_nosig') . "\";");
+            }
         } else {
             if (X_MEMBER && !isset($self['viewsigs']) && $self['viewsigs'] == 'no') {
                 eval("\$post['message'] .= \"" . template('viewtopic_post_nosig') . "\";");
@@ -920,62 +920,62 @@ if (empty($action)) {
     eval('echo "' . template('footer') . '";');
     exit();
 } else
-    if ($action == 'attachment' && isset($forum['attachstatus']) && $forum['attachstatus'] != 'off' && $pid > 0 && $tid > 0 && $aid > 0) {
-        pwverify($forum['password'], 'viewtopic.php?tid=' . $tid, $fid, true);
-        if (X_GUEST && $CONFIG['viewattach'] == 'no') {
-            error($lang['Download_Halt_Msg']);
-        }
-
-        $query = $db->query("SELECT * FROM " . X_PREFIX . "attachments WHERE pid = '$pid' AND tid = '$tid' AND aid = '$aid'");
-        $file = $db->fetch_array($query);
-        $db->free_result($query);
-
-        $db->query("UPDATE " . X_PREFIX . "attachments SET downloads = downloads+1 WHERE pid = '$pid' AND aid = '$aid'");
-
-        if ($file['filesize'] != strlen($file['attachment'])) {
-            error($lang['File_Corrupt']);
-        }
-
-        $type = $file['filetype'];
-
-        if ($type == "image/pjpeg") {
-            $type = "image/jpeg";
-        }
-
-        $name = str_replace(' ', '_', $file['filename']);
-        $size = (int)$file['filesize'];
-        $type = (strtolower($type) == 'text/html') ? 'text/plain' : $type;
-
-        header("Content-type: $type");
-        header("Content-length: $size");
-        header("Content-Disposition: inline; filename = $name");
-        header("Content-Description: PHP Generated Attachments");
-        header("Cache-Control: public; max-age=604800");
-        header("Expires: 604800");
-
-        echo $file['attachment'];
-        exit();
-    } else {
-        if ($action == 'printable') {
-            pwverify($forum['password'], 'viewtopic.php?tid=' . $tid, $fid, true);
-
-            $querypost = $db->query("SELECT p.*, m.*,w.time FROM " . X_PREFIX . "posts p LEFT JOIN " . X_PREFIX . "members m ON m.username = p.author LEFT JOIN " . X_PREFIX . "whosonline w ON p.author = w.username WHERE p.fid = '$fid' AND p.tid = '$tid' ORDER BY p.pid $self[psorting] LIMIT $start_limit, " . $self['ppp']);
-            $posts = '';
-            $tmoffset = ($self['timeoffset'] * 3600) + $self['daylightsavings'];
-            while (($post = $db->fetch_array($querypost)) != false) {
-                if ($post['status'] == 'Banned') {
-                    $post['message'] = $lang['bannedpostmsg'];
-                } else {
-                    $post['message'] = censor($post['message']);
-                    $post['message'] = postify($post['message'], $post['smileyoff'], $post['bbcodeoff'], $forum['allowsmilies'], $forum['allowbbcode'], $forum['allowimgcode']);
-                }
-                $date = gmdate($self['dateformat'], $post['dateline'] + $tmoffset);
-                $time = gmdate($self['timecode'], $post['dateline'] + $tmoffset);
-                $poston = $date . ' ' . $lang['textat'] . ' ' . $time;
-
-                eval('$posts .= "' . template('viewtopic_printable_row') . '";');
-            }
-            $db->free_result($querypost);
-            eval('echo stripslashes("' . template('viewtopic_printable') . '");');
-        }
+if ($action == 'attachment' && isset($forum['attachstatus']) && $forum['attachstatus'] != 'off' && $pid > 0 && $tid > 0 && $aid > 0) {
+    pwverify($forum['password'], 'viewtopic.php?tid=' . $tid, $fid, true);
+    if (X_GUEST && $CONFIG['viewattach'] == 'no') {
+        error($lang['Download_Halt_Msg']);
     }
+
+    $query = $db->query("SELECT * FROM " . X_PREFIX . "attachments WHERE pid = '$pid' AND tid = '$tid' AND aid = '$aid'");
+    $file = $db->fetch_array($query);
+    $db->free_result($query);
+
+    $db->query("UPDATE " . X_PREFIX . "attachments SET downloads = downloads+1 WHERE pid = '$pid' AND aid = '$aid'");
+
+    if ($file['filesize'] != strlen($file['attachment'])) {
+        error($lang['File_Corrupt']);
+    }
+
+    $type = $file['filetype'];
+
+    if ($type == "image/pjpeg") {
+        $type = "image/jpeg";
+    }
+
+    $name = str_replace(' ', '_', $file['filename']);
+    $size = (int) $file['filesize'];
+    $type = (strtolower($type) == 'text/html') ? 'text/plain' : $type;
+
+    header("Content-type: $type");
+    header("Content-length: $size");
+    header("Content-Disposition: inline; filename = $name");
+    header("Content-Description: PHP Generated Attachments");
+    header("Cache-Control: public; max-age=604800");
+    header("Expires: 604800");
+
+    echo $file['attachment'];
+    exit();
+} else {
+    if ($action == 'printable') {
+        pwverify($forum['password'], 'viewtopic.php?tid=' . $tid, $fid, true);
+
+        $querypost = $db->query("SELECT p.*, m.*,w.time FROM " . X_PREFIX . "posts p LEFT JOIN " . X_PREFIX . "members m ON m.username = p.author LEFT JOIN " . X_PREFIX . "whosonline w ON p.author = w.username WHERE p.fid = '$fid' AND p.tid = '$tid' ORDER BY p.pid $self[psorting] LIMIT $start_limit, " . $self['ppp']);
+        $posts = '';
+        $tmoffset = ($self['timeoffset'] * 3600) + $self['daylightsavings'];
+        while (($post = $db->fetch_array($querypost)) != false) {
+            if ($post['status'] == 'Banned') {
+                $post['message'] = $lang['bannedpostmsg'];
+            } else {
+                $post['message'] = censor($post['message']);
+                $post['message'] = postify($post['message'], $post['smileyoff'], $post['bbcodeoff'], $forum['allowsmilies'], $forum['allowbbcode'], $forum['allowimgcode']);
+            }
+            $date = gmdate($self['dateformat'], $post['dateline'] + $tmoffset);
+            $time = gmdate($self['timecode'], $post['dateline'] + $tmoffset);
+            $poston = $date . ' ' . $lang['textat'] . ' ' . $time;
+
+            eval('$posts .= "' . template('viewtopic_printable_row') . '";');
+        }
+        $db->free_result($querypost);
+        eval('echo stripslashes("' . template('viewtopic_printable') . '");');
+    }
+}

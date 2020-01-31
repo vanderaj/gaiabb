@@ -1,7 +1,7 @@
 <?php
 /**
  * GaiaBB
- * Copyright (c) 2011-2020 The GaiaBB Project
+ * Copyright (c) 2009-2020 The GaiaBB Project
  * https://github.com/vanderaj/gaiabb
  *
  * Based off UltimaBB
@@ -29,8 +29,7 @@
  *
  **/
 
-
-require_once('header.php');
+require_once 'header.php';
 
 loadtpl('email_member');
 
@@ -110,12 +109,12 @@ if (onSubmit('emailsubmit')) {
     $tpl_keys = array(
         '{TO}',
         '{FROM}',
-        '{MSG}'
+        '{MSG}',
     );
     $tpl_values = array(
         $sendto['username'],
         $name,
-        $message
+        $message,
     );
     $msgbody = str_replace($tpl_keys, $tpl_values, $lang['emailmemmsg']);
 

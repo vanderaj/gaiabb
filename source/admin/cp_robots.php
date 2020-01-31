@@ -1,7 +1,7 @@
 <?php
 /**
  * GaiaBB
- * Copyright (c) 2011-2020 The GaiaBB Project
+ * Copyright (c) 2009-2020 The GaiaBB Project
  * https://github.com/vanderaj/gaiabb
  *
  * Based off UltimaBB
@@ -33,8 +33,8 @@ define('ROOT', '../');
 define('ROOTINC', '../include/');
 define('ROOTCLASS', '../class/');
 
-require_once('../header.php');
-require_once('../include/admincp.inc.php');
+require_once '../header.php';
+require_once '../include/admincp.inc.php';
 
 loadtpl('cp_header', 'cp_footer', 'cp_message', 'cp_error');
 
@@ -117,13 +117,13 @@ function viewSearchPanel()
                             <td class="title"><?php echo $lang['textrobotagent'] ?></td>
                         </tr>
                         <?php
-                        $srchbot = $db->escape(formVar('srchbot'));
-                        if (!empty($srchbot)) {
-                            $srchbot = "WHERE robot_fullname LIKE '%" . $srchbot . "%' ";
-                        }
-                        $query = $db->query("SELECT * FROM " . X_PREFIX . "robots $srchbot ORDER BY robot_fullname");
-                        while (($robot = $db->fetch_array($query)) != false) {
-                            ?>
+$srchbot = $db->escape(formVar('srchbot'));
+    if (!empty($srchbot)) {
+        $srchbot = "WHERE robot_fullname LIKE '%" . $srchbot . "%' ";
+    }
+    $query = $db->query("SELECT * FROM " . X_PREFIX . "robots $srchbot ORDER BY robot_fullname");
+    while (($robot = $db->fetch_array($query)) != false) {
+        ?>
                             <tr bgcolor="<?php echo $THEME['altbg2'] ?>" class="tablerow">
                                 <td align="center"><input type="checkbox"
                                                           name="delete<?php echo $robot['robot_id'] ?>"
@@ -136,8 +136,8 @@ function viewSearchPanel()
                                            value="<?php echo $robot['robot_string'] ?>"/></td>
                             </tr>
                             <?php
-                        }
-                        ?>
+}
+    ?>
                         <tr>
                             <td bgcolor="<?php echo $THEME['altbg2'] ?>" colspan="4">&nbsp;</td>
                         </tr>

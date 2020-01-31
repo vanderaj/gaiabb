@@ -1,7 +1,7 @@
 <?php
 /**
  * GaiaBB
- * Copyright (c) 2011-2020 The GaiaBB Project
+ * Copyright (c) 2009-2020 The GaiaBB Project
  * https://github.com/vanderaj/gaiabb
  *
  * Based off UltimaBB
@@ -29,8 +29,7 @@
  *
  **/
 
-
-require_once('header.php');
+require_once 'header.php';
 
 loadtpl('stats');
 
@@ -84,7 +83,7 @@ if ($posts == false) {
 $db->free_result($q);
 
 $query = $db->query("SELECT regdate FROM " . X_PREFIX . "members ORDER BY regdate LIMIT 0, 1");
-$days = ($onlinetime - @$db->result($query, 0)) / 86400;
+$days = ($onlinetime-@$db->result($query, 0)) / 86400;
 if ($days > 0) {
     $membersday = number_format(($members / $days), 2);
 } else {
@@ -212,4 +211,3 @@ eval('echo stripslashes("' . template('stats') . '");');
 
 loadtime();
 eval('echo "' . template('footer') . '";');
-

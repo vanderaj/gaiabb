@@ -1,7 +1,7 @@
 <?php
 /**
  * GaiaBB
- * Copyright (c) 2011-2020 The GaiaBB Project
+ * Copyright (c) 2009-2020 The GaiaBB Project
  * https://github.com/vanderaj/gaiabb
  *
  * Based off UltimaBB
@@ -33,8 +33,8 @@ define('ROOT', '../');
 define('ROOTINC', '../include/');
 define('ROOTCLASS', '../class/');
 
-require_once('../header.php');
-require_once('../include/admincp.inc.php');
+require_once '../header.php';
+require_once '../include/admincp.inc.php';
 
 loadtpl('cp_header', 'cp_footer', 'cp_message', 'cp_error');
 
@@ -197,10 +197,10 @@ function doPanel()
                         </td>
                     </tr>
                     <?php
-                    foreach ($list as $num => $val) {
-                        ?>
+foreach ($list as $num => $val) {
+        ?>
                         <tr class="tablerow" width="5%">
-                            <td align="left" bgcolor="<?php echo $THEME['altbg2'] ?>"><strong><?php echo($num + 1) ?>
+                            <td align="left" bgcolor="<?php echo $THEME['altbg2'] ?>"><strong><?php echo ($num + 1) ?>
                                     .</strong>
                             </td>
                             <td align="left" width="95%"
@@ -209,8 +209,8 @@ function doPanel()
                             </td>
                         </tr>
                         <?php
-                    }
-                    ?>
+}
+    ?>
                 </table>
             </td>
         </tr>

@@ -1,7 +1,7 @@
 <?php
 /**
  * GaiaBB
- * Copyright (c) 2011-2020 The GaiaBB Project
+ * Copyright (c) 2009-2020 The GaiaBB Project
  * https://github.com/vanderaj/gaiabb
  *
  * Based off UltimaBB
@@ -29,11 +29,9 @@
  *
  **/
 
-
 define('CACHECONTROL', 'nocache');
 
-
-require_once('header.php');
+require_once 'header.php';
 
 loadtpl('lostpw');
 
@@ -77,7 +75,7 @@ if (noSubmit('lostpwsubmit')) {
 
     $chars = '23456789abcdefghjkmnpqrstuvwxyz';
     $newpass = '';
-    mt_srand((double)microtime() * 1000000);
+    mt_srand((double) microtime() * 1000000);
     $max = mt_rand(8, 12);
     for ($get = strlen($chars), $i = 0; $i < $max; $i++) {
         $newpass .= $chars[mt_rand(0, $get)];
@@ -95,12 +93,12 @@ if (noSubmit('lostpwsubmit')) {
 
     $messagebody = $lang['textyourpwis'] . "\n\n" . $member['username'] . "\n" . $newpass;
 
-    if (empty($CONFIG['adminemail']))     // The mail class can handle this error, but it'll describe it vaguely
+    if (empty($CONFIG['adminemail'])) // The mail class can handle this error, but it'll describe it vaguely
     {
         error($lang['noadminemail'], false, '', '', 'admin/cp_board.php', true, false, true);
     }
 
-    if (empty($CONFIG['bbname']))     // The mail class can handle this error, but it'll describe it vaguely
+    if (empty($CONFIG['bbname'])) // The mail class can handle this error, but it'll describe it vaguely
     {
         error($lang['nobbname'], false, '', '', 'admin/cp_board.php', true, false, true);
     }
@@ -116,4 +114,3 @@ if (noSubmit('lostpwsubmit')) {
 
 loadtime();
 eval('echo "' . template('footer') . '";');
-

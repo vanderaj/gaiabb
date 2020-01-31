@@ -1,6 +1,6 @@
 /**
  * GaiaBB
- * Copyright (c) 2009 The GaiaBB Group
+ * Copyright (c) 2009-2020 The GaiaBB Group
  * https://github.com/vanderaj/gaiabb
  *
  * Based off UltimaBB
@@ -78,7 +78,7 @@ function getElementsByClassName(classname) {
     var a = [];
     var re = new RegExp('\\b' + classname + '\\b');
     var els;
-    if (typeof(document.all) != 'undefined') {
+    if (typeof (document.all) != 'undefined') {
         els = document.all;
     }
     else {

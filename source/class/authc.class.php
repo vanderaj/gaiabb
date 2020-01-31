@@ -1,7 +1,7 @@
 <?php
 /**
  * GaiaBB
- * Copyright (c) 2011-2020 The GaiaBB Project
+ * Copyright (c) 2009-2020 The GaiaBB Project
  * https://github.com/vanderaj/gaiabb
  *
  * Based off UltimaBB
@@ -39,7 +39,7 @@ class AuthState
     public $gbbpw;
     private $state;
 
-    function __construct()
+    public function __construct()
     {
         $this->state = array();
         $this->gbbuid = '';
@@ -48,7 +48,7 @@ class AuthState
         $this->get();
     }
 
-    function get()
+    public function get()
     {
         if (isset($_COOKIE['gbbstate'])) {
             try {
@@ -81,7 +81,7 @@ class AuthState
         }
     }
 
-    function convert()
+    public function convert()
     {
         if (isset($_COOKIE['gbbuid'])) {
             $this->gbbuid = $_COOKIE['gbbuid'];
@@ -94,7 +94,7 @@ class AuthState
         $this->update();
     }
 
-    function update()
+    public function update()
     {
         global $onlinetime, $cookiepath, $cookiedomain;
 
@@ -124,11 +124,11 @@ class AuthState
 class AuthC
 {
 
-    function __construct()
+    public function __construct()
     {
     }
 
-    function autoLogin()
+    public function autoLogin()
     {
         global $db, $self, $gbbuser, $gbbpw, $gbbuid, $onlinetime, $CONFIG;
 
@@ -141,12 +141,12 @@ class AuthC
         if (isset($_SESSION['gbbuid']) && $_SESSION['gbbuid'] > 0) {
             $auto = $this->autoLoginViaSession();
         } else
-            if (isset($_COOKIE['gbbstate'])) {
-                $auto = $this->autoLoginViaAuthState();
-            } else
-                if (isset($_COOKIE['gbbuid'])) {
-                    $auto = $this->autoLoginViaCookie();
-                }
+        if (isset($_COOKIE['gbbstate'])) {
+            $auto = $this->autoLoginViaAuthState();
+        } else
+        if (isset($_COOKIE['gbbuid'])) {
+            $auto = $this->autoLoginViaCookie();
+        }
 
         $q = false;
         $self['status'] = '';
@@ -231,12 +231,12 @@ class AuthC
                 'expview' => 'no',
                 'threadnum' => 0,
                 'readrules' => 'no',
-                'forcelogout' => 'no'
+                'forcelogout' => 'no',
             );
         }
     }
 
-    function autoLoginViaSession()
+    public function autoLoginViaSession()
     {
         global $gbbpw, $gbbuid;
 
@@ -251,7 +251,7 @@ class AuthC
         return $retval;
     }
 
-    function autoLoginViaAuthState()
+    public function autoLoginViaAuthState()
     {
         global $gbbpw, $gbbuid, $authState;
 
@@ -268,7 +268,7 @@ class AuthC
         return $retval;
     }
 
-    function autoLoginViaCookie()
+    public function autoLoginViaCookie()
     {
         global $authState;
 
@@ -281,7 +281,7 @@ class AuthC
         return $retval;
     }
 
-    function updateLastVisit()
+    public function updateLastVisit()
     {
         global $onlinetime, $cookiepath, $cookiedomain;
         global $gbblva, $gbblvb;
@@ -307,7 +307,7 @@ class AuthC
         $lastvisit2 = $lastvisit - 540;
     }
 
-    function updateOldTopics()
+    public function updateOldTopics()
     {
         global $onlinetime, $cookiepath, $cookiedomain;
 
@@ -317,7 +317,7 @@ class AuthC
         }
     }
 
-    function checkExcessiveLogins()
+    public function checkExcessiveLogins()
     {
         global $lang, $onlinetime, $THEME, $shadow;
 
@@ -333,7 +333,7 @@ class AuthC
         return $errmsg;
     }
 
-    function checkForceLogout()
+    public function checkForceLogout()
     {
         global $lang, $db, $onlinetime, $self;
 
@@ -347,7 +347,7 @@ class AuthC
         }
     }
 
-    function logout($url = 'index.php', $delay = 0)
+    public function logout($url = 'index.php', $delay = 0)
     {
         global $db, $onlinetime, $cookiepath, $cookiedomain, $self;
 
@@ -390,7 +390,7 @@ class AuthC
         redirect($url, $delay, (($delay > 0) ? X_REDIRECT_JS : X_REDIRECT_HEADER));
     }
 
-    function expireCaches()
+    public function expireCaches()
     {
         global $config_cache, $moderators_cache;
 
@@ -402,7 +402,7 @@ class AuthC
         $config_cache->expire('forumjump');
     }
 
-    function login()
+    public function login()
     {
         global $db, $member, $cookiedomain, $cookiepath, $onlinetime, $onlineip, $authState, $gbbuid, $gbbpw;
 
@@ -455,7 +455,7 @@ class AuthC
         return $errmsg;
     }
 
-    function updateLoginCounters()
+    public function updateLoginCounters()
     {
         global $CONFIG, $onlinetime, $lang, $THEME, $shadow;
 
@@ -475,4 +475,3 @@ class AuthC
         return $errmsg;
     }
 }
-

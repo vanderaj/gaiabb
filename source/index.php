@@ -1,7 +1,7 @@
 <?php
 /**
  * GaiaBB
- * Copyright (c) 2011-2020 The GaiaBB Project
+ * Copyright (c) 2009-2020 The GaiaBB Project
  * https://github.com/vanderaj/gaiabb
  *
  * Based off UltimaBB
@@ -29,8 +29,7 @@
  *
  **/
 
-
-require_once('header.php');
+require_once 'header.php';
 
 loadtpl('index', 'index_boardoffmsg', 'index_category', 'index_category_spacer', 'index_forum', 'index_forum_lastpost', 'index_forum_nolastpost', 'index_forum_row', 'index_login', 'index_member', 'index_member_avatar', 'index_member_notepad', 'index_member_pm', 'index_news', 'index_stats', 'index_whosonline', 'index_whosonline_iconkey', 'index_whosonline_key', 'index_whosonline_today');
 
@@ -162,25 +161,25 @@ if ($gid == 0) {
                     $onlineMembers[] = $online;
                     $hiddencount++;
                 } else
-                    if ($online['invisible'] != 0) {
-                        $hiddencount++;
-                    } else {
-                        $onlineMembers[] = $online;
-                        $membercount++;
-                    }
+                if ($online['invisible'] != 0) {
+                    $hiddencount++;
+                } else {
+                    $onlineMembers[] = $online;
+                    $membercount++;
+                }
                 break;
         }
     }
     $db->free_result($q);
 
     $onlinetotal = $guestcount + $robotcount + $membercount + $hiddencount;
-    $CONFIG['mostonlinecount'] = (int)$CONFIG['mostonlinecount'];
+    $CONFIG['mostonlinecount'] = (int) $CONFIG['mostonlinecount'];
     if ($onlinetotal > $CONFIG['mostonlinecount']) {
         $db->query("UPDATE " . X_PREFIX . "settings SET config_value = '$onlinetime' WHERE config_name = 'mostonlinetime'");
         $db->query("UPDATE " . X_PREFIX . "settings SET config_value = '$onlinetotal' WHERE config_name = 'mostonlinecount'");
     }
 
-    $CONFIG['mostonlinetime'] = (int)$CONFIG['mostonlinetime'];
+    $CONFIG['mostonlinetime'] = (int) $CONFIG['mostonlinetime'];
     if ($CONFIG['mostonlinetime'] == 0) {
         $mosttext = $lang['Most_Users_None'];
     } else {
@@ -460,11 +459,11 @@ if ($gid == 0) {
     if ($gueststodaycount == 0) {
         $todayguests = $lang['tgvisitno'];
     } else
-        if ($gueststodaycount == 1) {
-            $todayguests = $lang['tgvisit1'];
-        } else {
-            $todayguests = $lang['tgvisitand'] . ' <strong>' . $gueststodaycount . '</strong>' . $lang['tgvisitcount'];
-        }
+    if ($gueststodaycount == 1) {
+        $todayguests = $lang['tgvisit1'];
+    } else {
+        $todayguests = $lang['tgvisitand'] . ' <strong>' . $gueststodaycount . '</strong>' . $lang['tgvisitcount'];
+    }
 
     $q = $db->query("SELECT COUNT(*) AS robots FROM " . X_PREFIX . "robotcount WHERE onlinetime >= '$datecut'");
     $robotstoday = $db->result($q, 0);
@@ -478,11 +477,11 @@ if ($gid == 0) {
     if ($robotstodaycount == 0) {
         $todayrobots = $lang['trvisitno'];
     } else
-        if ($robotstodaycount == 1) {
-            $todayrobots = $lang['trvisit1'];
-        } else {
-            $todayrobots = $lang['trvisitand'] . '<strong>' . $robotstodaycount . '</strong>' . $lang['trvisitcount'];
-        }
+    if ($robotstodaycount == 1) {
+        $todayrobots = $lang['trvisit1'];
+    } else {
+        $todayrobots = $lang['trvisitand'] . '<strong>' . $robotstodaycount . '</strong>' . $lang['trvisitcount'];
+    }
 
     $todaymembers = implode(', ', $todaymembers);
 
@@ -566,4 +565,3 @@ eval('echo stripslashes("' . template('index') . '");');
 
 loadtime();
 eval('echo "' . template('footer') . '";');
-?>

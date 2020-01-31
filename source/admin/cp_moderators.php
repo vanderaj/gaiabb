@@ -1,7 +1,7 @@
 <?php
 /**
  * GaiaBB
- * Copyright (c) 2011-2020 The GaiaBB Project
+ * Copyright (c) 2009-2020 The GaiaBB Project
  * https://github.com/vanderaj/gaiabb
  *
  * Based off UltimaBB
@@ -33,8 +33,8 @@ define('ROOT', '../');
 define('ROOTINC', '../include/');
 define('ROOTCLASS', '../class/');
 
-require_once('../header.php');
-require_once('../include/admincp.inc.php');
+require_once '../header.php';
+require_once '../include/admincp.inc.php';
 
 loadtpl('cp_header', 'cp_footer', 'cp_message', 'cp_error');
 
@@ -79,27 +79,27 @@ function viewPanel()
                             </td>
                         </tr>
                         <?php
-                        $oldfid = 0;
-                        $query = $db->query("SELECT f.moderator, f.name, f.fid, c.name as cat_name, c.fid as cat_fid FROM " . X_PREFIX . "forums f LEFT JOIN " . X_PREFIX . "forums c ON (f.fup = c.fid) WHERE (c.type = 'group' AND f.type = 'forum') OR (f.type = 'forum' AND f.fup = '') ORDER BY c.displayorder, f.displayorder");
-                        while (($forum = $db->fetch_array($query)) != false) {
-                            if ($oldfid != $forum['cat_fid']) {
-                                $oldfid = $forum['cat_fid'];
-                                ?>
+$oldfid = 0;
+    $query = $db->query("SELECT f.moderator, f.name, f.fid, c.name as cat_name, c.fid as cat_fid FROM " . X_PREFIX . "forums f LEFT JOIN " . X_PREFIX . "forums c ON (f.fup = c.fid) WHERE (c.type = 'group' AND f.type = 'forum') OR (f.type = 'forum' AND f.fup = '') ORDER BY c.displayorder, f.displayorder");
+    while (($forum = $db->fetch_array($query)) != false) {
+        if ($oldfid != $forum['cat_fid']) {
+            $oldfid = $forum['cat_fid'];
+            ?>
                                 <tr bgcolor="<?php echo $THEME['altbg1'] ?>" class="tablerow">
                                     <td colspan="2"><strong><?php echo stripslashes($forum['cat_name']) ?></strong></td>
                                 </tr>
                                 <?php
-                            }
-                            ?>
+}
+        ?>
                             <tr bgcolor="<?php echo $THEME['altbg2'] ?>" class="tablerow">
                                 <td><?php echo stripslashes($forum['name']) ?></td>
                                 <td><input type="text" name="mod[<?php echo $forum['fid'] ?>]"
                                            value="<?php echo stripslashes($forum['moderator']) ?>"/></td>
                             </tr>
                             <?php
-                            $querys = $db->query("SELECT name, fid, moderator FROM " . X_PREFIX . "forums WHERE fup = '$forum[fid]' AND type = 'sub'");
-                            while (($sub = $db->fetch_array($querys)) != false) {
-                                ?>
+$querys = $db->query("SELECT name, fid, moderator FROM " . X_PREFIX . "forums WHERE fup = '$forum[fid]' AND type = 'sub'");
+        while (($sub = $db->fetch_array($querys)) != false) {
+            ?>
                                 <tr bgcolor="<?php echo $THEME['altbg2'] ?>" class="tablerow">
                                     <td><?php echo $lang['4spaces'] ?><?php echo $lang['4spaces'] ?>
                                         <em><?php echo stripslashes($sub['name']) ?></em></td>
@@ -107,11 +107,11 @@ function viewPanel()
                                                value="<?php echo stripslashes($sub['moderator']) ?>"/></td>
                                 </tr>
                                 <?php
-                            }
-                            $db->free_result($querys);
-                        }
-                        $db->free_result($query);
-                        ?>
+}
+        $db->free_result($querys);
+    }
+    $db->free_result($query);
+    ?>
                         <tr>
                             <td colspan="2" class="tablerow"
                                 bgcolor="<?php echo $THEME['altbg1'] ?>"><span

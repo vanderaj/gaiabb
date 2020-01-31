@@ -1,7 +1,7 @@
 <?php
 /**
  * GaiaBB
- * Copyright (c) 2011-2020 The GaiaBB Project
+ * Copyright (c) 2009-2020 The GaiaBB Project
  * https://github.com/vanderaj/gaiabb
  *
  * Based off UltimaBB
@@ -34,9 +34,9 @@ define('ROOTINC', '../include/');
 define('ROOTCLASS', '../class/');
 define('ROOTHELPER', '../helper/');
 
-require_once('../header.php');
-require_once('../include/admincp.inc.php');
-require_once('../helper/formHelper.php');
+require_once '../header.php';
+require_once '../include/admincp.inc.php';
+require_once '../helper/formHelper.php';
 
 loadtpl('cp_header', 'cp_footer', 'cp_message', 'cp_error');
 
@@ -71,8 +71,8 @@ function viewPanel()
     $CONFIG['smtpusername'] = stripslashes($CONFIG['smtpusername']);
     $CONFIG['smtppassword'] = stripslashes($CONFIG['smtppassword']);
     $CONFIG['smtphost'] = stripslashes($CONFIG['smtphost']);
-    $CONFIG['smtpport'] = (int)($CONFIG['smtpport']);
-    $CONFIG['smtptimeout'] = (int)($CONFIG['smtptimeout']);
+    $CONFIG['smtpport'] = (int) ($CONFIG['smtpport']);
+    $CONFIG['smtptimeout'] = (int) ($CONFIG['smtptimeout']);
     ?>
     <form method="post" action="cp_smtp.php">
         <input type="hidden" name="token"
@@ -89,14 +89,14 @@ function viewPanel()
                             </td>
                         </tr>
                         <?php
-                        formHelper::formSelectOnOff($lang['Smtp_Status'], 'smtp_statusnew', $smtp_statuson, $smtp_statusoff);
-                        formHelper::formTextBox($lang['Smtp_Server'], 'smtpServernew', $CONFIG['smtpServer'], 50);
-                        formHelper::formTextBox($lang['Smtp_Port_Number'], 'smtpportnew', $CONFIG['smtpport'], 4);
-                        formHelper::formTextBox($lang['Smtp_Timeout'], 'smtptimeoutnew', $CONFIG['smtptimeout'], 3);
-                        formHelper::formTextBox($lang['Smtp_Username'], 'smtpusernamenew', $CONFIG['smtpusername'], 50);
-                        formHelper::formTextPassBox($lang['Smtp_Password'], 'smtppasswordnew', $CONFIG['smtppassword'], 50, true);
-                        formHelper::formTextBox($lang['Smtp_Host'], 'smtphostnew', $CONFIG['smtphost'], 50);
-                        ?>
+formHelper::formSelectOnOff($lang['Smtp_Status'], 'smtp_statusnew', $smtp_statuson, $smtp_statusoff);
+    formHelper::formTextBox($lang['Smtp_Server'], 'smtpServernew', $CONFIG['smtpServer'], 50);
+    formHelper::formTextBox($lang['Smtp_Port_Number'], 'smtpportnew', $CONFIG['smtpport'], 4);
+    formHelper::formTextBox($lang['Smtp_Timeout'], 'smtptimeoutnew', $CONFIG['smtptimeout'], 3);
+    formHelper::formTextBox($lang['Smtp_Username'], 'smtpusernamenew', $CONFIG['smtpusername'], 50);
+    formHelper::formTextPassBox($lang['Smtp_Password'], 'smtppasswordnew', $CONFIG['smtppassword'], 50, true);
+    formHelper::formTextBox($lang['Smtp_Host'], 'smtphostnew', $CONFIG['smtphost'], 50);
+    ?>
                         <tr>
                             <td class="ctrtablerow" bgcolor="<?php echo $THEME['altbg2'] ?>"
                                 colspan="2"><input class="submit" type="submit" name="smtpsubmit"
@@ -143,7 +143,7 @@ function doPanel()
         'smtpusername' => $smtpusernamenew,
         'smtppassword' => $smtppasswordnew,
         'smtphost' => $smtphostnew,
-        'smtp_status' => $smtp_statusnew
+        'smtp_status' => $smtp_statusnew,
     );
 
     // execute query

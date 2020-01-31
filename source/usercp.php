@@ -1,7 +1,7 @@
 <?php
 /**
  * GaiaBB
- * Copyright (c) 2011-2020 The GaiaBB Project
+ * Copyright (c) 2009-2020 The GaiaBB Project
  * https://github.com/vanderaj/gaiabb
  *
  * Based off UltimaBB
@@ -29,8 +29,8 @@
  *
  **/
 
-require_once('header.php');
-require_once('include/usercp.inc.php');
+require_once 'header.php';
+require_once 'include/usercp.inc.php';
 
 if (X_GUEST) {
     redirect('login.php', 0);
@@ -46,7 +46,7 @@ smcwcache();
 
 eval('$css = "' . template('css') . '";');
 
-$favs = $menu = NULL;
+$favs = $menu = null;
 
 $config_cache->expire('settings');
 $config_cache->expire('theme');
@@ -319,12 +319,12 @@ switch ($action) {
         if (empty($subadd) && noSubmit('subsubmit')) {
             $userObj->viewSubscriptions();
         } else
-            if (!empty($subadd) && noSubmit('subsubmit')) {
-                $userObj->submitAddSubscription($subadd);
-            } else
-                if (empty($subadd) && onSubmit('subsubmit')) {
-                    $userObj->submitManageSubscriptions();
-                }
+        if (!empty($subadd) && noSubmit('subsubmit')) {
+            $userObj->submitAddSubscription($subadd);
+        } else
+        if (empty($subadd) && onSubmit('subsubmit')) {
+            $userObj->submitManageSubscriptions();
+        }
         break;
     default:
         eval('echo "' . template('header') . '";');
@@ -336,4 +336,3 @@ switch ($action) {
 
 loadtime();
 eval('echo "' . template('footer') . '";');
-

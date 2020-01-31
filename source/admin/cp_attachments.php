@@ -1,7 +1,7 @@
 <?php
 /**
  * GaiaBB
- * Copyright (c) 2011-2020 The GaiaBB Project
+ * Copyright (c) 2009-2020 The GaiaBB Project
  * https://github.com/vanderaj/gaiabb
  *
  * Based off UltimaBB
@@ -32,8 +32,8 @@ define('ROOT', '../');
 define('ROOTINC', '../include/');
 define('ROOTCLASS', '../class/');
 
-require_once('../header.php');
-require_once('../class/admincp.inc.php');
+require_once '../header.php';
+require_once '../class/admincp.inc.php';
 
 loadtpl('cp_header', 'cp_footer', 'cp_message', 'cp_error');
 
@@ -253,74 +253,74 @@ function doSearch()
                             <td width="5%"><?php echo $lang['textdownloads'] ?></td>
                         </tr>
                         <?php
-                        $restriction = $orderby = '';
-                        $forumprune = formInt('forumprune');
-                        if ($forumprune != 0) {
-                            $restriction .= "AND p.fid=$forumprune ";
-                        }
+$restriction = $orderby = '';
+    $forumprune = formInt('forumprune');
+    if ($forumprune != 0) {
+        $restriction .= "AND p.fid=$forumprune ";
+    }
 
-                        $daysold = formInt('daysold');
-                        if ($daysold != 0) {
-                            $datethen = $onlinetime - (86400 * $daysold);
-                            $restriction .= "AND p.dateline <= $datethen ";
-                            $orderby = ' ORDER BY p.dateline ASC';
-                        }
+    $daysold = formInt('daysold');
+    if ($daysold != 0) {
+        $datethen = $onlinetime - (86400 * $daysold);
+        $restriction .= "AND p.dateline <= $datethen ";
+        $orderby = ' ORDER BY p.dateline ASC';
+    }
 
-                        $author = formVar('author');
-                        if (!empty($author)) {
-                            $author = $db->escape($author);
-                            $restriction .= "AND p.author = '$author' ";
-                            $orderby = ' ORDER BY p.author ASC';
-                        }
+    $author = formVar('author');
+    if (!empty($author)) {
+        $author = $db->escape($author);
+        $restriction .= "AND p.author = '$author' ";
+        $orderby = ' ORDER BY p.author ASC';
+    }
 
-                        $filename = formVar('filename'); // TODO make filename safe
-                        if (!empty($filename)) {
-                            $filename = $db->escape($filename);
-                            $restriction .= "AND a.filename LIKE '%$filename%' ";
-                        }
+    $filename = formVar('filename'); // TODO make filename safe
+    if (!empty($filename)) {
+        $filename = $db->escape($filename);
+        $restriction .= "AND a.filename LIKE '%$filename%' ";
+    }
 
-                        $sizeless = formInt('sizeless');
-                        if ($sizeless > 0) {
-                            $restriction .= "AND a.filesize < $sizeless ";
-                            $orderby = ' ORDER BY a.filesize DESC';
-                        }
+    $sizeless = formInt('sizeless');
+    if ($sizeless > 0) {
+        $restriction .= "AND a.filesize < $sizeless ";
+        $orderby = ' ORDER BY a.filesize DESC';
+    }
 
-                        $sizemore = formInt('sizemore');
-                        if ($sizemore > 0) {
-                            $restriction .= "AND a.filesize > $sizemore ";
-                            $orderby = ' ORDER BY a.filesize DESC';
-                        }
+    $sizemore = formInt('sizemore');
+    if ($sizemore > 0) {
+        $restriction .= "AND a.filesize > $sizemore ";
+        $orderby = ' ORDER BY a.filesize DESC';
+    }
 
-                        $dlcountless = formInt('dlcountless');
-                        if ($dlcountless > 0) {
-                            $restriction .= "AND a.downloads < $dlcountless ";
-                            $orderby = ' ORDER BY a.downloads DESC';
-                        }
+    $dlcountless = formInt('dlcountless');
+    if ($dlcountless > 0) {
+        $restriction .= "AND a.downloads < $dlcountless ";
+        $orderby = ' ORDER BY a.downloads DESC';
+    }
 
-                        $dlcountmore = formInt('dlcountmore');
-                        if ($dlcountmore > 0) {
-                            $restriction .= "AND a.downloads > $dlcountmore ";
-                            $orderby = ' ORDER BY a.downloads DESC ';
-                        }
+    $dlcountmore = formInt('dlcountmore');
+    if ($dlcountmore > 0) {
+        $restriction .= "AND a.downloads > $dlcountmore ";
+        $orderby = ' ORDER BY a.downloads DESC ';
+    }
 
-                        $query = $db->query("SELECT a.*, m.uid as author_uid, p.*, t.tid, t.subject AS tsubject, f.name AS fname FROM " . X_PREFIX . "attachments a, " . X_PREFIX . "members m, " . X_PREFIX . "posts p, " . X_PREFIX . "threads t, " . X_PREFIX . "forums f WHERE a.pid = p.pid AND p.author = m.username AND t.tid = a.tid AND f.fid = p.fid $restriction $orderby");
-                        while (($attachment = $db->fetch_array($query)) != false) {
-                            $attachsize = strlen($attachment['attachment']);
-                            if ($attachsize >= 1073741824) {
-                                $attachsize = round($attachsize / 1073741824 * 100) / 100 . "gb";
-                            } else
-                                if ($attachsize >= 1048576) {
-                                    $attachsize = round($attachsize / 1048576 * 100) / 100 . "mb";
-                                } else
-                                    if ($attachsize >= 1024) {
-                                        $attachsize = round($attachsize / 1024 * 100) / 100 . "kb";
-                                    } else {
-                                        $attachsize = $attachsize . "b";
-                                    }
-                            $attachment['tsubject'] = stripslashes($attachment['tsubject']);
-                            $attachment['fname'] = stripslashes($attachment['fname']);
-                            $attachment['filename'] = stripslashes($attachment['filename']);
-                            ?>
+    $query = $db->query("SELECT a.*, m.uid as author_uid, p.*, t.tid, t.subject AS tsubject, f.name AS fname FROM " . X_PREFIX . "attachments a, " . X_PREFIX . "members m, " . X_PREFIX . "posts p, " . X_PREFIX . "threads t, " . X_PREFIX . "forums f WHERE a.pid = p.pid AND p.author = m.username AND t.tid = a.tid AND f.fid = p.fid $restriction $orderby");
+    while (($attachment = $db->fetch_array($query)) != false) {
+        $attachsize = strlen($attachment['attachment']);
+        if ($attachsize >= 1073741824) {
+            $attachsize = round($attachsize / 1073741824 * 100) / 100 . "gb";
+        } else
+        if ($attachsize >= 1048576) {
+            $attachsize = round($attachsize / 1048576 * 100) / 100 . "mb";
+        } else
+        if ($attachsize >= 1024) {
+            $attachsize = round($attachsize / 1024 * 100) / 100 . "kb";
+        } else {
+            $attachsize = $attachsize . "b";
+        }
+        $attachment['tsubject'] = stripslashes($attachment['tsubject']);
+        $attachment['fname'] = stripslashes($attachment['fname']);
+        $attachment['filename'] = stripslashes($attachment['filename']);
+        ?>
                             <tr>
                                 <td bgcolor="<?php echo $THEME['altbg1'] ?>" class="ctrtablerow"
                                     valign="middle"><a
@@ -350,9 +350,9 @@ function doSearch()
                                     valign="top" align="center"><?php echo $attachment['downloads'] ?></td>
                             </tr>
                             <?php
-                        }
-                        $db->free_result($query);
-                        ?>
+}
+    $db->free_result($query);
+    ?>
                         <tr class="ctrtablerow" bgcolor="<?php echo $THEME['altbg2'] ?>">
                             <td colspan="6"><input class="submit" type="submit"
                                                    name="deletesubmit"
@@ -416,5 +416,5 @@ switch ($action) {
 }
 
 loadtime();
-eval ('echo "' . template('cp_footer') . '";');
+eval('echo "' . template('cp_footer') . '";');
 ?>

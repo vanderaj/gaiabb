@@ -1,7 +1,7 @@
 <?php
 /**
  * GaiaBB
- * Copyright (c) 2011-2020 The GaiaBB Project
+ * Copyright (c) 2009-2020 The GaiaBB Project
  * https://github.com/vanderaj/gaiabb
  *
  * Based off UltimaBB
@@ -59,9 +59,9 @@ $starttime = $mtime[1] + $mtime[0];
 $onlinetime = time();
 
 // Include files used by all users of header.php
-include('include/constants.inc.php');
-include('include/validate.inc.php');
-include('include/functions.inc.php');
+include 'include/constants.inc.php';
+include 'include/validate.inc.php';
+include 'include/functions.inc.php';
 
 // GZIP compression requires action to be set ... or it will not work
 
@@ -74,19 +74,19 @@ if (X_GZIP && $action != 'attachment') {
     if (($res = ini_get('zlib.output_compression')) === 1) {
         // leave it
     } else
-        if ($res === false) {
-            // ini_get not supported. So let's just leave it
-        } else {
-            if (function_exists('gzopen')) {
-                $r = ini_set('zlib.output_compression', 'Off');
-                $r2 = ini_set('zlib.output_compression_level', '3');
-                if (!$r || !$r2) {
-                    ob_start('ob_gzhandler');
-                }
-            } else {
+    if ($res === false) {
+        // ini_get not supported. So let's just leave it
+    } else {
+        if (function_exists('gzopen')) {
+            $r = ini_set('zlib.output_compression', 'Off');
+            $r2 = ini_set('zlib.output_compression_level', '3');
+            if (!$r || !$r2) {
                 ob_start('ob_gzhandler');
             }
+        } else {
+            ob_start('ob_gzhandler');
         }
+    }
 }
 
 if (!file_exists('config.php')) {
@@ -97,7 +97,7 @@ if (file_exists('install/')) {
     die('Error: installer still available. Cannot proceed until it is deleted.');
 }
 
-include('config.php');
+include 'config.php';
 
 if (defined('DEBUG') && DEBUG == true) {
     error_reporting(E_ALL | E_STRICT);
@@ -116,26 +116,26 @@ if (strpos($useragent, 'Opera') !== false) {
     $browser = 'opera';
     $bbcode_js = 'opera';
 } else
-    if (strpos($useragent, 'MSIE') !== false && strpos($useragent, 'Opera') === false) {
-        $browser = 'ie';
-        $bbcode_js = 'ie';
-    } else
-        if (strpos($useragent, 'Gecko') !== false && strpos($useragent, 'Konqueror') === false) {
-            if (strpos($useragent, 'Firefox') !== false) {
-                $browser = 'firefox';
-            } else {
-                $browser = 'gecko';
-            }
-            $bbcode_js = 'mozilla';
-        } else
-            if (strpos($useragent, 'Safari') !== false) {
-                $browser = 'safari';
-                $bbcode_js = 'mozilla';
-            } else
-                if (strpos($useragent, 'Konqueror') !== false) {
-                    $browser = 'konqueror';
-                    $bbcode_js = 'mozilla';
-                }
+if (strpos($useragent, 'MSIE') !== false && strpos($useragent, 'Opera') === false) {
+    $browser = 'ie';
+    $bbcode_js = 'ie';
+} else
+if (strpos($useragent, 'Gecko') !== false && strpos($useragent, 'Konqueror') === false) {
+    if (strpos($useragent, 'Firefox') !== false) {
+        $browser = 'firefox';
+    } else {
+        $browser = 'gecko';
+    }
+    $bbcode_js = 'mozilla';
+} else
+if (strpos($useragent, 'Safari') !== false) {
+    $browser = 'safari';
+    $bbcode_js = 'mozilla';
+} else
+if (strpos($useragent, 'Konqueror') !== false) {
+    $browser = 'konqueror';
+    $bbcode_js = 'mozilla';
+}
 
 // Resolve Server specific issues
 $server = 'Apa'; // Pretend to be Apache by default
@@ -148,7 +148,7 @@ if (isset($_SERVER['REQUEST_URI'])) {
     $url = $_SERVER['REQUEST_URI'];
 }
 
-include('db/mysql5php5.class.php');
+include 'db/mysql5php5.class.php';
 
 $oToken = new page_token();
 $oToken->init();
@@ -224,7 +224,7 @@ $tables = array(
     'vote_results',
     'vote_voters',
     'whosonline',
-    'words'
+    'words',
 );
 
 foreach ($tables as $name) {
@@ -238,7 +238,7 @@ $db = new mysql5Php5();
 $db->connect($dbhost, $dbuser, $dbpw, $dbname, $pconnect, true);
 
 // Make all settings global, and put them in the $CONFIG[] array
-include('class/cache.class.php');
+include 'class/cache.class.php';
 $config_cache = new cacheable('setcache', 60);
 
 $CONFIG = $config_cache->getData('settings');
@@ -331,7 +331,7 @@ if (isset($array['path'])) {
 
 $lastvisit = $lastvisit2 = 0;
 
-require_once('class/authc.class.php');
+require_once 'class/authc.class.php';
 
 $authState = new AuthState();
 $authC = new AuthC();
@@ -426,13 +426,13 @@ $lang_dir = 'ltr';
 $lang_align = 'left';
 $lang_nalign = 'right';
 $charset = 'ISO-8859-1';
-include('lang/' . $self['langfile'] . '.lang.php');
+include 'lang/' . $self['langfile'] . '.lang.php';
 header('Content-Type: text/html; charset=' . $charset);
 header('Content-Language: ' . $lang_code);
 
 // Prepare the mail system for use throughout the boards
 #include('class/mail.class.php');
-include('class/sendgrid.class.php');
+include 'class/sendgrid.class.php';
 $mailsys = new MailSys();
 
 // Checks for the possibility to register
@@ -462,8 +462,8 @@ if (X_MEMBER) {
     $self['status'] = '';
     $notify = '' . $lang['notloggedin'] . ' [ ' . $loginout . ' ' . $reglink . ' ]';
     $robotname = '';
-    if (isset($_SERVER['HTTP_USER_AGENT']) && $_SERVER['HTTP_USER_AGENT'] != NULL) {
-        $useragent = strtolower((string)$_SERVER['HTTP_USER_AGENT']);
+    if (isset($_SERVER['HTTP_USER_AGENT']) && $_SERVER['HTTP_USER_AGENT'] != null) {
+        $useragent = strtolower((string) $_SERVER['HTTP_USER_AGENT']);
         $rq = $db->query("SELECT LENGTH(robot_string) AS strlen, robot_string, robot_fullname FROM " . X_PREFIX . "robots ORDER BY strlen DESC");
         while (($result = $db->fetch_array($rq)) != false) {
             if (strpos($useragent, $result['robot_string']) !== false) {
@@ -486,12 +486,12 @@ $self['dateformat'] = str_replace(array(
     'mm',
     'dd',
     'yyyy',
-    'yy'
+    'yy',
 ), array(
     'n',
     'j',
     'Y',
-    'y'
+    'y',
 ), $self['dateformat']);
 
 $tid = getRequestInt('tid');
@@ -520,20 +520,20 @@ if ($tid !== 0 && $action != 'templates') {
         $config_cache->setData('forumtheme' . $fid, '' . $forumtheme . '');
     }
 } else
-    if ($fid !== 0) {
-        $config_cache->setData('fid', '' . $fid . '');
-        $forumtheme = $config_cache->getData('forumtheme' . $fid);
-        if ($forumtheme === false) {
-            $q = $db->query("SELECT theme FROM " . X_PREFIX . "forums WHERE fid = '$fid'");
-            if ($db->num_rows($q) === 1) {
-                $forumtheme = $db->result($q, 0);
-            } else {
-                $forumtheme = 0;
-            }
-            $db->free_result($q);
-            $config_cache->setData('forumtheme' . $fid, '' . $forumtheme . '');
+if ($fid !== 0) {
+    $config_cache->setData('fid', '' . $fid . '');
+    $forumtheme = $config_cache->getData('forumtheme' . $fid);
+    if ($forumtheme === false) {
+        $q = $db->query("SELECT theme FROM " . X_PREFIX . "forums WHERE fid = '$fid'");
+        if ($db->num_rows($q) === 1) {
+            $forumtheme = $db->result($q, 0);
+        } else {
+            $forumtheme = 0;
         }
+        $db->free_result($q);
+        $config_cache->setData('forumtheme' . $fid, '' . $forumtheme . '');
     }
+}
 
 if ($CONFIG['whosoptomized'] == 'on') {
     $wollocation = addslashes(trim($url));
@@ -554,9 +554,9 @@ if ($CONFIG['whosoptomized'] == 'on') {
         if ($onlineuser == 'xguest123') {
             $db->query("INSERT INTO " . X_PREFIX . "guestcount (ipaddress, onlinetime) VALUES ('$onlineip', '$onlinetime')");
         } else
-            if ($onlineuser == 'xrobot123') {
-                $db->query("INSERT INTO " . X_PREFIX . "robotcount (ipaddress, onlinetime) VALUES ('$onlineip', '$onlinetime')");
-            }
+        if ($onlineuser == 'xrobot123') {
+            $db->query("INSERT INTO " . X_PREFIX . "robotcount (ipaddress, onlinetime) VALUES ('$onlineip', '$onlinetime')");
+        }
 
         if (X_MEMBER) {
             $result = $db->query("SELECT COUNT(username) FROM " . X_PREFIX . "whosonline WHERE (username = '$self[username]')");
@@ -585,9 +585,9 @@ if ($CONFIG['whosoptomized'] == 'on') {
     if ($onlineuser == 'xguest123') {
         $db->query("INSERT INTO " . X_PREFIX . "guestcount (ipaddress, onlinetime) VALUES ('$onlineip', '$onlinetime')");
     } else
-        if ($onlineuser == 'xrobot123') {
-            $db->query("INSERT INTO " . X_PREFIX . "robotcount (ipaddress, onlinetime) VALUES ('$onlineip', '$onlinetime')");
-        }
+    if ($onlineuser == 'xrobot123') {
+        $db->query("INSERT INTO " . X_PREFIX . "robotcount (ipaddress, onlinetime) VALUES ('$onlineip', '$onlinetime')");
+    }
 
     if (X_MEMBER) {
         $result = $db->query("SELECT COUNT(username) FROM " . X_PREFIX . "whosonline WHERE (username = '$self[username]')");
@@ -601,14 +601,14 @@ if ($CONFIG['whosoptomized'] == 'on') {
 }
 
 // Check what theme to use
-if (!empty($forumtheme) && (int)$forumtheme > 0) {
-    $theme = (int)$forumtheme;
+if (!empty($forumtheme) && (int) $forumtheme > 0) {
+    $theme = (int) $forumtheme;
 } else
-    if (!empty($self['theme']) && (int)$self['theme'] > 0) {
-        $theme = (int)$self['theme'];
-    } else {
-        $theme = (int)$CONFIG['theme'];
-    }
+if (!empty($self['theme']) && (int) $self['theme'] > 0) {
+    $theme = (int) $self['theme'];
+} else {
+    $theme = (int) $CONFIG['theme'];
+}
 
 // Make theme-vars semi-global
 $THEME = $config_cache->getData('theme');
@@ -782,9 +782,9 @@ if (!isset($CONFIG['max_reg_day']) || $CONFIG['max_reg_day'] < 1 || $CONFIG['max
 
 // display version build (John)
 if ($CONFIG['show_full_info'] == 'on') {
-    $versionlong = '<br />Powered by <a href="https://github.com/vanderaj/gaiabb" target="_blank"><strong>' . $versionshort . '</strong></a>, &copy; 2011-2020 The GaiaBB Group';
+    $versionlong = '<br />Powered by <a href="https://github.com/vanderaj/gaiabb" target="_blank"><strong>' . $versionshort . '</strong></a>, &copy; 2009-2020 The GaiaBB Group';
 } else {
-    $versionlong = '<br />Powered by <a href="https://github.com/vanderaj/gaiabb" target="_blank"><strong>' . $versionshort . '</strong></a>, &copy; 2011-2020 The GaiaBB Group';
+    $versionlong = '<br />Powered by <a href="https://github.com/vanderaj/gaiabb" target="_blank"><strong>' . $versionshort . '</strong></a>, &copy; 2009-2020 The GaiaBB Group';
 }
 
 // If the board is offline, display an appropriate message
@@ -878,4 +878,3 @@ $CONFIG['indexnewstxt'] = stripslashes($CONFIG['indexnewstxt']);
 
 validateTpp();
 validatePpp();
-

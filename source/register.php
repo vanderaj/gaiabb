@@ -1,7 +1,7 @@
 <?php
 /**
  * GaiaBB
- * Copyright (c) 2011-2020 The GaiaBB Project
+ * Copyright (c) 2009-2020 The GaiaBB Project
  * https://github.com/vanderaj/gaiabb
  *
  * Based off UltimaBB
@@ -29,11 +29,10 @@
  *
  **/
 
-
 define('CACHECONTROL', 'nocache');
 
-require_once('header.php');
-require_once('class/member.class.php');
+require_once 'header.php';
+require_once 'class/member.class.php';
 
 loadtpl('register', 'register_coppa', 'register_password', 'register_rules', 'register_captcha', 'register_captchajs');
 
@@ -293,7 +292,7 @@ function doRegister()
     if ($CONFIG['emailcheck'] == 'on') {
         $password = '';
         $chars = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789abcdefghjkmnopqrstuvwxyz";
-        mt_srand((double)microtime() * 1000000);
+        mt_srand((double) microtime() * 1000000);
         $clen = strlen($chars) - 1;
         for ($i = 0; $i < 8; $i++) {
             $password .= $chars[mt_rand(0, $clen)];
@@ -395,11 +394,11 @@ function doRegister()
     }
 
     if ($CONFIG['emailcheck'] == 'on') {
-        if (empty($CONFIG['adminemail']))         // The mail class can handle this error, but it'll describe it vaguely
+        if (empty($CONFIG['adminemail'])) // The mail class can handle this error, but it'll describe it vaguely
         {
             error($lang['noadminemail'], false, '', '', 'cp_board.php', true, false, true);
         }
-        if (empty($CONFIG['bbname']))         // The mail class can handle this error, but it'll describe it vaguely
+        if (empty($CONFIG['bbname'])) // The mail class can handle this error, but it'll describe it vaguely
         {
             error($lang['nobbname'], false, '', '', 'cp_board.php', true, false, true);
         }
@@ -517,7 +516,7 @@ if ($db->result($query, 0) > $CONFIG['max_reg_day']) {
 
 switch ($action) {
     case 'captcha':
-        require_once('class/captcha.class.php');
+        require_once 'class/captcha.class.php';
         $captcha = new captcha();
         nav($lang['textregister']);
         btitle($lang['textregister']);

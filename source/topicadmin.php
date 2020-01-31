@@ -1,7 +1,7 @@
 <?php
 /**
  * GaiaBB
- * Copyright (c) 2011-2020 The GaiaBB Project
+ * Copyright (c) 2009-2020 The GaiaBB Project
  * https://github.com/vanderaj/gaiabb
  *
  * Based off UltimaBB
@@ -29,9 +29,8 @@
  *
  **/
 
-
-require_once('header.php');
-require_once('include/topicadmin.inc.php');
+require_once 'header.php';
+require_once 'include/topicadmin.inc.php';
 
 $kill = false;
 
@@ -68,16 +67,16 @@ if (!empty($forums['type']) && isset($forums['type']) && $forums['type'] == 'for
     btitle(stripslashes($forums['name']));
     btitle(stripslashes($thread['subject']));
 } else
-    if (isset($forums['type']) && isset($forums['type']) == 'sub') {
-        nav('<a href="viewforum.php?fid=' . $fup['fid'] . '">' . stripslashes($fup['name']) . '</a>');
-        nav('<a href="viewforum.php?fid=' . $fid . '">' . stripslashes($forums['name']) . '</a>');
-        nav('<a href="viewtopic.php?tid=' . $tid . '">' . $thread['subject'] . '</a>');
-        btitle(stripslashes($fup['name']));
-        btitle(stripslashes($forums['name']));
-        btitle(stripslashes($thread['subject']));
-    } else {
-        $kill = true;
-    }
+if (isset($forums['type']) && isset($forums['type']) == 'sub') {
+    nav('<a href="viewforum.php?fid=' . $fup['fid'] . '">' . stripslashes($fup['name']) . '</a>');
+    nav('<a href="viewforum.php?fid=' . $fid . '">' . stripslashes($forums['name']) . '</a>');
+    nav('<a href="viewtopic.php?tid=' . $tid . '">' . $thread['subject'] . '</a>');
+    btitle(stripslashes($fup['name']));
+    btitle(stripslashes($forums['name']));
+    btitle(stripslashes($thread['subject']));
+} else {
+    $kill = true;
+}
 
 $config_cache->expire('settings');
 $config_cache->expire('theme');

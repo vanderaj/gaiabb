@@ -1,7 +1,7 @@
 <?php
 /**
  * GaiaBB
- * Copyright (c) 2011-2020 The GaiaBB Project
+ * Copyright (c) 2009-2020 The GaiaBB Project
  * https://github.com/vanderaj/gaiabb
  *
  * Based off UltimaBB
@@ -52,7 +52,7 @@ class MailSys
     public $smtp_conn;
 
     // Instantiate the class
-    function MailSys()
+    public function MailSys()
     {
         $OS = substr(PHP_OS, 0, 3);
         define('GAIABB_OS', $OS);
@@ -61,11 +61,11 @@ class MailSys
     }
 
     // Required calls
-    function setFrom($email, $name = '')
+    public function setFrom($email, $name = '')
     {
         $email = trim($email);
         if (empty($email)) {
-            return FALSE;
+            return false;
         }
 
         $name = trim($name);
@@ -77,87 +77,87 @@ class MailSys
 
         $this->addHeader('From', $this->from);
         $this->addHeader('Reply-To', $email);
-        return TRUE;
+        return true;
     }
 
-    function addHeader($name = '', $value = '')
+    public function addHeader($name = '', $value = '')
     {
         if (!empty($name) && !empty($value)) {
             $break = "\n";
 
             $this->headers .= $name . ': ' . $value . $break;
-            return TRUE;
+            return true;
         }
-        return FALSE;
+        return false;
     }
 
-    function setTo($email)
+    public function setTo($email)
     {
         $email = trim($email);
         if (empty($email)) {
-            return FALSE;
+            return false;
         } else {
             $this->to = $email;
             $this->addHeader('To', $this->to);
-            return TRUE;
+            return true;
         }
     }
 
-    function setSubject($subject = '', $allowempty = 'no')
+    public function setSubject($subject = '', $allowempty = 'no')
     {
         $subject = trim($subject);
         if (!empty($subject)) {
             $subject = str_replace("\n", "", $subject);
             $this->subject = $subject;
-            return TRUE;
+            return true;
         } else {
             if ($allowempty == 'yes') {
                 $this->subject = 'None';
-                return TRUE;
+                return true;
             } else {
-                return FALSE;
+                return false;
             }
         }
     }
 
     // Optional calls
 
-    function setMessage($message = '')
+    public function setMessage($message = '')
     {
         $message = trim($message);
         if (!empty($message)) {
             $this->message = wordwrap($message, 70, "\n");
             // $this->message = $message;
-            return TRUE;
+            return true;
         }
-        return FALSE;
+        return false;
     }
 
-    function addBCC($email)
+    public function addBCC($email)
     {
         $email = trim($email);
         if (empty($email)) {
-            return FALSE;
+            return false;
         } else {
             $this->bcc[] = $email;
-            return TRUE;
+            return true;
         }
     }
 
-    function addCC($email)
+    public function addCC($email)
     {
         $email = trim($email);
         if (empty($email)) {
-            return FALSE;
+            return false;
         } else {
             $this->cc[] = $email;
-            return TRUE;
+            return true;
         }
     }
 
     // Committing calls
 
-    function Send()
+    public function Send()
     {
         global $charset, $CONFIG;
 
@@ -171,19 +171,19 @@ class MailSys
             case 'on':
                 $this->addHeader('X-AntiAbuse', 'Mail Method - SMTP');
                 if ($this->sendSMTP()) {
-                    return TRUE;
+                    return true;
                 }
                 break;
             default:
                 $this->addHeader('X-AntiAbuse', 'Mail Method - MAIL');
                 if ($this->sendPHP()) {
-                    return TRUE;
+                    return true;
                 }
         }
-        return FALSE;
+        return false;
     }
 
-    function sendSMTP()
+    public function sendSMTP()
     {
         if (GAIABB_OS == 'WIN') {
             $this->message = str_replace("\n.", "\n..", $this->message);
@@ -192,12 +192,12 @@ class MailSys
         if ($this->connectSMTP()) {
             $this->dataSMTP();
             $this->disconnectSMTP();
-            return TRUE;
+            return true;
         }
-        return FALSE;
+        return false;
     }
 
-    function connectSMTP()
+    public function connectSMTP()
     {
         global $CONFIG;
 
@@ -205,14 +205,14 @@ class MailSys
             $this->smtp_conn = fsockopen($CONFIG['smtphost'], $CONFIG['smtpport'], $errno, $errstr, $CONFIG['smtptimeout']);
             if ($this->smtp_conn) {
                 socket_set_blocking($this->smtp_conn, 0);
-                return TRUE;
+                return true;
             }
-            return FALSE;
+            return false;
         }
-        return FALSE;
+        return false;
     }
 
-    function dataSMTP()
+    public function dataSMTP()
     {
         global $CONFIG;
 
@@ -251,12 +251,12 @@ class MailSys
             $this->SMTP_receive('Data');
             $this->SMTP_send('QUIT');
             $this->SMTP_receive('QUIT');
-            return TRUE;
+            return true;
         }
-        return FALSE;
+        return false;
     }
 
-    function SMTP_receive($cmd = '')
+    public function SMTP_receive($cmd = '')
     {
         global $lang;
 
@@ -278,7 +278,7 @@ class MailSys
         }
     }
 
-    function SMTP_send($cmd = '', $lb = "\r\n")
+    public function SMTP_send($cmd = '', $lb = "\r\n")
     {
         global $lang;
 
@@ -287,17 +287,17 @@ class MailSys
         }
     }
 
-    function disconnectSMTP()
+    public function disconnectSMTP()
     {
         if (!empty($this->smtp_conn)) {
             fclose($this->smtp_conn);
             $this->smtp_conn = null;
-            return TRUE;
+            return true;
         }
-        return FALSE;
+        return false;
     }
 
-    function sendPHP()
+    public function sendPHP()
     {
         if (!empty($this->cc)) {
             $this->cc = trim(implode(', ', $this->cc), ', ');
@@ -310,8 +310,8 @@ class MailSys
         }
 
         if (mail($this->to, $this->subject, $this->message, $this->headers)) {
-            return TRUE;
+            return true;
         }
-        return FALSE;
+        return false;
     }
 }

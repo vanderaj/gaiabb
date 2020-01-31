@@ -1,7 +1,7 @@
 <?php
 /**
  * GaiaBB
- * Copyright (c) 2011-2020 The GaiaBB Project
+ * Copyright (c) 2009-2020 The GaiaBB Project
  * https://github.com/vanderaj/gaiabb
  *
  * Based off UltimaBB
@@ -33,8 +33,8 @@ define('ROOT', '../');
 define('ROOTINC', '../include/');
 define('ROOTCLASS', '../class/');
 
-require_once('../header.php');
-require_once('../include/admincp.inc.php');
+require_once '../header.php';
+require_once '../include/admincp.inc.php';
 
 loadtpl('cp_header', 'cp_footer', 'cp_message', 'cp_error');
 
@@ -143,7 +143,7 @@ function doPanel()
     global $lang, $db, $config_cache, $mailsys;
     global $oToken, $CONFIG, $self;
 
-    if (!((bool)ini_get('safe_mode'))) {
+    if (!((bool) ini_get('safe_mode'))) {
         set_time_limit(0);
     }
     ignore_user_abort(1);
@@ -187,7 +187,7 @@ function doPanel()
         }
         $db->free_result($query);
     } else {
-        $memcount = (int)$db->num_rows($query);
+        $memcount = (int) $db->num_rows($query);
         $i = 0;
 
         if (empty($CONFIG['adminemail'])) {

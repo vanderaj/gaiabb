@@ -96,13 +96,13 @@ function progressBar(oBt, oBc, oBg, oBa, oWi, oHi, oDr) {
     }
     document.write('</td></tr></table></td></tr></table>\n');
     this.setBar = resetBar; // doing this inline causes unexpected bugs in early
-                            // NS4
+    // NS4
     this.setCol = setColour;
 }
 function resetBar(a, b) {
     // work out the required size and use various methods to enforce it
     this.amt = (typeof (b) == 'undefined') ? a : b ? (this.amt + a)
-            : (this.amt - a);
+        : (this.amt - a);
     if (isNaN(this.amt)) {
         this.amt = 0;
     }

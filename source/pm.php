@@ -1,7 +1,7 @@
 <?php
 /**
  * GaiaBB
- * Copyright (c) 2011-2020 The GaiaBB Project
+ * Copyright (c) 2009-2020 The GaiaBB Project
  * https://github.com/vanderaj/gaiabb
  *
  * Based off UltimaBB
@@ -29,9 +29,8 @@
  *
  **/
 
-
-require_once('header.php');
-require_once('include/pm.inc.php');
+require_once 'header.php';
+require_once 'include/pm.inc.php';
 
 loadtpl('pm_nav', 'pm', 'pm_folderlink', 'pm_inbox', 'pm_outbox', 'pm_drafts', 'pm_row', 'pm_row_none', 'pm_view', 'pm_ignore', 'pm_send', 'pm_send_preview', 'pm_folders', 'pm_main', 'pm_multipage', 'pm_quotabar', 'pm_printable', 'pm_attachmentbox', 'pm_attachment', 'pm_sig', 'pm_trash', 'pm_send_preview_sig', 'pm_attachmentimage', 'functions_smilieinsert', 'functions_smilieinsert_smilie', 'functions_bbcodeinsert', 'functions_bbcode');
 
@@ -99,8 +98,9 @@ if ($CONFIG['pmstatus'] == 'off' && isset($self['status']) && $self['status'] ==
 $pmCommand = new pmModel();
 
 $page = getInt('page');
-if (!$page)
+if (!$page) {
     $page = 1;
+}
 
 // If there's a new folder coming in from the URL, let's parse it.
 $folder = getRequestVar('folder');
@@ -108,22 +108,22 @@ if (!empty($folder)) {
     $folder = checkInput($folder);
     $_SESSION['folder'] = $folder;
 } else
-    if (empty($folder) || !isset($folder)) {
-        if ($action == 'view' || $action == 'modif') {
-            $folder = '';
-        }
-        if ($action == '' || !isset($action)) {
-            $folder = 'Inbox';
-            $_SESSION['folder'] = $folder;
-        }
-    } else {
-        if (isset($_SESSION['folder'])) {
-            $folder = $_SESSION['folder'];
-        } else {
-            $folder = 'Inbox';
-            $_SESSION['folder'] = $folder;
-        }
+if (empty($folder) || !isset($folder)) {
+    if ($action == 'view' || $action == 'modif') {
+        $folder = '';
     }
+    if ($action == '' || !isset($action)) {
+        $folder = 'Inbox';
+        $_SESSION['folder'] = $folder;
+    }
+} else {
+    if (isset($_SESSION['folder'])) {
+        $folder = $_SESSION['folder'];
+    } else {
+        $folder = 'Inbox';
+        $_SESSION['folder'] = $folder;
+    }
+}
 
 // Fill in the folder list, folders and farray.
 $folderlist = $folders = '';
@@ -265,7 +265,7 @@ switch ($action) {
 
         $type = $file['filetype'];
         $name = str_replace(' ', '_', $file['filename']);
-        $size = (int)$file['filesize'];
+        $size = (int) $file['filesize'];
         $type = (strtolower($type) == 'text/html') ? 'text/plain' : $type;
 
         header("Content-type: $type");
@@ -299,7 +299,7 @@ switch ($action) {
 }
 
 if (!X_STAFF) {
-    $percentage = (0 == $CONFIG['pmquota']) ? 0 : (float)(($pmcount / $CONFIG['pmquota']) * 100);
+    $percentage = (0 == $CONFIG['pmquota']) ? 0 : (float) (($pmcount / $CONFIG['pmquota']) * 100);
     if (100 < $percentage) {
         $barwidth = 100;
         eval($lang['evaluqinfo_over']);

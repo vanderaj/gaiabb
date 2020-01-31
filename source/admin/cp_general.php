@@ -1,7 +1,7 @@
 <?php
 /**
  * GaiaBB
- * Copyright (c) 2011-2020 The GaiaBB Project
+ * Copyright (c) 2009-2020 The GaiaBB Project
  * https://github.com/vanderaj/gaiabb
  *
  * Based off UltimaBB
@@ -34,9 +34,9 @@ define('ROOTINC', '../include/');
 define('ROOTCLASS', '../class/');
 define('ROOTHELPER', '../helper/');
 
-require_once('../header.php');
-require_once('../include/admincp.inc.php');
-require_once('../helper/formHelper.php');
+require_once '../header.php';
+require_once '../include/admincp.inc.php';
+require_once '../helper/formHelper.php';
 
 loadtpl('cp_header', 'cp_footer', 'cp_message', 'cp_error');
 
@@ -176,19 +176,19 @@ function viewPanel()
         'serverload',
         'queries',
         'phpsql',
-        'loadtimes'
+        'loadtimes',
     );
     $names = array(
         $lang['Enable_Server_Load'],
         $lang['Enable_Queries'],
         $lang['Enable_PHP_SQL_Calculation'],
-        $lang['Enable_Page_loadtimes']
+        $lang['Enable_Page_loadtimes'],
     );
     $checked = array(
         $sel_serverload,
         $sel_queries,
         $sel_phpsql,
-        $sel_loadtimes
+        $sel_loadtimes,
     );
     $CONFIG['usernamenotify'] = stripslashes($CONFIG['usernamenotify']);
     ?>
@@ -205,77 +205,77 @@ function viewPanel()
                             <td class="title" colspan="2"><?php echo $lang['admin_main_settings3'] ?></td>
                         </tr>
                         <?php
-                        formHelper::formSelectOnOff($lang['textsearchstatus'], 'searchstatusnew', $searchon, $searchoff);
-                        formHelper::formSelectOnOff($lang['textfaqstatus'], 'faqstatusnew', $faqon, $faqoff);
-                        formHelper::formSelectOnOff($lang['topicactivitystatus'], 'topicactivity_statusnew', $topicon, $topicoff);
-                        formHelper::formSelectOnOff($lang['textstatsstatus'], 'statsnew', $statson, $statsoff);
-                        formHelper::formSelectOnOff($lang['textmemliststatus'], 'memliststatusnew', $memliston, $memlistoff);
-                        formHelper::formSelectOnOff($lang['contactusstatus'], 'contactusnew', $contactus_on, $contactus_off);
-                        formHelper::formSelectOnOff($lang['coppastatus'], 'coppanew', $coppaon, $coppaoff);
-                        formHelper::formSelectOnOff($lang['reportpoststatus'], 'reportpostnew', $reportposton, $reportpostoff);
-                        formHelper::formSelectOnOff($lang['allowrankedit'], 'allowrankeditnew', $allowrankediton, $allowrankeditoff);
-                        formHelper::formSelectOnOff($lang['whosrobotstatus'], 'whosrobot_statusnew', $whosrobot_on, $whosrobot_off);
-                        formHelper::formSelectOnOff($lang['whosrobotnamestatus'], 'whosrobotname_statusnew', $whosrobotname_on, $whosrobotname_off);
-                        formHelper::formSelectOnOff($lang['whosgueststatus'], 'whosguest_statusnew', $whosguest_on, $whosguest_off);
-                        formHelper::formSelectOnOff($lang['pmattachstatus'], 'pmattachstatusnew', $pmattachstatuson, $pmattachstatusoff);
-                        formHelper::formSelectOnOff($lang['pmstatus'], 'pmstatusnew', $pmstatuson, $pmstatusoff);
-                        formHelper::formSelectOnOff($lang['indexstats'], 'indexstatsnew', $indexstatson, $indexstatsoff);
-                        formHelper::formSelectOnOff($lang['notepadstatus'], 'notepadstatusnew', $notepadon, $notepadoff);
-                        ?>
+formHelper::formSelectOnOff($lang['textsearchstatus'], 'searchstatusnew', $searchon, $searchoff);
+    formHelper::formSelectOnOff($lang['textfaqstatus'], 'faqstatusnew', $faqon, $faqoff);
+    formHelper::formSelectOnOff($lang['topicactivitystatus'], 'topicactivity_statusnew', $topicon, $topicoff);
+    formHelper::formSelectOnOff($lang['textstatsstatus'], 'statsnew', $statson, $statsoff);
+    formHelper::formSelectOnOff($lang['textmemliststatus'], 'memliststatusnew', $memliston, $memlistoff);
+    formHelper::formSelectOnOff($lang['contactusstatus'], 'contactusnew', $contactus_on, $contactus_off);
+    formHelper::formSelectOnOff($lang['coppastatus'], 'coppanew', $coppaon, $coppaoff);
+    formHelper::formSelectOnOff($lang['reportpoststatus'], 'reportpostnew', $reportposton, $reportpostoff);
+    formHelper::formSelectOnOff($lang['allowrankedit'], 'allowrankeditnew', $allowrankediton, $allowrankeditoff);
+    formHelper::formSelectOnOff($lang['whosrobotstatus'], 'whosrobot_statusnew', $whosrobot_on, $whosrobot_off);
+    formHelper::formSelectOnOff($lang['whosrobotnamestatus'], 'whosrobotname_statusnew', $whosrobotname_on, $whosrobotname_off);
+    formHelper::formSelectOnOff($lang['whosgueststatus'], 'whosguest_statusnew', $whosguest_on, $whosguest_off);
+    formHelper::formSelectOnOff($lang['pmattachstatus'], 'pmattachstatusnew', $pmattachstatuson, $pmattachstatusoff);
+    formHelper::formSelectOnOff($lang['pmstatus'], 'pmstatusnew', $pmstatuson, $pmstatusoff);
+    formHelper::formSelectOnOff($lang['indexstats'], 'indexstatsnew', $indexstatson, $indexstatsoff);
+    formHelper::formSelectOnOff($lang['notepadstatus'], 'notepadstatusnew', $notepadon, $notepadoff);
+    ?>
                         <tr class="category">
                             <td class="title" colspan="2"><?php echo $lang['admin_main_settings4'] ?></td>
                         </tr>
                         <?php
-                        formHelper::formSelectOnOff($lang['whosonline_on'], 'whosonlinestatusnew', $whosonlineon, $whosonlineoff);
-                        formHelper::formSelectOnOff($lang['whosonlinetoday'], 'whosonlinetodaynew', $whosonlinetodayon, $whosonlinetodayoff);
-                        formHelper::formTextBox($lang['smtotal'], 'smtotalnew', $CONFIG['smtotal'], 5);
-                        formHelper::formTextBox($lang['smcols'], 'smcolsnew', $CONFIG['smcols'], 5);
-                        formHelper::formSelectOnOff($lang['dotfolders'], "dotfoldersnew", $dotfolderson, $dotfoldersoff);
-                        formHelper::formSelectOnOff($lang['editedby'], 'editedbynew', $editedbyon, $editedbyoff);
-                        formHelper::formSelectOnOff($lang['attachimginpost'], 'attachimgpostnew', $attachimgposton, $attachimgpostoff);
-                        formHelper::formSelectOnOff($lang['attachborder'], 'attachbordernew', $attachborderon, $attachborderoff);
-                        formHelper::formSelectOnOff($lang['Attachicon_Status'], 'attachicon_statusnew', $attachiconon, $attachiconoff);
-                        formHelper::formSelectYesNo($lang['Viewattach_Status'], 'viewattachnew', $viewattachyes, $viewattachno);
-                        formHelper::formSelectYesNo($lang['rpg_status'], 'rpg_statusnew', $rpgyes, $rpgno);
-                        formHelper::formSelectOnOff($lang['viewlocation'], 'viewlocationnew', $viewlocationon, $viewlocationoff);
-                        formHelper::formSelectOnOff($lang['resetsig'], 'resetsignew', $resetsigon, $resetsigoff);
-                        formHelper::formSelectOnOff($lang['forumjump'], 'forumjumpnew', $forumjumpon, $forumjumpoff);
-                        formHelper::formSelectOnOff($lang['showsubs'], 'showsubsnew', $showsubson, $showsubsoff);
-                        ?>
+formHelper::formSelectOnOff($lang['whosonline_on'], 'whosonlinestatusnew', $whosonlineon, $whosonlineoff);
+    formHelper::formSelectOnOff($lang['whosonlinetoday'], 'whosonlinetodaynew', $whosonlinetodayon, $whosonlinetodayoff);
+    formHelper::formTextBox($lang['smtotal'], 'smtotalnew', $CONFIG['smtotal'], 5);
+    formHelper::formTextBox($lang['smcols'], 'smcolsnew', $CONFIG['smcols'], 5);
+    formHelper::formSelectOnOff($lang['dotfolders'], "dotfoldersnew", $dotfolderson, $dotfoldersoff);
+    formHelper::formSelectOnOff($lang['editedby'], 'editedbynew', $editedbyon, $editedbyoff);
+    formHelper::formSelectOnOff($lang['attachimginpost'], 'attachimgpostnew', $attachimgposton, $attachimgpostoff);
+    formHelper::formSelectOnOff($lang['attachborder'], 'attachbordernew', $attachborderon, $attachborderoff);
+    formHelper::formSelectOnOff($lang['Attachicon_Status'], 'attachicon_statusnew', $attachiconon, $attachiconoff);
+    formHelper::formSelectYesNo($lang['Viewattach_Status'], 'viewattachnew', $viewattachyes, $viewattachno);
+    formHelper::formSelectYesNo($lang['rpg_status'], 'rpg_statusnew', $rpgyes, $rpgno);
+    formHelper::formSelectOnOff($lang['viewlocation'], 'viewlocationnew', $viewlocationon, $viewlocationoff);
+    formHelper::formSelectOnOff($lang['resetsig'], 'resetsignew', $resetsigon, $resetsigoff);
+    formHelper::formSelectOnOff($lang['forumjump'], 'forumjumpnew', $forumjumpon, $forumjumpoff);
+    formHelper::formSelectOnOff($lang['showsubs'], 'showsubsnew', $showsubson, $showsubsoff);
+    ?>
                         <tr class="category">
                             <td class="title" colspan="2"><?php echo $lang['admin_main_settings5'] ?></td>
                         </tr>
                         <?php
-                        formHelper::formSelectOnOff($lang['reg_on'], 'regstatusnew', $regon, $regoff);
-                        formHelper::formSelectList($lang['notifyonreg'], 'notifyonregnew', array(
-                            $lang['textoff'],
-                            $lang['viapm'],
-                            $lang['viaemail']
-                        ), array(
-                            'off',
-                            'pm',
-                            'email'
-                        ), $notifycheck, false);
-                        formHelper::formTextBox2($lang['notify'], 5, 'usernamenotifynew', 50, $CONFIG['usernamenotify']);
-                        formHelper::formSelectOnOff($lang['textreggedonly'], 'regviewonlynew', $regonlyon, $regonlyoff);
-                        formHelper::formSelectOnOff($lang['texthidepriv'], 'hideprivatenew', $hideon, $hideoff);
-                        formHelper::formSelectOnOff($lang['emailverify'], 'emailchecknew', $echeckon, $echeckoff);
-                        formHelper::formTextBox($lang['textflood'], 'floodctrlnew', $CONFIG['floodctrl'], 3);
-                        formHelper::formTextBox($lang['pmquota'], 'pmquotanew', $CONFIG['pmquota'], 3);
-                        formHelper::formTextBox($lang['login_max_setting'], 'loginattemptsnew', $CONFIG['login_max_attempts'], 2);
-                        formHelper::formTextBox($lang['inactiveusers'], 'inactiveusersnew', $CONFIG['inactiveusers'], 3);
-                        formHelper::formSelectOnOff($lang['doublee'], 'doubleenew', $doubleeon, $doubleeoff);
-                        ?>
+formHelper::formSelectOnOff($lang['reg_on'], 'regstatusnew', $regon, $regoff);
+    formHelper::formSelectList($lang['notifyonreg'], 'notifyonregnew', array(
+        $lang['textoff'],
+        $lang['viapm'],
+        $lang['viaemail'],
+    ), array(
+        'off',
+        'pm',
+        'email',
+    ), $notifycheck, false);
+    formHelper::formTextBox2($lang['notify'], 5, 'usernamenotifynew', 50, $CONFIG['usernamenotify']);
+    formHelper::formSelectOnOff($lang['textreggedonly'], 'regviewonlynew', $regonlyon, $regonlyoff);
+    formHelper::formSelectOnOff($lang['texthidepriv'], 'hideprivatenew', $hideon, $hideoff);
+    formHelper::formSelectOnOff($lang['emailverify'], 'emailchecknew', $echeckon, $echeckoff);
+    formHelper::formTextBox($lang['textflood'], 'floodctrlnew', $CONFIG['floodctrl'], 3);
+    formHelper::formTextBox($lang['pmquota'], 'pmquotanew', $CONFIG['pmquota'], 3);
+    formHelper::formTextBox($lang['login_max_setting'], 'loginattemptsnew', $CONFIG['login_max_attempts'], 2);
+    formHelper::formTextBox($lang['inactiveusers'], 'inactiveusersnew', $CONFIG['inactiveusers'], 3);
+    formHelper::formSelectOnOff($lang['doublee'], 'doubleenew', $doubleeon, $doubleeoff);
+    ?>
                         <tr class="category">
                             <td class="title" colspan="2"><?php echo $lang['admin_main_settings6'] ?></td>
                         </tr>
                         <?php
-                        formHelper::formTextBox($lang['texthottopic'], 'hottopicnew', $CONFIG['hottopic'], 3);
-                        formHelper::formSelectOnOff($lang['bbinsert'], 'bbinsertnew', $bbinserton, $bbinsertoff);
-                        formHelper::formSelectOnOff($lang['smileyinsert'], 'smileyinsertnew', $smileyinserton, $smileyinsertoff);
-                        formHelper::formSelectList($lang['footer_options'], 'new_footer_options', $names, $values, $checked);
-                        formHelper::formSelectOnOff($lang['sigbbcode'], 'sigbbcodenew', $sigbbcodeon, $sigbbcodeoff);
-                        ?>
+formHelper::formTextBox($lang['texthottopic'], 'hottopicnew', $CONFIG['hottopic'], 3);
+    formHelper::formSelectOnOff($lang['bbinsert'], 'bbinsertnew', $bbinserton, $bbinsertoff);
+    formHelper::formSelectOnOff($lang['smileyinsert'], 'smileyinsertnew', $smileyinserton, $smileyinsertoff);
+    formHelper::formSelectList($lang['footer_options'], 'new_footer_options', $names, $values, $checked);
+    formHelper::formSelectOnOff($lang['sigbbcode'], 'sigbbcodenew', $sigbbcodeon, $sigbbcodeoff);
+    ?>
                         <tr class="ctrtablerow" bgcolor="<?php echo $THEME['altbg2'] ?>">
                             <td colspan="2"><input class="submit" type="submit"
                                                    name="generalsubmit"
@@ -400,7 +400,7 @@ function doPanel()
         'forumjump' => $forumjumpnew,
         'showsubs' => $showsubsnew,
         'login_max_attempts' => $loginattemptsnew,
-        'inactiveusers' => $inactiveusersnew
+        'inactiveusers' => $inactiveusersnew,
     );
 
     // execute query

@@ -1,7 +1,7 @@
 <?php
 /**
  * GaiaBB
- * Copyright (c) 2011-2020 The GaiaBB Project
+ * Copyright (c) 2009-2020 The GaiaBB Project
  * https://github.com/vanderaj/gaiabb
  *
  * Based off UltimaBB
@@ -33,8 +33,8 @@ define('ROOT', '../');
 define('ROOTINC', '../include/');
 define('ROOTCLASS', '../class/');
 
-require_once('../header.php');
-require_once('../include/admincp.inc.php');
+require_once '../header.php';
+require_once '../include/admincp.inc.php';
 
 loadtpl('cp_header', 'cp_footer', 'cp_message', 'cp_error');
 
@@ -85,9 +85,9 @@ function viewPanel()
                         </tr>
                         <?php
 
-                        $query = $db->query("SELECT * FROM " . X_PREFIX . "smilies WHERE type = 'smiley' ORDER BY id ASC");
-                        while (($smilie = $db->fetch_array($query)) != false) {
-                            ?>
+    $query = $db->query("SELECT * FROM " . X_PREFIX . "smilies WHERE type = 'smiley' ORDER BY id ASC");
+    while (($smilie = $db->fetch_array($query)) != false) {
+        ?>
                             <tr>
                                 <td bgcolor="<?php echo $THEME['altbg2'] ?>" class="ctrtablerow"><input
                                             type="checkbox" name="smdelete[<?php echo $smilie['id'] ?>]"
@@ -104,9 +104,9 @@ function viewPanel()
                                             title="<?php echo $smilie['code'] ?>"/></td>
                             </tr>
                             <?php
-                        }
-                        $db->free_result($query);
-                        ?>
+}
+    $db->free_result($query);
+    ?>
                         <tr bgcolor="<?php echo $THEME['altbg1'] ?>" class="tablerow">
                             <td><?php echo $lang['textnewsmilie'] ?></td>
                             <td><input type="text" name="newcode" value=""/></td>
@@ -151,12 +151,13 @@ function doPanel()
     $newurl1 = formVar('newurl1');
     $autoinsertsmilies = formInt('autoinsertsmilies');
 
-    if (is_array($smcode))
+    if (is_array($smcode)) {
         foreach ($smcode as $key => $val) {
             if (count(array_keys($smcode, $val)) > 1) {
                 cp_error($lang['smilieexists'], false, '', '</td></tr></table>');
             }
         }
+    }
 
     $querysmilie = $db->query("SELECT id FROM " . X_PREFIX . "smilies WHERE type = 'smiley'");
     while (($smilie = $db->fetch_array($querysmilie)) != false) {

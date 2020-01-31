@@ -1,7 +1,7 @@
 <?php
 /**
  * GaiaBB
- * Copyright (c) 2011-2020 The GaiaBB Project
+ * Copyright (c) 2009-2020 The GaiaBB Project
  * https://github.com/vanderaj/gaiabb
  *
  * Based off UltimaBB
@@ -29,8 +29,8 @@
  *
  **/
 
-require_once('header.php');
-require_once('include/validate.inc.php');
+require_once 'header.php';
+require_once 'include/validate.inc.php';
 
 loadtpl('contactus');
 
@@ -82,12 +82,12 @@ if (onSubmit('contactsubmit')) {
         error($lang['contactnosubject'], false, '', '', $contactLink, true, false, true);
     }
 
-    if (empty($CONFIG['adminemail']))     // The mail class can handle this error, but it'll describe it vaguely
+    if (empty($CONFIG['adminemail'])) // The mail class can handle this error, but it'll describe it vaguely
     {
         error($lang['noadminemail'], false, '', '', 'cp_board.php', true, false, true);
     }
 
-    if (empty($CONFIG['bbname']))     // The mail class can handle this error, but it'll describe it vaguely
+    if (empty($CONFIG['bbname'])) // The mail class can handle this error, but it'll describe it vaguely
     {
         error($lang['nobbname'], false, '', '', 'cp_board.php', true, false, true);
     }
@@ -105,4 +105,3 @@ if (onSubmit('contactsubmit')) {
 
 loadtime();
 eval('echo "' . template('footer') . '";');
-

@@ -1,7 +1,7 @@
 <?php
 /**
  * GaiaBB
- * Copyright (c) 2011-2020 The GaiaBB Project
+ * Copyright (c) 2009-2020 The GaiaBB Project
  * https://github.com/vanderaj/gaiabb
  *
  * Based off UltimaBB
@@ -48,36 +48,36 @@ class pm
 
     public $uid;
 
-    function __construct()
+    public function __construct()
     {
         $this->uid = 0;
     }
 
-    function init()
+    public function init()
     {
     }
 
-    function findById()
+    public function findById()
     {
     }
 
-    function save()
+    public function save()
     {
     }
 
-    function exists()
+    public function exists()
     {
     }
 
-    function update()
+    public function update()
     {
     }
 
-    function delete()
+    public function delete()
     {
     }
 
-    function deleteByUid($uid = 0)
+    public function deleteByUid($uid = 0)
     {
         global $db;
 

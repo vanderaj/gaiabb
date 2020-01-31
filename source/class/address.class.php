@@ -1,7 +1,7 @@
 <?php
 /**
  * GaiaBB
- * Copyright (c) 2011-2020 The GaiaBB Project
+ * Copyright (c) 2009-2020 The GaiaBB Project
  * https://github.com/vanderaj/gaiabb
  *
  * Based off UltimaBB
@@ -40,7 +40,7 @@ class Address
     /**
      * Address constructor.
      */
-    function __construct()
+    public function __construct()
     {
         global $db;
 
@@ -63,7 +63,7 @@ class Address
      * @param string $redirect where to next
      * @param bool $exit true if need to stop
      */
-    function blistmsg($message, $redirect = '', $exit = false)
+    public function blistmsg($message, $redirect = '', $exit = false)
     {
         global $css, $THEME, $CONFIG, $lang, $bgcode, $versionpowered;
         global $charset, $redirectjs, $shadow, $lang_code, $lang_dir;
@@ -80,13 +80,13 @@ class Address
     /**
      * @param $addresses - add this address to the user's address book
      */
-    function add($addresses)
+    public function add($addresses)
     {
         global $db, $lang, $self, $shadow, $THEME, $versionpowered;
 
         if (!is_array($addresses)) {
             $addresses = array(
-                $addresses
+                $addresses,
             );
         }
 
@@ -98,29 +98,29 @@ class Address
             if ($address == $self['username']) {
                 $this->blistmsg($lang['addresswarnaddself']);
             } else
-                if (empty($address) || (strlen(trim($address)) == 0)) {
-                    $this->blistmsg($lang['noaddressselected'], '', true);
-                } else {
-                    $address = addslashes($address);
+            if (empty($address) || (strlen(trim($address)) == 0)) {
+                $this->blistmsg($lang['noaddressselected'], '', true);
+            } else {
+                $address = addslashes($address);
 
-                    $q = $db->query("SELECT count(username) FROM " . X_PREFIX . "addresses WHERE username = '" . $self['username'] . "' AND addressname = '$address'");
-                    if ($db->result($q, 0) > 0) {
-                        $this->blistmsg($address . ' ' . $lang['addressalreadyonlist']);
+                $q = $db->query("SELECT count(username) FROM " . X_PREFIX . "addresses WHERE username = '" . $self['username'] . "' AND addressname = '$address'");
+                if ($db->result($q, 0) > 0) {
+                    $this->blistmsg($address . ' ' . $lang['addressalreadyonlist']);
+                } else {
+                    $q = $db->query("SELECT count(username) FROM " . X_PREFIX . "members WHERE username = '$address'");
+                    if ($db->result($q, 0) < 1) {
+                        $this->blistmsg($lang['nomember']);
                     } else {
-                        $q = $db->query("SELECT count(username) FROM " . X_PREFIX . "members WHERE username = '$address'");
-                        if ($db->result($q, 0) < 1) {
-                            $this->blistmsg($lang['nomember']);
-                        } else {
-                            $db->query("INSERT INTO " . X_PREFIX . "addresses(addressname, username) VALUES('$address', '" . $self['username'] . "')");
-                            $this->blistmsg($address . ' ' . $lang['addressaddedmsg'], 'address.php');
-                        }
+                        $db->query("INSERT INTO " . X_PREFIX . "addresses(addressname, username) VALUES('$address', '" . $self['username'] . "')");
+                        $this->blistmsg($address . ' ' . $lang['addressaddedmsg'], 'address.php');
                     }
-                    $db->free_result($q);
                 }
+                $db->free_result($q);
+            }
         }
     }
 
-    function edit()
+    public function edit()
     {
         global $db, $lang, $self, $shadow, $THEME, $CONFIG, $versionpowered;
         global $charset, $css, $bgcode, $oToken, $lang_code, $lang_dir;
@@ -140,14 +140,14 @@ class Address
         eval('echo stripslashes("' . template('addresslist_edit') . '");');
     }
 
-    function delete($delete)
+    public function delete($delete)
     {
         global $db, $lang, $self, $shadow, $THEME, $CONFIG;
         global $charset, $css, $bgcode, $versionpowered;
 
         if (!is_array($delete)) {
             $delete = array(
-                $delete
+                $delete,
             );
         }
 
@@ -158,7 +158,7 @@ class Address
         $this->blistmsg($lang['addresslistupdated'], 'address.php');
     }
 
-    function addpm()
+    public function addpm()
     {
         global $db, $lang, $self, $shadow, $versionpowered;
         global $charset, $THEME, $CONFIG, $css, $bgcode, $oToken, $lang_code, $lang_dir;
@@ -176,11 +176,11 @@ class Address
                     eval("\$addresses['online'] .= \"" . template('address_pm_inv') . "\";");
                 }
             } else
-                if ($address['username'] != '') {
-                    eval("\$addresses['online'] .= \"" . template('address_pm_on') . "\";");
-                } else {
-                    eval("\$addresses['offline']   .= \"" . template('address_pm_off') . "\";");
-                }
+            if ($address['username'] != '') {
+                eval("\$addresses['online'] .= \"" . template('address_pm_on') . "\";");
+            } else {
+                eval("\$addresses['offline']   .= \"" . template('address_pm_off') . "\";");
+            }
         }
 
         if (count($addresses) == 0) {
@@ -191,7 +191,7 @@ class Address
         $db->free_result($q);
     }
 
-    function display()
+    public function display()
     {
         global $db, $lang, $self, $shadow, $versionpowered;
         global $charset, $THEME, $CONFIG, $css, $bgcode, $lang_code, $lang_dir;
@@ -220,7 +220,7 @@ class Address
         eval('echo stripslashes("' . template('addresslist') . '");');
     }
 
-    function deleteByUid($uid = 0)
+    public function deleteByUid($uid = 0)
     {
         global $db;
 

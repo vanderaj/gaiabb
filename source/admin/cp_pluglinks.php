@@ -1,7 +1,7 @@
 <?php
 /**
  * GaiaBB
- * Copyright (c) 2011-2020 The GaiaBB Project
+ * Copyright (c) 2009-2020 The GaiaBB Project
  * https://github.com/vanderaj/gaiabb
  *
  * Based off UltimaBB
@@ -33,8 +33,8 @@ define('ROOT', '../');
 define('ROOTINC', '../include/');
 define('ROOTCLASS', '../class/');
 
-require_once('../header.php');
-require_once('../include/admincp.inc.php');
+require_once '../header.php';
+require_once '../include/admincp.inc.php';
 
 loadtpl('cp_header', 'cp_footer', 'cp_message', 'cp_error');
 
@@ -83,19 +83,19 @@ function viewPanel()
                             <td class="title" align="center"><?php echo $lang['pluglinkstatus'] ?></td>
                         </tr>
                         <?php
-                        $plugs = $db->query("SELECT * FROM " . X_PREFIX . "pluglinks ORDER BY displayorder ASC");
-                        $rowsFound = $db->num_rows($plugs);
-                        while (($pluginfo = $db->fetch_array($plugs)) != false) {
-                            $on = $off = '';
-                            switch ($pluginfo['status']) {
-                                case 'on':
-                                    $on = $selHTML;
-                                    break;
-                                default:
-                                    $off = $selHTML;
-                                    break;
-                            }
-                            ?>
+$plugs = $db->query("SELECT * FROM " . X_PREFIX . "pluglinks ORDER BY displayorder ASC");
+    $rowsFound = $db->num_rows($plugs);
+    while (($pluginfo = $db->fetch_array($plugs)) != false) {
+        $on = $off = '';
+        switch ($pluginfo['status']) {
+            case 'on':
+                $on = $selHTML;
+                break;
+            default:
+                $off = $selHTML;
+                break;
+        }
+        ?>
                             <tr class="ctrtablerow" bgcolor="<?php echo $THEME['altbg2'] ?>">
                                 <td><input type="checkbox"
                                            name="delete<?php echo $pluginfo['id'] ?>"
@@ -115,17 +115,17 @@ function viewPanel()
                                     </select></td>
                             </tr>
                             <?php
-                        }
-                        $db->free_result($plugs);
-                        if ($rowsFound < 1) {
-                            ?>
+}
+    $db->free_result($plugs);
+    if ($rowsFound < 1) {
+        ?>
                             <tr>
                                 <td bgcolor="<?php echo $THEME['altbg1'] ?>" class="ctrtablerow"
                                     colspan="6"><?php echo $lang['pluglinknone'] ?></td>
                             </tr>
                             <?php
-                        }
-                        ?>
+}
+    ?>
                         <tr class="category">
                             <td class="title" colspan="6"><?php echo $lang['pluglinkcreate'] ?></td>
                         </tr>

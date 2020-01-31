@@ -1,7 +1,7 @@
 <?php
 /**
  * GaiaBB
- * Copyright (c) 2011-2020 The GaiaBB Project
+ * Copyright (c) 2009-2020 The GaiaBB Project
  * https://github.com/vanderaj/gaiabb
  *
  * Based off UltimaBB
@@ -29,8 +29,7 @@
  *
  **/
 
-
-require_once('header.php');
+require_once 'header.php';
 
 loadtpl('memberlist_row', 'memberlist', 'memberlist_admin', 'memberlist_multipage', 'memberlist_separator', 'memberlist_results_none');
 
@@ -119,7 +118,7 @@ switch ($action) {
             'X',
             'Y',
             'Z',
-            $lang['lettermisc']
+            $lang['lettermisc'],
         );
 
         $lettersort = '<tr>';
@@ -171,11 +170,11 @@ switch ($action) {
             $orderby = 'uid';
             $order = 'uid';
         } else
-            if ($order == 'status') {
-                $orderby = "if (status = 'Super Administrator',1, if (status = 'Administrator', 2, if (status = 'Super Moderator', 3, if (status = 'Moderator', 4, if (status = 'member', 5, if (status = 'banned', 6, 7))))))";
-            } else {
-                $orderby = $db->escape($order);
-            }
+        if ($order == 'status') {
+            $orderby = "if (status = 'Super Administrator',1, if (status = 'Administrator', 2, if (status = 'Super Moderator', 3, if (status = 'Moderator', 4, if (status = 'member', 5, if (status = 'banned', 6, 7))))))";
+        } else {
+            $orderby = $db->escape($order);
+        }
 
         if (!X_SADMIN) {
             $srchip = '';
@@ -188,7 +187,7 @@ switch ($action) {
         }
 
         $ext = array(
-            '&amp;order=' . urlencode(stripslashes($order))
+            '&amp;order=' . urlencode(stripslashes($order)),
         );
 
         if (!empty($srchemail)) {
@@ -262,10 +261,10 @@ switch ($action) {
                     $member['lastname'] = censor($member['lastname']);
                     $member['lastname'] = stripslashes($member['lastname']);
                 } else
-                    if (empty($member['firstname']) || empty($member['lastname']) && $member['showname'] == 'no') {
-                        $member['firstname'] = $lang['profilenoinformation'];
-                        $member['lastname'] = '';
-                    }
+                if (empty($member['firstname']) || empty($member['lastname']) && $member['showname'] == 'no') {
+                    $member['firstname'] = $lang['profilenoinformation'];
+                    $member['lastname'] = '';
+                }
 
                 $icon = $pre = $suff = '';
                 switch ($member['status']) {
@@ -372,4 +371,3 @@ eval('$header = "' . template('header') . '";');
 loadtime();
 eval('$footer = "' . template('footer') . '";');
 echo stripslashes($header . $memberlist . $footer);
-?>

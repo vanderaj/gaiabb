@@ -1,7 +1,7 @@
 <?php
 /**
  * GaiaBB
- * Copyright (c) 2011-2020 The GaiaBB Project
+ * Copyright (c) 2009-2020 The GaiaBB Project
  * https://github.com/vanderaj/gaiabb
  *
  * Based off UltimaBB
@@ -29,9 +29,8 @@
  *
  **/
 
-
-require_once('header.php');
-require_once('include/usercp.inc.php');
+require_once 'header.php';
+require_once 'include/usercp.inc.php';
 
 loadtpl(
     'error_nologinsession',
@@ -335,9 +334,9 @@ if (onSubmit('editsubmit')) {
         if ($size === false) {
             $avatar = '';
         } else
-            if (($size[0] > $max_size[0] && $max_size[0] > 0) || ($size[1] > $max_size[1] && $max_size[1] > 0) && !X_ADMIN) {
-                error($lang['avatar_too_big'] . $CONFIG['max_avatar_size'] . $lang['Avatar_Pixels'], false);
-            }
+        if (($size[0] > $max_size[0] && $max_size[0] > 0) || ($size[1] > $max_size[1] && $max_size[1] > 0) && !X_ADMIN) {
+            error($lang['avatar_too_big'] . $CONFIG['max_avatar_size'] . $lang['Avatar_Pixels'], false);
+        }
     }
 
     if (isset($_COOKIE['avatarfile']) || isset($_POST['avatarfile']) || isset($_GET['avatarfile'])) {
@@ -350,7 +349,7 @@ if (onSubmit('editsubmit')) {
         $newavatarname = $member['uid'] . '.' . $onlinetime . '.' . $avatarext;
         $check = $_FILES['avatarfile'];
 
-        $CONFIG['avatar_filesize'] = (int)$CONFIG['avatar_filesize'];
+        $CONFIG['avatar_filesize'] = (int) $CONFIG['avatar_filesize'];
         if (($check['size'] > $CONFIG['avatar_filesize']) && !X_ADMIN) {
             error($lang['avatar_too_big'] . $CONFIG['avatar_filesize'] . $lang['Avatar_Bytes'], false);
         }
@@ -371,7 +370,7 @@ if (onSubmit('editsubmit')) {
         $height = $size[1];
         $type = $size[2];
 
-        if (!((bool)ini_get('safe_mode'))) {
+        if (!((bool) ini_get('safe_mode'))) {
             set_time_limit(30);
         }
         $imginfo = getimagesize($tmppath);
@@ -410,10 +409,10 @@ if (onSubmit('editsubmit')) {
             $newwidth = $CONFIG['avatar_new_width'];
             $newheight = ($newwidth / $width) * $height;
         } else
-            if ($height > $CONFIG['avatar_max_height']) {
-                $newheight = $CONFIG['avatar_new_height'];
-                $newwidth = ($newheight / $height) * $width;
-            }
+        if ($height > $CONFIG['avatar_max_height']) {
+            $newheight = $CONFIG['avatar_new_height'];
+            $newwidth = ($newheight / $height) * $width;
+        }
 
         if (isset($newwidth)) {
             $destImage = imagecreatetruecolor($newwidth, $newheight);
@@ -462,9 +461,9 @@ if (onSubmit('editsubmit')) {
         if ($size === false) {
             $photo = '';
         } else
-            if (($size[0] > $max_size[0] && $max_size[0] > 0) || ($size[1] > $max_size[1] && $max_size[1] > 0) && !X_ADMIN) {
-                error($lang['photo_too_big'] . $CONFIG['max_photo_size'] . $lang['photo_Pixels'], false);
-            }
+        if (($size[0] > $max_size[0] && $max_size[0] > 0) || ($size[1] > $max_size[1] && $max_size[1] > 0) && !X_ADMIN) {
+            error($lang['photo_too_big'] . $CONFIG['max_photo_size'] . $lang['photo_Pixels'], false);
+        }
     }
 
     if (isset($_COOKIE['photofile']) || isset($_POST['photofile']) || isset($_GET['photofile'])) {
@@ -477,7 +476,7 @@ if (onSubmit('editsubmit')) {
         $newphotoname = $member['uid'] . '.' . $onlinetime . '.' . $photoext;
         $check = $_FILES['photofile'];
 
-        $CONFIG['photo_filesize'] = (int)$CONFIG['photo_filesize'];
+        $CONFIG['photo_filesize'] = (int) $CONFIG['photo_filesize'];
         if (($check['size'] > $CONFIG['photo_filesize']) && !X_ADMIN) {
             error($lang['photo_too_big'] . $CONFIG['photo_filesize'] . $lang['photo_Bytes'], false);
         }
@@ -498,7 +497,7 @@ if (onSubmit('editsubmit')) {
         $height = $size[1];
         $type = $size[2];
 
-        if (!((bool)ini_get('safe_mode'))) {
+        if (!((bool) ini_get('safe_mode'))) {
             set_time_limit(30);
         }
 
@@ -538,10 +537,10 @@ if (onSubmit('editsubmit')) {
             $newwidth = $CONFIG['photo_new_width'];
             $newheight = ($newwidth / $width) * $height;
         } else
-            if ($height > $CONFIG['photo_max_height']) {
-                $newheight = $CONFIG['photo_new_height'];
-                $newwidth = ($newheight / $height) * $width;
-            }
+        if ($height > $CONFIG['photo_max_height']) {
+            $newheight = $CONFIG['photo_new_height'];
+            $newwidth = ($newheight / $height) * $width;
+        }
 
         if (isset($newwidth)) {
             $destImage = imagecreatetruecolor($newwidth, $newheight);

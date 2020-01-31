@@ -1,7 +1,7 @@
 <?php
 /**
  * GaiaBB
- * Copyright (c) 2011-2020 The GaiaBB Project
+ * Copyright (c) 2009-2020 The GaiaBB Project
  * https://github.com/vanderaj/gaiabb
  *
  * Based off UltimaBB
@@ -29,8 +29,7 @@
  *
  **/
 
-
-require_once('header.php');
+require_once 'header.php';
 
 loadtpl('massmod_openclose', 'massmod_topuntop', 'massmod_bump', 'massmod_copy', 'massmod_merge', 'massmod_delete', 'massmod_empty', 'massmod_move', 'massmod_markthread', 'viewforum_newtopic', 'viewforum_newpoll', 'viewforum_password', 'viewforum_thread', 'viewforum_invalidforum', 'viewforum_nothreads', 'viewforum', 'viewforum_subforum_lastpost', 'viewforum_thread_lastpost', 'viewforum_admin', 'viewforum_thread_admin', 'viewforum_subforum', 'viewforum_subforums', 'viewforum_multipage_admin', 'viewforum_multipage', 'viewforum_subforum_nolastpost', 'viewforum_dotfolders', 'viewforum_search', 'viewforum_rules', 'viewforum_mpn_info', 'viewforum_nothreads_admin');
 
@@ -63,9 +62,9 @@ if (isset($forum['type']) && $forum['type'] == 'sub') {
         error($lang['privforummsg']);
     }
 } else
-    if (isset($forum['type']) && $forum['type'] != 'forum') {
-        error($lang['textnoforum']);
-    }
+if (isset($forum['type']) && $forum['type'] != 'forum') {
+    error($lang['textnoforum']);
+}
 
 $authorization = privfcheck($forum['private'], $forum['userlist']);
 if (!$authorization) {
@@ -78,12 +77,12 @@ if (isset($forum['type']) && $forum['type'] == 'forum') {
     nav(stripslashes($forum['name']));
     btitle(stripslashes($forum['name']));
 } else
-    if (isset($forum['type']) && $forum['type'] == 'sub') {
-        nav('<a href="viewforum.php?fid=' . intval($fup['fid']) . '">' . stripslashes($fup['name']) . '</a>');
-        nav(stripslashes($forum['name']));
-        btitle(stripslashes($fup['name']));
-        btitle(stripslashes($forum['name']));
-    }
+if (isset($forum['type']) && $forum['type'] == 'sub') {
+    nav('<a href="viewforum.php?fid=' . intval($fup['fid']) . '">' . stripslashes($fup['name']) . '</a>');
+    nav(stripslashes($forum['name']));
+    btitle(stripslashes($fup['name']));
+    btitle(stripslashes($forum['name']));
+}
 
 // check if member has enough posts to access forum if set
 if (isset($forum['mpfa']) && $forum['mpfa'] != 0 && isset($self['postnum']) && $self['postnum'] < $forum['mpfa'] && !X_SADMIN) {
@@ -255,7 +254,7 @@ switch ($order) {
 }
 
 $page = getInt('page');
-$page = (isset($page) && is_numeric($page)) ? ($page < 1 ? 1 : ((int)$page)) : 1;
+$page = (isset($page) && is_numeric($page)) ? ($page < 1 ? 1 : ((int) $page)) : 1;
 $start_limit = ($page > 1) ? (($page - 1) * $self['tpp']) : 0;
 
 $dotadd1 = $dotadd2 = '';
@@ -270,13 +269,13 @@ $status1 = '';
 if (X_STAFF && isset($self['status']) && $self['status'] != 'Moderator') {
     $status1 = 'Moderator';
 } else
-    if (isset($self['status']) && $self['status'] == 'Moderator') {
-        $status1 = modcheck($forum['moderator']);
-    }
+if (isset($self['status']) && $self['status'] == 'Moderator') {
+    $status1 = modcheck($forum['moderator']);
+}
 
 if ($status1 == 'Moderator') {
     $viewforum_thread = 'viewforum_thread_admin';
-    include_once('mass_mod.inc.php');
+    include_once 'mass_mod.inc.php';
 }
 
 $topicsnum = 0;
@@ -322,23 +321,23 @@ while (($thread = $db->fetch_array($querytop)) != false) {
     if ($thread['replies'] >= $CONFIG['hottopic']) {
         $folder = 'hot_folder.gif';
     } else
-        if ($thread['pollopts'] == 1) {
-            $folder = 'folder_poll.gif';
-        } else {
-            $folder = 'folder.gif';
-        }
+    if ($thread['pollopts'] == 1) {
+        $folder = 'folder_poll.gif';
+    } else {
+        $folder = 'folder.gif';
+    }
 
     $oldtopics = isset($_COOKIE['oldtopics']) ? $_COOKIE['oldtopics'] : '';
 
     if (($oT = strpos($oldtopics, '|' . $lastPid . '|')) === false && $thread['replies'] >= $CONFIG['hottopic'] && $lastvisit < $dalast) {
         $folder = 'hot_red_folder.gif';
     } else
-        if ($lastvisit < $dalast && $oT === false && $thread['pollopts'] == 1) {
-            $folder = 'folder_new_poll.gif';
-        } else
-            if ($lastvisit < $dalast && $oT === false) {
-                $folder = 'red_folder.gif';
-            }
+    if ($lastvisit < $dalast && $oT === false && $thread['pollopts'] == 1) {
+        $folder = 'folder_new_poll.gif';
+    } else
+    if ($lastvisit < $dalast && $oT === false) {
+        $folder = 'red_folder.gif';
+    }
 
     if ($CONFIG['dotfolders'] == 'on' && isset($thread['dotauthor']) == $self['username'] && X_MEMBER) {
         $folder = 'dot_' . $folder;
@@ -530,4 +529,3 @@ if (X_ADMIN || X_SMOD || (X_STAFF && $status1 == 'Moderator')) {
 
 loadtime();
 eval('echo "' . template('footer') . '";');
-

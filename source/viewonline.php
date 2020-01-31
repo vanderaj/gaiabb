@@ -1,7 +1,7 @@
 <?php
 /**
  * GaiaBB
- * Copyright (c) 2011-2020 The GaiaBB Project
+ * Copyright (c) 2009-2020 The GaiaBB Project
  * https://github.com/vanderaj/gaiabb
  *
  * Based off UltimaBB
@@ -29,9 +29,8 @@
  *
  **/
 
-
-require_once('header.php');
-require_once('include/online.inc.php');
+require_once 'header.php';
+require_once 'include/online.inc.php';
 
 loadtpl('online_row_admin', 'online_row', 'online_admin', 'online');
 
@@ -154,23 +153,23 @@ while (($online = $db->fetch_array($q)) != false) {
                 break;
         }
     } else
-        if ($online['username'] == 'xrobot123') {
-            if ($THEME['riconstatus'] == 'on') {
-                $icon = '<img src="' . $THEME['ricondir'] . '/online_robot.gif" alt="' . $lang['textrobot1'] . '" title="' . $lang['textrobot1'] . '" border="0px" />';
-                $online['username'] = $icon . '' . $username;
-            } else {
-                $icon = '';
-                $online['username'] = $icon . '' . $username;
-            }
+    if ($online['username'] == 'xrobot123') {
+        if ($THEME['riconstatus'] == 'on') {
+            $icon = '<img src="' . $THEME['ricondir'] . '/online_robot.gif" alt="' . $lang['textrobot1'] . '" title="' . $lang['textrobot1'] . '" border="0px" />';
+            $online['username'] = $icon . '' . $username;
         } else {
-            if ($THEME['riconstatus'] == 'on') {
-                $icon = '<img src="' . $THEME['ricondir'] . '/online_guest.gif" alt="' . $lang['textguest1'] . '" title="' . $lang['textguest1'] . '" border="0px" />';
-                $online['username'] = $icon . '' . $username;
-            } else {
-                $icon = '';
-                $online['username'] = $icon . '' . $username;
-            }
+            $icon = '';
+            $online['username'] = $icon . '' . $username;
         }
+    } else {
+        if ($THEME['riconstatus'] == 'on') {
+            $icon = '<img src="' . $THEME['ricondir'] . '/online_guest.gif" alt="' . $lang['textguest1'] . '" title="' . $lang['textguest1'] . '" border="0px" />';
+            $online['username'] = $icon . '' . $username;
+        } else {
+            $icon = '';
+            $online['username'] = $icon . '' . $username;
+        }
+    }
 
     if (X_ADMIN) {
         eval('$onlineusers .= "' . template('online_row_admin') . '";');
@@ -188,4 +187,3 @@ if (X_ADMIN) {
 
 loadtime();
 eval('echo "' . template('footer') . '";');
-

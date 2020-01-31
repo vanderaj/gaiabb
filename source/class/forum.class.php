@@ -1,7 +1,7 @@
 <?php
 /**
  * GaiaBB
- * Copyright (c) 2011-2020 The GaiaBB Project
+ * Copyright (c) 2009-2020 The GaiaBB Project
  * https://github.com/vanderaj/gaiabb
  *
  * Based off UltimaBB
@@ -35,39 +35,39 @@ if (!defined('IN_PROGRAM') && (defined('DEBUG') && DEBUG == false)) {
 class Forum
 {
 
-    function Forum()
+    public function Forum()
     {
     }
 
-    function init()
+    public function init()
     {
     }
 
-    function findById()
+    public function findById()
     {
     }
 
-    function save()
+    public function save()
     {
     }
 
-    function exists()
+    public function exists()
     {
     }
 
-    function update()
+    public function update()
     {
     }
 
-    function delete()
+    public function delete()
     {
     }
 
-    function fixLastPost()
+    public function fixLastPost()
     {
         global $db;
 
-        if (!((bool)ini_get('safe_mode'))) {
+        if (!((bool) ini_get('safe_mode'))) {
             set_time_limit(0);
         }
 
@@ -97,7 +97,7 @@ class Forum
         $db->free_result($query);
     }
 
-    function updateLPFUP($fup = 0, $fid = 0)
+    public function updateLPFUP($fup = 0, $fid = 0)
     {
         global $db;
 
@@ -108,12 +108,12 @@ class Forum
 
             $db->query("UPDATE " . X_PREFIX . "forums SET lastpost = '$lp' WHERE fid = '$fup'");
 
-            return TRUE;
+            return true;
         }
-        return FALSE;
+        return false;
     }
 
-    function fixThreadPostCount()
+    public function fixThreadPostCount()
     {
         global $db;
 

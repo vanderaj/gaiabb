@@ -1,7 +1,7 @@
 <?php
 /**
  * GaiaBB
- * Copyright (c) 2011-2020 The GaiaBB Project
+ * Copyright (c) 2009-2020 The GaiaBB Project
  * https://github.com/vanderaj/gaiabb
  *
  * Based off UltimaBB
@@ -35,11 +35,11 @@ if (!defined('IN_PROGRAM') && (defined('DEBUG') && DEBUG == false)) {
 class formHelper
 {
 
-    function formHelper()
+    public function formHelper()
     {
     }
 
-    static public function formSelectOnOff($setname, $varname, $check1, $check2)
+    public static function formSelectOnOff($setname, $varname, $check1, $check2)
     {
         global $THEME, $CONFIG, $lang;
         ?>
@@ -52,9 +52,9 @@ class formHelper
                 </select></td>
         </tr>
         <?php
-    }
+}
 
-    static public function formTextBox($setname, $setvarname, $setvalue, $setcols)
+    public static function formTextBox($setname, $setvarname, $setvalue, $setcols)
     {
         global $THEME, $CONFIG, $lang;
         ?>
@@ -66,9 +66,9 @@ class formHelper
             </td>
         </tr>
         <?php
-    }
+}
 
-    static public function formTextBox2($setname, $setrows, $setvarname, $setcols, $setvalue)
+    public static function formTextBox2($setname, $setrows, $setvarname, $setcols, $setvalue)
     {
         global $THEME, $CONFIG, $lang;
         ?>
@@ -79,34 +79,34 @@ class formHelper
                         cols="<?php echo $setcols ?>"><?php echo $setvalue ?></textarea></td>
         </tr>
         <?php
-    }
+}
 
-    static public function formTextPassBox($setname, $varname, $value, $size, $pass = false)
+    public static function formTextPassBox($setname, $varname, $value, $size, $pass = false)
     {
         global $THEME, $CONFIG, $lang;
         ?>
         <tr class="tablerow">
             <td bgcolor="<?php echo $THEME['altbg1'] ?>" width="50%"><?php echo $setname ?></td>
             <?php
-            if ($pass) {
-                ?>
+if ($pass) {
+            ?>
                 <td bgcolor="<?php echo $THEME['altbg2'] ?>" width="50%"><input
                             type="password" AUTOCOMPLETE="off" size="<?php echo $size ?>"
                             value="<?php echo $value ?>" name="<?php echo $varname ?>"/></td>
                 <?php
-            } else {
-                ?>
+} else {
+            ?>
                 <td bgcolor="<?php echo $THEME['altbg2'] ?>" width="50%"><input
                             type="text" size="<?php echo $size ?>" value="<?php echo $value ?>"
                             name="<?php echo $varname ?>"/></td>
                 <?php
-            }
-            ?>
+}
+        ?>
         </tr>
         <?php
-    }
+}
 
-    static public function formSelectList($setname, $boxname, $varnames, $values, $checked, $multi = true)
+    public static function formSelectList($setname, $boxname, $varnames, $values, $checked, $multi = true)
     {
         global $THEME, $CONFIG, $lang;
 
@@ -122,14 +122,14 @@ class formHelper
         <tr class="tablerow">
             <td bgcolor="<?php echo $THEME['altbg1'] ?>" width="50%" valign="top"><?php echo $setname ?></td>
             <td bgcolor="<?php echo $THEME['altbg2'] ?>" width="50%"><select
-                    <?php echo($multi ? 'multiple="multiple"' : '') ?>
-                        name="<?php echo $boxname ?><?php echo($multi ? '[]' : '') ?>"><?php echo $optionlist ?></select>
+                    <?php echo ($multi ? 'multiple="multiple"' : '') ?>
+                        name="<?php echo $boxname ?><?php echo ($multi ? '[]' : '') ?>"><?php echo $optionlist ?></select>
             </td>
         </tr>
         <?php
-    }
+}
 
-    static public function formSelectYesNo($setname, $varname, $check1, $check2)
+    public static function formSelectYesNo($setname, $varname, $check1, $check2)
     {
         global $THEME, $CONFIG, $lang;
         ?>
@@ -142,9 +142,9 @@ class formHelper
                 </select></td>
         </tr>
         <?php
-    }
+}
 
-    static public function formCheckBox($varname, $value, $checked, $setname)
+    public static function formCheckBox($varname, $value, $checked, $setname)
     {
         global $THEME, $CONFIG, $lang;
 
@@ -152,9 +152,9 @@ class formHelper
         <input type="checkbox" name="<?php echo $varname ?>"
                value="<?php echo $value ?>" <?php echo $checked ?> /><?php echo $setname ?><br/>
         <?php
-    }
+}
 
-    static public function getSettingOnOffHtml($setting, &$on, &$off)
+    public static function getSettingOnOffHtml($setting, &$on, &$off)
     {
         global $CONFIG, $selHTML;
 
@@ -169,7 +169,7 @@ class formHelper
         }
     }
 
-    static public function getSettingYesNoHtml($setting, &$yes, &$no)
+    public static function getSettingYesNoHtml($setting, &$yes, &$no)
     {
         global $CONFIG, $selHTML;
 
@@ -184,7 +184,7 @@ class formHelper
         }
     }
 
-    static public function getThemeOnOffHtml($setting, &$on, &$off)
+    public static function getThemeOnOffHtml($setting, &$on, &$off)
     {
         global $db, $selHTML, $themedata;
 

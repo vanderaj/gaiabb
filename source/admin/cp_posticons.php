@@ -1,7 +1,7 @@
 <?php
 /**
  * GaiaBB
- * Copyright (c) 2011-2020 The GaiaBB Project
+ * Copyright (c) 2009-2020 The GaiaBB Project
  * https://github.com/vanderaj/gaiabb
  *
  * Based off UltimaBB
@@ -33,8 +33,8 @@ define('ROOT', '../');
 define('ROOTINC', '../include/');
 define('ROOTCLASS', '../class/');
 
-require_once('../header.php');
-require_once('../include/admincp.inc.php');
+require_once '../header.php';
+require_once '../include/admincp.inc.php';
 
 loadtpl('cp_header', 'cp_footer', 'cp_message', 'cp_error');
 
@@ -79,9 +79,9 @@ function viewPanel()
                         </tr>
                         <?php
 
-                        $query = $db->query("SELECT * FROM " . X_PREFIX . "smilies WHERE type = 'picon' ORDER BY id ASC");
-                        while (($smilie = $db->fetch_array($query)) != false) {
-                            ?>
+    $query = $db->query("SELECT * FROM " . X_PREFIX . "smilies WHERE type = 'picon' ORDER BY id ASC");
+    while (($smilie = $db->fetch_array($query)) != false) {
+        ?>
                             <tr bgcolor="<?php echo $THEME['altbg2'] ?>">
                                 <td class="ctrtablerow"><input type="checkbox"
                                                                name="pidelete[<?php echo $smilie['id'] ?>]" value="1"/>
@@ -95,9 +95,9 @@ function viewPanel()
                                             title="<?php echo $smilie['url'] ?>"/></td>
                             </tr>
                             <?php
-                        }
-                        $db->free_result($query);
-                        ?>
+}
+    $db->free_result($query);
+    ?>
                         <tr bgcolor="<?php echo $THEME['altbg1'] ?>" class="tablerow">
                             <td><?php echo $lang['textnewpicon'] ?></td>
                             <td colspan="2"><input type="text" name="newurl2" value=""/></td>

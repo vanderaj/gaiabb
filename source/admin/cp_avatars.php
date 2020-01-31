@@ -1,7 +1,7 @@
 <?php
 /**
  * GaiaBB
- * Copyright (c) 2011-2020 The GaiaBB Project
+ * Copyright (c) 2009-2020 The GaiaBB Project
  * https://github.com/vanderaj/gaiabb
  *
  * Based off UltimaBB
@@ -34,9 +34,9 @@ define('ROOTINC', '../include/');
 define('ROOTCLASS', '../class/');
 define('ROOTHELPER', '../helper/');
 
-require_once('../header.php');
-require_once('../include/admincp.inc.php');
-require_once('../helper/formHelper.php');
+require_once '../header.php';
+require_once '../include/admincp.inc.php';
+require_once '../helper/formHelper.php';
 
 loadtpl('cp_header', 'cp_footer', 'cp_message', 'cp_error');
 
@@ -110,29 +110,29 @@ function viewPanel()
                             <td colspan="2" class="title"><?php echo $lang['Avatar_Settings'] ?></td>
                         </tr>
                         <?php
-                        formHelper::formSelectOnOff($lang['textavastatus'], 'avastatusnew', $avataron, $avataroff);
-                        formHelper::formSelectOnOff($lang['avatars_status'], 'avatars_statusnew', $avatars_status_on, $avatars_status_off);
-                        formHelper::formTextBox($lang['avatarsperpage'], 'avatars_perpagenew', $CONFIG['avatars_perpage'], 2);
-                        formHelper::formTextBox($lang['avatarsperrow'], "avatars_perrownew", $CONFIG['avatars_perrow'], 2);
-                        formHelper::formSelectList($lang['Avatar_Whoupload'], 'avatar_whocanuploadnew', array(
-                            $lang['textoff'],
-                            $lang['Avatar_Upall'],
-                            $lang['Avatar_Upstaff']
-                        ), array(
-                            'off',
-                            'all',
-                            'staff'
-                        ), $avuchecked, false);
-                        formHelper::formTextBox($lang['Avatar_Filesize'], 'avatar_filesizenew', $CONFIG['avatar_filesize'], 5);
-                        formHelper::formTextBox($lang['Avatar_Wdimensions'], 'avatar_max_widthnew', $CONFIG['avatar_max_width'], 4);
-                        formHelper::formTextBox($lang['Avatar_Hdimensions'], 'avatar_max_heightnew', $CONFIG['avatar_max_height'], 4);
-                        formHelper::formTextBox($lang['Avatar_Newwresize'], 'avatar_new_widthnew', $CONFIG['avatar_new_width'], 4);
-                        formHelper::formTextBox($lang['Avatar_Newhresize'], 'avatar_new_heightnew', $CONFIG['avatar_new_height'], 4);
-                        formHelper::formTextBox($lang['Avatar_Path'], 'avatar_pathnew', $CONFIG['avatar_path'], 20);
-                        formHelper::formTextBox($lang['avgalpath'], 'avgalpathnew', $CONFIG['avgalpath'], 20);
-                        formHelper::formTextBox($lang['max_avatar_size_w'], 'max_avatar_size_w_new', $max_avatar_sizes[0], 4);
-                        formHelper::formTextBox($lang['max_avatar_size_h'], 'max_avatar_size_h_new', $max_avatar_sizes[1], 4);
-                        ?>
+formHelper::formSelectOnOff($lang['textavastatus'], 'avastatusnew', $avataron, $avataroff);
+    formHelper::formSelectOnOff($lang['avatars_status'], 'avatars_statusnew', $avatars_status_on, $avatars_status_off);
+    formHelper::formTextBox($lang['avatarsperpage'], 'avatars_perpagenew', $CONFIG['avatars_perpage'], 2);
+    formHelper::formTextBox($lang['avatarsperrow'], "avatars_perrownew", $CONFIG['avatars_perrow'], 2);
+    formHelper::formSelectList($lang['Avatar_Whoupload'], 'avatar_whocanuploadnew', array(
+        $lang['textoff'],
+        $lang['Avatar_Upall'],
+        $lang['Avatar_Upstaff'],
+    ), array(
+        'off',
+        'all',
+        'staff',
+    ), $avuchecked, false);
+    formHelper::formTextBox($lang['Avatar_Filesize'], 'avatar_filesizenew', $CONFIG['avatar_filesize'], 5);
+    formHelper::formTextBox($lang['Avatar_Wdimensions'], 'avatar_max_widthnew', $CONFIG['avatar_max_width'], 4);
+    formHelper::formTextBox($lang['Avatar_Hdimensions'], 'avatar_max_heightnew', $CONFIG['avatar_max_height'], 4);
+    formHelper::formTextBox($lang['Avatar_Newwresize'], 'avatar_new_widthnew', $CONFIG['avatar_new_width'], 4);
+    formHelper::formTextBox($lang['Avatar_Newhresize'], 'avatar_new_heightnew', $CONFIG['avatar_new_height'], 4);
+    formHelper::formTextBox($lang['Avatar_Path'], 'avatar_pathnew', $CONFIG['avatar_path'], 20);
+    formHelper::formTextBox($lang['avgalpath'], 'avgalpathnew', $CONFIG['avgalpath'], 20);
+    formHelper::formTextBox($lang['max_avatar_size_w'], 'max_avatar_size_w_new', $max_avatar_sizes[0], 4);
+    formHelper::formTextBox($lang['max_avatar_size_h'], 'max_avatar_size_h_new', $max_avatar_sizes[1], 4);
+    ?>
                         <tr class="ctrtablerow" bgcolor="<?php echo $THEME['altbg2'] ?>">
                             <td colspan="2"><input class="submit" type="submit"
                                                    name="avatarsubmit"
@@ -209,7 +209,7 @@ function doPanel()
         'avatars_status' => $avatars_statusnew,
         'avatars_perpage' => $avatars_perpagenew,
         'avatars_perrow' => $avatars_perrownew,
-        'avgalpath' => $avgalpathnew
+        'avgalpath' => $avgalpathnew,
     );
 
     // execute query

@@ -1,7 +1,7 @@
 <?php
 /**
  * GaiaBB
- * Copyright (c) 2011-2020 The GaiaBB Project
+ * Copyright (c) 2009-2020 The GaiaBB Project
  * https://github.com/vanderaj/gaiabb
  *
  * Based off UltimaBB
@@ -39,7 +39,7 @@ class subscription
 
     public $dirty;
 
-    function __construct($tid = 0)
+    public function __construct($tid = 0)
     {
         if ($tid === 0) {
             $this->dirty = false;
@@ -50,7 +50,7 @@ class subscription
         $this->findById($tid);
     }
 
-    function findById($tid)
+    public function findById($tid)
     {
         global $db, $self;
 
@@ -62,7 +62,7 @@ class subscription
         return false;
     }
 
-    function exists($tid)
+    public function exists($tid)
     {
         global $db, $self;
 
@@ -78,7 +78,7 @@ class subscription
         return $retval;
     }
 
-    function update()
+    public function update()
     {
         global $db, $self;
 
@@ -92,7 +92,7 @@ class subscription
         return false;
     }
 
-    function delete()
+    public function delete()
     {
         if ($this->dirty && $this->tid > 0) {
             $this->deleteByTid($this->tid);
@@ -104,14 +104,14 @@ class subscription
         return false;
     }
 
-    function deleteByTid($tid)
+    public function deleteByTid($tid)
     {
         global $db, $self;
 
         return $db->query("DELETE FROM " . X_PREFIX . "subscriptions WHERE username = '" . $self['username'] . "' AND type='subscription' AND tid = '" . intval($tid) . "'");
     }
 
-    function deleteByFormTids()
+    public function deleteByFormTids()
     {
         global $db, $self;
 
@@ -132,7 +132,7 @@ class subscription
         }
     }
 
-    function deleteByUid($uid = 0)
+    public function deleteByUid($uid = 0)
     {
         global $db;
 

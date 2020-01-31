@@ -1,7 +1,7 @@
 <?php
 /**
  * GaiaBB
- * Copyright (c) 2011-2020 The GaiaBB Project
+ * Copyright (c) 2009-2020 The GaiaBB Project
  * https://github.com/vanderaj/gaiabb
  *
  * Based off UltimaBB
@@ -35,48 +35,48 @@ if (!defined('IN_PROGRAM') && (defined('DEBUG') && DEBUG == false)) {
 class thread
 {
 
-    function __construct()
+    public function __construct()
     {
     }
 
-    function init()
+    public function init()
     {
     }
 
-    function findById()
+    public function findById()
     {
     }
 
-    function save()
+    public function save()
     {
     }
 
-    function exists()
+    public function exists()
     {
     }
 
-    function update()
+    public function update()
     {
     }
 
-    function delete()
+    public function delete()
     {
     }
 
-    function addPost()
+    public function addPost()
     {
     }
 
-    function editPost()
+    public function editPost()
     {
     }
 
-    function deletePost()
+    public function deletePost()
     {
     }
 
     // Find if the thread's first post detail matches the first post
-    function fixFirstPost()
+    public function fixFirstPost()
     {
         global $db;
 
@@ -93,7 +93,7 @@ class thread
         return true;
     }
 
-    function fixLastPost()
+    public function fixLastPost()
     {
         global $db;
 
@@ -124,7 +124,7 @@ class thread
         return true;
     }
 
-    function PrevNextThreads()
+    public function PrevNextThreads()
     {
         global $db, $tid, $fid, $lang;
 

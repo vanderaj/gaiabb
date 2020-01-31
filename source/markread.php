@@ -1,7 +1,7 @@
 <?php
 /**
  * GaiaBB
- * Copyright (c) 2011-2020 The GaiaBB Project
+ * Copyright (c) 2009-2020 The GaiaBB Project
  * https://github.com/vanderaj/gaiabb
  *
  * Based off UltimaBB
@@ -29,8 +29,7 @@
  *
  **/
 
-
-require_once('header.php');
+require_once 'header.php';
 
 loadtpl('');
 
@@ -46,4 +45,3 @@ put_cookie('gbblvb', $gbblvb, $gbblvb + 600, $cookiepath, $cookiedomain, null, X
 $lastvisit = $onlinetime;
 $lastvisit2 = $onlinetime;
 redirect('index.php', 0);
-?>

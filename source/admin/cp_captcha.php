@@ -1,7 +1,7 @@
 <?php
 /**
  * GaiaBB
- * Copyright (c) 2011-2020 The GaiaBB Project
+ * Copyright (c) 2009-2020 The GaiaBB Project
  * https://github.com/vanderaj/gaiabb
  *
  * Based off UltimaBB
@@ -34,9 +34,9 @@ define('ROOTINC', '../include/');
 define('ROOTCLASS', '../class/');
 define('ROOTHELPER', '../helper/');
 
-require_once('../header.php');
-require_once('../include/admincp.inc.php');
-require_once('../helper/formHelper.php');
+require_once '../header.php';
+require_once '../include/admincp.inc.php';
+require_once '../helper/formHelper.php';
 
 loadtpl('cp_header', 'cp_footer', 'cp_message', 'cp_error');
 
@@ -102,19 +102,19 @@ function viewPanel()
                             <td colspan="2" class="title"><?php echo $lang['captcha_settings'] ?></td>
                         </tr>
                         <?php
-                        formHelper::formSelectOnOff($lang['text_captcha_status'], 'new_status', $captcha_on, $captcha_off);
-                        formHelper::formTextBox($lang['text_captcha_attempts_max'], 'new_maxattempts', $CONFIG['captcha_maxattempts'], 2);
-                        formHelper::formTextBox($lang['text_captcha_chars_min'], "new_minchars", $CONFIG['captcha_minchars'], 2);
-                        formHelper::formTextBox($lang['text_captcha_chars_max'], "new_maxchars", $CONFIG['captcha_maxchars'], 2);
-                        formHelper::formSelectList($lang['text_captcha_color_type'], 'new_colortype', array(
-                            $lang['text_captcha_color_type_single'],
-                            $lang['text_captcha_color_type_multiple']
-                        ), array(
-                            'single',
-                            'multiple'
-                        ), $colmanage, false);
-                        formHelper::formTextBox($lang['text_captcha_font_path'], 'new_fontpath', $CONFIG['captcha_fontpath'], 40);
-                        ?>
+formHelper::formSelectOnOff($lang['text_captcha_status'], 'new_status', $captcha_on, $captcha_off);
+    formHelper::formTextBox($lang['text_captcha_attempts_max'], 'new_maxattempts', $CONFIG['captcha_maxattempts'], 2);
+    formHelper::formTextBox($lang['text_captcha_chars_min'], "new_minchars", $CONFIG['captcha_minchars'], 2);
+    formHelper::formTextBox($lang['text_captcha_chars_max'], "new_maxchars", $CONFIG['captcha_maxchars'], 2);
+    formHelper::formSelectList($lang['text_captcha_color_type'], 'new_colortype', array(
+        $lang['text_captcha_color_type_single'],
+        $lang['text_captcha_color_type_multiple'],
+    ), array(
+        'single',
+        'multiple',
+    ), $colmanage, false);
+    formHelper::formTextBox($lang['text_captcha_font_path'], 'new_fontpath', $CONFIG['captcha_fontpath'], 40);
+    ?>
                         <tr class="ctrtablerow" bgcolor="<?php echo $THEME['altbg2'] ?>">
                             <td colspan="2"><input class="submit" type="submit"
                                                    name="captchasubmit"
@@ -170,7 +170,7 @@ function doPanel()
         'captcha_minchars' => $new_minchars,
         'captcha_maxchars' => $new_maxchars,
         'captcha_colortype' => $new_colortype,
-        'captcha_fontpath' => $new_fontpath
+        'captcha_fontpath' => $new_fontpath,
     );
 
     // execute query
