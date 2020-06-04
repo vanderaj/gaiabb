@@ -289,7 +289,7 @@ if (onSubmit('editsubmit')) {
 
     if (isset($_POST['newavatar'])) {
         if ('http' == substr($_POST['newavatar'], 0, 4)) {
-            $_POST['newavatar'] = ereg_replace(' ', '%20', $_POST['newavatar']);
+            $_POST['newavatar'] = preg_replace('/ /', '%20', $_POST['newavatar']);
         }
     } else {
         $_POST['newavatar'] = '';
@@ -297,7 +297,7 @@ if (onSubmit('editsubmit')) {
 
     if (isset($_POST['newphoto'])) {
         if ('http' == substr($_POST['newphoto'], 0, 4)) {
-            $_POST['newphoto'] = ereg_replace(' ', '%20', $_POST['newphoto']);
+            $_POST['newphoto'] = preg_replace('/ /', '%20', $_POST['newphoto']);
         }
     } else {
         $_POST['newphoto'] = '';
@@ -357,7 +357,7 @@ if (onSubmit('editsubmit')) {
         $avatarpath = $CONFIG['avatar_path'] . '/' . $newavatarname;
         $tmppath = $check['tmp_name'];
 
-        if (!eregi('gif|jpeg|png|jpg|bmp', $avatarext)) {
+        if (!preg_match('/gif|jpeg|png|jpg|bmp/i', $avatarext)) {
             error($lang['avatar_invalid_ext'], false);
         }
 
@@ -484,7 +484,7 @@ if (onSubmit('editsubmit')) {
         $photopath = $CONFIG['photo_path'] . '/' . $newphotoname;
         $tmppath = $check['tmp_name'];
 
-        if (!eregi('gif|jpeg|png|jpg|bmp', $photoext)) {
+        if (!preg_match('/gif|jpeg|png|jpg|bmp/i', $photoext)) {
             error($lang['photo_invalid_ext'], false);
         }
 

@@ -859,7 +859,7 @@ class userObj
             $photopath = $CONFIG['photo_path'] . '/' . $newphotoname;
             $tmppath = $check['tmp_name'];
 
-            if (!eregi('gif|jpeg|png|jpg|bmp', $photoext)) {
+            if (!preg_match('/gif|jpeg|png|jpg|bmp/i', $photoext)) {
                 error($lang['photo_invalid_ext'], false);
             }
 
@@ -1124,7 +1124,7 @@ class userObj
 
         if (!empty($sig)) {
             $sig_patterns = array(
-                '#[img]((ht|f)tp://)([^\r\n\t<"]*?)[/img]#sie',
+                '#[img]((ht|f)tp://)([^\r\n\t<"]*?)[/img]#si',
                 '#[url=([a-z0-9]+://)([\w\-]+.([\w\-]+.)*[\w]+(:[0-9]+)?(/[^ "\n\r\t<]*?)?)](.*?)[/url]#si'
             );
             $sig_replacements = array(
@@ -1269,7 +1269,7 @@ class userObj
             $avatarpath = $CONFIG['avatar_path'] . '/' . $newavatarname;
             $tmppath = $check['tmp_name'];
 
-            if (!eregi('gif|jpeg|png|jpg|bmp', $avatarext)) {
+            if (!preg_match('gif|jpeg|png|jpg|bmp', $avatarext)) {
                 error($lang['avatar_invalid_ext'], false);
             }
 

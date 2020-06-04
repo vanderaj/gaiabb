@@ -66,7 +66,7 @@ $srchip = $db->escape(stripslashes(urldecode(getRequestVar('srchip'))));
 $list = getRequestVar('list');
 if ($list != '' && $list != 'misc') {
     $list = substr($list, 0, 1);
-    if (!eregi('^[a-z]', $list)) {
+    if (!preg_match('/^[a-z]/i', $list)) {
         $list = '';
     }
 }

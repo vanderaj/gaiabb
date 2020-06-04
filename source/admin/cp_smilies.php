@@ -200,11 +200,11 @@ function doPanel()
             if ($smiley != '.' && $smiley != '..' && (strpos($smiley, '.gif') || strpos($smiley, '.jpg') || strpos($smiley, '.bmp') || strpos($smiley, '.png'))) {
                 $newsmiley_url = $smiley;
                 $newsmiley_code = $smiley;
-                $newsmiley_code = eregi_replace('.gif', '', $newsmiley_code);
-                $newsmiley_code = eregi_replace('.jpg', '', $newsmiley_code);
-                $newsmiley_code = eregi_replace('.bmp', '', $newsmiley_code);
-                $newsmiley_code = eregi_replace('.png', '', $newsmiley_code);
-                $newsmiley_code = eregi_replace(' ', '_', $newsmiley_code);
+                $newsmiley_code = preg_replace('/.gif/i', '', $newsmiley_code);
+                $newsmiley_code = preg_replace('/.jpg/i', '', $newsmiley_code);
+                $newsmiley_code = preg_replace('/.bmp/i', '', $newsmiley_code);
+                $newsmiley_code = preg_replace('/.png/i', '', $newsmiley_code);
+                $newsmiley_code = preg_replace('/ /', '_', $newsmiley_code);
                 $newsmiley_code = ':' . $newsmiley_code . ':';
                 if (!in_array($newsmiley_url, $smiley_url) && !in_array($newsmiley_code, $smiley_code)) {
                     $query = $db->query("INSERT INTO " . X_PREFIX . "smilies (type, code, url) VALUES ('smiley', '$newsmiley_code', '$newsmiley_url')");
