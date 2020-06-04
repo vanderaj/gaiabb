@@ -151,7 +151,7 @@ class AuthC
         $q = false;
         $self['status'] = '';
         $userrec = array();
-        if ($auto && $gbbuid > 0) {
+        if ($auto && intval($gbbuid) > 0) {
             $mq = $db->query("SELECT * FROM " . X_PREFIX . "members WHERE uid = '$gbbuid'");
             $userrec = $db->fetch_array($mq);
             if (($db->num_rows($mq) == 1) && ($userrec['password'] == $gbbpw)) {
