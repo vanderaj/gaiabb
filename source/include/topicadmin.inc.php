@@ -549,7 +549,7 @@ class mod
         $columns = implode(', ', $cols);
         $values = "'" . implode("', '", $vals) . "'";
 
-        $db->query("INSERT INTO " . X_PREFIX . "threads ($columns) VALUES($values)") or die($db->error());
+        $db->query("INSERT INTO " . X_PREFIX . "threads ($columns) VALUES($values)");
         $newtid = $db->insert_id();
         $db->query("INSERT INTO " . X_PREFIX . "lastposts (tid, uid, username, dateline, pid) SELECT '$newtid', uid, username, dateline, pid FROM " . X_PREFIX . "lastposts WHERE tid = '$tid'");
 
@@ -578,7 +578,7 @@ class mod
             $cols = array();
             $vals = array();
 
-            $db->query("INSERT INTO " . X_PREFIX . "posts ($columns) VALUES ($values)") or die($db->error());
+            $db->query("INSERT INTO " . X_PREFIX . "posts ($columns) VALUES ($values)");
             $newpid = $db->insert_id();
 
             $db->query("INSERT INTO " . X_PREFIX . "attachments(`tid`,`pid`,`filename`,`filetype`,`filesize`,`attachment`,`downloads`) SELECT '$newtid','$newpid',`filename`,`filetype`,`filesize`,`attachment`,`downloads` FROM " . X_PREFIX . "attachments WHERE pid = '$oldPid'");

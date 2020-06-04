@@ -126,7 +126,7 @@ class Address
         global $charset, $css, $bgcode, $oToken, $lang_code, $lang_dir;
 
         $addresses = array();
-        $q = $db->query("SELECT addressname FROM " . X_PREFIX . "addresses WHERE username = '" . $self['username'] . "' ORDER BY addressname") or die($db->error());
+        $q = $db->query("SELECT addressname FROM " . X_PREFIX . "addresses WHERE username = '" . $self['username'] . "' ORDER BY addressname");
         while (($address = $db->fetch_array($q)) != false) {
             eval('$addresses[] = "' . template('addresslist_edit_address') . '";');
         }
