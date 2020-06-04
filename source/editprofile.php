@@ -431,9 +431,9 @@ if (onSubmit('editsubmit')) {
                 case IMAGETYPE_WBMP:
                     imagewbmp($destImage, $tmppath);
                     break;
-                    imagedestroy($srcImage);
-                    imagedestroy($destImage);
             }
+            imagedestroy($srcImage);
+            imagedestroy($destImage);
         }
 
         copy($tmppath, $avatarpath);

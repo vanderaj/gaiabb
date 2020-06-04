@@ -933,9 +933,9 @@ class userObj
                     case IMAGETYPE_WBMP:
                         imagewbmp($destImage, $tmppath);
                         break;
-                        imagedestroy($srcImage);
-                        imagedestroy($destImage);
                 }
+                imagedestroy($srcImage);
+                imagedestroy($destImage);
             }
 
             copy($tmppath, $photopath);
@@ -1344,9 +1344,9 @@ class userObj
                     case IMAGETYPE_WBMP:
                         imagewbmp($destImage, $tmppath);
                         break;
-                        imagedestroy($srcImage);
-                        imagedestroy($destImage);
                 }
+                imagedestroy($srcImage);
+                imagedestroy($destImage);
             }
 
             copy($tmppath, $avatarpath);
@@ -1442,9 +1442,9 @@ class userObj
                     $totalc = count($avatarname);
 
                     if (isset($page)) {
-                        if ($page < 1) {
-                            $page = 1;
-                        }
+                        // if ($page < 1) {
+                        //     $page = 1;
+                        // }
                         $start_limit = ($page - 1) * $CONFIG['avatars_perpage'];
                         if (($page * $CONFIG['avatars_perpage']) > $totalc) {
                             $end_limit = $start_limit + ($totalc - (($page - 1) * $CONFIG['avatars_perpage']));
