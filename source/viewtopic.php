@@ -732,7 +732,7 @@ if (empty($action)) {
                     break;
             }
 
-            $showtitle = (!empty($rank['title'])) ? $rank['title'] . '<br />' : $rank['title'] . '<br />';
+            $showtitle = (!empty($rank['title'])) ? $rank['title'] . '<br />' : '';
             $customstatus = (!empty($post['customstatus'])) ? censor($post['customstatus']) . '<br />' : '';
 
             if ($allowavatars == 'no') {

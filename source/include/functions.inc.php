@@ -768,14 +768,16 @@ function smilieinsert()
     global $db, $CONFIG, $THEME;
 
     $retval = '';
+    $querysmilie = '';
+
     if ($CONFIG['smileyinsert'] == 'on' && $CONFIG['smcols'] != '') {
         $col_smilies = $total = 0;
         $smilies = '<tr>';
 
         if ($CONFIG['smtotal'] == 0) {
-            $querysmilie = $db->query("SELECT * FROM " . X_PREFIX . "smilies WHERE type = 'smiley' ORDER BY id ASC") or die($db->error());
+            $querysmilie = $db->query("SELECT * FROM " . X_PREFIX . "smilies WHERE type = 'smiley' ORDER BY id ASC");
         } else {
-            $querysmilie = $db->query("SELECT * FROM " . X_PREFIX . "smilies WHERE type = 'smiley' ORDER BY id ASC LIMIT $CONFIG[smtotal]") or die($db->error());
+            $querysmilie = $db->query("SELECT * FROM " . X_PREFIX . "smilies WHERE type = 'smiley' ORDER BY id ASC LIMIT $CONFIG[smtotal]");
         }
 
         while (($smilie = $db->fetch_array($querysmilie)) != false) {

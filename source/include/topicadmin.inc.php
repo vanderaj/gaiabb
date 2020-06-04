@@ -130,10 +130,8 @@ class mod
 
         if ($closed == 'yes') {
             $lang['textclosethread'] = $lang['textopenthread'];
-        } else
-            if (empty($closed)) {
-                $lang['textclosethread'] = $lang['textclosethread'];
-            }
+        } 
+        
         eval('echo stripslashes("' . template('topicadmin_openclose') . '");');
     }
 

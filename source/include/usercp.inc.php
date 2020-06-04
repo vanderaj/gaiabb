@@ -1872,7 +1872,7 @@ class userObj
             $rank['avatarrank'] = '';
         }
 
-        $showtitle = (!empty($rank['title'])) ? stripslashes($rank['title']) . '<br />' : stripslashes($rank['title']) . '<br />';
+        $showtitle = (!empty($rank['title'])) ? stripslashes($rank['title']) . '<br />' : '';
         $customstatus = (!empty($member['customstatus'])) ? stripslashes(censor($member['customstatus'])) . '<br />' : '';
 
         if (!empty($member['avatar']) && $allowavatars != 'no') {
