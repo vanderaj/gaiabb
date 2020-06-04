@@ -48,6 +48,10 @@ $srchfrom = intval(getRequestVar('srchfrom'));
 $srchtxt = $db->escape(getRequestVar('srchtxt'));
 $srchuname = $db->escape(getRequestVar('srchuname'));
 $srchfid = formArray('srchfid');
+
+// Ensure that all fids are integers, or empty
+$srchfid = array_map('intval', $srchfid);
+
 if (empty($srchfid)) {
     $srchfid[] = 'all';
 }
