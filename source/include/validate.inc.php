@@ -10,7 +10,7 @@
  *
  * Based off XMB and XMB Forum 2 (BBCode)
  * Copyright (c) 2001 - 2012 The XMB Development Team
- * http://forums.xmbforum2.com/
+ * https://forums.xmbforum2.com/
  *
  * This file is part of GaiaBB
  *
