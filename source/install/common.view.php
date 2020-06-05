@@ -55,7 +55,7 @@ function print_error($head, $msg, $die = true)
         </tr>
     </table>
     <?php
-    view_shadow();
+view_shadow();
     if ($die) {
         view_footer();
         exit();
@@ -139,7 +139,7 @@ function view_config($path)
     </table>
     </table>
     <?php
-    view_shadow();
+view_shadow();
 }
 
 /**
@@ -159,7 +159,7 @@ function view_config_screen($path, $config)
 
     <tr>
         <td class="tablerow" bgcolor="#ffffff">
-            <?php highlight_string($config); ?>
+            <?php highlight_string($config);?>
         </td>
     </tr>
     <tr>
@@ -233,16 +233,16 @@ function view_eula($path)
                                                                  style="font-family: Courier, New Courier; font-size: 8pt"
                                                                  readonly="readonly">
     <?php
-    $license = @file_get_contents(ROOT . "install/COPYING");
+$license = @file_get_contents(ROOT . "install/COPYING");
     if ($license == '') {
-    ?>
+        ?>
                             License not found! Please upload COPYING to the installation area.
         </textarea><br/>
                         <br/>
                         <?php
-                        } else {
-                            echo $license;
-                            ?>
+} else {
+        echo $license;
+        ?>
                             </textarea><br/>
                             <br/>
                             <form action="index.php" method="post">
@@ -251,8 +251,8 @@ function view_eula($path)
                                         type="submit" value="I Agree To These Terms &gt;"/>
                             </form>
                             <?php
-                        }
-                        ?>
+}
+    ?>
                     </td>
                 </tr>
             </table>
@@ -262,7 +262,7 @@ function view_eula($path)
     </tr>
     </table>
     <?php
-    view_shadow();
+view_shadow();
 }
 
 /**
@@ -298,7 +298,7 @@ function view_backup($path, $boardType = "GaiaBB")
     </tr>
     </table>
     <?php
-    view_shadow();
+view_shadow();
 }
 
 /**
@@ -326,28 +326,28 @@ function view_admin($path)
             $action = 'Create';
     }
 
-    top_box($action . ' Super Administrator Credentials') ?>
+    top_box($action . ' Super Administrator Credentials')?>
     <tr>
         <td class="tablerow" bgcolor="#ffffff">
             <p>Please enter the username, password
                 <?php
-                if ($path == "install") {
-                    ?>
+if ($path == "install") {
+        ?>
                     , and e-mail address
                     <?php
-                }
-                ?>
+}
+    ?>
                 &nbsp;for the Super Administrator.</p>
             <?php
-            if ($path == "convert") {
-            ?>
+if ($path == "convert") {
+        ?>
             <br/>
             <p class="subTitle">Conversion Note:</p>
             <p>
                 The admin credentials <b>must</b> be the same for both the original board and the fresh GaiaBB install.
                 <?php
-                }
-                ?>
+}
+    ?>
                 <br/>
 
             <form action="index.php" method="post" autocomplete="off">
@@ -362,8 +362,8 @@ function view_admin($path)
                         <td><input type="password" name="frmPassword" size="32"/></td>
                     </tr>
                     <?php
-                    if ($action == "Create") {
-                        ?>
+if ($action == "Create") {
+        ?>
                         <tr>
                             <td>Confirm Password:</td>
                             <td><input type="password" name="frmPasswordCfm" size="32"></td>
@@ -373,8 +373,8 @@ function view_admin($path)
                             <td><input type="text" name="frmEmail" size="32"></td>
                         </tr>
                         <?php
-                    }
-                    ?>
+}
+    ?>
                     <tr>
                         <td><br/> <br/> <input type="hidden" name="path"
                                                value="<?php echo $path ?>"> <input type="hidden" name="step"
@@ -393,7 +393,7 @@ function view_admin($path)
     </tr>
     </table>
     <?php
-    view_shadow();
+view_shadow();
 }
 
 /**
@@ -457,7 +457,7 @@ function view_default_index()
     </tr>
     </table>
     <?php
-    view_shadow();
+view_shadow();
 }
 
 /**
@@ -621,24 +621,24 @@ function view_footer()
     </table>
     <a id="bottom" name="bottom"></a>
     <?php
-    if (DEBUG) {
+if (DEBUG) {
         ?>
         <hr/>
         Session Object:
         <pre>
-        <?php print_r($_SESSION); ?>
+        <?php print_r($_SESSION);?>
         </pre>
         Form Object:
         <pre>
-        <?php print_r($_POST); ?>
+        <?php print_r($_POST);?>
         </pre>
         DEBUG log:
         <pre>
         <?php global $debug_log;
-        print_r($debug_log); ?>
+        print_r($debug_log);?>
         </pre>
         <?php
-    }
+}
     ?>
     </body>
     </html>
@@ -743,7 +743,7 @@ function view_database($path)
     </tr>
     </table>
     <?php
-    view_shadow();
+view_shadow();
 }
 
 /**

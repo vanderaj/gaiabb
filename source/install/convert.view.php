@@ -61,7 +61,7 @@ function view_convert_backup($path, $boardType = "XMB")
     </tr>
     </table>
     <?php
-    view_shadow();
+view_shadow();
 }
 
 /**
@@ -95,7 +95,7 @@ function view_convert_index($path)
     </tr>
     </table>
     <?php
-    view_shadow();
+view_shadow();
 }
 
 /**
@@ -282,7 +282,7 @@ function view_convert_action($boardtype = 'XMB')
         </tr>
     </table>
     <?php
-    return "convertBar";
+return "convertBar";
 }
 
 /**

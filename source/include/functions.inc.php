@@ -125,7 +125,7 @@ function loadtpl($tpl)
             'message',
             'meta_tags',
             'shadow',
-            'shadow2'
+            'shadow2',
         )));
         $sql = "'" . implode("', '", $namesarray) . "'";
         $query = $db->query("SELECT name, template FROM " . X_PREFIX . "templates WHERE name IN ($sql)");
@@ -192,11 +192,12 @@ function check_image_size($matches)
 {
     global $CONFIG, $lang;
 
-    $CONFIG['bbc_maxwd'] = (int)$CONFIG['bbc_maxwd'];
-    $CONFIG['bbc_maxht'] = (int)$CONFIG['bbc_maxht'];
+    $CONFIG['bbc_maxwd'] = (int) $CONFIG['bbc_maxwd'];
+    $CONFIG['bbc_maxht'] = (int) $CONFIG['bbc_maxht'];
 
-    if (empty($matches[3]))
+    if (empty($matches[3])) {
         $matches[3] = '';
+    }
 
     $imgurl = $matches[1] . '://' . $matches[2] . $matches[3];
     if ((list($width, $height) = getimagesize($imgurl)) != false) {
@@ -207,13 +208,13 @@ function check_image_size($matches)
             $n_height = $height;
             $n_width = $width;
         } else
-            if (($w_ratio * $height) < $CONFIG['bbc_maxht']) {
-                $n_height = ceil($w_ratio * $height);
-                $n_width = $CONFIG['bbc_maxwd'];
-            } else {
-                $n_height = $CONFIG['bbc_maxht'];
-                $n_width = ceil($h_ratio * $width);
-            }
+        if (($w_ratio * $height) < $CONFIG['bbc_maxht']) {
+            $n_height = ceil($w_ratio * $height);
+            $n_width = $CONFIG['bbc_maxwd'];
+        } else {
+            $n_height = $CONFIG['bbc_maxht'];
+            $n_width = ceil($h_ratio * $width);
+        }
         $replace = '[img=' . $n_width . 'x' . $n_height . ']' . $imgurl . '[/img]';
     } else {
         $replace = '[bad img]' . $imgurl . '[/bad img]';
@@ -246,17 +247,17 @@ function bbcodeCode($message)
 {
     $counter = 0;
     $offset = 0;
-    $done = FALSE;
+    $done = false;
     $messagearray = array();
     while (!$done) {
         $pos = strpos($message, '[code]', $offset);
-        if (FALSE === $pos) {
+        if (false === $pos) {
             $messagearray[$counter] = substr($message, $offset);
             $messagearray[$counter] = str_replace('[/code]', '&#091;/code]', $messagearray[$counter]);
             if ($counter > 1) {
                 $messagearray[$counter] = '[/code]' . $messagearray[$counter];
             }
-            $done = TRUE;
+            $done = true;
         } else {
             $pos += strlen('[code]');
             $messagearray[$counter] = substr($message, $offset, $pos - $offset);
@@ -267,11 +268,11 @@ function bbcodeCode($message)
             $counter++;
             $offset = $pos;
             $pos = strpos($message, '[/code]', $offset);
-            if (FALSE === $pos) {
+            if (false === $pos) {
                 $messagearray[$counter] = substr($message, $offset);
                 $counter++;
                 $messagearray[$counter] = '[/code]';
-                $done = TRUE;
+                $done = true;
             } else {
                 $messagearray[$counter] = substr($message, $offset, $pos - $offset);
                 $counter++;
@@ -296,7 +297,7 @@ function post_wordwrap(&$input)
         if ($i % 2 == 0) {
             $messagearray[$i] = explode($br, $messagearray[$i]);
             foreach ($messagearray[$i] as $key => $val) {
-                $messagearray[$i][$key] = wordwrap($val, 150, "\n", TRUE);
+                $messagearray[$i][$key] = wordwrap($val, 150, "\n", true);
             }
             $messagearray[$i] = implode($br, $messagearray[$i]);
         } // else inside nobr block
@@ -418,7 +419,7 @@ function bbcode(&$message, $allowimgcode, $allowurlcode)
         26 => '[/font]',
         27 => '[/size]',
         28 => '[/align]',
-        29 => '[/rquote]'
+        29 => '[/rquote]',
     );
 
     $replace = array(
@@ -451,7 +452,7 @@ function bbcode(&$message, $allowimgcode, $allowurlcode)
         26 => '</span>',
         27 => '</span>',
         28 => '</div>',
-        29 => ' </td></tr></table><font class="mediumtxt">'
+        29 => ' </td></tr></table><font class="mediumtxt">',
     );
 
     $message = str_replace($find, $replace, $message);
@@ -499,9 +500,9 @@ function bbcode(&$message, $allowimgcode, $allowurlcode)
 
     if ($allowurlcode) {
         /*
-         This block positioned last so that bare URLs may appear adjacent to BBCodes without matching on square braces.
-         Regexp explanation: match strings surrounded by whitespace or () or ><.  Do not include the surrounding chars.
-         Group 1 will be identical to the full match so that the callback function can be reused for [url] codes.
+        This block positioned last so that bare URLs may appear adjacent to BBCodes without matching on square braces.
+        Regexp explanation: match strings surrounded by whitespace or () or ><.  Do not include the surrounding chars.
+        Group 1 will be identical to the full match so that the callback function can be reused for [url] codes.
          */
         $regexp = '(?<=^|\s|>|\()'
             . '('
@@ -521,7 +522,7 @@ function bbcode(&$message, $allowimgcode, $allowurlcode)
         $message = preg_replace_callback("#\[url=([^\"'<>\[\]]+)](.*?)\[/url\]#i", 'bbcodeLongURLs', $message);
     }
 
-    return TRUE;
+    return true;
 }
 
 function postify($message, $smileyoff = 'no', $bbcodeoff = 'no', $allowsmilies = 'yes', $allowbbcode = 'yes', $allowimgcode = 'yes', $ignorespaces = false, $ismood = 'no', $wrap = 'yes')
@@ -544,7 +545,7 @@ function postify($message, $smileyoff = 'no', $bbcodeoff = 'no', $allowsmilies =
         $message = implode("<!-- code -->", $message);
 
         // Do BBCode
-        $message = rawHTMLmessage($message, 'no');  // GaiaBB does not support raw HTML messages
+        $message = rawHTMLmessage($message, 'no'); // GaiaBB does not support raw HTML messages
         if ($smiliesallow) {
             smile($message);
         }
@@ -566,7 +567,7 @@ function postify($message, $smileyoff = 'no', $bbcodeoff = 'no', $allowsmilies =
             $message = str_replace(array('<!-- nobr -->', '<!-- /nobr -->'), array('', ''), $message);
         }
     } else {
-        $message = rawHTMLmessage($message, 'no');  // GaiaBB does not support raw HTML messages
+        $message = rawHTMLmessage($message, 'no'); // GaiaBB does not support raw HTML messages
         if ($smiliesallow) {
             smile($message);
         }
@@ -589,7 +590,7 @@ function forum($forum, $template)
     echo "<!-- " . print_r($forum) . " -->";
 
     if (empty($forum['private'])) {
-        $forum['private'] = '1';    // 1 = default
+        $forum['private'] = '1'; // 1 = default
     }
 
     if (empty($forum['userlist'])) {
@@ -703,17 +704,17 @@ function multi($num, $perpage, $page, $mpurl, $strict = false)
                 $to = 3;
             }
         } else
-            if ($page == $pages) {
-                $to = $pages;
-            } else
-                if ($page == $pages - 1) {
-                    $to = $page + 1;
-                } else
-                    if ($page == $pages - 2) {
-                        $to = $page + 2;
-                    } else {
-                        $to = $page + 3;
-                    }
+        if ($page == $pages) {
+            $to = $pages;
+        } else
+        if ($page == $pages - 1) {
+            $to = $page + 1;
+        } else
+        if ($page == $pages - 2) {
+            $to = $page + 2;
+        } else {
+            $to = $page + 3;
+        }
 
         if ($page >= 0 && $page <= 3) {
             $from = 1;
@@ -751,9 +752,9 @@ function multi($num, $perpage, $page, $mpurl, $strict = false)
             $multipage .= '&nbsp;&nbsp;<strong>' . $pages . '</strong>';
         }
     } else
-        if ($strict !== true) {
-            return false;
-        }
+    if ($strict !== true) {
+        return false;
+    }
 
     return $multipage;
 }
@@ -1041,12 +1042,12 @@ function redirect($path, $timeout = 2, $type = X_REDIRECT_HEADER)
         ?>
         <script language="javascript" type="text/javascript">
             function redirect() {
-                window.location.replace("<?php echo $path?>");
+                window.location.replace("<?php echo $path ?>");
             }
-            setTimeout("redirect();", <?php echo($timeout * 1000)?>);
+            setTimeout("redirect();", <?php echo ($timeout * 1000) ?>);
         </script>
         <?php
-    } else {
+} else {
         if ($timeout == 0) {
             header("Location: $path");
         } else {
@@ -1433,7 +1434,7 @@ function ServerLoad()
     // Cant do anything on Windows easily
     if (getenv("OS") === "Windows_NT") {
         return array(
-            ''
+            '',
         );
     }
 
@@ -1449,7 +1450,7 @@ function ServerLoad()
         return array(
             $first,
             $parts[$count - 2],
-            $parts[$count - 1]
+            $parts[$count - 1],
         );
     }
     return array();
@@ -1746,55 +1747,55 @@ function disposeGlobals()
 
 function dump_query($resource, $header = true)
 {
-global $db, $THEME;
+    global $db, $THEME;
 
-if (!$db->error()) {
-$count = $db->num_fields($resource);
-if ($header) {
-?>
+    if (!$db->error()) {
+        $count = $db->num_fields($resource);
+        if ($header) {
+            ?>
 <tr class="category" bgcolor="<?php echo $THEME['altbg2'] ?>"
     align="center">
     <?php
-    for ($i = 0; $i < $count; $i++) {
-        echo '<td align="left">';
-        echo '<strong><font color=' . $THEME['cattext'] . '>' . $db->field_name($resource, $i) . '</font></strong>';
-        echo '</td>';
-    }
-    echo '</tr>';
-    }
+for ($i = 0; $i < $count; $i++) {
+                echo '<td align="left">';
+                echo '<strong><font color=' . $THEME['cattext'] . '>' . $db->field_name($resource, $i) . '</font></strong>';
+                echo '</td>';
+            }
+            echo '</tr>';
+        }
 
-    while (($a = $db->fetch_array($resource, SQL_NUM)) != false) {
-    ?>
+        while (($a = $db->fetch_array($resource, SQL_NUM)) != false) {
+            ?>
 <tr bgcolor="<?php echo $THEME['altbg1'] ?>" class="ctrtablerow">
     <?php
-    for ($i = 0; $i < $count; $i++) {
-        echo '<td align="left">';
+for ($i = 0; $i < $count; $i++) {
+                echo '<td align="left">';
 
-        if (trim($a[$i]) == '') {
-            echo '&nbsp;';
-        } else {
-            echo nl2br($a[$i]);
+                if (trim($a[$i]) == '') {
+                    echo '&nbsp;';
+                } else {
+                    echo nl2br($a[$i]);
+                }
+                echo '</td>';
+            }
+            echo '</tr>';
         }
-        echo '</td>';
-    }
-    echo '</tr>';
-    }
     } else {
         error($db->error());
     }
-    }
+}
 
-    function put_cookie($name, $value = null, $expire = null, $path = null, $domain = null, $secure = null, $how = X_SET_CHOOSE)
-    {
-        if (($how == X_SET_CHOOSE && !headers_sent()) || $how == X_SET_HEADER) {
-            return setcookie($name, $value, $expire, $path, $domain, $secure);
+function put_cookie($name, $value = null, $expire = null, $path = null, $domain = null, $secure = null, $how = X_SET_CHOOSE)
+{
+    if (($how == X_SET_CHOOSE && !headers_sent()) || $how == X_SET_HEADER) {
+        return setcookie($name, $value, $expire, $path, $domain, $secure);
+    } else {
+        if ($expire >= 0) {
+            $expire = date('r', $expire);
         } else {
-            if ($expire >= 0) {
-                $expire = date('r', $expire);
-            } else {
-                $expire = null;
-            }
-            ?>
+            $expire = null;
+        }
+        ?>
             <script language="javascript" type="text/javascript">
                 function setcookie(name, value="deleted", expire=0, path="", domain="", secure=0) {
                     if (expire == 0) {
@@ -1815,532 +1816,532 @@ if ($header) {
                     cookie = name + "=" + value + "; expires=" + expire + "; path=" + path + "; domain=" + domain + "; secure=" + secure + ";";
                     document.cookie += cookie;
                 }
-                setcookie(<?php echo $name?>, <?php echo $value?>, <?php echo $expire?>, <?php echo $path?>, <?php echo $domain?>, <?php echo $secure?>);
+                setcookie(<?php echo $name ?>, <?php echo $value ?>, <?php echo $expire ?>, <?php echo $path ?>, <?php echo $domain ?>, <?php echo $secure ?>);
             </script>
             <?php
-            return true;
-        }
+return true;
+    }
+}
+
+function adminaudit($user = '', $action = '', $fid, $tid, $reason = '')
+{
+    global $self, $db, $onlineip;
+
+    if ($user === '') {
+        $user = $self['username'];
     }
 
-    function adminaudit($user = '', $action = '', $fid, $tid, $reason = '')
-    {
-        global $self, $db, $onlineip;
-
-        if ($user === '') {
-            $user = $self['username'];
+    if (empty($action)) {
+        $action = $_SERVER['REQUEST_URI'];
+        $aapos = strpos($action, "?");
+        if ($aapos !== false) {
+            $action = substr($action, $aapos + 1);
         }
 
-        if (empty($action)) {
-            $action = $_SERVER['REQUEST_URI'];
-            $aapos = strpos($action, "?");
-            if ($aapos !== false) {
-                $action = substr($action, $aapos + 1);
+        $action = $db->escape("$onlineip|#|$action", -1, true);
+    }
+
+    $fid = (int) $fid;
+    $tid = (int) $tid;
+    $action = $db->escape($action, -1, true);
+    $user = $db->escape($user, -1, true);
+
+    if (!empty($reason)) {
+        $reason = $db->escape($reason, -1, true);
+        $action = $action . " !!! " . $reason;
+    }
+
+    $db->query("INSERT INTO " . X_PREFIX . "adminlogs (uid, tid, username, action, fid, date) VALUES ('" . $self['uid'] . "', '$tid', '$user', '$action', '$fid', " . $db->time() . ")");
+    return true;
+}
+
+function modaudit($user = '', $action, $fid, $tid, $reason = '')
+{
+    global $self, $db;
+
+    if ($user == '') {
+        $user = $self['username'];
+    }
+
+    $fid = (int) $fid;
+    $tid = (int) $tid;
+    $action = addslashes(checkInput($action));
+    $user = addslashes(checkInput($user));
+    $reason = addslashes(checkInput($reason));
+
+    $db->query("INSERT " . X_PREFIX . "modlogs (tid, username, action, fid, date) VALUES ('$tid', '$user', '$action', '$fid', " . $db->time() . ")");
+    return true;
+}
+
+function readFileAsINI($filename)
+{
+    $lines = @file($filename);
+    if ($lines === false) {
+        return '';
+    }
+
+    $thefile = array();
+    foreach ($lines as $line_num => $line) {
+        $temp = explode("=", $line);
+        if ($temp[0] != 'dummy') {
+            $key = trim($temp[0]);
+            $val = trim($temp[1]);
+            $thefile[$key] = $val;
+        }
+    }
+    return $thefile;
+}
+
+function forumList($selectname = 'srchfid', $multiple = false, $allowall = true)
+{
+    global $self, $db, $lang, $selHTML;
+
+    $restrict = array();
+    switch ($self['status']) {
+        case 'Member':
+            $restrict[] = "private != '3'";
+        case 'Moderator':
+        case 'Super Moderator':
+            $restrict[] = "private != '2'";
+        case 'Administrator':
+            $restrict[] = "userlist = ''";
+        case 'Super Administrator':
+            break;
+        default:
+            $restrict[] = "private != '5'";
+            $restrict[] = "private != '3'";
+            $restrict[] = "private != '2'";
+            $restrict[] = "userlist = ''";
+            $restrict[] = "password = ''";
+            break;
+    }
+    $restrict = implode(' AND ', $restrict);
+
+    if ($restrict != '') {
+        $sql = $db->query("SELECT fid, type, name, fup, status, private, userlist, password FROM " . X_PREFIX . "forums WHERE $restrict AND status = 'on' ORDER BY displayorder");
+    } else {
+        $sql = $db->query("SELECT fid, type, name, fup, private, userlist, password FROM " . X_PREFIX . "forums ORDER BY displayorder");
+    }
+
+    $standAloneForums = array();
+    $forums = array();
+    $categories = array();
+    $subforums = array();
+    while (($forum = $db->fetch_array($sql)) != false) {
+        if (!X_SADMIN && $forum['password'] != '') {
+            $fidpw = isset($_COOKIE['fidpw' . $forum['fid']]) ? trim($_COOKIE['fidpw' . $forum['fid']]) : '';
+            if ($forum['password'] !== $fidpw) {
+                continue;
             }
-
-            $action = $db->escape("$onlineip|#|$action", -1, true);
         }
 
-        $fid = (int)$fid;
-        $tid = (int)$tid;
-        $action = $db->escape($action, -1, true);
-        $user = $db->escape($user, -1, true);
-
-        if (!empty($reason)) {
-            $reason = $db->escape($reason, -1, true);
-            $action = $action . " !!! " . $reason;
-        }
-
-        $db->query("INSERT INTO " . X_PREFIX . "adminlogs (uid, tid, username, action, fid, date) VALUES ('" . $self['uid'] . "', '$tid', '$user', '$action', '$fid', " . $db->time() . ")");
-        return true;
-    }
-
-    function modaudit($user = '', $action, $fid, $tid, $reason = '')
-    {
-        global $self, $db;
-
-        if ($user == '') {
-            $user = $self['username'];
-        }
-
-        $fid = (int)$fid;
-        $tid = (int)$tid;
-        $action = addslashes(checkInput($action));
-        $user = addslashes(checkInput($user));
-        $reason = addslashes(checkInput($reason));
-
-        $db->query("INSERT " . X_PREFIX . "modlogs (tid, username, action, fid, date) VALUES ('$tid', '$user', '$action', '$fid', " . $db->time() . ")");
-        return true;
-    }
-
-    function readFileAsINI($filename)
-    {
-        $lines = @file($filename);
-        if ($lines === false) {
-            return '';
-        }
-
-        $thefile = array();
-        foreach ($lines as $line_num => $line) {
-            $temp = explode("=", $line);
-            if ($temp[0] != 'dummy') {
-                $key = trim($temp[0]);
-                $val = trim($temp[1]);
-                $thefile[$key] = $val;
-            }
-        }
-        return $thefile;
-    }
-
-    function forumList($selectname = 'srchfid', $multiple = false, $allowall = true)
-    {
-        global $self, $db, $lang, $selHTML;
-
-        $restrict = array();
-        switch ($self['status']) {
-            case 'Member':
-                $restrict[] = "private != '3'";
-            case 'Moderator':
-            case 'Super Moderator':
-                $restrict[] = "private != '2'";
-            case 'Administrator':
-                $restrict[] = "userlist = ''";
-            case 'Super Administrator':
+        switch ($forum['type']) {
+            case 'group':
+                $categories[] = $forum;
                 break;
+            case 'sub':
+                if (!isset($subforums[$forum['fup']])) {
+                    $subforums[$forum['fup']] = array();
+                }
+                $subforums[$forum['fup']][] = $forum;
+                break;
+            case 'forum':
             default:
-                $restrict[] = "private != '5'";
-                $restrict[] = "private != '3'";
-                $restrict[] = "private != '2'";
-                $restrict[] = "userlist = ''";
-                $restrict[] = "password = ''";
+                if ($forum['fup'] == 0) {
+                    $standAloneForums[] = $forum;
+                } else {
+                    if (!isset($forums[$forum['fup']])) {
+                        $forums[$forum['fup']] = array();
+                    }
+                    $forums[$forum['fup']][] = $forum;
+                }
                 break;
         }
-        $restrict = implode(' AND ', $restrict);
+    }
+    $db->free_result($sql);
 
-        if ($restrict != '') {
-            $sql = $db->query("SELECT fid, type, name, fup, status, private, userlist, password FROM " . X_PREFIX . "forums WHERE $restrict AND status = 'on' ORDER BY displayorder");
-        } else {
-            $sql = $db->query("SELECT fid, type, name, fup, private, userlist, password FROM " . X_PREFIX . "forums ORDER BY displayorder");
-        }
+    $forumselect = array();
+    if (!$multiple) {
+        $forumselect[] = '<select name="' . $selectname . '">';
+    } else {
+        $forumselect[] = '<select name="' . $selectname . '" multiple="multiple">';
+    }
 
-        $standAloneForums = array();
-        $forums = array();
-        $categories = array();
-        $subforums = array();
-        while (($forum = $db->fetch_array($sql)) != false) {
-            if (!X_SADMIN && $forum['password'] != '') {
-                $fidpw = isset($_COOKIE['fidpw' . $forum['fid']]) ? trim($_COOKIE['fidpw' . $forum['fid']]) : '';
-                if ($forum['password'] !== $fidpw) {
-                    continue;
-                }
+    if ($allowall) {
+        $forumselect[] = '<option value="all" ' . $selHTML . '>' . $lang['textallforumsandsubs'] . '</option>';
+    } else
+    if (!$allowall && !$multiple) {
+        $forumselect[] = '<option value="" disabled="disabled" ' . $selHTML . '>' . $lang['textforum'] . '</option>';
+    }
+
+    unset($forum);
+    reset($forums);
+
+    foreach ($standAloneForums as $forum) {
+        $forumselect[] = '<option value="' . intval($forum['fid']) . '"> &nbsp; &raquo; ' . stripslashes($forum['name']) . '</option>';
+        if (isset($subforums[$forum['fid']])) {
+            foreach ($subforums[$forum['fid']] as $sub) {
+                $forumselect[] = '<option value="' . intval($sub['fid']) . '">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &raquo; ' . stripslashes($sub['name']) . '</option>';
             }
+        }
+    }
 
-            switch ($forum['type']) {
-                case 'group':
-                    $categories[] = $forum;
-                    break;
-                case 'sub':
-                    if (!isset($subforums[$forum['fup']])) {
-                        $subforums[$forum['fup']] = array();
+    $forumselect[] = '<option value="" disabled="disabled">&nbsp;</option>';
+    foreach ($categories as $group) {
+        if (isset($forums[$group['fid']]) && count($forums[$group['fid']]) > 0) {
+            $forumselect[] = '<option value="' . intval($group['fid']) . '" disabled="disabled">' . stripslashes($group['name']) . '</option>';
+            foreach ($forums[$group['fid']] as $forum) {
+                $forumselect[] = '<option value="' . intval($forum['fid']) . '"> &nbsp; &raquo; ' . stripslashes($forum['name']) . '</option>';
+                if (isset($subforums[$forum['fid']])) {
+                    foreach ($subforums[$forum['fid']] as $sub) {
+                        $forumselect[] = '<option value="' . intval($sub['fid']) . '">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &raquo; ' . stripslashes($sub['name']) . '</option>';
                     }
-                    $subforums[$forum['fup']][] = $forum;
-                    break;
-                case 'forum':
-                default:
-                    if ($forum['fup'] == 0) {
-                        $standAloneForums[] = $forum;
-                    } else {
-                        if (!isset($forums[$forum['fup']])) {
-                            $forums[$forum['fup']] = array();
-                        }
-                        $forums[$forum['fup']][] = $forum;
-                    }
-                    break;
-            }
-        }
-        $db->free_result($sql);
-
-        $forumselect = array();
-        if (!$multiple) {
-            $forumselect[] = '<select name="' . $selectname . '">';
-        } else {
-            $forumselect[] = '<select name="' . $selectname . '" multiple="multiple">';
-        }
-
-        if ($allowall) {
-            $forumselect[] = '<option value="all" ' . $selHTML . '>' . $lang['textallforumsandsubs'] . '</option>';
-        } else
-            if (!$allowall && !$multiple) {
-                $forumselect[] = '<option value="" disabled="disabled" ' . $selHTML . '>' . $lang['textforum'] . '</option>';
-            }
-
-        unset($forum);
-        reset($forums);
-
-        foreach ($standAloneForums as $forum) {
-            $forumselect[] = '<option value="' . intval($forum['fid']) . '"> &nbsp; &raquo; ' . stripslashes($forum['name']) . '</option>';
-            if (isset($subforums[$forum['fid']])) {
-                foreach ($subforums[$forum['fid']] as $sub) {
-                    $forumselect[] = '<option value="' . intval($sub['fid']) . '">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &raquo; ' . stripslashes($sub['name']) . '</option>';
                 }
             }
         }
-
         $forumselect[] = '<option value="" disabled="disabled">&nbsp;</option>';
-        foreach ($categories as $group) {
-            if (isset($forums[$group['fid']]) && count($forums[$group['fid']]) > 0) {
-                $forumselect[] = '<option value="' . intval($group['fid']) . '" disabled="disabled">' . stripslashes($group['name']) . '</option>';
-                foreach ($forums[$group['fid']] as $forum) {
-                    $forumselect[] = '<option value="' . intval($forum['fid']) . '"> &nbsp; &raquo; ' . stripslashes($forum['name']) . '</option>';
-                    if (isset($subforums[$forum['fid']])) {
-                        foreach ($subforums[$forum['fid']] as $sub) {
-                            $forumselect[] = '<option value="' . intval($sub['fid']) . '">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &raquo; ' . stripslashes($sub['name']) . '</option>';
-                        }
-                    }
-                }
-            }
-            $forumselect[] = '<option value="" disabled="disabled">&nbsp;</option>';
-        }
-        $forumselect[] = '</select>';
-        return implode("\n", $forumselect);
+    }
+    $forumselect[] = '</select>';
+    return implode("\n", $forumselect);
+}
+
+function shadowfx()
+{
+    global $THEME;
+
+    $shadow = '';
+    if ($THEME['shadowfx'] == 'on') {
+        eval('$shadow = "' . template('shadow') . '";');
+    }
+    return $shadow;
+}
+
+function shadowfx2()
+{
+    global $THEME;
+
+    $shadow2 = '';
+    if ($THEME['shadowfx'] == 'on') {
+        eval('$shadow2 = "' . template('shadow2') . '";');
+    }
+    return $shadow2;
+}
+
+function metaTags()
+{
+    global $CONFIG;
+
+    $meta = '';
+    if ($CONFIG['metatag_status'] == 'on') {
+        eval('$meta = stripslashes("' . template('meta_tags') . '");');
+    }
+    return $meta;
+}
+
+function encode_ip($dotquad_ip)
+{
+    $ip_sep = explode('.', $dotquad_ip);
+    return sprintf('%02x%02x%02x%02x', $ip_sep[0], $ip_sep[1], $ip_sep[2], $ip_sep[3]);
+}
+
+function celloverfx($url)
+{
+    global $THEME;
+
+    $mouseover = '';
+    if ($THEME['celloverfx'] == 'on') {
+        $mouseover = "onclick=\"location.href='$url';\" style=\"cursor:pointer\" onmouseover=\"this.style.backgroundColor='$THEME[altbg1]'\" onmouseout=\"this.style.backgroundColor='$THEME[altbg2]'\"";
+    }
+    return $mouseover;
+}
+
+function securityChecks()
+{
+    global $CONFIG, $onlineip, $url;
+
+    if (file_exists('cplogfile.php') && !@unlink('cplogfile.php')) {
+        exit('<h1>Error:</h1><br />The old logfile("cplogfile.php") has been found on the server, but could not be removed. Please remove it as soon as possible.');
     }
 
-    function shadowfx()
-    {
-        global $THEME;
-
-        $shadow = '';
-        if ($THEME['shadowfx'] == 'on') {
-            eval('$shadow = "' . template('shadow') . '";');
-        }
-        return $shadow;
+    if (file_exists('fixhack.php') && !@unlink('fixhack.php')) {
+        exit('<h1>Error:</h1><br />The hack repair tool("fixhack.php") has been found on the server, but could not be removed. Please remove it as soon as possible.');
     }
 
-    function shadowfx2()
-    {
-        global $THEME;
-
-        $shadow2 = '';
-        if ($THEME['shadowfx'] == 'on') {
-            eval('$shadow2 = "' . template('shadow2') . '";');
-        }
-        return $shadow2;
+    if (file_exists('install/emergency.php') && !@unlink('install/emergency.php')) {
+        exit('<h1>Error:</h1><br />The emergency repair file("install/emergency.php") has been found on the server, but could not be removed. Please remove it as soon as possible.');
     }
 
-    function metaTags()
-    {
-        global $CONFIG;
-
-        $meta = '';
-        if ($CONFIG['metatag_status'] == 'on') {
-            eval('$meta = stripslashes("' . template('meta_tags') . '");');
-        }
-        return $meta;
-    }
-
-    function encode_ip($dotquad_ip)
-    {
-        $ip_sep = explode('.', $dotquad_ip);
-        return sprintf('%02x%02x%02x%02x', $ip_sep[0], $ip_sep[1], $ip_sep[2], $ip_sep[3]);
-    }
-
-    function celloverfx($url)
-    {
-        global $THEME;
-
-        $mouseover = '';
-        if ($THEME['celloverfx'] == 'on') {
-            $mouseover = "onclick=\"location.href='$url';\" style=\"cursor:pointer\" onmouseover=\"this.style.backgroundColor='$THEME[altbg1]'\" onmouseout=\"this.style.backgroundColor='$THEME[altbg2]'\"";
-        }
-        return $mouseover;
-    }
-
-    function securityChecks()
-    {
-        global $CONFIG, $onlineip, $url;
-
-        if (file_exists('cplogfile.php') && !@unlink('cplogfile.php')) {
-            exit('<h1>Error:</h1><br />The old logfile("cplogfile.php") has been found on the server, but could not be removed. Please remove it as soon as possible.');
-        }
-
-        if (file_exists('fixhack.php') && !@unlink('fixhack.php')) {
-            exit('<h1>Error:</h1><br />The hack repair tool("fixhack.php") has been found on the server, but could not be removed. Please remove it as soon as possible.');
-        }
-
-        if (file_exists('install/emergency.php') && !@unlink('install/emergency.php')) {
-            exit('<h1>Error:</h1><br />The emergency repair file("install/emergency.php") has been found on the server, but could not be removed. Please remove it as soon as possible.');
-        }
-
-        // Checks the IP-format, if it's not a IPv4, nor a IPv6 type, it will be blocked, safe to remove....
-        if ($CONFIG['ipcheck'] == 'on') {
-            if (!preg_match('/^([0-9]{1,3}.){3}[0-9]{1,3}$/i', $onlineip) && !preg_match('/^([a-z,0-9]{0,4}:){5}[a-z,0-9]{0,4}$/i', $onlineip) && !stristr($onlineip, ':::::')) {
-                exit("Access to this website is currently not possible as your hostname/IP appears suspicous.");
-            }
-        }
-
-        // Checks for various variables in the URL, if any of them is found, script is halted
-        $url_check = array(
-            'status=',
-            'gbbuser=',
-            'gbbpw=',
-            '<script'
-        );
-        $url = trim(urldecode($url));
-        foreach ($url_check as $name) {
-            if (strpos($url, $name)) {
-                exit('Attack attempt denied.');
-            }
+    // Checks the IP-format, if it's not a IPv4, nor a IPv6 type, it will be blocked, safe to remove....
+    if ($CONFIG['ipcheck'] == 'on') {
+        if (!preg_match('/^([0-9]{1,3}.){3}[0-9]{1,3}$/i', $onlineip) && !preg_match('/^([a-z,0-9]{0,4}:){5}[a-z,0-9]{0,4}$/i', $onlineip) && !stristr($onlineip, ':::::')) {
+            exit("Access to this website is currently not possible as your hostname/IP appears suspicous.");
         }
     }
 
-    function is_ip($ip)
-    {
-        $check = true;
-        $ip = explode(".", $ip);
-        foreach ($ip as $block) {
-            if (!is_numeric($block)) {
-                $check = false;
-            }
-        }
-        return $check;
-    }
-
-    /**
-     * findLangName() - given a number between 1..n, find its language name
-     *
-     * In olden days, we would return a partial filename to the user. In these
-     * days of high security, that's no good at all. So we return a simple
-     * number between 1..n to the user. This function's job is to turn that
-     * returned number back into a partial filename in a safe way.
-     *
-     * @param $instance integer,
-     *            the value from the user
-     * @return string, partial filename useful for stashing in the settings array
-     *
-     */
-    function findLangName($instance)
-    {
-        $instance = intval($instance);
-        if ($instance < 1) {
-            return "";
-        }
-
-        $dir = opendir('lang');
-        $langpos = 0;
-        $file = '';
-        while (($file = readdir($dir)) != false) {
-            if ($instance == $langpos) {
-                if (is_file('lang/' . $file) && false !== strpos($file, '.lang.php')) {
-                    $file = str_replace('.lang.php', '', $file);
-                    break;
-                }
-            }
-            $langpos++;
-        }
-
-        if (empty($file)) {
-            $file = 'English';
-        }
-
-        return $file;
-    }
-
-    function fixUrl($matches)
-    {
-        $fullurl = '';
-        if (!empty($matches[2])) {
-            if ($matches[3] != 'www') {
-                $fullurl = $matches[2];
-            } else {
-                $fullurl = 'http://' . $matches[2];
-            }
-        }
-        $fullurl = strip_tags($fullurl);
-        $shorturl = '';
-        if (strlen($fullurl) > 80) {
-            $shorturl = substr($fullurl, 0, 80);
-            $shorturl = substr_replace($shorturl, '...', 77, 3);
-            return ' [url=' . $fullurl . ']' . $shorturl . '[/url]';
-        } else {
-            return ' <a href="' . $fullurl . '" target="_blank">' . $fullurl . '</a>&nbsp;';
+    // Checks for various variables in the URL, if any of them is found, script is halted
+    $url_check = array(
+        'status=',
+        'gbbuser=',
+        'gbbpw=',
+        '<script',
+    );
+    $url = trim(urldecode($url));
+    foreach ($url_check as $name) {
+        if (strpos($url, $name)) {
+            exit('Attack attempt denied.');
         }
     }
+}
 
-    function forumJump()
-    {
-        global $self, $db, $lang, $selHTML;
-
-        $restrict = array();
-        switch ($self['status']) {
-            case 'Member':
-                $restrict[] = "private != '3'";
-            case 'Moderator':
-            case 'Super Moderator':
-                $restrict[] = "private != '2'";
-            case 'Administrator':
-                $restrict[] = "userlist = ''";
-            case 'Super Administrator':
-                break;
-            default:
-                $restrict[] = "private != '5'";
-                $restrict[] = "private != '3'";
-                $restrict[] = "private != '2'";
-                $restrict[] = "userlist = ''";
-                $restrict[] = "password = ''";
-                break;
-        }
-        $restrict = implode(' AND ', $restrict);
-
-        if (!empty($restrict)) {
-            $sql = $db->query("SELECT fid, type, name, fup, status, private, userlist, password FROM " . X_PREFIX . "forums WHERE $restrict AND status = 'on' ORDER BY displayorder");
-        } else {
-            $sql = $db->query("SELECT fid, type, name, fup, private, userlist, password FROM " . X_PREFIX . "forums ORDER BY displayorder");
-        }
-
-        $standAloneForums = array();
-        $forums = array();
-        $categories = array();
-        $subforums = array();
-        while (($forum = $db->fetch_array($sql)) != false) {
-            if (!X_SADMIN && $forum['password'] != '') {
-                $fidpw = isset($_COOKIE['fidpw' . $forum['fid']]) ? trim($_COOKIE['fidpw' . $forum['fid']]) : '';
-                if ($forum['password'] !== $fidpw) {
-                    continue;
-                }
-            }
-
-            switch ($forum['type']) {
-                case 'group':
-                    $categories[] = $forum;
-                    break;
-                case 'sub':
-                    if (!isset($subforums[$forum['fup']])) {
-                        $subforums[$forum['fup']] = array();
-                    }
-                    $subforums[$forum['fup']][] = $forum;
-                    break;
-                case 'forum':
-                default:
-                    if ($forum['fup'] == 0) {
-                        $standAloneForums[] = $forum;
-                    } else {
-                        if (!isset($forums[$forum['fup']])) {
-                            $forums[$forum['fup']] = array();
-                        }
-                        $forums[$forum['fup']][] = $forum;
-                    }
-                    break;
-            }
-        }
-        $db->free_result($sql);
-
-        $forumselect = array();
-        $forumselect[] = "<select onchange=\"if (this.options[this.selectedIndex].value) {window.location=(''+this.options[this.selectedIndex].value)}\">";
-        $forumselect[] = '<option value="" ' . $selHTML . '>' . $lang['forumquickjump'] . '</option>';
-
-        unset($forum);
-        reset($forums);
-
-        foreach ($standAloneForums as $forum) {
-            $forumselect[] = '<option value="' . 'viewforum.php?fid=' . intval($forum['fid']) . '"> &nbsp; &raquo; ' . stripslashes($forum['name']) . '</option>';
-            if (isset($subforums[$forum['fid']])) {
-                foreach ($subforums[$forum['fid']] as $sub) {
-                    $forumselect[] = '<option value="' . 'viewforum.php?fid=' . intval($sub['fid']) . '">&nbsp; &nbsp; &raquo; ' . stripslashes($sub['name']) . '</option>';
-                }
-            }
-        }
-
-        foreach ($categories as $group) {
-            if (isset($forums[$group['fid']])) {
-                $forumselect[] = '<option value=""></option>';
-                $forumselect[] = '<option value="' . 'index.php?gid=' . intval($group['fid']) . '">' . stripslashes($group['name']) . '</option>';
-                foreach ($forums[$group['fid']] as $forum) {
-                    $forumselect[] = '<option value="' . 'viewforum.php?fid=' . intval($forum['fid']) . '"> &nbsp; &raquo; ' . stripslashes($forum['name']) . '</option>';
-                    if (isset($subforums[$forum['fid']])) {
-                        foreach ($subforums[$forum['fid']] as $sub) {
-                            $forumselect[] = '<option value="' . 'viewforum.php?fid=' . intval($sub['fid']) . '">&nbsp; &nbsp; &raquo; ' . stripslashes($sub['name']) . '</option>';
-                        }
-                    }
-                }
-            }
-        }
-        $forumselect[] = '</select>';
-        return implode("\n", $forumselect);
-    }
-
-    function getPlugLinks()
-    {
-        global $config_cache, $db, $THEME;
-
-        $pluglinks = array();
-        $qp = $db->query("SELECT * FROM " . X_PREFIX . "pluglinks ORDER BY displayorder ASC");
-        while (($plug = $db->fetch_array($qp)) != false) {
-            if (isset($plug['status']) && $plug['status'] == 'on') {
-                $img = '';
-                if (isset($plug['img']) && !empty($plug['img'])) {
-                    $img = '<img src="' . $THEME['imgdir'] . '/' . stripslashes($plug['img']) . '" alt="' . stripslashes($plug['name']) . '" title="' . stripslashes($plug['name']) . '" border="0px" /> ';
-                }
-                $pluglinks[] = '&nbsp;' . $img . '<a href="' . stripslashes($plug['url']) . '"><font class="navtd">' . stripslashes($plug['name']) . '</font></a>';
-            }
-        }
-        $db->free_result($qp);
-        $config_cache->setData('pluglinks', $pluglinks);
-        return $pluglinks;
-    }
-
-    function shortenString($string, $len = 100, $shortType = X_SHORTEN_SOFT, $ps = '...')
-    {
-        if (strlen($string) > $len) {
-            if (($shortType & X_SHORTEN_SOFT) === X_SHORTEN_SOFT) {
-                $string = preg_replace('#^(.{0,' . $len . '})([\W].*)#', '\1' . $ps, $string);
-            }
-
-            if ((strlen($string) > $len + strlen($ps)) && (($shortType & X_SHORTEN_HARD) === X_SHORTEN_HARD)) {
-                $string = substr($string, 0, $len) . $ps;
-            }
-            return $string;
-        } else {
-            return $string;
+function is_ip($ip)
+{
+    $check = true;
+    $ip = explode(".", $ip);
+    foreach ($ip as $block) {
+        if (!is_numeric($block)) {
+            $check = false;
         }
     }
+    return $check;
+}
 
-    function langswitch($revert = 'no', $thislangfile = '')
-    {
-        global $CONFIG, $self, $db;
-
-        if ($revert == 'no') {
-            if (empty($thislangfile) || !file_exists('lang/' . $thislangfile . '.lang.php')) {
-                $langfile = $CONFIG['langfile'];
-            } else {
-                $langfile = $thislangfile;
-            }
-        } else {
-            $langfile = $self['langfile'];
-        }
-
-        return $langfile;
+/**
+ * findLangName() - given a number between 1..n, find its language name
+ *
+ * In olden days, we would return a partial filename to the user. In these
+ * days of high security, that's no good at all. So we return a simple
+ * number between 1..n to the user. This function's job is to turn that
+ * returned number back into a partial filename in a safe way.
+ *
+ * @param $instance integer,
+ *            the value from the user
+ * @return string, partial filename useful for stashing in the settings array
+ *
+ */
+function findLangName($instance)
+{
+    $instance = intval($instance);
+    if ($instance < 1) {
+        return "";
     }
 
-    function langSelect()
-    {
-        global $member, $selHTML, $CONFIG;
-
-        $lfs = array();
-        $dir = opendir('lang');
-        $langpos = 0;
-        while (($file = readdir($dir)) != false) {
+    $dir = opendir('lang');
+    $langpos = 0;
+    $file = '';
+    while (($file = readdir($dir)) != false) {
+        if ($instance == $langpos) {
             if (is_file('lang/' . $file) && false !== strpos($file, '.lang.php')) {
                 $file = str_replace('.lang.php', '', $file);
-                if ($file == $CONFIG['langfile']) {
-                    $lfs[] = '<option value="' . $langpos . '" ' . $selHTML . '>' . $file . '</option>';
-                } else {
-                    $lfs[] = '<option value="' . $langpos . '">' . $file . '</option>';
-                }
+                break;
             }
-            $langpos++;
         }
-        natcasesort($lfs);
-
-        return ('<select name="langfilenew">' . implode("\n", $lfs) . '</select>');
+        $langpos++;
     }
 
-    ?>
+    if (empty($file)) {
+        $file = 'English';
+    }
+
+    return $file;
+}
+
+function fixUrl($matches)
+{
+    $fullurl = '';
+    if (!empty($matches[2])) {
+        if ($matches[3] != 'www') {
+            $fullurl = $matches[2];
+        } else {
+            $fullurl = 'http://' . $matches[2];
+        }
+    }
+    $fullurl = strip_tags($fullurl);
+    $shorturl = '';
+    if (strlen($fullurl) > 80) {
+        $shorturl = substr($fullurl, 0, 80);
+        $shorturl = substr_replace($shorturl, '...', 77, 3);
+        return ' [url=' . $fullurl . ']' . $shorturl . '[/url]';
+    } else {
+        return ' <a href="' . $fullurl . '" target="_blank">' . $fullurl . '</a>&nbsp;';
+    }
+}
+
+function forumJump()
+{
+    global $self, $db, $lang, $selHTML;
+
+    $restrict = array();
+    switch ($self['status']) {
+        case 'Member':
+            $restrict[] = "private != '3'";
+        case 'Moderator':
+        case 'Super Moderator':
+            $restrict[] = "private != '2'";
+        case 'Administrator':
+            $restrict[] = "userlist = ''";
+        case 'Super Administrator':
+            break;
+        default:
+            $restrict[] = "private != '5'";
+            $restrict[] = "private != '3'";
+            $restrict[] = "private != '2'";
+            $restrict[] = "userlist = ''";
+            $restrict[] = "password = ''";
+            break;
+    }
+    $restrict = implode(' AND ', $restrict);
+
+    if (!empty($restrict)) {
+        $sql = $db->query("SELECT fid, type, name, fup, status, private, userlist, password FROM " . X_PREFIX . "forums WHERE $restrict AND status = 'on' ORDER BY displayorder");
+    } else {
+        $sql = $db->query("SELECT fid, type, name, fup, private, userlist, password FROM " . X_PREFIX . "forums ORDER BY displayorder");
+    }
+
+    $standAloneForums = array();
+    $forums = array();
+    $categories = array();
+    $subforums = array();
+    while (($forum = $db->fetch_array($sql)) != false) {
+        if (!X_SADMIN && $forum['password'] != '') {
+            $fidpw = isset($_COOKIE['fidpw' . $forum['fid']]) ? trim($_COOKIE['fidpw' . $forum['fid']]) : '';
+            if ($forum['password'] !== $fidpw) {
+                continue;
+            }
+        }
+
+        switch ($forum['type']) {
+            case 'group':
+                $categories[] = $forum;
+                break;
+            case 'sub':
+                if (!isset($subforums[$forum['fup']])) {
+                    $subforums[$forum['fup']] = array();
+                }
+                $subforums[$forum['fup']][] = $forum;
+                break;
+            case 'forum':
+            default:
+                if ($forum['fup'] == 0) {
+                    $standAloneForums[] = $forum;
+                } else {
+                    if (!isset($forums[$forum['fup']])) {
+                        $forums[$forum['fup']] = array();
+                    }
+                    $forums[$forum['fup']][] = $forum;
+                }
+                break;
+        }
+    }
+    $db->free_result($sql);
+
+    $forumselect = array();
+    $forumselect[] = "<select onchange=\"if (this.options[this.selectedIndex].value) {window.location=(''+this.options[this.selectedIndex].value)}\">";
+    $forumselect[] = '<option value="" ' . $selHTML . '>' . $lang['forumquickjump'] . '</option>';
+
+    unset($forum);
+    reset($forums);
+
+    foreach ($standAloneForums as $forum) {
+        $forumselect[] = '<option value="' . 'viewforum.php?fid=' . intval($forum['fid']) . '"> &nbsp; &raquo; ' . stripslashes($forum['name']) . '</option>';
+        if (isset($subforums[$forum['fid']])) {
+            foreach ($subforums[$forum['fid']] as $sub) {
+                $forumselect[] = '<option value="' . 'viewforum.php?fid=' . intval($sub['fid']) . '">&nbsp; &nbsp; &raquo; ' . stripslashes($sub['name']) . '</option>';
+            }
+        }
+    }
+
+    foreach ($categories as $group) {
+        if (isset($forums[$group['fid']])) {
+            $forumselect[] = '<option value=""></option>';
+            $forumselect[] = '<option value="' . 'index.php?gid=' . intval($group['fid']) . '">' . stripslashes($group['name']) . '</option>';
+            foreach ($forums[$group['fid']] as $forum) {
+                $forumselect[] = '<option value="' . 'viewforum.php?fid=' . intval($forum['fid']) . '"> &nbsp; &raquo; ' . stripslashes($forum['name']) . '</option>';
+                if (isset($subforums[$forum['fid']])) {
+                    foreach ($subforums[$forum['fid']] as $sub) {
+                        $forumselect[] = '<option value="' . 'viewforum.php?fid=' . intval($sub['fid']) . '">&nbsp; &nbsp; &raquo; ' . stripslashes($sub['name']) . '</option>';
+                    }
+                }
+            }
+        }
+    }
+    $forumselect[] = '</select>';
+    return implode("\n", $forumselect);
+}
+
+function getPlugLinks()
+{
+    global $config_cache, $db, $THEME;
+
+    $pluglinks = array();
+    $qp = $db->query("SELECT * FROM " . X_PREFIX . "pluglinks ORDER BY displayorder ASC");
+    while (($plug = $db->fetch_array($qp)) != false) {
+        if (isset($plug['status']) && $plug['status'] == 'on') {
+            $img = '';
+            if (isset($plug['img']) && !empty($plug['img'])) {
+                $img = '<img src="' . $THEME['imgdir'] . '/' . stripslashes($plug['img']) . '" alt="' . stripslashes($plug['name']) . '" title="' . stripslashes($plug['name']) . '" border="0px" /> ';
+            }
+            $pluglinks[] = '&nbsp;' . $img . '<a href="' . stripslashes($plug['url']) . '"><font class="navtd">' . stripslashes($plug['name']) . '</font></a>';
+        }
+    }
+    $db->free_result($qp);
+    $config_cache->setData('pluglinks', $pluglinks);
+    return $pluglinks;
+}
+
+function shortenString($string, $len = 100, $shortType = X_SHORTEN_SOFT, $ps = '...')
+{
+    if (strlen($string) > $len) {
+        if (($shortType & X_SHORTEN_SOFT) === X_SHORTEN_SOFT) {
+            $string = preg_replace('#^(.{0,' . $len . '})([\W].*)#', '\1' . $ps, $string);
+        }
+
+        if ((strlen($string) > $len + strlen($ps)) && (($shortType & X_SHORTEN_HARD) === X_SHORTEN_HARD)) {
+            $string = substr($string, 0, $len) . $ps;
+        }
+        return $string;
+    } else {
+        return $string;
+    }
+}
+
+function langswitch($revert = 'no', $thislangfile = '')
+{
+    global $CONFIG, $self, $db;
+
+    if ($revert == 'no') {
+        if (empty($thislangfile) || !file_exists('lang/' . $thislangfile . '.lang.php')) {
+            $langfile = $CONFIG['langfile'];
+        } else {
+            $langfile = $thislangfile;
+        }
+    } else {
+        $langfile = $self['langfile'];
+    }
+
+    return $langfile;
+}
+
+function langSelect()
+{
+    global $member, $selHTML, $CONFIG;
+
+    $lfs = array();
+    $dir = opendir('lang');
+    $langpos = 0;
+    while (($file = readdir($dir)) != false) {
+        if (is_file('lang/' . $file) && false !== strpos($file, '.lang.php')) {
+            $file = str_replace('.lang.php', '', $file);
+            if ($file == $CONFIG['langfile']) {
+                $lfs[] = '<option value="' . $langpos . '" ' . $selHTML . '>' . $file . '</option>';
+            } else {
+                $lfs[] = '<option value="' . $langpos . '">' . $file . '</option>';
+            }
+        }
+        $langpos++;
+    }
+    natcasesort($lfs);
+
+    return ('<select name="langfilenew">' . implode("\n", $lfs) . '</select>');
+}
+
+?>

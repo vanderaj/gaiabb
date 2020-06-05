@@ -151,4 +151,3 @@ define('X_GZIP', true);
 if (!defined('X_GZIP')) {
     define('X_GZIP', false);
 }
-

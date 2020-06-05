@@ -76,7 +76,7 @@ function view_repair_index($path)
     </tr>
     </table>
     <?php
-    view_shadow();
+view_shadow();
 }
 
 /**
@@ -141,7 +141,7 @@ function view_repair_action()
         </tr>
     </table>
     <?php
-    return "repairBar";
+return "repairBar";
 }
 
 /**
@@ -191,17 +191,17 @@ function view_admins($db, $tablepre)
     ?>
     <table border="0" cellspacing="1px" cellpadding="5px" width="100%">
         <?php
-        if ($query !== false && $db->num_rows($query) > 0) {
-            while (($user = $db->fetch_array($query)) != false) {
-                echo "<tr><td class=\"tablerow\" bgcolor=\"#ffffff\" width=30%>$user[username]</td>";
-                echo "<td class=\"tablerow\" bgcolor=\"#ffffff\" width=70%>$user[status]</td></tr>";
-            }
-        } else {
-            echo "<tr><td class=\"tablerow\" bgcolor=\"#ffffff\" width=30%>No users</td>";
-            echo "<td class=\"tablerow\" bgcolor=\"#ffffff\" width=70%>&nbsp;</td></tr>";
+if ($query !== false && $db->num_rows($query) > 0) {
+        while (($user = $db->fetch_array($query)) != false) {
+            echo "<tr><td class=\"tablerow\" bgcolor=\"#ffffff\" width=30%>$user[username]</td>";
+            echo "<td class=\"tablerow\" bgcolor=\"#ffffff\" width=70%>$user[status]</td></tr>";
         }
-        $db->free_result($query);
-        ?>
+    } else {
+        echo "<tr><td class=\"tablerow\" bgcolor=\"#ffffff\" width=30%>No users</td>";
+        echo "<td class=\"tablerow\" bgcolor=\"#ffffff\" width=70%>&nbsp;</td></tr>";
+    }
+    $db->free_result($query);
+    ?>
     </table>
     </td>
     </tr>

@@ -34,16 +34,16 @@ if (!defined('IN_PROGRAM') && (defined('DEBUG') && DEBUG == false)) {
     exit('This file is not designed to be called directly');
 }
 
-require_once('mimetypes.inc.php');
+require_once 'mimetypes.inc.php';
 
 class pmDAO
 {
 
-    function pmDAO()
+    public function pmDAO()
     {
     }
 
-    function insert_pm($to, $from, $to_uid, $from_uid, $type, $owner, $folder, $subject, $message, $isRead, $isSent, $usepmsig)
+    public function insert_pm($to, $from, $to_uid, $from_uid, $type, $owner, $folder, $subject, $message, $isRead, $isSent, $usepmsig)
     {
         global $db, $onlinetime;
 
@@ -71,11 +71,11 @@ class pmDAO
 class pmModel
 {
 
-    function pmModel()
+    public function pmModel()
     {
     }
 
-    function send($pmid, $msgto, $subject, $message, $pmpreview)
+    public function send($pmid, $msgto, $subject, $message, $pmpreview)
     {
         global $db, $self, $lang, $CONFIG, $THEME, $username, $pmcount, $cheHTML;
         global $shadow, $shadow2, $onlinetime, $fileheight, $filewidth;
@@ -98,12 +98,12 @@ class pmModel
             $usesigcheck = $cheHTML;
             $pmcheckhtml = '<br /><input type="checkbox" name="usesig" value="yes" ' . $usesigcheck . ' /> ' . $lang['textusesig'];
         } else
-            if (isset($self['sig']) && !empty($self['sig'])) {
-                $usesigcheck = $cheHTML;
-                $pmcheckhtml = '<br /><input type="checkbox" name="usesig" value="yes" ' . $usesigcheck . ' /> ' . $lang['textusesig'];
-            } else {
-                $usesigcheck = $pmcheckhtml = '';
-            }
+        if (isset($self['sig']) && !empty($self['sig'])) {
+            $usesigcheck = $cheHTML;
+            $pmcheckhtml = '<br /><input type="checkbox" name="usesig" value="yes" ' . $usesigcheck . ' /> ' . $lang['textusesig'];
+        } else {
+            $usesigcheck = $pmcheckhtml = '';
+        }
 
         if (onSubmit('savesubmit')) {
             if (empty($message) || empty($subject)) {
@@ -162,7 +162,7 @@ class pmModel
             if ($quote) {
                 $prefixes = array(
                     $lang['textre'],
-                    $lang['textfwd']
+                    $lang['textfwd'],
                 );
                 $subject = checkOutput(str_replace($prefixes, '', $quote['subject']));
                 $message = checkOutput($quote['message']);
@@ -170,27 +170,27 @@ class pmModel
                     $subject = $lang['textfwd'] . ' ' . $subject;
                     $message = '[quote][i]' . $lang['origpostedby'] . ' ' . $quote['msgfrom'] . "[/i]\n" . $message . '[/quote]';
                 } else
-                    if ($reply == 'yes') {
-                        $subject = $lang['textre'] . ' ' . $subject;
-                        $message = '[quote]' . $message . '[/quote]';
-                        $username = $quote['msgfrom'];
-                    }
+                if ($reply == 'yes') {
+                    $subject = $lang['textre'] . ' ' . $subject;
+                    $message = '[quote]' . $message . '[/quote]';
+                    $username = $quote['msgfrom'];
+                }
             }
             $db->free_result($query);
         } else
-            if (onSubmit('previewsubmit')) {
-                if (empty($message)) {
-                    error($lang['pmempty'], false, '', '', false, true, false, true);
-                }
-                $pmsubject = checkOutput(censor(checkInput($subject)));
-                $pmmessage = postify(checkInput($message));
-                $username = checkOutput(checkInput($msgto));
-                // show signature preview
-                if ($usesig != 'no') {
-                    eval('$pmmessage .= "' . template('pm_send_preview_sig') . '";');
-                }
-                eval('$pmpreview = "' . template('pm_send_preview') . '";');
+        if (onSubmit('previewsubmit')) {
+            if (empty($message)) {
+                error($lang['pmempty'], false, '', '', false, true, false, true);
             }
+            $pmsubject = checkOutput(censor(checkInput($subject)));
+            $pmmessage = postify(checkInput($message));
+            $username = checkOutput(checkInput($msgto));
+            // show signature preview
+            if ($usesig != 'no') {
+                eval('$pmmessage .= "' . template('pm_send_preview_sig') . '";');
+            }
+            eval('$pmpreview = "' . template('pm_send_preview') . '";');
+        }
         $smilieinsert = smilieinsert();
         $bbcodeinsert = bbcodeinsert();
         $leftpane = '';
@@ -198,7 +198,7 @@ class pmModel
         return $leftpane;
     }
 
-    function send_multi_recp($msgto, $subject, $message, $usepmsig)
+    public function send_multi_recp($msgto, $subject, $message, $usepmsig)
     {
         $errors = '';
         $recipients = array_unique(array_map('trim', explode(',', $msgto)));
@@ -208,7 +208,7 @@ class pmModel
         return $errors;
     }
 
-    function send_recp($msgto, $subject, $message, $usepmsig)
+    public function send_recp($msgto, $subject, $message, $usepmsig)
     {
         global $db, $mailsys, $self, $CONFIG, $lang, $onlinetime, $username;
         global $attachedfile, $filetype, $filesize, $filename;
@@ -251,19 +251,19 @@ class pmModel
                 if ($rcpt['emailonpm'] == 'yes' && $rcpt['status'] != 'Banned') {
                     // Force a langswitch (1)
                     $langfile = langswitch('no', $thislangfile);
-                    include('lang/' . $langfile . '.lang.php');
+                    include 'lang/' . $langfile . '.lang.php';
 
                     $pmurl = $CONFIG['boardurl'] . 'pm.php';
 
                     $tpl_keys = array(
                         '{TO}',
                         '{FROM}',
-                        '{LINK}'
+                        '{LINK}',
                     );
                     $tpl_values = array(
                         $rcpt['username'],
                         $self['username'],
-                        $pmurl
+                        $pmurl,
                     );
                     $msgbody = str_replace($tpl_keys, $tpl_values, $lang['textnewpmbody']);
 
@@ -275,7 +275,7 @@ class pmModel
 
                     // Force a revert langswitch (1)
                     $langfile = langswitch('yes', '');
-                    include('lang/' . $langfile . '.lang.php');
+                    include 'lang/' . $langfile . '.lang.php';
                 }
             } else {
                 $errors = '<br />' . $lang['pmblocked'];
@@ -287,7 +287,7 @@ class pmModel
         return $errors;
     }
 
-    function getAttachment($file, $pmattachstatus)
+    public function getAttachment($file, $pmattachstatus)
     {
         global $db, $lang, $filename, $filetype, $filesize, $CONFIG, $fileheight, $filewidth;
         global $attachedfile;
@@ -321,7 +321,7 @@ class pmModel
         return false;
     }
 
-    function view($pmid, $folders)
+    public function view($pmid, $folders)
     {
         global $db, $THEME, $lang, $self;
         global $cheHTML, $sendoptions, $shadow, $shadow2, $CONFIG, $pmsig, $fileheight, $filewidth;
@@ -346,9 +346,9 @@ class pmModel
             if ($pm['type'] == 'incoming') {
                 $db->query("UPDATE " . X_PREFIX . "pm SET readstatus = 'yes' WHERE pmid = $pm[pmid] OR (pmid = $pm[pmid]+1 AND type = 'outgoing' AND msgto = '$self[username]')");
             } else
-                if ($pm['type'] == 'draft') {
-                    $db->query("UPDATE " . X_PREFIX . "pm SET readstatus = 'yes' WHERE pmid = $pm[pmid]");
-                }
+            if ($pm['type'] == 'draft') {
+                $db->query("UPDATE " . X_PREFIX . "pm SET readstatus = 'yes' WHERE pmid = $pm[pmid]");
+            }
 
             if (empty($pm['subject'])) {
                 $pm['subject'] = $lang['textnosub'];
@@ -368,11 +368,11 @@ class pmModel
                 $sendoptions = '<input type="radio" name="mod" value="send" /> ' . $lang['textpm'] . '<br />';
                 $delchecked = $cheHTML;
             } else
-                if ($pm['msgfrom'] != $self['username']) {
-                    $sendoptions = '<input type="radio" name="mod" value="reply" ' . $cheHTML . ' /> ' . $lang['textreply'] . '<br /><input type="radio" name="mod" value="forward" /> ' . $lang['textforward'] . '<br />';
-                } else {
-                    $delchecked = $cheHTML;
-                }
+            if ($pm['msgfrom'] != $self['username']) {
+                $sendoptions = '<input type="radio" name="mod" value="reply" ' . $cheHTML . ' /> ' . $lang['textreply'] . '<br /><input type="radio" name="mod" value="forward" /> ' . $lang['textforward'] . '<br />';
+            } else {
+                $delchecked = $cheHTML;
+            }
 
             // make the attachment output clean and understandable here.
             if (!empty($pm['filename']) && $CONFIG['pmattachstatus'] == 'on') {
@@ -380,34 +380,34 @@ class pmModel
                 if ($attachsize >= 1073741824) {
                     $attachsize = round($attachsize / 1073741824 * 100) / 100 . 'gb';
                 } else
-                    if ($attachsize >= 1048576) {
-                        $attachsize = round($attachsize / 1048576 * 100) / 100 . 'mb';
-                    } else
-                        if ($attachsize >= 1024) {
-                            $attachsize = round($attachsize / 1024 * 100) / 100 . 'kb';
-                        } else {
-                            $attachsize = $attachsize . 'b';
-                        }
+                if ($attachsize >= 1048576) {
+                    $attachsize = round($attachsize / 1048576 * 100) / 100 . 'mb';
+                } else
+                if ($attachsize >= 1024) {
+                    $attachsize = round($attachsize / 1024 * 100) / 100 . 'kb';
+                } else {
+                    $attachsize = $attachsize . 'b';
+                }
 
                 $pm['filename'] = htmlspecialchars($pm['filename']);
                 $extension = strtolower(substr(strrchr($pm['filename'], '.'), 1));
                 if ($CONFIG['attachimgpost'] == 'on' && ($extension == 'jpg' || $extension == 'jpeg' || $extension == 'gif' || $extension == 'png' || $extension == 'bmp')) {
                     if ($pm['fileheight'] != '' && $pm['filewidth'] != '') {
-                        $CONFIG['max_attheight'] = (int)$CONFIG['max_attheight'];
-                        $CONFIG['max_attwidth'] = (int)$CONFIG['max_attwidth'];
+                        $CONFIG['max_attheight'] = (int) $CONFIG['max_attheight'];
+                        $CONFIG['max_attwidth'] = (int) $CONFIG['max_attwidth'];
                         $h_ratio = $CONFIG['max_attheight'] / $pm['fileheight'];
                         $w_ratio = $CONFIG['max_attwidth'] / $pm['filewidth'];
                         if (($pm['fileheight'] <= $CONFIG['max_attheight']) && ($pm['filewidth'] <= $CONFIG['max_attwidth'])) {
                             $n_height = $pm['fileheight'];
                             $n_width = $pm['filewidth'];
                         } else
-                            if (($w_ratio * $pm['fileheight']) < $CONFIG['max_attheight']) {
-                                $n_height = ceil($w_ratio * $pm['fileheight']);
-                                $n_width = $CONFIG['max_attwidth'];
-                            } else {
-                                $n_height = $CONFIG['max_attheight'];
-                                $n_width = ceil($h_ratio * $pm['filewidth']);
-                            }
+                        if (($w_ratio * $pm['fileheight']) < $CONFIG['max_attheight']) {
+                            $n_height = ceil($w_ratio * $pm['fileheight']);
+                            $n_width = $CONFIG['max_attwidth'];
+                        } else {
+                            $n_height = $CONFIG['max_attheight'];
+                            $n_width = ceil($h_ratio * $pm['filewidth']);
+                        }
                     }
 
                     // create attachment icon if any
@@ -457,7 +457,7 @@ class pmModel
         return $leftpane;
     }
 
-    function pm_print($pmid, $eMail = false)
+    public function pm_print($pmid, $eMail = false)
     {
         global $mailsys, $db, $self, $lang_code, $lang_dir, $versionpowered, $lang, $charset, $THEME, $CONFIG, $logo;
 
@@ -488,7 +488,7 @@ class pmModel
                     '{MSG}',
                     '{SENT}',
                     '{FOLDER}',
-                    '{SUBJECT}'
+                    '{SUBJECT}',
                 );
                 $tpl_values = array(
                     $pmto,
@@ -496,7 +496,7 @@ class pmModel
                     $pmmessage,
                     $pmdateline,
                     $pmfolder,
-                    $pmsubject
+                    $pmsubject,
                 );
                 $msgbody = str_replace($tpl_keys, $tpl_values, $lang['textpmtoemailmsg']);
 
@@ -516,7 +516,7 @@ class pmModel
         }
     }
 
-    function delete($pmid)
+    public function delete($pmid)
     {
         global $db, $self, $lang, $THEME;
 
@@ -536,7 +536,7 @@ class pmModel
         message($lang['imdeletedmsg'], false, '', '', 'pm.php?folder=' . $folder, true, false, true);
     }
 
-    function mod_delete($pm_select)
+    public function mod_delete($pm_select)
     {
         global $db, $self, $lang, $CONFIG, $THEME;
         global $attachedfile, $filetype, $filesize, $filename;
@@ -560,7 +560,7 @@ class pmModel
         message($lang['imdeletedmsg'], false, '', '', 'pm.php?folder=' . $folder, true, false, true);
     }
 
-    function move($pmid, $tofolder)
+    public function move($pmid, $tofolder)
     {
         global $db, $self, $lang, $folders, $type, $CONFIG, $THEME;
         global $attachedfile, $filetype, $filesize, $filename;
@@ -585,7 +585,7 @@ class pmModel
         }
     }
 
-    function mod_move($tofolder, $pm_select)
+    public function mod_move($tofolder, $pm_select)
     {
         global $db, $self, $lang, $folders, $CONFIG, $THEME;
         global $attachedfile, $filetype, $filesize, $filename;
@@ -611,7 +611,7 @@ class pmModel
         message($lang['textmovesucc'], false, '', '', 'pm.php?folder=' . $folder, true, false, true);
     }
 
-    function markUnread($pmid, $type)
+    public function markUnread($pmid, $type)
     {
         global $db, $self, $lang, $CONFIG, $THEME;
 
@@ -630,7 +630,7 @@ class pmModel
         message($lang['textmarkedunread'], false, '', '', 'pm.php?folder=' . $folder, true, false, true);
     }
 
-    function mod_markUnread($pm_select)
+    public function mod_markUnread($pm_select)
     {
         global $db, $lang, $self, $CONFIG, $THEME;
         global $attachedfile, $filetype, $filesize, $filename;
@@ -665,7 +665,7 @@ class pmModel
         message($lang['textmarkedunread'], false, '', '', 'pm.php?folder=' . $folder, true, false, true);
     }
 
-    function updateFolders($pmfolders, $folders)
+    public function updateFolders($pmfolders, $folders)
     {
         global $db, $lang, $self, $farray, $CONFIG, $THEME;
         global $attachedfile, $filetype, $filesize, $filename;
@@ -682,11 +682,11 @@ class pmModel
 
         foreach ($folders as $value) {
             if (isset($farray[$value]) && $farray[$value] != 0 && !in_array($value, $newfolders) && !in_array($value, array(
-                    'Inbox',
-                    'Outbox',
-                    'Drafts',
-                    'Trash'
-                ))
+                'Inbox',
+                'Outbox',
+                'Drafts',
+                'Trash',
+            ))
             ) {
                 $newfolders[] = checkInput($value);
                 $error .= (empty($error)) ? '<br />' . $lang['foldersupdateerror'] . ' ' . $value : ', ' . $value;
@@ -700,7 +700,7 @@ class pmModel
         message($lang['foldersupdate'] . $error, false, '', '', 'pm.php?folder=Inbox', true, false, true);
     }
 
-    function viewIgnoreList()
+    public function viewIgnoreList()
     {
         global $self, $lang, $db;
         global $THEME, $shadow2, $oToken;
@@ -719,7 +719,7 @@ class pmModel
         return $leftpane;
     }
 
-    function viewFolders($folders)
+    public function viewFolders($folders)
     {
         global $db, $self, $lang, $CONFIG, $THEME;
         global $shadow, $shadow2, $mouseover;
@@ -766,25 +766,25 @@ class pmModel
                 }
                 $pmsent = '<a href="viewprofile.php?memberid=' . rawurlencode($pm['msgfrom_uid']) . '" target="_blank">' . $pm['msgfrom'] . '</a> (' . $online . ')';
             } else
-                if ($pm['type'] == 'outgoing') {
-                    if ($pm['msgto'] == $pm['username'] || $pm['msgto'] == $self['username']) {
-                        if ($pm['invisible'] == 1) {
-                            if (X_ADMIN) {
-                                $online = $lang['hidden'];
-                            } else {
-                                $online = $lang['textoffline'];
-                            }
+            if ($pm['type'] == 'outgoing') {
+                if ($pm['msgto'] == $pm['username'] || $pm['msgto'] == $self['username']) {
+                    if ($pm['invisible'] == 1) {
+                        if (X_ADMIN) {
+                            $online = $lang['hidden'];
                         } else {
-                            $online = $lang['textonline'];
+                            $online = $lang['textoffline'];
                         }
                     } else {
-                        $online = $lang['textoffline'];
+                        $online = $lang['textonline'];
                     }
-                    $pmsent = '<a href="viewprofile.php?memberid=' . rawurlencode($pm['msgto_uid']) . '" target="_blank">' . $pm['msgto'] . '</a> (' . $online . ')';
-                } else
-                    if ($pm['type'] == 'draft') {
-                        $pmsent = $lang['textpmnotsent'];
-                    }
+                } else {
+                    $online = $lang['textoffline'];
+                }
+                $pmsent = '<a href="viewprofile.php?memberid=' . rawurlencode($pm['msgto_uid']) . '" target="_blank">' . $pm['msgto'] . '</a> (' . $online . ')';
+            } else
+            if ($pm['type'] == 'draft') {
+                $pmsent = $lang['textpmnotsent'];
+            }
 
             $adjTime = ($self['timeoffset'] * 3600) + $self['daylightsavings'];
             $pmdate = gmdate($self['dateformat'], $pm['dateline'] + $adjTime);
@@ -884,7 +884,7 @@ class pmModel
         return $leftpane;
     }
 
-    function viewFolderList()
+    public function viewFolderList()
     {
         global $db, $self, $lang, $CONFIG, $THEME, $pmid;
         global $folderlist, $folders, $farray, $shadow, $shadow2;
@@ -904,10 +904,10 @@ class pmModel
         sort($folders);
         $folders = array_merge(array(
             'Inbox' => $lang['textpminbox'],
-            'Outbox' => $lang['textpmoutbox']
+            'Outbox' => $lang['textpmoutbox'],
         ), $folders, array(
             'Drafts' => $lang['textpmdrafts'],
-            'Trash' => $lang['textpmtrash']
+            'Trash' => $lang['textpmtrash'],
         ));
 
         $query = $db->query("SELECT folder, count(pmid) as count FROM " . X_PREFIX . "pm WHERE owner = '$self[username]' GROUP BY folder ORDER BY folder ASC");

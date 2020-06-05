@@ -42,7 +42,7 @@ class xmb19x extends convert
      *            what it does
      * @return type, what the return does
      */
-    function disableBoards()
+    public function disableBoards()
     {
         $bboff = $this->fromDbHost->query("UPDATE " . X_PREFIX2 . "settings SET bbstatus='off'");
         if ($bboff === false) {
@@ -67,7 +67,7 @@ class xmb19x extends convert
      *            what it does
      * @return type, what the return does
      */
-    function isAuth()
+    public function isAuth()
     {
         $admin = $this->fromDbHost->escape($_SESSION['admin_user']);
         $adminpw = md5($_SESSION['admin_pass']);
@@ -98,7 +98,7 @@ class xmb19x extends convert
      *            what it does
      * @return type, what the return does
      */
-    function members()
+    public function members()
     {
         $memfromquery = $this->fromDbHost->query("SELECT * FROM " . X_PREFIX2 . "members");
         if ($memfromquery === false) {
@@ -205,7 +205,7 @@ class xmb19x extends convert
      *            what it does
      * @return type, what the return does
      */
-    function posts()
+    public function posts()
     {
         $postquery = $this->fromDbHost->query("SELECT * FROM " . X_PREFIX2 . "posts");
         if ($postquery == false) {
@@ -234,7 +234,7 @@ class xmb19x extends convert
      *            what it does
      * @return type, what the return does
      */
-    function polls()
+    public function polls()
     {
         $this->toDbHost->query("TRUNCATE TABLE " . X_PREFIX . "vote_desc");
         $this->toDbHost->query("TRUNCATE TABLE " . X_PREFIX . "vote_results");
@@ -260,7 +260,7 @@ class xmb19x extends convert
                     $answer = explode('||~|~||', $pollentry[$i]);
                     $results[$i][0] = $i + 1;
                     $results[$i][1] = $this->toDbHost->escape(trim($answer[0]));
-                    $results[$i][2] = (int)$answer[1];
+                    $results[$i][2] = (int) $answer[1];
                 }
                 // create the poll description
                 $vote_desc_insert = $this->toDbHost->query("INSERT INTO " . X_PREFIX . "vote_desc (topic_id, vote_text) VALUES ('$tid', '$subject')");
@@ -323,7 +323,7 @@ class xmb19x extends convert
      *            what it does
      * @return type, what the return does
      */
-    function ranks()
+    public function ranks()
     {
         $ranksquery = $this->fromDbHost->query("SELECT * FROM " . X_PREFIX2 . "ranks");
         if ($ranksquery === false) {
@@ -365,7 +365,7 @@ class xmb19x extends convert
      *            what it does
      * @return type, what the return does
      */
-    function threads()
+    public function threads()
     {
         $threadsquery = $this->fromDbHost->query("SELECT * FROM " . X_PREFIX2 . "threads");
         if ($threadsquery === false) {
@@ -394,7 +394,7 @@ class xmb19x extends convert
      *            what it does
      * @return type, what the return does
      */
-    function forums()
+    public function forums()
     {
         $forumsquery = $this->fromDbHost->query("SELECT * FROM " . X_PREFIX2 . "forums");
         if ($forumsquery === false) {
@@ -410,12 +410,14 @@ class xmb19x extends convert
                 // In 1.8 postperm was a single value, which we extend to all three thread|reply|edit pperms
                 // In < 1.9.3, postperm was thread|reply, which we extend by copying the reply pperm to edit
                 if (strlen($pp) > 0) {
-                    if (strpos($pp, '|') === false) { // 1.8 -> 1.9.3
+                    if (strpos($pp, '|') === false) {
+                        // 1.8 -> 1.9.3
                         $update = true;
                         $row['postperm'] = $pp . '|' . $pp . '|' . $pp . '|' . $pp;
                     } else {
                         $pperm = explode('|', $pp);
-                        if (count($pperm) == 2) { // 1.9.1 -> 1.9.3
+                        if (count($pperm) == 2) {
+                            // 1.9.1 -> 1.9.3
                             $row['postperm'] = $pperm[0] . '|' . $pperm[1] . '|' . $pperm[1] . '|' . $pperm[1];
                             $update = true;
                         }
@@ -450,7 +452,7 @@ class xmb19x extends convert
      *            what it does
      * @return type, what the return does
      */
-    function attachments()
+    public function attachments()
     {
         $attachquery = $this->fromDbHost->query("SELECT aid FROM " . X_PREFIX2 . "attachments");
         if ($attachquery === false) {
@@ -504,7 +506,7 @@ class xmb19x extends convert
      *            what it does
      * @return type, what the return does
      */
-    function addresses()
+    public function addresses()
     {
         $addressquery = $this->fromDbHost->query("SELECT * FROM " . X_PREFIX2 . "buddys");
         if ($addressquery === false) {
@@ -533,7 +535,7 @@ class xmb19x extends convert
      *            what it does
      * @return type, what the return does
      */
-    function favorites()
+    public function favorites()
     {
         $favquery = $this->fromDbHost->query("SELECT * FROM " . X_PREFIX2 . "favorites WHERE type='favorite'");
         if ($favquery === false) {
@@ -562,7 +564,7 @@ class xmb19x extends convert
      *            what it does
      * @return type, what the return does
      */
-    function subscriptions()
+    public function subscriptions()
     {
         $subquery = $this->fromDbHost->query("SELECT * FROM " . X_PREFIX2 . "favorites WHERE type='subscription'");
         if ($subquery === false) {
@@ -591,7 +593,7 @@ class xmb19x extends convert
      *            what it does
      * @return type, what the return does
      */
-    function censors()
+    public function censors()
     {
         $censorquery = $this->fromDbHost->query("SELECT * FROM " . X_PREFIX2 . "words");
         if ($censorquery === false) {
@@ -620,7 +622,7 @@ class xmb19x extends convert
      *            what it does
      * @return type, what the return does
      */
-    function banned()
+    public function banned()
     {
         $banquery = $this->fromDbHost->query("SELECT * FROM " . X_PREFIX2 . "banned");
         if ($banquery === false) {
@@ -649,7 +651,7 @@ class xmb19x extends convert
      *            what it does
      * @return type, what the return does
      */
-    function settings()
+    public function settings()
     {
         $settingsquery = $this->fromDbHost->query("SELECT * FROM `" . X_PREFIX2 . "settings`");
         if ($settingsquery === false) {
@@ -660,13 +662,13 @@ class xmb19x extends convert
 
         $settings_sql = "UPDATE `" . X_PREFIX . "settings` SET " . "bbname='" . $this->toDbHost->escape($oldsettings['bbname']) . "', " . "sitename='" . $this->toDbHost->escape($oldsettings['sitename']) . "', " . "bboffreason='" . $this->toDbHost->escape($oldsettings['bboffreason']) . "', " . "bbrulestxt='" . $this->toDbHost->escape($oldsettings['bbrulestxt']) . "', " . "siteurl='" . $this->toDbHost->escape($oldsettings['siteurl']) . "', " . "indexnewstxt='" . $this->toDbHost->escape($oldsettings['tickercontents']) . "', " . "sitename='" . $this->toDbHost->escape($oldsettings['sitename']) . "', " . "adminemail='" . $this->toDbHost->escape($oldsettings['adminemail']) . "', " .
 
-            // Integers
-            "postperpage='" . intval($oldsettings['postperpage']) . "', " . "topicperpage='" . intval($oldsettings['topicperpage']) . "', " . "hottopic='" . intval($oldsettings['hottopic']) . "', " . "u2uquota='" . intval($oldsettings['u2uquota']) . "', " .
+        // Integers
+        "postperpage='" . intval($oldsettings['postperpage']) . "', " . "topicperpage='" . intval($oldsettings['topicperpage']) . "', " . "hottopic='" . intval($oldsettings['hottopic']) . "', " . "u2uquota='" . intval($oldsettings['u2uquota']) . "', " .
 
-            // on / off (XMB has many varients on this, but we try to do as best we can
-            "whosonlinestatus='" . $this->valOnOff($oldsettings['whosonlinestatus']) . "', " . "regstatus='" . $this->valOnOff($oldsettings['regstatus']) . "', " . "regviewonly='" . $this->valOnOff($oldsettings['regviewonly']) . "', " . "hideprivate='" . $this->valOnOff($oldsettings['hideprivate']) . "', " . "emailcheck='" . $this->valOnOff($oldsettings['emailcheck']) . "', " .
+        // on / off (XMB has many varients on this, but we try to do as best we can
+        "whosonlinestatus='" . $this->valOnOff($oldsettings['whosonlinestatus']) . "', " . "regstatus='" . $this->valOnOff($oldsettings['regstatus']) . "', " . "regviewonly='" . $this->valOnOff($oldsettings['regviewonly']) . "', " . "hideprivate='" . $this->valOnOff($oldsettings['hideprivate']) . "', " . "emailcheck='" . $this->valOnOff($oldsettings['emailcheck']) . "', " .
 
-            "searchstatus='" . $this->valOnOff($oldsettings['searchstatus']) . "', " . "faqstatus='" . $this->valOnOff($oldsettings['faqstatus']) . "', " . "memliststatus='" . $this->valOnOff($oldsettings['memliststatus']) . "', " . "avastatus='" . $this->valOnOff($oldsettings['avastatus']) . "', " . "bbrules='" . $this->valOnOff($oldsettings['bbrules']) . "', " . "coppa='" . $this->valOnOff($oldsettings['coppa']) . "', " . "sigbbcode='" . $this->valOnOff($oldsettings['sigbbcode']) . "', " . "reportpost='" . $this->valOnOff($oldsettings['reportpost']) . "', " . "bbinsert='" . $this->valOnOff($oldsettings['bbinsert']) . "', " . "smileyinsert='" . $this->valOnOff($oldsettings['smileyinsert']) . "', " . "doublee='" . $this->valOnOff($oldsettings['doublee']) . "', " . "editedby='" . $this->valOnOff($oldsettings['editedby']) . "', " . "dotfolders='" . $this->valOnOff($oldsettings['dotfolders']) . "', " . "attachimgpost='" . $this->valOnOff($oldsettings['attachimgpost']) . "', " . "topicactivity_status='" . $this->valOnOff($oldsettings['todaysposts']) . "', " . "stats='" . $this->valOnOff($oldsettings['statsstatus']) . "'";
+        "searchstatus='" . $this->valOnOff($oldsettings['searchstatus']) . "', " . "faqstatus='" . $this->valOnOff($oldsettings['faqstatus']) . "', " . "memliststatus='" . $this->valOnOff($oldsettings['memliststatus']) . "', " . "avastatus='" . $this->valOnOff($oldsettings['avastatus']) . "', " . "bbrules='" . $this->valOnOff($oldsettings['bbrules']) . "', " . "coppa='" . $this->valOnOff($oldsettings['coppa']) . "', " . "sigbbcode='" . $this->valOnOff($oldsettings['sigbbcode']) . "', " . "reportpost='" . $this->valOnOff($oldsettings['reportpost']) . "', " . "bbinsert='" . $this->valOnOff($oldsettings['bbinsert']) . "', " . "smileyinsert='" . $this->valOnOff($oldsettings['smileyinsert']) . "', " . "doublee='" . $this->valOnOff($oldsettings['doublee']) . "', " . "editedby='" . $this->valOnOff($oldsettings['editedby']) . "', " . "dotfolders='" . $this->valOnOff($oldsettings['dotfolders']) . "', " . "attachimgpost='" . $this->valOnOff($oldsettings['attachimgpost']) . "', " . "topicactivity_status='" . $this->valOnOff($oldsettings['todaysposts']) . "', " . "stats='" . $this->valOnOff($oldsettings['statsstatus']) . "'";
 
         $settings_update = $this->toDbHost->query($settings_sql);
         if ($settings_update === false) {
@@ -686,7 +688,7 @@ class xmb19x extends convert
      *            is this variable also a global?
      * @return string yes if set to yes, no otherwise
      */
-    function valOnOff($varname)
+    public function valOnOff($varname)
     {
         if (isset($varname) && strtolower($varname) == 'on') {
             return 'on';
@@ -703,7 +705,7 @@ class xmb19x extends convert
      *            what it does
      * @return type, what the return does
      */
-    function messages()
+    public function messages()
     {
         $u2uquery = $this->fromDbHost->query("SELECT * FROM " . X_PREFIX2 . "u2u");
         if ($u2uquery === false) {
@@ -732,7 +734,7 @@ class xmb19x extends convert
      *            what it does
      * @return type, what the return does
      */
-    function finish()
+    public function finish()
     {
         $this->toDbHost->query("UPDATE " . X_PREFIX . "settings SET bbstatus='on'");
         setBar($this->prgbar, 1.0);

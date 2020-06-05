@@ -231,7 +231,7 @@ while (($thread = $db->fetch_array($query)) != false) {
         $folder = 'folder_new_poll.gif';
     } else if ($lastvisit < $dalast && $oT === false) {
         $folder = 'red_folder.gif';
-    } 
+    }
 
     if ($CONFIG['dotfolders'] == 'on' && isset($thread['dotauthor']) == $self['username'] && X_MEMBER) {
         $folder = 'dot_' . $folder;

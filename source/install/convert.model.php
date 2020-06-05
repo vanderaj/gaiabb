@@ -60,7 +60,7 @@ class convert
      *            what it does
      * @return type, what the return does
      */
-    function convert(&$prgbar, $fromDb, $toDb)
+    public function convert(&$prgbar, $fromDb, $toDb)
     {
         $this->prgbar = $prgbar;
         $this->toDbHost = $toDb;
@@ -76,7 +76,7 @@ class convert
      *            what it does
      * @return type, what the return does
      */
-    function close()
+    public function close()
     {
     }
 
@@ -89,7 +89,7 @@ class convert
      *            what it does
      * @return type, what the return does
      */
-    function init()
+    public function init()
     {
         $this->isAuth();
         $this->disableBoards();
@@ -120,7 +120,7 @@ class convert
      *            what it does
      * @return type, what the return does
      */
-    function isAuth()
+    public function isAuth()
     {
     }
 
@@ -133,7 +133,7 @@ class convert
      *            what it does
      * @return type, what the return does
      */
-    function disableBoards()
+    public function disableBoards()
     {
     }
 
@@ -146,7 +146,7 @@ class convert
      *            what it does
      * @return type, what the return does
      */
-    function settings()
+    public function settings()
     {
     }
 
@@ -159,7 +159,7 @@ class convert
      *            what it does
      * @return type, what the return does
      */
-    function members()
+    public function members()
     {
     }
 
@@ -172,7 +172,7 @@ class convert
      *            what it does
      * @return type, what the return does
      */
-    function forums()
+    public function forums()
     {
     }
 
@@ -185,7 +185,7 @@ class convert
      *            what it does
      * @return type, what the return does
      */
-    function threads()
+    public function threads()
     {
     }
 
@@ -198,7 +198,7 @@ class convert
      *            what it does
      * @return type, what the return does
      */
-    function posts()
+    public function posts()
     {
     }
 
@@ -211,7 +211,7 @@ class convert
      *            what it does
      * @return type, what the return does
      */
-    function polls()
+    public function polls()
     {
     }
 
@@ -224,7 +224,7 @@ class convert
      *            what it does
      * @return type, what the return does
      */
-    function ranks()
+    public function ranks()
     {
     }
 
@@ -237,7 +237,7 @@ class convert
      *            what it does
      * @return type, what the return does
      */
-    function attachments()
+    public function attachments()
     {
     }
 
@@ -250,7 +250,7 @@ class convert
      *            what it does
      * @return type, what the return does
      */
-    function addresses()
+    public function addresses()
     {
     }
 
@@ -263,7 +263,7 @@ class convert
      *            what it does
      * @return type, what the return does
      */
-    function favorites()
+    public function favorites()
     {
     }
 
@@ -276,7 +276,7 @@ class convert
      *            what it does
      * @return type, what the return does
      */
-    function subscriptions()
+    public function subscriptions()
     {
     }
 
@@ -289,7 +289,7 @@ class convert
      *            what it does
      * @return type, what the return does
      */
-    function censors()
+    public function censors()
     {
     }
 
@@ -302,7 +302,7 @@ class convert
      *            what it does
      * @return type, what the return does
      */
-    function banned()
+    public function banned()
     {
     }
 
@@ -315,7 +315,7 @@ class convert
      *            what it does
      * @return type, what the return does
      */
-    function messages()
+    public function messages()
     {
     }
 }
@@ -371,12 +371,12 @@ function convert_forum($path, $prgbar)
     $database = $pconnect = $dbname = $dbhost = '';
     $tablepre = $dbuser = $dbpw = '';
 
-    require_once('config.php');
+    require_once 'config.php';
     if ($database == 'DBTYPE' || !file_exists(ROOT . "db/$database.php")) {
         setCol($prgbar, '#ff0000');
         print_error('Database connection', 'Please ensure that you have successfully installed GaiaBB prior to running this convertion.');
     }
-    require_once("../db/mysql5php.php");
+    require_once "../db/mysql5php.php";
 
     setBar($prgbar, 0.05);
 
@@ -418,7 +418,7 @@ function convert_forum($path, $prgbar)
     switch ($path) {
         case 'convertxmb':
         default:
-            include('convert.xmb19x.php');
+            include 'convert.xmb19x.php';
             break;
     }
     setBar($prgbar, 0.15);

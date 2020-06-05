@@ -28,7 +28,7 @@ if (!defined('IN_PROGRAM') && (defined('DEBUG') && DEBUG == false)) {
     exit('This file is not designed to be called directly');
 }
 
-require_once('common.model.php');
+require_once 'common.model.php';
 
 /**
  * function() - short description of function
@@ -116,12 +116,12 @@ function repair_forum($path, $prgbar)
     $dbuser = '';
     $dbpw = '';
 
-    require_once('config.php');
+    require_once 'config.php';
     if ($database == 'DBTYPE' || !file_exists(ROOT . "db/$database.php")) {
         setCol($prgbar, '#ff0000');
         print_error('Database connection', 'Please ensure that config.php has been successfully written prior to running this install.');
     }
-    require_once("../db/mysql5php5.php");
+    require_once "../db/mysql5php5.php";
 
     setBar($prgbar, 0.3);
 

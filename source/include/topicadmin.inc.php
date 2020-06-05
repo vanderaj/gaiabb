@@ -5,7 +5,7 @@
  * https://github.com/vanderaj/gaiabb
  *
  * Based off UltimaBB
- * Copyright (c) 2004 - 2007 The UltimaBB Group 
+ * Copyright (c) 2004 - 2007 The UltimaBB Group
  * (defunct)
  *
  * Based off XMB
@@ -13,7 +13,7 @@
  * https://forums.xmbforum2.com/
  *
  * This file is part of GaiaBB
- * 
+ *
  *    GaiaBB is free software: you can redistribute it and/or modify
  *    it under the terms of the GNU General Public License as published by
  *    the Free Software Foundation, either version 3 of the License, or
@@ -23,28 +23,28 @@
  *    but WITHOUT ANY WARRANTY; without even the implied warranty of
  *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  *    GNU General Public License for more details.
- * 
+ *
  *    You should have received a copy of the GNU General Public License
  *    along with GaiaBB.  If not, see <http://www.gnu.org/licenses/>.
  *
  **/
-if (! defined('IN_PROGRAM') && (defined('DEBUG') && DEBUG == false)) {
+if (!defined('IN_PROGRAM') && (defined('DEBUG') && DEBUG == false)) {
     exit('This file is not designed to be called directly');
 }
 
 class mod
 {
 
-    function mod()
+    public function mod()
     {
         global $lang, $action;
-        
-        if (! X_STAFF && $action != 'votepoll' && $action != 'report') {
+
+        if (!X_STAFF && $action != 'votepoll' && $action != 'report') {
             error($lang['textnoaction'], false);
         }
     }
 
-    function doDelete()
+    public function doDelete()
     {
         global $db, $lang, $tid, $fid, $self, $action;
 
@@ -85,27 +85,27 @@ class mod
         message($lang['deletethreadmsg'], false, '', '', 'viewforum.php?fid=' . $fid, true, false, true);
     }
 
-    function log($user = '', $action, $fid, $tid)
+    public function log($user = '', $action, $fid, $tid)
     {
         global $self, $db;
-        
+
         if (empty($user)) {
             $user = $self['username'];
         }
-        
+
         $action = addslashes($action);
-        
+
         $db->query("INSERT INTO " . X_PREFIX . "modlogs (tid, username, action, fid, date) VALUES ('$tid', '$user', '$action', '$fid', " . $db->time() . ")");
         return true;
     }
 
-    function viewDelete()
+    public function viewDelete()
     {
         global $THEME, $lang, $fid, $tid, $self, $oToken, $shadow;
         eval('echo stripslashes("' . template('topicadmin_delete') . '");');
     }
 
-    function doClose($closed)
+    public function doClose($closed)
     {
         global $db, $self, $fid, $tid, $lang;
 
@@ -124,18 +124,18 @@ class mod
         message($lang['closethreadmsg'], false, '', '', 'viewforum.php?fid=' . $fid, true, false, true);
     }
 
-    function viewClose($closed)
+    public function viewClose($closed)
     {
         global $lang, $fid, $tid, $self, $THEME, $self, $oToken, $shadow;
 
         if ($closed == 'yes') {
             $lang['textclosethread'] = $lang['textopenthread'];
-        } 
-        
+        }
+
         eval('echo stripslashes("' . template('topicadmin_openclose') . '");');
     }
 
-    function doMove()
+    public function doMove()
     {
         global $fid, $lang, $db, $tid, $forums, $fup, $self, $action;
 
@@ -190,30 +190,30 @@ class mod
         message($lang['movethreadmsg'], false, '', '', 'viewforum.php?fid=' . $fid, true, false, true);
     }
 
-    function viewMove()
+    public function viewMove()
     {
         global $lang, $fid, $tid, $self, $THEME, $oToken, $shadow, $cheHTML;
         $forumselect = forumList('moveto', false, false);
         eval('echo stripslashes("' . template('topicadmin_move') . '");');
     }
 
-    function doTop($topped)
+    public function doTop($topped)
     {
         global $db, $self, $fid, $tid, $lang;
 
         if ($topped == 1) {
             $db->query("UPDATE " . X_PREFIX . "threads SET topped = '0' WHERE tid = '$tid' AND fid = '$fid'");
         } else
-            if ($topped == 0) {
-                $db->query("UPDATE " . X_PREFIX . "threads SET topped = '1' WHERE tid = '$tid' AND fid = '$fid'");
-            }
+        if ($topped == 0) {
+            $db->query("UPDATE " . X_PREFIX . "threads SET topped = '1' WHERE tid = '$tid' AND fid = '$fid'");
+        }
         $act = ($topped ? 'untop' : 'top');
         $this->log($self['username'], $act, $fid, $tid);
 
         message($lang['topthreadmsg'], false, '', '', 'viewforum.php?fid=' . $fid, true, false, true);
     }
 
-    function viewTop($topped)
+    public function viewTop($topped)
     {
         global $lang, $fid, $tid, $self, $THEME, $oToken, $shadow;
 
@@ -223,7 +223,7 @@ class mod
         eval('echo stripslashes("' . template('topicadmin_topuntop') . '");');
     }
 
-    function doBump()
+    public function doBump()
     {
         global $db, $self, $fid, $tid, $onlinetime, $action, $lang;
 
@@ -235,13 +235,13 @@ class mod
         message($lang['bumpthreadmsg'], false, '', '', 'viewforum.php?fid=' . $fid, true, false, true);
     }
 
-    function viewBump()
+    public function viewBump()
     {
         global $lang, $fid, $tid, $self, $THEME, $oToken, $shadow;
         eval('echo stripslashes("' . template('topicadmin_bump') . '");');
     }
 
-    function doEmpty()
+    public function doEmpty()
     {
         global $db, $tid, $fid, $self, $action, $lang;
 
@@ -261,13 +261,13 @@ class mod
         message($lang['emptythreadmsg'], false, '', '', 'viewtopic.php?tid=' . $tid, true, false, true);
     }
 
-    function viewEmpty()
+    public function viewEmpty()
     {
         global $lang, $fid, $tid, $self, $THEME, $oToken, $shadow;
         eval('echo stripslashes("' . template('topicadmin_empty') . '");');
     }
 
-    function doSplit()
+    public function doSplit()
     {
         global $db, $lang, $tid, $fid, $self, $action, $onlinetime;
 
@@ -287,7 +287,7 @@ class mod
         $oldmove = getFormArrayInt('move', false);
         $newmove = implode(',', $oldmove);
 
-        if (! empty($subject)) {
+        if (!empty($subject)) {
             $db->query("INSERT INTO " . X_PREFIX . "threads (tid, fid, subject, icon, views, replies, author, closed, topped) VALUES ('', '$fid', '$subject', '', '0', '0', '" . $self['username'] . "', '', '')");
             $newtid = $db->insert_id();
             $db->query("INSERT INTO " . X_PREFIX . "lastposts (tid, uid, username, dateline, pid) VALUES ('$newtid', '-', '-', '-', '-')");
@@ -328,7 +328,7 @@ class mod
         message($lang['splitthreadmsg'], false, '', '', 'viewforum.php?fid=' . $fid, true, false, true);
     }
 
-    function viewSplit()
+    public function viewSplit()
     {
         global $db, $lang, $fid, $tid, $self, $THEME, $oToken, $shadow;
 
@@ -356,7 +356,7 @@ class mod
         eval('echo stripslashes("' . template('topicadmin_split') . '");');
     }
 
-    function doMerge()
+    public function doMerge()
     {
         global $db, $lang, $tid, $self, $action, $fid;
 
@@ -380,7 +380,7 @@ class mod
         $replyadd = $db->result($queryadd1, 0, 'replies');
         $otherfid = $db->result($queryadd1, 0, 'fid');
         $replyadd2 = $db->result($queryadd2, 0, 'replies');
-        $replyadd ++;
+        $replyadd++;
         $replyadd = $replyadd + $replyadd2;
 
         $db->query("UPDATE " . X_PREFIX . "posts SET tid = '$tid', fid = '$fid' WHERE tid = '$othertid'");
@@ -420,13 +420,13 @@ class mod
         message($lang['mergethreadmsg'], false, '', '', 'viewforum.php?fid=' . $fid, true, false, true);
     }
 
-    function viewMerge()
+    public function viewMerge()
     {
         global $lang, $fid, $tid, $self, $THEME, $oToken, $shadow;
         eval('echo stripslashes("' . template('topicadmin_merge') . '");');
     }
 
-    function doPrune()
+    public function doPrune()
     {
         global $db, $lang, $tid, $self, $action, $fid, $forums, $fup;
 
@@ -434,7 +434,7 @@ class mod
         while (($post = $db->fetch_array($query)) != false) {
             $move = "move$post[pid]";
             $move = getRequestInt($move);
-            if (! empty($move)) {
+            if (!empty($move)) {
                 $db->query("UPDATE " . X_PREFIX . "members SET postnum = postnum-1 WHERE username = '{$post['author']}'");
                 $db->query("DELETE FROM " . X_PREFIX . "posts WHERE pid = '$move'");
                 $db->query("DELETE FROM " . X_PREFIX . "attachments WHERE pid = '$move'");
@@ -467,7 +467,7 @@ class mod
         message($lang['complete_threadprune'], false, '', '', 'viewforum.php?fid=' . $fid, true, false, true);
     }
 
-    function viewPrune()
+    public function viewPrune()
     {
         global $db, $lang, $fid, $tid, $self, $THEME, $oToken, $shadow;
 
@@ -497,7 +497,7 @@ class mod
         eval('echo stripslashes("' . template('topicadmin_threadprune') . '");');
     }
 
-    function doCopy()
+    public function doCopy()
     {
         global $db, $lang, $tid, $self, $action, $fid, $forums, $fup;
 
@@ -589,11 +589,11 @@ class mod
         message($lang['copythreadmsg'], false, '', '', 'viewforum.php?fid=' . $fid, true, false, true);
     }
 
-    function statuscheck($fid)
+    public function statuscheck($fid)
     {
         global $lang, $db, $self;
 
-        if (! X_STAFF) {
+        if (!X_STAFF) {
             error($lang['textnoaction'], false);
             return false;
         }
@@ -614,41 +614,41 @@ class mod
         return true;
     }
 
-    function viewCopy()
+    public function viewCopy()
     {
         global $lang, $fid, $tid, $self, $THEME, $oToken, $shadow;
-        
+
         $forumselect = forumList('newfid', false, false);
         eval('echo stripslashes("' . template('topicadmin_copy') . '");');
     }
 
-    function doReport()
+    public function doReport()
     {
         global $db, $lang, $tid, $pid, $action, $fid, $forums, $fup;
         global $onlinetime, $self, $CONFIG;
-        
+
         $query = $db->query("SELECT count(pid) FROM " . X_PREFIX . "posts WHERE tid = '$tid'");
         $postcount = $db->result($query, 0);
         $db->free_result($query);
-        
+
         if ($postcount == 0) {
             error($lang['textnothread'], false);
         }
-        
+
         $mods = array();
-        
+
         $query = $db->query("SELECT username FROM " . X_PREFIX . "members WHERE status = 'Super Administrator' OR status = 'Administrator'");
         while (($usr = $db->fetch_array($query)) != false) {
             $mods[] = $usr['username'];
         }
         $db->free_result($query);
-        
+
         $query = $db->query("SELECT moderator FROM " . X_PREFIX . "forums WHERE fid = '$fid'");
         $reports = explode(", ", $db->result($query, 0));
         $db->free_result($query);
-        
+
         $mods = array_unique(array_merge($mods, $reports));
-        
+
         $sent = 0;
         $time = $db->time($onlinetime);
         foreach ($mods as $key => $mod) {
@@ -661,57 +661,57 @@ class mod
             $posturl = $CONFIG['boardurl'] . "viewtopic.php?tid=$tid&page=$page#pid$pid";
             $reason = checkInput(formVar('reason'));
             $message = $lang['reportmessage'] . ' ' . $posturl . "\n\n" . $lang['reason'] . ' ' . $reason;
-            
+
             $db->query("INSERT INTO " . X_PREFIX . "pm (pmid, msgto, msgfrom, type, owner, folder, subject, message, dateline, readstatus, sentstatus, usesig) VALUES ('', '" . $db->escape($mod) . "', '" . $db->escape($self['username']) . "', 'incoming', '" . $db->escape($mod) . "', 'Inbox', '" . $lang['reportsubject'] . "', '" . $db->escape($message) . "', $time, 'no', 'yes', 'no')");
-            $sent ++;
+            $sent++;
         }
-        
+
         $page = quickpage($postcount, $self['tpp']);
         message($lang['reportmsg'], false, '', '', "viewtopic.php?tid=$tid&page=" . $page . "#pid$pid", true, false, true);
     }
 
-    function viewReport()
+    public function viewReport()
     {
         global $lang, $fid, $pid, $tid, $self, $THEME, $oToken, $shadow;
         eval('echo stripslashes("' . template('topicadmin_report') . '");');
     }
 
-    function doVote()
+    public function doVote()
     {
         global $db, $lang, $tid, $action, $fid, $forums, $fup;
         global $onlinetime, $self, $onlineip;
-        
-        if (! X_MEMBER) {
+
+        if (!X_MEMBER) {
             error($lang['notloggedin'], false);
         }
-        
+
         $postopnum = getRequestInt('postopnum');
         if ($postopnum === 0) {
             error($lang['pollvotenotselected'], false);
         }
-        
+
         $query = $db->query("SELECT vote_id FROM " . X_PREFIX . "vote_desc WHERE topic_id = '$tid'");
         if ($query === false) {
             error($lang['pollvotenotselected'], false);
         }
-        
+
         $vote_id = $db->fetch_array($query);
         $vote_id = (int) $vote_id['vote_id'];
         $db->free_result($query);
-        
+
         $vote_result = $db->result($db->query("SELECT COUNT(vote_option_id) FROM " . X_PREFIX . "vote_results WHERE vote_id = '$vote_id' AND vote_option_id = '$postopnum'"), 0);
         if ($vote_result != 1) {
             error($lang['pollvotenotselected'], false);
         }
-        
+
         $voted = $db->result($db->query("SELECT COUNT(vote_id) FROM " . X_PREFIX . "vote_voters WHERE vote_id = '$vote_id' AND vote_user_id = '$self[uid]'"), 0);
         if ($voted === 1) {
             error($lang['alreadyvoted'], false);
         }
-        
+
         $db->query("INSERT INTO " . X_PREFIX . "vote_voters (vote_id, vote_user_id, vote_user_ip) VALUES ('$vote_id', '$self[uid]', '" . encode_ip($onlineip) . "')");
         $db->query("UPDATE " . X_PREFIX . "vote_results SET vote_result = vote_result+1 WHERE vote_id = '$vote_id' AND vote_option_id = '$postopnum'");
-        
+
         if ($tid > 0) {
             message($lang['votemsg'], false, '', '', 'viewtopic.php?tid=' . $tid, true, false, true);
         } else {
@@ -719,55 +719,55 @@ class mod
         }
     }
 
-    function viewIP()
+    public function viewIP()
     {
         global $lang, $db, $fid, $tid, $self, $THEME, $oToken;
-        
+
         $pid = getRequestInt('pid');
         if ($pid > 0) {
             $query = $db->query("SELECT * FROM " . X_PREFIX . "posts WHERE pid = '$pid'");
         } else {
             $query = $db->query("SELECT * FROM " . X_PREFIX . "threads WHERE tid = '$tid'");
         }
-        
+
         if ($db->num_rows($query) == 0) {
             error($lang['textnothread'], false);
         }
-        
+
         $ipinfo = $db->fetch_array($query);
         $db->free_result($query);
         ?>
 <form method="post" action="./admin/cp_ipban.php">
 	<input type="hidden" name="token"
-		value="<?php echo $oToken->get_new_token()?>" />
+		value="<?php echo $oToken->get_new_token() ?>" />
 	<table cellspacing="0" cellpadding="0" border="0" width="60%"
 		align="center">
 		<tr>
-			<td bgcolor="<?php echo $THEME['bordercolor']?>">
-				<table border="0" cellspacing="<?php echo $THEME['borderwidth']?>"
-					cellpadding="<?php echo $THEME['tablespace']?>" width="100%">
+			<td bgcolor="<?php echo $THEME['bordercolor'] ?>">
+				<table border="0" cellspacing="<?php echo $THEME['borderwidth'] ?>"
+					cellpadding="<?php echo $THEME['tablespace'] ?>" width="100%">
 					<tr>
-						<td class="header" colspan="3"><?php echo $lang['textgetip']?></td>
+						<td class="header" colspan="3"><?php echo $lang['textgetip'] ?></td>
 					</tr>
-					<tr bgcolor="<?php echo $THEME['altbg2']?>">
-						<td class="tablerow"><?php echo $lang['textyesip']?> <strong><?php echo $ipinfo['useip']?></strong> - <?php echo gethostbyaddr($ipinfo['useip'])?>
+					<tr bgcolor="<?php echo $THEME['altbg2'] ?>">
+						<td class="tablerow"><?php echo $lang['textyesip'] ?> <strong><?php echo $ipinfo['useip'] ?></strong> - <?php echo gethostbyaddr($ipinfo['useip']) ?>
         <?php
-        if (X_ADMIN) {
+if (X_ADMIN) {
             $ip = explode('.', $ipinfo['useip']);
             $query = $db->query("SELECT * FROM " . X_PREFIX . "banned WHERE(ip1 = '$ip[0]' OR ip1 = '-1') AND(ip2 = '$ip[1]' OR ip2 = '-1') AND(ip3 = '$ip[2]' OR ip3 = '-1') AND(ip4 = '$ip[3]' OR ip4 = '-1')");
             $result = $db->fetch_array($query);
             $db->free_result($query);
-            
+
             if ($result) {
                 $buttontext = $lang['textunbanip'];
-                for ($i = 1; $i <= 4; ++ $i) {
+                for ($i = 1; $i <= 4; ++$i) {
                     $j = "ip$i";
-                    if ($result[$j] == - 1) {
+                    if ($result[$j] == -1) {
                         $result[$j] = "*";
                         $foundmask = 1;
                     }
                 }
-                
+
                 if ($foundmask) {
                     $ipmask = "<strong>$result[ip1].$result[ip2].$result[ip3].$result[ip4]</strong>";
                     eval($lang['evalipmask']);
@@ -780,7 +780,7 @@ class mod
                 echo "<input type=\"hidden\" name=\"delete$result[id]\" value=\"$result[id]\" />";
             } else {
                 $buttontext = $lang['textbanip'];
-                for ($i = 1; $i <= 4; ++ $i) {
+                for ($i = 1; $i <= 4; ++$i) {
                     $j = $i - 1;
                     echo "<input type=\"hidden\" name=\"newip$i\" value=\"$ip[$j]\" />";
                 }
@@ -788,82 +788,82 @@ class mod
             ?>
             </td>
 					</tr>
-					<tr bgcolor="<?php echo $THEME['altbg1']?>">
+					<tr bgcolor="<?php echo $THEME['altbg1'] ?>">
 						<td class="tablerow">
 							<div align="center">
 								<input type="submit" class="submit" name="ipbansubmit"
-									value="<?php echo $buttontext?>" />
+									value="<?php echo $buttontext ?>" />
 							</div>
             <?php
-        }
+}
         echo '</td></tr></table></td></tr></table></form>';
     }
 
-    function doMarkThread()
+    public function doMarkThread()
     {
         global $db, $lang, $tid, $self, $action, $fid, $forums, $fup, $prefix, $closed, $post;
-        
+
         $newmarkthread = formVar('newmarkthread');
-        
+
         $query = $db->query("SELECT p.*, t.tid FROM " . X_PREFIX . "posts p LEFT JOIN " . X_PREFIX . "threads t ON p.tid = t.tid WHERE p.tid = '$tid' ORDER BY dateline LIMIT 0, 1");
         $post = $db->fetch_array($query);
         $db->free_result($query);
-        
+
         $openprefixes = explode(',', $forums['mt_open']);
-        for ($i = 0; $i < count($openprefixes); $i ++) {
+        for ($i = 0; $i < count($openprefixes); $i++) {
             $openprefixes[$i] = trim($openprefixes[$i]);
         }
-        
+
         $closeprefixes = explode(',', $forums['mt_close']);
-        for ($i = 0; $i < count($closeprefixes); $i ++) {
+        for ($i = 0; $i < count($closeprefixes); $i++) {
             $closeprefixes[$i] = trim($closeprefixes[$i]);
         }
-        
+
         $prefixes = array_merge($openprefixes, $closeprefixes);
         natcasesort($prefixes);
-        
+
         foreach ($prefixes as $prefix) {
             $prefix = trim($prefix);
             $post['subject'] = str_replace('[' . $prefix . ']', '', $post['subject']);
         }
-        
+
         if (in_array($newmarkthread, $closeprefixes) !== false) {
             $closed = 'yes';
         } else {
             $closed = '';
         }
-        
+
         if ($newmarkthread == 'none') {
             $newmarkthread = '';
         } else {
             $newmarkthread = '[' . $newmarkthread . ']';
         }
-        
+
         $subject = addslashes($post['subject']);
         $db->query("UPDATE " . X_PREFIX . "posts SET subject = '$newmarkthread $subject' WHERE pid = '$post[pid]'");
         $db->query("UPDATE " . X_PREFIX . "threads SET closed = '$closed', subject = '$newmarkthread $subject' WHERE tid = '$tid'");
-        
+
         $this->log($self['username'], $action, $fid, $tid);
         message($lang['markthreadsuccess'], false, '', '', 'viewtopic.php?tid=' . $tid, true, false, true);
     }
 
-    function viewMarkThread()
+    public function viewMarkThread()
     {
         global $db, $self, $lang, $forums, $thread, $fid, $pid, $tid, $THEME, $oToken, $shadow, $selHTML;
-        
+
         $openprefixes = explode(',', $forums['mt_open']);
-        for ($i = 0; $i < count($openprefixes); $i ++) {
+        for ($i = 0; $i < count($openprefixes); $i++) {
             $openprefixes[$i] = trim($openprefixes[$i]);
         }
-        
+
         $closeprefixes = explode(',', $forums['mt_close']);
-        for ($i = 0; $i < count($closeprefixes); $i ++) {
+        for ($i = 0; $i < count($closeprefixes); $i++) {
             $closeprefixes[$i] = trim($closeprefixes[$i]);
         }
-        
+
         $prefixes = array_merge($openprefixes, $closeprefixes);
         natcasesort($prefixes);
-        
+
         $markthread_select = array();
         $markthread_select[] = '<select name="newmarkthread">';
         $markthread_select[] = '<option value="none">' . $lang['textnone'] . '</option>';

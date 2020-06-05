@@ -28,18 +28,18 @@ define('IN_PROGRAM', true);
 
 session_start();
 
-require_once('constants.php');
-require_once('common.view.php');
-require_once('common.model.php');
-require_once('schema.php');
-require_once('install.model.php');
-require_once('install.view.php');
-require_once('upgrade.model.php');
-require_once('upgrade.view.php');
-require_once('repair.model.php');
-require_once('repair.view.php');
-require_once('convert.model.php');
-require_once('convert.view.php');
+require_once 'constants.php';
+require_once 'common.view.php';
+require_once 'common.model.php';
+require_once 'schema.php';
+require_once 'install.model.php';
+require_once 'install.view.php';
+require_once 'upgrade.model.php';
+require_once 'upgrade.view.php';
+require_once 'repair.model.php';
+require_once 'repair.view.php';
+require_once 'convert.model.php';
+require_once 'convert.view.php';
 
 $path = $step = '';
 $action = getVar('action');
@@ -237,4 +237,3 @@ switch ($path) {
         break;
 }
 view_footer();
-?>

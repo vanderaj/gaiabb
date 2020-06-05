@@ -60,7 +60,7 @@ function view_upgrade_index($path)
     </tr>
     </table>
     <?php
-    view_shadow();
+view_shadow();
 }
 
 /**
@@ -128,7 +128,7 @@ function view_upgrade_action()
         </tr>
     </table>
     <?php
-    return "upgradeBar";
+return "upgradeBar";
 }
 
 /**

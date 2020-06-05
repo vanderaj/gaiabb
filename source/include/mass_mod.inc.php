@@ -38,7 +38,7 @@ if (!X_STAFF) {
     error($lang['notpermitted'], false);
 }
 
-require_once('topicadmin.inc.php');
+require_once 'topicadmin.inc.php';
 
 $pid = getInt('pid');
 $tid = getInt('tid');
@@ -61,7 +61,7 @@ if ($cmassmod) {
     foreach ($cmassmod as $key => $val) {
         $threads[] = $val;
     }
-    $tids = (count($threads) > 1) ? implode(', ', $threads) : (int)$threads[0][0];
+    $tids = (count($threads) > 1) ? implode(', ', $threads) : (int) $threads[0][0];
 }
 
 $mod = new mod();

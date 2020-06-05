@@ -55,7 +55,7 @@ class Upgrade
      * Constructor
      *
      */
-    function __construct($indb, $in_prgbar)
+    public function __construct($indb, $in_prgbar)
     {
         $this->db = $indb;
         $this->prgbar = $in_prgbar;
@@ -76,7 +76,7 @@ class Upgrade
      *            what it does
      * @return type, what the return does
      */
-    function column_exists($table, $column)
+    public function column_exists($table, $column)
     {
         $query = $this->db->query("SHOW COLUMNS FROM `" . X_PREFIX . $table . "` LIKE '" . $column . "'");
         $rows = $this->db->num_rows($query);
@@ -92,7 +92,7 @@ class Upgrade
      *            what it does
      * @return type, what the return does
      */
-    function table_exists($table)
+    public function table_exists($table)
     {
         $query = $this->db->query("SHOW TABLES LIKE '" . X_PREFIX . $table . "'");
         $rows = $this->db->num_rows($query);
@@ -108,7 +108,7 @@ class Upgrade
      *            what it does
      * @return type, what the return does
      */
-    function rename_tables($prg)
+    public function rename_tables($prg)
     {
         return true;
     }
@@ -122,7 +122,7 @@ class Upgrade
      *            what it does
      * @return type, what the return does
      */
-    function add_tables($prg)
+    public function add_tables($prg)
     {
         return true;
     }
@@ -136,7 +136,7 @@ class Upgrade
      *            what it does
      * @return type, what the return does
      */
-    function delete_tables($prg)
+    public function delete_tables($prg)
     {
         return true;
     }
@@ -150,7 +150,7 @@ class Upgrade
      *            what it does
      * @return type, what the return does
      */
-    function alter_tables($prg)
+    public function alter_tables($prg)
     {
         return true;
     }
@@ -164,7 +164,7 @@ class Upgrade
      *            what it does
      * @return type, what the return does
      */
-    function migrate_data($prg)
+    public function migrate_data($prg)
     {
         return true;
     }
@@ -178,7 +178,7 @@ class Upgrade
      *            what it does
      * @return type, what the return does
      */
-    function migrate_settings($prg)
+    public function migrate_settings($prg)
     {
         return true;
     }
@@ -239,12 +239,12 @@ function upgrade_forum($path, $prgbar)
     $dbuser = '';
     $dbpw = '';
 
-    require_once('config.php');
+    require_once 'config.php';
     if ($database == 'DBTYPE' || !file_exists(ROOT . "db/$database.php")) {
         setCol($prgbar, '#ff0000');
         print_error('Database connection', 'Please ensure that config.php has been successfully written prior to running this install.');
     }
-    require_once("../db/mysql5php5.php");
+    require_once "../db/mysql5php5.php";
 
     setBar($prgbar, 0.05);
 

@@ -59,28 +59,28 @@ class page_token
      * @access private
      * @var mixed
      */
-    var $pageToken;
+    public $pageToken;
 
     /**
      *
      * @access private
      * @var mixed
      */
-    var $sessionToken;
+    public $sessionToken;
 
     /**
      *
      * @access public
      * @var string
      */
-    var $newToken;
+    public $newToken;
 
     /**
      * Initialization of the class
      *
      * Sets all the class variables to their needed values
      */
-    function init()
+    public function init()
     {
         $this->pageToken = $this->get_page_token();
         $this->sessionToken = $this->get_session_token();
@@ -93,7 +93,7 @@ class page_token
      *
      * @return string the token that was retrieved
      */
-    function get_page_token()
+    public function get_page_token()
     {
         return getRequestVar('token');
     }
@@ -103,7 +103,7 @@ class page_token
      *
      * @return mixed the token that was retrieved if it's set, false otherwise
      */
-    function get_session_token()
+    public function get_session_token()
     {
         return (isset($_SESSION['token'])) ? $_SESSION['token'] : false;
     }
@@ -115,7 +115,7 @@ class page_token
      *            the token to set the 'token' variable as
      * @return string the token that was retrieved
      */
-    function set_session_token($token)
+    public function set_session_token($token)
     {
         $_SESSION['token'] = $token;
         return $token;
@@ -126,7 +126,7 @@ class page_token
      *
      * @return string the new token
      */
-    function get_new_token()
+    public function get_new_token()
     {
         return $this->newToken;
     }
@@ -137,7 +137,7 @@ class page_token
      *
      * @return boolean true no matter what
      */
-    function assert_token()
+    public function assert_token()
     {
         global $lang;
 
@@ -161,7 +161,7 @@ class page_token
  * @param boolean $striptags
  *            remove HTML and PHP tags from the input
  * @return string the "safe" string
- * 
+ *
  * @deprecated discouraged in favor of using the correct formXXX / getXXX functions from this file
  *
  */
@@ -179,7 +179,7 @@ function checkInput($varname, $striptags = true)
                 foreach ($matches[0] as $key => $value) {
                     $fullcode[] = array(
                         $value[0],
-                        $value[1]
+                        $value[1],
                     );
                 }
                 $retval = preg_replace('#\[code\](.*?)\[/code\]#si', '', $retval);
@@ -270,7 +270,7 @@ function validatePpp()
     if (!isset($self['ppp']) || $self['ppp'] == '') {
         $self['ppp'] = $CONFIG['postperpage'];
     } else {
-        $self['ppp'] = is_numeric($self['ppp']) ? (int)$self['ppp'] : $CONFIG['postperpage'];
+        $self['ppp'] = is_numeric($self['ppp']) ? (int) $self['ppp'] : $CONFIG['postperpage'];
     }
 
     if ($self['ppp'] < 5) {
@@ -290,7 +290,7 @@ function validateTpp()
     if (!isset($self['tpp']) || $self['tpp'] == '') {
         $self['tpp'] = $CONFIG['topicperpage'];
     } else {
-        $self['tpp'] = is_numeric($self['tpp']) ? (int)$self['tpp'] : $CONFIG['topicperpage'];
+        $self['tpp'] = is_numeric($self['tpp']) ? (int) $self['tpp'] : $CONFIG['topicperpage'];
     }
 
     if ($self['tpp'] < 5) {
@@ -323,7 +323,7 @@ function isValidEmail($addr)
     if (preg_match($emailPattern, $addr) > 0) {
         $user = '';
         $domain = '';
-        list ($user, $domain) = explode('@', $addr);
+        list($user, $domain) = explode('@', $addr);
 
         // Check if the site has an MX record. We can't send unless there is.
         $mxrecords = array();
@@ -428,7 +428,7 @@ function formArray($varname, $striptags = true, $quotes = false, $type = 'string
             $_POST[$varname] = explode(',', $_POST[$varname]);
         } else {
             $_POST[$varname] = array(
-                $_POST[$varname]
+                $_POST[$varname],
             );
         }
     }
@@ -499,7 +499,7 @@ function getInt($varname)
 {
     $retval = 0;
     if (isset($_GET[$varname]) && is_numeric($_GET[$varname])) {
-        $retval = (int)$_GET[$varname];
+        $retval = (int) $_GET[$varname];
     }
     return $retval;
 }
@@ -553,7 +553,7 @@ function formInt($varname, $setZero = true)
     }
 
     if (isset($_POST[$varname]) && is_numeric($_POST[$varname])) {
-        $retval = (int)$_POST[$varname];
+        $retval = (int) $_POST[$varname];
     }
     return $retval;
 }
@@ -581,7 +581,7 @@ function getFormArrayInt($varname, $doCount = true)
     if ($doCount) {
         if (count($retval) == 1) {
             $retval = array(
-                $retval
+                $retval,
             );
         }
     }
@@ -604,7 +604,7 @@ function valInt($varname)
 {
     $retval = 0;
     if (isset($varname) && is_numeric($varname)) {
-        $retval = (int)$varname;
+        $retval = (int) $varname;
     }
     return $retval;
 }
@@ -748,12 +748,12 @@ function formatDate($format)
         'mm',
         'dd',
         'yyyy',
-        'yy'
+        'yy',
     ), array(
         'n',
         'j',
         'Y',
-        'y'
+        'y',
     ), $format);
     return ($format);
 }
@@ -777,13 +777,13 @@ function rawHTMLmessage($rawstring, $allowhtml = 'no')
 function decimalEntityDecode($rawstring)
 {
     $currPos = 0;
-    while (($currPos = strpos($rawstring, '&amp;#', $currPos)) !== FALSE) {
+    while (($currPos = strpos($rawstring, '&amp;#', $currPos)) !== false) {
         $tempPos = strpos($rawstring, ';', $currPos + 6);
         $entLen = $tempPos - ($currPos + 6);
-        if ($entLen >= 3 And $entLen <= 5) {
+        if ($entLen >= 3 and $entLen <= 5) {
             $entNum = substr($rawstring, $currPos + 6, $entLen);
             if (is_numeric($entNum)) {
-                if (intval($entNum) >= 160 And intval($entNum) <= 65533) {
+                if (intval($entNum) >= 160 and intval($entNum) <= 65533) {
                     $rawstring = str_replace("&amp;#$entNum;", "&#$entNum;", $rawstring);
                 }
             }

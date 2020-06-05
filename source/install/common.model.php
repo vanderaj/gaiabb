@@ -133,7 +133,7 @@ function get_db_array()
     $dbs[] = array(
         'name' => "MariaDB 5.1 or later (also compatible with Oracle MySQL)",
         'classname' => "mysql5Php5",
-        'file' => 'mysql5php5.class'
+        'file' => 'mysql5php5.class',
     );
     return $dbs;
 }
@@ -192,7 +192,7 @@ function check_folders()
         'images/prored',
         'images/ranks',
         'images/ricons',
-        'images/smilies'
+        'images/smilies',
     );
 
     $retval = true;
@@ -209,7 +209,7 @@ function check_folders()
 /*
  * Check if the (optionally) writable folders are writable
  *
- * @return	an array containing the folders that aren't writable
+ * @return    an array containing the folders that aren't writable
  */
 function find_nonwritable_folders()
 {
@@ -217,7 +217,7 @@ function find_nonwritable_folders()
         'admin/templates/',
         'include/captcha/',
         'images/avatars/',
-        'images/photos/'
+        'images/photos/',
     );
 
     $retval = array();
@@ -372,7 +372,7 @@ function check_files()
         'include/topicadmin.inc.php',
         'include/usercp.inc.php',
         'include/validate.inc.php',
-        'lang/English.lang.php'
+        'lang/English.lang.php',
     );
 
     $retval = true;
@@ -406,12 +406,12 @@ function isInstalled($db = false)
         $dbname = 'DBNAME';
         $dbpw = '';
         $pconnect = false;
-        include_once('../config.php');
+        include_once '../config.php';
 
         if ($dbname !== "DBNAME" && file_exists("../db/mysql5php5.php")) {
             // Okay, it's safe to check the database as per config.php
             define('X_PREFIX', $tablepre);
-            include_once("../db/mysql5php5.php");
+            include_once "../db/mysql5php5.php";
 
             $db = new mysql5Php5();
             $db->connect($dbhost, $dbuser, $dbpw, $dbname, $pconnect, false);

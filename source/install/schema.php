@@ -23,7 +23,7 @@
  *
  *    You should have received a copy of the GNU General Public License
  *    along with GaiaBB.  If not, see <http://www.gnu.org/licenses/>.
- * 
+ *
  * @category    Forum software
  * @package     gaiabb-installer
  * @author      Andrew van der Stock vanderaj@gmail.com
@@ -31,12 +31,11 @@
  * @link        https://github.com/vanderaj/gaiabb
  **/
 
-if (!defined('IN_PROGRAM') && (defined('DEBUG') && DEBUG == false)) 
-{
+if (!defined('IN_PROGRAM') && (defined('DEBUG') && DEBUG == false)) {
     exit('This file is not designed to be called directly');
 }
 
-require_once('common.model.php');
+require_once 'common.model.php';
 
 function schema_create_addresses($db, $tablepre)
 {
@@ -439,7 +438,7 @@ function schema_create_restricted($db, $tablepre)
 }
 
 /**
- * schema_create_robotcount() 
+ * schema_create_robotcount()
  *
  * Create the robot count schema
  *
@@ -541,7 +540,7 @@ function schema_create_templates($db, $tablepre)
   				`template` text NOT NULL,
   				PRIMARY KEY (`id`),
   				KEY `name` (`name`)
-				) ENGINE=MyISAM 			
+				) ENGINE=MyISAM
     ");
 }
 
@@ -673,7 +672,7 @@ function schema_create_pm_attachments($db, $tablepre)
 				  KEY `owner` (`owner`(8)),
 				  KEY `filesize` (`filesize`(8)),
 				  KEY `filename` (`filename`(8))
-				) ENGINE=MyISAM 
+				) ENGINE=MyISAM
     ");
 }
 
@@ -1393,10 +1392,10 @@ function schema_insert_themes($db, $tablepre)
     $db->query("UPDATE `" . $tablepre . "settings` SET config_value = '$themeid' WHERE config_name = 'theme'");
     $db->query("UPDATE `" . $tablepre . "forums` SET theme = 0");
     $db->query("UPDATE `" . $tablepre . "members` SET theme = 0");
- 
+
     // Pro Black
     $db->query("INSERT INTO `" . $tablepre . "themes` VALUES (0,'Pro Black','#333333','#000000','#1D1C1C','#FFFFFF','#A2A09F','#1D1C1C','#FFFFFF','topbg.gif','catbar.gif','#FFFFFF','#FFFFFF','1px','97%','5px','Tahoma, Arial, Helvetica, Verdana','11px','logo.gif','images/problack','images/smilies','#FFFFFF','#000000','square','100%','#A2A09F','1px','on','image','on','�','off','off','','','','','','images/ricons','','on')");
-    
+
     // Pro Brown
     $db->query("INSERT INTO `" . $tablepre . "themes` VALUES (0,'Pro Brown','#B8A47E','#786644','#A78C59','#000000','#4E3300','#A78C59','#000000','topbg.gif','catbar.gif','#000000','#000000','1px','97%','5px','Tahoma, Arial, Helvetica, Verdana','11px','logo.gif','images/probrown','images/smilies','#000000','#786644','square','100%','#4E3300','1px','on','image','on','lastpost.gif','on','on','','','','','','images/ricons','','on')");
 
@@ -1405,32 +1404,32 @@ function schema_insert_themes($db, $tablepre)
 
     // Pro Green
     $db->query("INSERT INTO `" . $tablepre . "themes` VALUES (0,'Pro Green','#FFFFFF','#97BE97','#E4F1E4','#000000','#51B451','#E4F1E4','#000000','topbg.gif','catbar.gif','#000000','#000000','1px','97%','5px','Tahoma, Arial, Helvetica, Verdana','11px','logo.gif','images/progreen','images/smilies','#000000','#97BE97','square','100%','#51B451','1px','on','image','on','lastpost.gif','on','off','','','','','','images/ricons','','on')");
-    
+
     // Pro Grey
     $db->query("INSERT INTO `" . $tablepre . "themes` VALUES (0,'Pro Grey','#FFFFFF','#C6C6C6','#DFDFDF','#000000','#838383','#DFDFDF','#000000','topbg.gif','catbar.gif','#000000','#000000','1px','97%','5px','Tahoma, Arial, Helvetica, Verdana','11px','logo.gif','images/progrey','images/smilies','#000000','#C6C6C6','square','100%','#838383','1px','on','image','on','lastpost.gif','on','on','','','','','','images/ricons','','on')");
-    
+
     // Pro Navy
     $db->query("INSERT INTO `" . $tablepre . "themes` VALUES (0,'Pro Navy','#445784','#3C5484','#607FBE','#000000','#000000','#607FBE','#000000','topbg.gif','catbar.gif','#000000','#000000','1px','97%','5px','Tahoma, Arial, Helvetica, Verdana','11px','logo.gif','images/pronavy','images/smilies','#000000','#3C5484','square','100%','#000000','1px','on','image','on','lastpost.gif','on','on','','','','','','images/ricons','','on')");
-    
+
     // Pro Orange
     $db->query("INSERT INTO `" . $tablepre . "themes` VALUES (0,'Pro Orange','#FFFFFF','#E99677','#FBCAB8','#000000','#D37C34','#F4D1C4','#000000','topbg.gif','catbar.gif','#000000','#000000','1px','97%','5px','Tahoma, Arial, Helvetica, Verdana','11px','logo.gif','images/proorange','images/smilies','#000000','#E99677','square','100%','#D37C34','1px','on','image','on','lastpost.gif','on','on','','','','','','images/ricons','','on')");
-    
+
     // Pro Pink
     $db->query("INSERT INTO `" . $tablepre . "themes` VALUES (0,'Pro Pink','#FFFFFF','#FC74F8','#FBA5F6','#000000','#000000','#FBA5F6','#000000','topbg.gif','catbar.gif','#000000','#000000','1px','97%','5px','Tahoma, Arial, Helvetica, Verdana','11px','logo.gif','images/propink','images/smilies','#000000','#FC74F8','square','100%','#000000','1px','on','image','on','lastpost.gif','on','on','','','','','','images/ricons','','on')");
 
-    // Pro Powder 
+    // Pro Powder
     $db->query("INSERT INTO `" . $tablepre . "themes` VALUES (0,'Pro Powder','#FFFFFF','#D8E0E8','#ECF0F4','#525E6E','#525E6E','#ECF0F4','#525E6E','#D8E0E8','catcell.gif','#525E6E','#4C617E','1px','97%','5px','Tahoma, Arial, Helvetica, Verdana','10px','logo.gif','images/propowder','images/smilies','#525E6E','#D8E0E8','square','100%','#525E6E','1px','on','image','on','lastpost.gif','on','off','','','','','','images/ricons','','on')");
 
-    // Pro Purple 
+    // Pro Purple
     $db->query("INSERT INTO `" . $tablepre . "themes` VALUES (0,'Pro Purple','#FFFFFF','#B286BF','#CAB1DA','#000000','#7E51B5','#CAB1DA','#000000','topbg.gif','catbar.gif','#000000','#000000','1px','97%','5px','Tahoma, Arial, Helvetica, Verdana','11px','logo.gif','images/propurple','images/smilies','#000000','#B286BF','square','100%','#7E51B5','1px','on','image','on','lastpost.gif','on','off','','','','','','images/ricons','','on')");
-    
-    // Pro Red 
+
+    // Pro Red
     $db->query("INSERT INTO `" . $tablepre . "themes` VALUES (0,'Pro Red','#FFFFFF','#E4CDCA','#EDBCBC','#000000','#BB6255','#E4CDCA','#000000','topcat.gif','catbar.gif','#000000','#000000','1px','97%','5px','Tahoma, Arial, Helvetic','10px','logo.gif','images/prored','images/smilies','#FFFFFF','#C9675D','square','100%','#BB6255','1px','on','image','on','lastpost.gif','on','off','','','','','','images/ricons','','on')");
-    
+
     // Pro White
     $db->query("INSERT INTO `" . $tablepre . "themes` VALUES (0,'Pro White','#FFFFFF','#F7F7F8','#FFFFFF','#000000','#999999','#FFFFFF','#000000','topbg.gif','catbar.gif','#000000','#000000','1px','97%','5px','Tahoma, Arial, Helvetica, Verdana','11px','logo.gif','images/prowhite','images/smilies','#000000','#F7F7F8','square','100%','#999999','1px','on','image','on','lastpost.gif','on','on','','','','','','images/ricons','','on')");
 
-    // Pro Yellow 
+    // Pro Yellow
     $db->query("INSERT INTO `" . $tablepre . "themes` VALUES (0,'Pro Yellow','#FFFFFF','#EEDE9D','#F2F2E4','#000000','#BCC042','#F2F2E4','#000000','topbg.gif','catbar.gif','#000000','#000000','1px','97%','5px','Tahoma, Arial, Helvetica, Verdana','11px','logo.gif','images/proyellow','images/smilies','#000000','#EEDE9D','square','100%','#BCC042','1px','on','image','on','lastpost.gif','on','off','','','','','','images/ricons','','on')");
 
     // Pica Red
@@ -1442,7 +1441,7 @@ function schema_insert_themes($db, $tablepre)
     // Psyche Green
     $db->query("INSERT INTO `" . $tablepre . "themes` VALUES (0,'Psyche Green','#000000','#0B5B18','#226F36','#FFFFFF','#51B570','#0A5219','#FFFFFF','logo.jpg','catbar.jpg','#FFFFFF','#FFFFFF','1px','97%','5px','Tahoma, Arial, Helvetica, Verdana','11px','logo.gif','images/PsycheGreen','images/smilies','#FFFFFF','#0B5B18','round','100%','#51B570','0','off','image','on','lastpost.gif','on','on','','','','','','images/ricons','','on')");
 
-    // Psyche Grey 
+    // Psyche Grey
     $db->query("INSERT INTO `" . $tablepre . "themes` VALUES (0, 'Psyche Grey','#000000','#2D2D2D','#494949','#FFFFFF','#656565','#2F2F2F','#FFFFFF','logo.jpg','catbar.jpg','#FFFFFF','#FFFFFF','1px','97%','5px','Tahoma, Arial, Helvetica, Verdana','11px','logo.gif','images/PsycheGrey','./images/smilies','#FFFFFF','#2D2D2D','round','100%','#656565','1px','off','image','on','lastpost.gif','on','on','','','','','','images/ricons','','on')");
 
     // Psyche Red
@@ -1638,7 +1637,7 @@ function create_tables($db, $tablepre, $prgBar, $start, $incr = 0.05)
     schema_create_words($db, $tablepre);
 
     setBar($prgBar, $start);
-    return 0;   // SUCCESS
+    return 0; // SUCCESS
 }
 
 /**
@@ -1694,7 +1693,7 @@ function insert_data($db, $tablepre, $prgbar, $start, $incr)
     setBar($prgbar, $start);
     createsa($db, $tablepre);
 
-    return 0;   // SUCCESS
+    return 0; // SUCCESS
 }
 
 /**

@@ -93,7 +93,7 @@ function view_install_index()
         </tr>
     </table>
     <?php
-    return "installBar";
+return "installBar";
 }
 
 /**

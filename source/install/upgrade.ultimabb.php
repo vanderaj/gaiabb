@@ -32,7 +32,7 @@ require_once "upgrade.model.php";
 
 class upgrade_ultimaBB extends Upgrade
 {
-    function __construct($indb, $in_prgbar)
+    public function __construct($indb, $in_prgbar)
     {
         parent::__construct($indb, $in_prgbar);
     }
@@ -45,7 +45,7 @@ class upgrade_ultimaBB extends Upgrade
      * @param $prg - progress percentage
      * @return boolean - completed
      */
-    function rename_tables($prg)
+    public function rename_tables($prg)
     {
         setBar($this->prgbar, $prg);
 
@@ -60,7 +60,7 @@ class upgrade_ultimaBB extends Upgrade
      * @param $prg - progress percentage
      * @return boolean - completed
      */
-    function add_tables($prg)
+    public function add_tables($prg)
     {
         setBar($this->prgbar, $prg);
         $this->prgbar += 0.01;
@@ -107,7 +107,7 @@ class upgrade_ultimaBB extends Upgrade
      * @param $prg - progress percentage
      * @return boolean - completed
      */
-    function delete_tables($prg)
+    public function delete_tables($prg)
     {
         setBar($this->prgbar, $prg);
         $this->prgbar += 0.01;
@@ -141,7 +141,7 @@ class upgrade_ultimaBB extends Upgrade
      * @param $prg - progress percentage
      * @return boolean - completed
      */
-    function alter_tables($prg)
+    public function alter_tables($prg)
     {
         setBar($this->prgbar, $prg);
         $this->prgbar += 0.05;
@@ -195,7 +195,7 @@ class upgrade_ultimaBB extends Upgrade
      * @param $prg - progress percentage
      * @return boolean - completed
      */
-    function migrate_data($prg)
+    public function migrate_data($prg)
     {
         setBar($this->prgbar, $prg);
         $prg += 0.1;
@@ -215,7 +215,7 @@ class upgrade_ultimaBB extends Upgrade
      * @param $prg - progress percentage
      * @return boolean - completed
      */
-    function migrate_settings($prg)
+    public function migrate_settings($prg)
     {
         return true;
     }

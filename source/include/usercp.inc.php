@@ -34,7 +34,7 @@ if (!defined('IN_PROGRAM') && (defined('DEBUG') && DEBUG == false)) {
     exit('This file is not designed to be called directly');
 }
 
-require_once('member.class.php');
+require_once 'member.class.php';
 
 function makenav($current)
 {
@@ -167,42 +167,42 @@ function BDayDisplay()
     if ($bday[0] == '') {
         $sel0 = $selHTML;
     } else
-        if ($bday[0] == $lang['textjan']) {
-            $sel1 = $selHTML;
-        } else
-            if ($bday[0] == $lang['textfeb']) {
-                $sel2 = $selHTML;
-            } else
-                if ($bday[0] == $lang['textmar']) {
-                    $sel3 = $selHTML;
-                } else
-                    if ($bday[0] == $lang['textapr']) {
-                        $sel4 = $selHTML;
-                    } else
-                        if ($bday[0] == $lang['textmay']) {
-                            $sel5 = $selHTML;
-                        } else
-                            if ($bday[0] == $lang['textjun']) {
-                                $sel6 = $selHTML;
-                            } else
-                                if ($bday[0] == $lang['textjul']) {
-                                    $sel7 = $selHTML;
-                                } else
-                                    if ($bday[0] == $lang['textaug']) {
-                                        $sel8 = $selHTML;
-                                    } else
-                                        if ($bday[0] == $lang['textsep']) {
-                                            $sel9 = $selHTML;
-                                        } else
-                                            if ($bday[0] == $lang['textoct']) {
-                                                $sel10 = $selHTML;
-                                            } else
-                                                if ($bday[0] == $lang['textnov']) {
-                                                    $sel11 = $selHTML;
-                                                } else
-                                                    if ($bday[0] == $lang['textdec']) {
-                                                        $sel12 = $selHTML;
-                                                    }
+    if ($bday[0] == $lang['textjan']) {
+        $sel1 = $selHTML;
+    } else
+    if ($bday[0] == $lang['textfeb']) {
+        $sel2 = $selHTML;
+    } else
+    if ($bday[0] == $lang['textmar']) {
+        $sel3 = $selHTML;
+    } else
+    if ($bday[0] == $lang['textapr']) {
+        $sel4 = $selHTML;
+    } else
+    if ($bday[0] == $lang['textmay']) {
+        $sel5 = $selHTML;
+    } else
+    if ($bday[0] == $lang['textjun']) {
+        $sel6 = $selHTML;
+    } else
+    if ($bday[0] == $lang['textjul']) {
+        $sel7 = $selHTML;
+    } else
+    if ($bday[0] == $lang['textaug']) {
+        $sel8 = $selHTML;
+    } else
+    if ($bday[0] == $lang['textsep']) {
+        $sel9 = $selHTML;
+    } else
+    if ($bday[0] == $lang['textoct']) {
+        $sel10 = $selHTML;
+    } else
+    if ($bday[0] == $lang['textnov']) {
+        $sel11 = $selHTML;
+    } else
+    if ($bday[0] == $lang['textdec']) {
+        $sel12 = $selHTML;
+    }
 
     $dayselect = array();
     $dayselect[] = '<select name="day">';
@@ -358,7 +358,7 @@ function memberYesNo($self, &$yes, &$no)
 class userObj
 {
 
-    function viewProfile()
+    public function viewProfile()
     {
         global $db, $oToken, $lang, $THEME, $title, $CONFIG;
         global $selHTML, $self, $shadow2, $menu, $member;
@@ -380,7 +380,7 @@ class userObj
         eval('echo stripslashes("' . template('usercp_home_layout') . '");');
     }
 
-    function submitProfile()
+    public function submitProfile()
     {
         global $db, $oToken, $lang, $THEME, $title, $CONFIG;
         global $selHTML, $self, $shadow2, $menu, $member;
@@ -435,7 +435,7 @@ class userObj
         redirect('usercp.php', 2.5, X_REDIRECT_JS);
     }
 
-    function viewOption()
+    public function viewOption()
     {
         global $db, $oToken, $lang, $THEME, $title, $CONFIG, $member;
         global $selHTML, $self, $onlinetime, $shadow2, $menu;
@@ -561,12 +561,12 @@ class userObj
                 'mm',
                 'dd',
                 'yyyy',
-                'yy'
+                'yy',
             ), array(
                 'n',
                 'j',
                 'Y',
-                'y'
+                'y',
             ), $dformats['dateformat']);
 
             if ($member['dateformat'] == $dformats['dateformat']) {
@@ -587,7 +587,7 @@ class userObj
         eval('echo stripslashes("' . template('usercp_home_layout') . '");');
     }
 
-    function submitOption()
+    public function submitOption()
     {
         global $oToken, $lang, $THEME, $title, $CONFIG;
         global $selHTML, $self, $onlinetime, $shadow2, $menu;
@@ -656,7 +656,7 @@ class userObj
         redirect('usercp.php', 2.5, X_REDIRECT_JS);
     }
 
-    function submitEmail()
+    public function submitEmail()
     {
         global $db, $oToken, $lang, $THEME, $title, $CONFIG, $mailsys;
         global $selHTML, $self, $onlinetime, $shadow2, $menu, $authC;
@@ -735,7 +735,7 @@ class userObj
             $newpass = $get = $max = $chars = '';
 
             $chars = "23456789abcdefghjkmnpqrstuvwxyz";
-            mt_srand((double)microtime() * 1000000);
+            mt_srand((double) microtime() * 1000000);
             $max = mt_rand(8, 12);
             for ($get = strlen($chars), $i = 0; $i < $max; $i++) {
                 $newpass .= $chars[mt_rand(0, $get)];
@@ -762,7 +762,7 @@ class userObj
         redirect('usercp.php', 2.5, X_REDIRECT_JS);
     }
 
-    function viewPhoto()
+    public function viewPhoto()
     {
         global $db, $oToken, $lang, $THEME, $title, $CONFIG;
         global $selHTML, $self, $onlinetime, $shadow2, $menu;
@@ -783,9 +783,9 @@ class userObj
             if (($CONFIG['photo_whocanupload'] == 'all') && X_MEMBER) {
                 eval('$photohidden = "' . template('usercp_photohidden') . '";');
             } else
-                if (($CONFIG['photo_whocanupload'] == 'staff') && X_STAFF) {
-                    eval('$photohidden = "' . template('usercp_photohidden') . '";');
-                }
+            if (($CONFIG['photo_whocanupload'] == 'staff') && X_STAFF) {
+                eval('$photohidden = "' . template('usercp_photohidden') . '";');
+            }
         }
         if ($CONFIG['photostatus'] == 'on' || $CONFIG['photo_whocanupload'] != 'off') {
             eval('$photodelbtn = "' . template('usercp_photosubmit') . '";');
@@ -796,7 +796,7 @@ class userObj
         eval('echo stripslashes("' . template('usercp_home_layout') . '");');
     }
 
-    function submitPhoto()
+    public function submitPhoto()
     {
         global $db, $oToken, $lang, $THEME, $title, $CONFIG;
         global $selHTML, $self, $onlinetime, $shadow2, $menu;
@@ -835,9 +835,9 @@ class userObj
                 if ($size === false) {
                     error($lang['pic_not_located'], false);
                 } else
-                    if (($size[0] > $max_size[0] && $max_size[0] > 0) || ($size[1] > $max_size[1] && $max_size[1] > 0) && !X_ADMIN) {
-                        error($lang['photo_too_big'] . $CONFIG['max_photo_size'] . $lang['photo_Pixels'], false);
-                    }
+                if (($size[0] > $max_size[0] && $max_size[0] > 0) || ($size[1] > $max_size[1] && $max_size[1] > 0) && !X_ADMIN) {
+                    error($lang['photo_too_big'] . $CONFIG['max_photo_size'] . $lang['photo_Pixels'], false);
+                }
             }
         }
 
@@ -851,7 +851,7 @@ class userObj
             $newphotoname = $member->record['uid'] . '.' . $onlinetime . '.' . $photoext;
             $check = $_FILES['photofile'];
 
-            $CONFIG['photo_filesize'] = (int)$CONFIG['photo_filesize'];
+            $CONFIG['photo_filesize'] = (int) $CONFIG['photo_filesize'];
             if (($check['size'] > $CONFIG['photo_filesize']) && !X_ADMIN) {
                 error($lang['photo_too_big'] . $CONFIG['photo_filesize'] . $lang['photo_Bytes'], false);
             }
@@ -872,7 +872,7 @@ class userObj
             $height = $size[1];
             $type = $size[2];
 
-            if (!((bool)ini_get('safe_mode'))) {
+            if (!((bool) ini_get('safe_mode'))) {
                 set_time_limit(30);
             }
             $imginfo = getimagesize($tmppath);
@@ -911,10 +911,10 @@ class userObj
                 $newwidth = $CONFIG['photo_new_width'];
                 $newheight = ($newwidth / $width) * $height;
             } else
-                if ($height > $CONFIG['photo_max_height']) {
-                    $newheight = $CONFIG['photo_new_height'];
-                    $newwidth = ($newheight / $height) * $width;
-                }
+            if ($height > $CONFIG['photo_max_height']) {
+                $newheight = $CONFIG['photo_new_height'];
+                $newwidth = ($newheight / $height) * $width;
+            }
 
             if (isset($newwidth)) {
                 $destImage = imagecreatetruecolor($newwidth, $newheight);
@@ -961,7 +961,7 @@ class userObj
         redirect('usercp.php?action=photo', 2.5, X_REDIRECT_JS);
     }
 
-    function submitPassword()
+    public function submitPassword()
     {
         global $db, $oToken, $lang, $THEME, $title, $CONFIG;
         global $selHTML, $self, $onlinetime, $shadow2, $menu;
@@ -1061,7 +1061,7 @@ class userObj
         redirect('usercp.php', 2.5, X_REDIRECT_JS);
     }
 
-    function viewSignature()
+    public function viewSignature()
     {
         global $db, $oToken, $lang, $THEME, $title, $CONFIG;
         global $selHTML, $self, $onlinetime, $shadow2, $menu;
@@ -1101,7 +1101,7 @@ class userObj
      *
      * @return does not return if error, redirects on success
      */
-    function submitSignature()
+    public function submitSignature()
     {
         global $db, $THEME, $lang, $CONFIG, $self;
         global $shadow2, $menu;
@@ -1125,11 +1125,11 @@ class userObj
         if (!empty($sig)) {
             $sig_patterns = array(
                 '#[img]((ht|f)tp://)([^\r\n\t<"]*?)[/img]#si',
-                '#[url=([a-z0-9]+://)([\w\-]+.([\w\-]+.)*[\w]+(:[0-9]+)?(/[^ "\n\r\t<]*?)?)](.*?)[/url]#si'
+                '#[url=([a-z0-9]+://)([\w\-]+.([\w\-]+.)*[\w]+(:[0-9]+)?(/[^ "\n\r\t<]*?)?)](.*?)[/url]#si',
             );
             $sig_replacements = array(
                 "",
-                "\\6"
+                "\\6",
             );
 
             for ($i = 0; $i < count($sig_patterns); $i++) {
@@ -1142,7 +1142,8 @@ class userObj
             }
         }
 
-        if ($CONFIG['resetsig'] == 'on') { // reset signatures in all posts (may take a while, but this query doesn't get used often)
+        if ($CONFIG['resetsig'] == 'on') {
+            // reset signatures in all posts (may take a while, but this query doesn't get used often)
             if (empty($sig)) {
                 $db->query("UPDATE " . X_PREFIX . "posts SET usesig = 'no' WHERE author = '" . $self['username'] . "'");
                 $db->query("UPDATE " . X_PREFIX . "members SET sig = '' WHERE uid = '" . $self['uid'] . "'");
@@ -1150,7 +1151,8 @@ class userObj
                 $db->query("UPDATE " . X_PREFIX . "members SET sig = '$sig' WHERE uid = '" . $self['uid'] . "'");
                 $db->query("UPDATE " . X_PREFIX . "posts SET usesig = 'yes' WHERE author = '" . $self['username'] . "'");
             }
-        } else { // Do not reset signatures, just change it
+        } else {
+            // Do not reset signatures, just change it
             if (empty($sig)) {
                 $db->query("UPDATE " . X_PREFIX . "members SET sig = '' WHERE uid = '" . $self['uid'] . "'");
             } else {
@@ -1163,7 +1165,7 @@ class userObj
         redirect('usercp.php', 2.5, X_REDIRECT_JS);
     }
 
-    function viewAvatar()
+    public function viewAvatar()
     {
         global $db, $oToken, $lang, $THEME, $title, $CONFIG;
         global $selHTML, $self, $onlinetime, $shadow2, $menu;
@@ -1206,7 +1208,7 @@ class userObj
         eval('echo stripslashes("' . template('usercp_home_layout') . '");');
     }
 
-    function submitAvatar()
+    public function submitAvatar()
     {
         global $db, $oToken, $lang, $THEME, $title, $CONFIG;
         global $selHTML, $self, $onlinetime, $shadow2, $menu;
@@ -1245,9 +1247,9 @@ class userObj
                 if ($size === false) {
                     error($lang['pic_not_located'], false);
                 } else
-                    if (($size[0] > $max_size[0] && $max_size[0] > 0) || ($size[1] > $max_size[1] && $max_size[1] > 0) && !X_ADMIN) {
-                        error($lang['avatar_too_big'] . $CONFIG['max_avatar_size'] . $lang['Avatar_Pixels'], false);
-                    }
+                if (($size[0] > $max_size[0] && $max_size[0] > 0) || ($size[1] > $max_size[1] && $max_size[1] > 0) && !X_ADMIN) {
+                    error($lang['avatar_too_big'] . $CONFIG['max_avatar_size'] . $lang['Avatar_Pixels'], false);
+                }
             }
         }
 
@@ -1261,7 +1263,7 @@ class userObj
             $newavatarname = $member->record['uid'] . '.' . $onlinetime . '.' . $avatarext;
             $check = $_FILES['avatarfile'];
 
-            $CONFIG['avatar_filesize'] = (int)$CONFIG['avatar_filesize'];
+            $CONFIG['avatar_filesize'] = (int) $CONFIG['avatar_filesize'];
             if (($check['size'] > $CONFIG['avatar_filesize']) && !X_ADMIN) {
                 error($lang['avatar_too_big'] . $CONFIG['avatar_filesize'] . $lang['Avatar_Bytes'], false);
             }
@@ -1282,7 +1284,7 @@ class userObj
             $height = $size[1];
             $type = $size[2];
 
-            if (!((bool)ini_get('safe_mode'))) {
+            if (!((bool) ini_get('safe_mode'))) {
                 set_time_limit(30);
             }
 
@@ -1322,10 +1324,10 @@ class userObj
                 $newwidth = $CONFIG['avatar_new_width'];
                 $newheight = ($newwidth / $width) * $height;
             } else
-                if ($height > $CONFIG['avatar_max_height']) {
-                    $newheight = $CONFIG['avatar_new_height'];
-                    $newwidth = ($newheight / $height) * $width;
-                }
+            if ($height > $CONFIG['avatar_max_height']) {
+                $newheight = $CONFIG['avatar_new_height'];
+                $newwidth = ($newheight / $height) * $width;
+            }
 
             if (isset($newwidth)) {
                 $destImage = imagecreatetruecolor($newwidth, $newheight);
@@ -1373,7 +1375,7 @@ class userObj
         redirect('usercp.php?action=avatar', 2.5, X_REDIRECT_JS);
     }
 
-    function viewAvatarGallery()
+    public function viewAvatarGallery()
     {
         global $db, $oToken, $lang, $THEME, $title, $CONFIG;
         global $selHTML, $self, $onlinetime, $shadow2, $menu;
@@ -1525,14 +1527,14 @@ class userObj
         if ($total > 0) {
             $submitbutton = '<tr><td class="ctrtablerow" bgcolor="' . $THEME['altbg2'] . '" colspan="2"><input type="submit" name="avatarsubmit" value="' . $lang['updateavatar'] . '" /></td></tr>';
         } else
-            if ($total < 0) {
-                error($lang['noavatarsinfolder'], false);
-            }
+        if ($total < 0) {
+            error($lang['noavatarsinfolder'], false);
+        }
         eval('$output = "' . template('usercp_gallery') . '";');
         eval('echo stripslashes("' . template('usercp_home_layout') . '");');
     }
 
-    function submitAvatarGallery()
+    public function submitAvatarGallery()
     {
         global $db, $oToken, $lang, $THEME, $title, $CONFIG;
         global $selHTML, $self, $onlinetime, $shadow2, $menu, $avatar;
@@ -1561,9 +1563,9 @@ class userObj
             if ($size === false) {
                 $self['avatar'] = '';
             } else
-                if (($size[0] > $max_size[0] && $max_size[0] > 0) || ($size[1] > $max_size[1] && $max_size[1] > 0) && !X_ADMIN) {
-                    error($lang['avatar_too_big'] . $CONFIG['max_avatar_size'] . $lang['avatarpixels'], false);
-                }
+            if (($size[0] > $max_size[0] && $max_size[0] > 0) || ($size[1] > $max_size[1] && $max_size[1] > 0) && !X_ADMIN) {
+                error($lang['avatar_too_big'] . $CONFIG['max_avatar_size'] . $lang['avatarpixels'], false);
+            }
         }
         $db->query("UPDATE " . X_PREFIX . "members SET avatar = '$_POST[avataricon]' WHERE uid = '" . $self['uid'] . "'");
         $output = table_msg($lang['avatarupdated']);
@@ -1571,7 +1573,7 @@ class userObj
         redirect('usercp.php?action=gallery', 2.5, X_REDIRECT_JS);
     }
 
-    function submitAddFavorite($tid)
+    public function submitAddFavorite($tid)
     {
         global $lang, $THEME, $menu, $shadow2, $CONFIG;
 
@@ -1593,7 +1595,7 @@ class userObj
         redirect('usercp.php?action=favorites', 2.5, X_REDIRECT_JS);
     }
 
-    function viewFavorites()
+    public function viewFavorites()
     {
         global $db, $oToken, $lang, $THEME, $title, $CONFIG;
         global $selHTML, $self, $onlinetime, $shadow2, $menu;
@@ -1645,7 +1647,7 @@ class userObj
         eval('echo stripslashes("' . template('usercp_home_layout') . '");');
     }
 
-    function submitManageFavorites()
+    public function submitManageFavorites()
     {
         global $lang, $THEME, $menu, $shadow2, $CONFIG;
 
@@ -1657,7 +1659,7 @@ class userObj
         redirect('usercp.php?action=favorites', 2.5, X_REDIRECT_JS);
     }
 
-    function viewSubscriptions()
+    public function viewSubscriptions()
     {
         global $db, $oToken, $lang, $THEME, $title, $CONFIG;
         global $selHTML, $self, $onlinetime, $shadow2, $menu;
@@ -1708,7 +1710,7 @@ class userObj
         eval('echo stripslashes("' . template('usercp_home_layout') . '");');
     }
 
-    function submitAddSubscription($tid)
+    public function submitAddSubscription($tid)
     {
         global $lang, $THEME, $menu, $shadow2, $CONFIG;
 
@@ -1730,7 +1732,7 @@ class userObj
         redirect('usercp.php?action=subscriptions', 2.5, X_REDIRECT_JS);
     }
 
-    function submitManageSubscriptions()
+    public function submitManageSubscriptions()
     {
         global $lang, $THEME, $menu, $shadow2, $CONFIG;
 
@@ -1742,7 +1744,7 @@ class userObj
         redirect('usercp.php?action=subscriptions', 2.5, X_REDIRECT_JS);
     }
 
-    function viewUserCP()
+    public function viewUserCP()
     {
         global $db, $THEME, $title, $theme, $lang, $CONFIG;
         global $selHTML, $self, $shadow2, $menu;

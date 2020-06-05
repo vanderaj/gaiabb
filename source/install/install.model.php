@@ -101,12 +101,12 @@ function install_forum($prgbar)
 
         if (DEBUG) {
             echo "<pre>" . var_export(array(
-                    $dbname,
-                    $dbpw,
-                    $dbhost,
-                    $tablepre,
-                    $dbuser
-                )) . "</pre>";
+                $dbname,
+                $dbpw,
+                $dbhost,
+                $tablepre,
+                $dbuser,
+            )) . "</pre>";
         }
 
         print_error('Database connection', 'The config file seems to be the default. Have you configured it correctly?');
@@ -117,17 +117,17 @@ function install_forum($prgbar)
 
         if (DEBUG) {
             echo "<pre>" . var_export(array(
-                    $dbname,
-                    $dbpw,
-                    $dbhost,
-                    $tablepre,
-                    $dbuser
-                )) . "</pre>";
+                $dbname,
+                $dbpw,
+                $dbhost,
+                $tablepre,
+                $dbuser,
+            )) . "</pre>";
         }
 
         print_error('Database connection', 'The database file ' . 'db/' . $database . '.php does not exist. Please try again');
     }
-    require_once('../db/mysql5php5.class.php');
+    require_once '../db/mysql5php5.class.php';
 
     setBar($prgbar, 0.3);
 
