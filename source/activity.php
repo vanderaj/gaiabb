@@ -61,7 +61,8 @@ switch ($t_extension) {
     case 'jpg':
     case 'jpeg':
     case 'png':
-        $lang['toppedprefix'] = '<img src="' . $THEME['imgdir'] . '/' . $lang['toppedprefix'] . '" alt="' . $lang['toppedprefix'] . '" title="' . $lang['toppedprefix'] . '" border="0px" />';
+        $lang['toppedprefix'] = '<img src="' . $THEME['imgdir'] . '/' . $lang['toppedprefix'] . '" alt="' . $lang['toppedprefix'] .
+            '" title="' . $lang['toppedprefix'] . '" border="0px" />';
         break;
 }
 
@@ -71,7 +72,8 @@ switch ($p_extension) {
     case 'jpg':
     case 'jpeg':
     case 'png':
-        $lang['pollprefix'] = '<img src="' . $THEME['imgdir'] . '/' . $lang['pollprefix'] . '" alt="' . $lang['pollprefix'] . '" title="' . $lang['pollprefix'] . '" border="0px" />';
+        $lang['pollprefix'] = '<img src="' . $THEME['imgdir'] . '/' . $lang['pollprefix'] . '" alt="' . $lang['pollprefix'] .
+            '" title="' . $lang['pollprefix'] . '" border="0px" />';
         break;
 }
 
@@ -183,7 +185,8 @@ while (($thread = $db->fetch_array($query)) != false) {
 
     if ($thread['author'] != $lang['textanonymous']) {
         if (X_MEMBER) {
-            $author = '<a href="viewprofile.php?memberid=' . intval($thread['authorid']) . '"><strong>' . trim($thread['author']) . '</strong></a>';
+            $author = '<a href="viewprofile.php?memberid=' . intval($thread['authorid']) .
+            '"><strong>' . trim($thread['author']) . '</strong></a>';
         } else {
             $author = '<strong>' . trim($thread['author']) . '</strong>';
         }
@@ -194,9 +197,9 @@ while (($thread = $db->fetch_array($query)) != false) {
     $dalast = trim($thread['lp_dateline']);
 
     if ($thread['lp_user'] != $lang['textanonymous'] && $thread['lp_user'] != '') {
-
         if (X_MEMBER) {
-            $lastpostauthor = '<a href="viewprofile.php?memberid=' . intval($thread['lp_uid']) . '"><strong>' . trim($thread['lp_user']) . '</strong></a>';
+            $lastpostauthor = '<a href="viewprofile.php?memberid=' . intval($thread['lp_uid']) .
+            '"><strong>' . trim($thread['lp_user']) . '</strong></a>';
         } else {
             $lastpostauthor = '<strong>' . trim($thread['lp_user']) . '</strong>';
         }
@@ -207,17 +210,19 @@ while (($thread = $db->fetch_array($query)) != false) {
     $lastPid = isset($thread['lp_pid']) ? $thread['lp_pid'] : 0;
     $lastpostdate = gmdate($self['dateformat'], $thread['lp_dateline'] + $tmOffset);
     $lastposttime = gmdate($self['timecode'], $thread['lp_dateline'] + $tmOffset);
-    $lastpost = $lang['lastreply1'] . ' ' . $lastpostdate . ' ' . $lang['textat'] . ' ' . $lastposttime . '<br />' . $lang['textby'] . ' ' . $lastpostauthor;
+    $lastpost = $lang['lastreply1'] . ' ' . $lastpostdate . ' ' . $lang['textat'] . ' ' .
+        $lastposttime . '<br />' . $lang['textby'] . ' ' . $lastpostauthor;
 
     if (!empty($thread['icon']) && file_exists($THEME['smdir'] . '/' . $thread['icon'])) {
-        $posticon = '<img src="' . $THEME['smdir'] . '/' . $thread['icon'] . '" alt="' . $thread['icon'] . '" title="' . $thread['icon'] . '" border="0px" />';
+        $posticon = '<img src="' . $THEME['smdir'] . '/' . $thread['icon'] .
+            '" alt="' . $thread['icon'] . '" title="' . $thread['icon'] . '" border="0px" />';
     } else {
         $posticon = '';
     }
 
     if ($thread['replies'] >= $CONFIG['hottopic']) {
         $folder = 'hot_folder.gif';
-    } else if ($thread['pollopts'] == 1) {
+    } elseif ($thread['pollopts'] == 1) {
         $folder = 'folder_poll.gif';
     } else {
         $folder = 'folder.gif';
@@ -225,11 +230,13 @@ while (($thread = $db->fetch_array($query)) != false) {
 
     $oldtopics = isset($_COOKIE['oldtopics']) ? $_COOKIE['oldtopics'] : '';
 
-    if (($oT = strpos($oldtopics, '|' . $lastPid . '|')) === false && $thread['replies'] >= $CONFIG['hottopic'] && $lastvisit < $dalast) {
+    if (($oT = strpos($oldtopics, '|' . $lastPid . '|')) === false &&
+        $thread['replies'] >= $CONFIG['hottopic'] &&
+        $lastvisit < $dalast) {
         $folder = 'hot_red_folder.gif';
-    } else if ($lastvisit < $dalast && $oT === false && $thread['pollopts'] == 1) {
+    } elseif ($lastvisit < $dalast && $oT === false && $thread['pollopts'] == 1) {
         $folder = 'folder_new_poll.gif';
-    } else if ($lastvisit < $dalast && $oT === false) {
+    } elseif ($lastvisit < $dalast && $oT === false) {
         $folder = 'red_folder.gif';
     }
 
@@ -237,10 +244,12 @@ while (($thread = $db->fetch_array($query)) != false) {
         $folder = 'dot_' . $folder;
     }
 
-    $folder = '<img src="' . $THEME['imgdir'] . '/' . $folder . '" alt="' . $lang['altfolder'] . '" title="' . $lang['altfolder'] . '" border="0px" />';
+    $folder = '<img src="' . $THEME['imgdir'] . '/' . $folder . '" alt="' .
+        $lang['altfolder'] . '" title="' . $lang['altfolder'] . '" border="0px" />';
 
     if ($thread['closed'] == 'yes') {
-        $folder = '<img src="' . $THEME['imgdir'] . '/lock_folder.gif" alt="' . $lang['altclosedtopic'] . '" title="' . $lang['altclosedtopic'] . '" border="0px" />';
+        $folder = '<img src="' . $THEME['imgdir'] . '/lock_folder.gif" alt="' .
+            $lang['altclosedtopic'] . '" title="' . $lang['altclosedtopic'] . '" border="0px" />';
     }
 
     $prefix = '';
@@ -251,7 +260,8 @@ while (($thread = $db->fetch_array($query)) != false) {
         $thread['tid'] = $moved[1];
         $thread['replies'] = '-';
         $thread['views'] = '-';
-        $folder = '<img src="' . $THEME['imgdir'] . '/lock_folder.gif" alt="' . $lang['altclosedtopic'] . '" title="' . $lang['altclosedtopic'] . '" border="0px" />';
+        $folder = '<img src="' . $THEME['imgdir'] . '/lock_folder.gif" alt="' . $lang['altclosedtopic'] .
+            '" title="' . $lang['altclosedtopic'] . '" border="0px" />';
         $query = $db->query("SELECT COUNT(pid) FROM " . X_PREFIX . "posts WHERE tid = '$thread[tid]'");
         $postnum = 0;
         if ($query !== false) {
