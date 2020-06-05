@@ -67,7 +67,7 @@ function viewPanel()
     ?>
     <form method="post" action="cp_deleteoldpms.php">
         <input type="hidden" name="token"
-               value="<?php echo $oToken->get_new_token() ?>"/>
+               value="<?php echo $oToken->createToken() ?>"/>
         <table cellspacing="0px" cellpadding="0px" border="0px" width="100%"
                align="center">
             <tr>
@@ -105,7 +105,7 @@ function doPanel()
     global $oToken, $lang, $db;
     global $onlinetime;
 
-    $oToken->assert_token();
+    $oToken->assertToken();
 
     $num_days = formInt('num_days');
     if (empty($num_days) || $num_days < 1) {

@@ -238,7 +238,7 @@ function viewPanel()
     ?>
     <form method="post" action="cp_default.php">
         <input type="hidden" name="token"
-               value="<?php echo $oToken->get_new_token() ?>"/>
+               value="<?php echo $oToken->createToken() ?>"/>
         <table cellspacing="0px" cellpadding="0px" border="0px" width="100%"
                align="center">
             <tr>
@@ -435,7 +435,7 @@ function doPanel()
     global $shadow2, $lang, $db, $THEME;
     global $oToken;
 
-    $oToken->assert_token();
+    $oToken->assertToken();
 
     $max_attheightnew = formInt('max_attheightnew');
     $max_attwidthnew = formInt('max_attwidthnew');

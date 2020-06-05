@@ -67,7 +67,7 @@ function viewPanel()
     ?>
     <form method="post" action="cp_pluglinks.php">
         <input type="hidden" name="token"
-               value="<?php echo $oToken->get_new_token() ?>"/>
+               value="<?php echo $oToken->createToken() ?>"/>
         <table cellspacing="0px" cellpadding="0px" border="0px" width="100%"
                align="center">
             <tr>
@@ -160,7 +160,7 @@ function doPanel()
 {
     global $lang, $db, $oToken, $THEME, $shadow2;
 
-    $oToken->assert_token();
+    $oToken->assertToken();
 
     $plugs = $db->query("SELECT * FROM " . X_PREFIX . "pluglinks");
     while (($pluginfo = $db->fetch_array($plugs)) != false) {

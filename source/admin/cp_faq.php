@@ -101,7 +101,7 @@ function viewPanel()
     ?>
     <form method="post" action="cp_faq.php">
         <input type="hidden" name="token"
-               value="<?php echo $oToken->get_new_token() ?>"/>
+               value="<?php echo $oToken->createToken() ?>"/>
         <table cellspacing="0px" cellpadding="0px" border="0px" width="100%"
                align="center">
             <tr>
@@ -320,7 +320,7 @@ function dogDetailsPanel($gdetails)
     ?>
     <form method="post" action="cp_faq.php?gdetails=<?php echo $gdetails ?>">
         <input type="hidden" name="token"
-               value="<?php echo $oToken->get_new_token() ?>"/>
+               value="<?php echo $oToken->createToken() ?>"/>
         <table cellspacing="0px" cellpadding="0px" border="0px" width="100%"
                align="center">
             <tr>
@@ -441,7 +441,7 @@ function dofDetailsPanel($fdetails)
     ?>
     <form method="post" action="cp_faq.php?fdetails=<?php echo $fdetails ?>">
         <input type="hidden" name="token"
-               value="<?php echo $oToken->get_new_token() ?>"/>
+               value="<?php echo $oToken->createToken() ?>"/>
         <table cellspacing="0px" cellpadding="0px" border="0px" width="100%"
                align="center">
             <tr>
@@ -663,14 +663,14 @@ if ($fdetails > 0) {
         dofDetailsPanel($fdetails);
     } else
     if (onSubmit('faqsubmit')) {
-        $oToken->assert_token();
+        $oToken->assertToken();
         faqSubmit($fdetails);
     }
 } else if ($gdetails > 0) {
     if (noSubmit('faqsubmit')) {
         dogDetailsPanel($gdetails);
     } else if (onSubmit('faqsubmit')) {
-        $oToken->assert_token();
+        $oToken->assertToken();
         dogDetails($gdetails);
     }
 } else {

@@ -50,5 +50,5 @@ btitle($lang['textlogout']);
 
 eval('echo "' . template('header') . '";');
 
-$oToken->assert_token();
+$oToken->assertToken();
 $authC->logout();

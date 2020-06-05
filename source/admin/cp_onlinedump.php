@@ -69,7 +69,7 @@ function viewPanel()
     ?>
     <form method="post" action="cp_onlinedump.php">
         <input type="hidden" name="token"
-               value="<?php echo $oToken->get_new_token() ?>"/>
+               value="<?php echo $oToken->createToken() ?>"/>
         <table cellspacing="0px" cellpadding="0px" border="0px" width="100%"
                align="center">
             <tr>
@@ -104,7 +104,7 @@ function truncateOnline()
 {
     global $lang, $db, $oToken;
 
-    $oToken->assert_token();
+    $oToken->assertToken();
 
     $db->query("TRUNCATE " . X_PREFIX . "whosonline");
     cp_message($lang['tool_whosonline'], false, '', '</td></tr></table>', 'index.php', true, false, true);

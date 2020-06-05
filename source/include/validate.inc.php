@@ -51,7 +51,7 @@ if (!defined('IN_PROGRAM') && (defined('DEBUG') && DEBUG == false)) {
  * @license GPL
  *
  */
-class page_token
+class CsrfToken
 {
 
     /**
@@ -59,7 +59,7 @@ class page_token
      * @access private
      * @var mixed
      */
-    public $pageToken;
+    public $csrfToken;
 
     /**
      *
@@ -82,10 +82,10 @@ class page_token
      */
     public function init()
     {
-        $this->pageToken = $this->get_page_token();
-        $this->sessionToken = $this->get_session_token();
+        $this->csrfToken = $this->getCsrfToken();
+        $this->sessionToken = $this->getSessionToken();
         $this->newToken = md5(sha1(uniqid(rand(), true)));
-        $this->set_session_token($this->newToken);
+        $this->setSessionToken($this->newToken);
     }
 
     /**
@@ -93,9 +93,12 @@ class page_token
      *
      * @return string the token that was retrieved
      */
-    public function get_page_token()
+    public function getCsrfToken()
     {
-        return getRequestVar('token');
+        // This name is known to scanners and should allow them to identify that GaiaBB has CSRF protection
+        // And yes, although this should be only in the form, there might be scenarios where providing the
+        // token in the URL or a header might make sense
+        return getRequestVar('csrf_token');
     }
 
     /**
@@ -103,9 +106,9 @@ class page_token
      *
      * @return mixed the token that was retrieved if it's set, false otherwise
      */
-    public function get_session_token()
+    public function getSessionToken()
     {
-        return (isset($_SESSION['token'])) ? $_SESSION['token'] : false;
+        return (isset($_SESSION['csrf_token'])) ? $_SESSION['csrf_token'] : false;
     }
 
     /**
@@ -115,9 +118,9 @@ class page_token
      *            the token to set the 'token' variable as
      * @return string the token that was retrieved
      */
-    public function set_session_token($token)
+    public function setSessionToken($token)
     {
-        $_SESSION['token'] = $token;
+        $_SESSION['csrf_token'] = $token;
         return $token;
     }
 
@@ -126,27 +129,29 @@ class page_token
      *
      * @return string the new token
      */
-    public function get_new_token()
+    public function createToken()
     {
         return $this->newToken;
     }
 
     /**
-     * Checks for valid token.
-     * Error's if there is not one.
+     * assertToken() - asserts CSRF token is valid
+     *
+     * This function compares that the session and request CSRF token are present and the same.
+     * It will display an error if not present or incorrect
      *
      * @return boolean true no matter what
      */
-    public function assert_token()
+    public function assertToken()
     {
         global $lang;
 
-        if ($this->sessionToken === false || $this->pageToken === false || $this->sessionToken !== $this->pageToken) {
+        if ($this->sessionToken === false || $this->csrfToken === false || $this->sessionToken !== $this->csrfToken) {
             error($lang['textnoaction'], false);
         }
         // This old token has been used - prevent reuse
         $this->sessionToken = false;
-        $this->pageToken = false;
+        $this->csrfToken = false;
         return true;
     }
 }

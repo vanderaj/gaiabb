@@ -74,7 +74,7 @@ function viewPanel()
     ?>
     <form method="post" action="cp_attachments.php?action=attachments">
         <input type="hidden" name="token"
-               value="<?php echo $oToken->get_new_token() ?>"/>
+               value="<?php echo $oToken->createToken() ?>"/>
         <table cellspacing="0px" cellpadding="0px" border="0px" width="100%"
                align="center">
             <tr>
@@ -234,7 +234,7 @@ function doSearch()
     ?>
     <form method="post" action="cp_attachments.php?action=attachments">
         <input type="hidden" name="token"
-               value="<?php echo $oToken->get_new_token() ?>"/>
+               value="<?php echo $oToken->createToken() ?>"/>
         <table cellspacing="0px" cellpadding="0px" border="0px" width="100%"
                align="center">
             <tr>
@@ -324,7 +324,7 @@ $restriction = $orderby = '';
                             <tr>
                                 <td bgcolor="<?php echo $THEME['altbg1'] ?>" class="ctrtablerow"
                                     valign="middle"><a
-                                            href="cp_attachments.php?action=delete_attachment&amp;aid=<?php echo $attachment['aid'] ?>&amp;token=<?php echo $oToken->get_new_token() ?>"><?php echo $lang['textdeleteques'] ?></a>
+                                            href="cp_attachments.php?action=delete_attachment&amp;aid=<?php echo $attachment['aid'] ?>&amp;token=<?php echo $oToken->createToken() ?>"><?php echo $lang['textdeleteques'] ?></a>
 
                                 <td bgcolor="<?php echo $THEME['altbg2'] ?>" class="tablerow"
                                     valign="top"><input type="text"
@@ -394,17 +394,17 @@ switch ($action) {
         }
 
         if (onSubmit('searchsubmit')) {
-            $oToken->assert_token();
+            $oToken->assertToken();
             doSearch();
         }
 
         if (onSubmit('deletesubmit')) {
-            $oToken->assert_token();
+            $oToken->assertToken();
             doDelete();
         }
         break;
     case 'delete_attachment':
-        $oToken->assert_token();
+        $oToken->assertToken();
 
         $aid = getRequestInt('aid');
         $db->query("DELETE FROM " . X_PREFIX . "attachments WHERE aid = '$aid'");

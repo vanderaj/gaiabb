@@ -106,7 +106,7 @@ if ($action == 'templates') {
         ?>
         <form method="post" action="cp_templates.php?action=templates">
             <input type="hidden" name="token"
-                   value="<?php echo $oToken->get_new_token() ?>"/>
+                   value="<?php echo $oToken->createToken() ?>"/>
             <table cellspacing="0px" cellpadding="0px" border="0px" width="100%"
                    align="center">
                 <tr>
@@ -166,7 +166,7 @@ if ($action == 'templates') {
         ?>
         <form method="post" action="cp_templates.php?action=templates">
             <input type="hidden" name="token"
-                   value="<?php echo $oToken->get_new_token() ?>"/>
+                   value="<?php echo $oToken->createToken() ?>"/>
             <table cellspacing="0px" cellpadding="0px" border="0px" width="100%"
                    align="center">
                 <tr>
@@ -224,7 +224,7 @@ if ($action == 'templates') {
         <form method="post"
               action="cp_templates.php?action=templates&amp;tid=<?php echo $tid ?>">
             <input type="hidden" name="token"
-                   value="<?php echo $oToken->get_new_token() ?>"/>
+                   value="<?php echo $oToken->createToken() ?>"/>
             <table cellspacing="0px" cellpadding="0px" border="0px" width="100%"
                    align="center">
                 <tr>
@@ -295,7 +295,7 @@ $query = $db->query("SELECT * FROM " . X_PREFIX . "templates WHERE id = '$tid' O
         <form method="post"
               action="cp_templates.php?action=templates&amp;tid=<?php echo $tid ?>">
             <input type="hidden" name="token"
-                   value="<?php echo $oToken->get_new_token() ?>"/>
+                   value="<?php echo $oToken->createToken() ?>"/>
             <table cellspacing="0px" cellpadding="0px" border="0px" width="100%"
                    align="center">
                 <tr>
@@ -339,7 +339,7 @@ $query = $db->query("SELECT * FROM " . X_PREFIX . "templates WHERE id = '$tid' O
         <form method="post"
               action="cp_templates.php?action=templates&amp;tid=<?php echo $tid ?>">
             <input type="hidden" name="token"
-                   value="<?php echo $oToken->get_new_token() ?>"/>
+                   value="<?php echo $oToken->createToken() ?>"/>
             <table cellspacing="0px" cellpadding="0px" border="0px" width="100%"
                    align="center">
                 <tr>
@@ -395,7 +395,7 @@ $query = $db->query("SELECT * FROM " . X_PREFIX . "templates WHERE id = '$tid' O
         ?>
         <form method="post" action="cp_templates.php?action=templates">
             <input type="hidden" name="token"
-                   value="<?php echo $oToken->get_new_token() ?>"/>
+                   value="<?php echo $oToken->createToken() ?>"/>
             <table cellspacing="0px" cellpadding="0px" border="0px" width="100%"
                    align="center">
                 <tr>
@@ -446,7 +446,7 @@ $query = $db->query("SELECT * FROM " . X_PREFIX . "templates WHERE id = '$tid' O
         ?>
         <form method="post" action="cp_templates.php?action=templates">
             <input type="hidden" name="token"
-                   value="<?php echo $oToken->get_new_token() ?>"/>
+                   value="<?php echo $oToken->createToken() ?>"/>
             <table cellspacing="0px" cellpadding="0px" border="0px" width="100%"
                    align="center">
                 <tr>
@@ -516,7 +516,7 @@ $query = $db->query("SELECT * FROM " . X_PREFIX . "templates WHERE id = '$tid' O
         <form method="post"
               action="cp_templates.php?action=templates&amp;tid=new">
             <input type="hidden" name="token"
-                   value="<?php echo $oToken->get_new_token() ?>"/>
+                   value="<?php echo $oToken->createToken() ?>"/>
             <table cellspacing="0px" cellpadding="0px" border="0px" width="100%"
                    align="center">
                 <tr>

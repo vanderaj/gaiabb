@@ -73,7 +73,7 @@ function viewPanel()
     ?>
     <form method="post" action="cp_search.php">
         <input type="hidden" name="token"
-               value="<?php echo $oToken->get_new_token() ?>"/>
+               value="<?php echo $oToken->createToken() ?>"/>
         <table cellspacing="0px" cellpadding="0px" border="0px" width="100%"
                align="center">
             <tr>
@@ -127,7 +127,7 @@ function doPanel()
     global $shadow2, $lang, $db, $THEME;
     global $oToken;
 
-    $oToken->assert_token();
+    $oToken->assertToken();
 
     $profileword = $db->escape(formVar('profileword'));
     $postword = $db->escape(formVar('postword'));

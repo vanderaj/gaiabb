@@ -108,8 +108,7 @@ function doImportTheme()
         if ($key == 'themeid') {
             $val = '';
             continue; // Jump over the identity row for MySQL 5.0
-        } else
-        if ($key == 'name') {
+        } elseif ($key == 'name') {
             $name = $val;
         }
         $keysql[] = $key;
@@ -255,7 +254,7 @@ function doDisplayThemes()
     <form method="post"
           action="cp_themes.php?action=themes&amp;single=submit">
         <input type="hidden" name="token"
-               value="<?php echo $oToken->get_new_token() ?>"/>
+               value="<?php echo $oToken->createToken() ?>"/>
         <table cellspacing="0px" cellpadding="0px" border="0px" width="100%"
                align="center">
             <tr>
@@ -584,7 +583,7 @@ function doDisplayANewTheme($single)
     <form method="post"
           action="cp_themes.php?action=themes&amp;single=submit">
         <input type="hidden" name="token"
-               value="<?php echo $oToken->get_new_token() ?>"/>
+               value="<?php echo $oToken->createToken() ?>"/>
         <table cellspacing="0px" cellpadding="0px" border="0px" width="100%"
                align="center">
             <tr>
@@ -949,7 +948,7 @@ function doDisplayThemePanel()
     <form method="post" action="cp_themes.php?action=themes"
           name="theme_main">
         <input type="hidden" name="token"
-               value="<?php echo $oToken->get_new_token() ?>"/>
+               value="<?php echo $oToken->createToken() ?>"/>
         <table cellspacing="0px" cellpadding="0px" border="0px" width="100%"
                align="center">
             <tr>
@@ -1039,7 +1038,7 @@ function doDisplayThemePanel()
     <form method="post" action="cp_themes.php?action=themes"
           enctype="multipart/form-data">
         <input type="hidden" name="token"
-               value="<?php echo $oToken->get_new_token() ?> "/>
+               value="<?php echo $oToken->createToken() ?> "/>
         <table cellspacing="0px" cellpadding="0px" border="0px" width="100%"
                align="center">
             <tr>
@@ -1076,23 +1075,17 @@ $single = formVar('single');
 if ($action == 'themes') {
     if (noSubmit('themesubmit') && !isset($single) && noSubmit('importsubmit')) {
         doDisplayThemePanel();
-    } else
-    if (onSubmit('importsubmit') && isset($_FILES['themefile']['tmp_name'])) {
+    } elseif (onSubmit('importsubmit') && isset($_FILES['themefile']['tmp_name'])) {
         doImportTheme();
-    } else
-    if (onSubmit('themesubmit')) {
+    } elseif (onSubmit('themesubmit')) {
         doUpdateTheme();
-    } else
-    if (isset($single) && $single != 'submit' && $single != 'anewtheme1') {
+    } elseif (isset($single) && $single != 'submit' && $single != 'anewtheme1') {
         doDisplayThemes();
-    } else
-    if (isset($single) && $single == 'anewtheme1') {
+    } elseif (isset($single) && $single == 'anewtheme1') {
         doDisplayANewTheme($single);
-    } else
-    if (isset($single) && $single == 'submit' && !isset($newtheme)) {
+    } elseif (isset($single) && $single == 'submit' && !isset($newtheme)) {
         doThemeUpdateSubmit();
-    } else
-    if (isset($single) && $single == 'submit' && isset($newtheme)) {
+    } elseif (isset($single) && $single == 'submit' && isset($newtheme)) {
         doNewThemeSubmit();
     }
 }

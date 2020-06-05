@@ -103,7 +103,7 @@ function viewPanel()
     ?>
     <form method="post" action="cp_forums.php">
         <input type="hidden" name="token"
-               value="<?php echo $oToken->get_new_token() ?>"/>
+               value="<?php echo $oToken->createToken() ?>"/>
         <table cellspacing="0px" cellpadding="0px" border="0px" width="100%"
                align="center">
             <tr>
@@ -410,7 +410,7 @@ function viewDetailsPanel($fdetails)
     <form method="post"
           action="cp_forums.php?fdetails=<?php echo $fdetails ?>">
         <input type="hidden" name="token"
-               value="<?php echo $oToken->get_new_token() ?>"/>
+               value="<?php echo $oToken->createToken() ?>"/>
         <table cellspacing="0px" cellpadding="0px" border="0px" width="100%"
                align="center">
             <tr>
@@ -775,7 +775,7 @@ function doPanel($fdetails)
 {
     global $THEME, $lang, $shadow2, $oToken, $db, $CONFIG;
 
-    $oToken->assert_token();
+    $oToken->assertToken();
 
     if ($fdetails == 0) {
         $queryforum = $db->query("SELECT fid, type FROM " . X_PREFIX . "forums WHERE type = 'forum' OR type = 'sub'");

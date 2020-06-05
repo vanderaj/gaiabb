@@ -63,7 +63,7 @@ function viewPaneL()
     ?>
     <form method="post" action="cp_rename.php">
         <input type="hidden" name="token"
-               value="<?php echo $oToken->get_new_token() ?>"/>
+               value="<?php echo $oToken->createToken() ?>"/>
         <table cellspacing="0px" cellpadding="0px" border="0px" width="100%"
                align="center">
             <tr>
@@ -108,7 +108,7 @@ function doPanel()
 {
     global $THEME, $lang, $shadow2, $oToken, $db, $CONFIG, $onlinetime;
 
-    $oToken->assert_token();
+    $oToken->assertToken();
 
     $frmUserForm = formVar('frmUserFrom');
     $frmUserTo = formVar('frmUserTo');

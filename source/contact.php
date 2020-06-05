@@ -44,7 +44,7 @@ btitle($lang['contactus']);
 
 eval('echo "' . template('header') . '";');
 
-$oToken->assert_token(false);
+$oToken->assertToken(false);
 
 if ($CONFIG['contactus'] == 'off') {
     error($lang['fnasorry'], false);
@@ -82,13 +82,12 @@ if (onSubmit('contactsubmit')) {
         error($lang['contactnosubject'], false, '', '', $contactLink, true, false, true);
     }
 
-    if (empty($CONFIG['adminemail'])) // The mail class can handle this error, but it'll describe it vaguely
-    {
+    if (empty($CONFIG['adminemail'])) {
         error($lang['noadminemail'], false, '', '', 'cp_board.php', true, false, true);
     }
 
-    if (empty($CONFIG['bbname'])) // The mail class can handle this error, but it'll describe it vaguely
-    {
+    // The mail class can handle this error, but it'll describe it vaguely
+    if (empty($CONFIG['bbname'])) {
         error($lang['nobbname'], false, '', '', 'cp_board.php', true, false, true);
     }
 

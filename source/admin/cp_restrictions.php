@@ -65,7 +65,7 @@ function viewPanel()
     ?>
     <form method="post" action="cp_restrictions.php">
         <input type="hidden" name="token"
-               value="<?php echo $oToken->get_new_token() ?>"/>
+               value="<?php echo $oToken->createToken() ?>"/>
         <table align="center" border="0px" cellspacing="0px" cellpadding="0px"
                width="100%">
             <tr>
@@ -167,7 +167,7 @@ function doPanel()
 {
     global $THEME, $lang, $shadow2, $oToken, $db, $CONFIG, $onlinetime;
 
-    $oToken->assert_token();
+    $oToken->assertToken();
 
     $queryrestricted = $db->query("SELECT id FROM " . X_PREFIX . "restricted");
     while (($restricted = $db->fetch_array($queryrestricted)) != false) {

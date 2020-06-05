@@ -739,7 +739,7 @@ class mod
         ?>
 <form method="post" action="./admin/cp_ipban.php">
 	<input type="hidden" name="token"
-		value="<?php echo $oToken->get_new_token() ?>" />
+		value="<?php echo $oToken->createToken() ?>" />
 	<table cellspacing="0" cellpadding="0" border="0" width="60%"
 		align="center">
 		<tr>

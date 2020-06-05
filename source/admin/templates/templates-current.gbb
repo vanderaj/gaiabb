@@ -1,6 +1,6 @@
 topicadmin_copy|#*GBB TEMPLATE*#|
 <form method="post" action="topicadmin.php?action=copy">
-<input type="hidden" name="token" value="$oToken->newToken" />
+<input type="hidden" name="csrf_token" value="$oToken->newToken" />
 <table cellspacing="0px" cellpadding="0px" border="0px" width="{$THEME['tablewidth']}" align="center">
 <tr>
 <td bgcolor="{$THEME['bordercolor']}">
@@ -50,10 +50,11 @@ $listquickthemes
 </tr>
 </table>
 $shadow
+<br />
 
 |#*GBB TEMPLATE FILE*#|error_nologinsession|#*GBB TEMPLATE*#|
 <form method="post" action="login.php">
-<input type="hidden" name="token" value="$oToken->newToken" />
+<input type="hidden" name="csrf_token" value="$oToken->newToken" />
 <table cellspacing="0px" cellpadding="0px" border="0px" width="{$THEME['tablewidth']}" align="center">
 <tr>
 <td bgcolor="{$THEME['bordercolor']}">
@@ -148,7 +149,7 @@ $shadow
 
 |#*GBB TEMPLATE FILE*#|admintool_editprofile|#*GBB TEMPLATE*#|
 <form method="post" action="editprofile.php?memberid=$memberid" name="reg" enctype="multipart/form-data">
-<input type="hidden" name="token" value="$oToken->newToken" />
+<input type="hidden" name="csrf_token" value="$oToken->newToken" />
 <table cellspacing="0px" cellpadding="0px" border="0px" width="{$THEME['tablewidth']}" align="center">
 <tr>
 <td bgcolor="{$THEME['bordercolor']}">
@@ -864,7 +865,7 @@ $captcha_js
 
 |#*GBB TEMPLATE FILE*#|login|#*GBB TEMPLATE*#|
 <form method="post" action="login.php">
-<input type="hidden" name="token" value="$oToken->newToken" />
+<input type="hidden" name="csrf_token" value="$oToken->newToken" />
 <table cellspacing="0px" cellpadding="0px" border="0px" width="{$THEME['tablewidth']}" align="center">
 <tr>
 <td bgcolor="{$THEME['bordercolor']}">
@@ -900,7 +901,7 @@ $shadow
 
 |#*GBB TEMPLATE FILE*#|lostpw|#*GBB TEMPLATE*#|
 <form method="post" action="lostpw.php">
-<input type="hidden" name="token" value="$oToken->newToken" />
+<input type="hidden" name="csrf_token" value="$oToken->newToken" />
 <table cellspacing="0px" cellpadding="0px" border="0px" width="{$THEME['tablewidth']}" align="center">
 <tr>
 <td bgcolor="{$THEME['bordercolor']}">
@@ -1101,7 +1102,7 @@ $subforum
 $forumrules
 $minimal_posts_needed
 <form method="post" action="viewforum.php?fid=$fid">
-<input type="hidden" name="token" value="$oToken->newToken" />
+<input type="hidden" name="csrf_token" value="$oToken->newToken" />
 <table cellspacing="0px" cellpadding="0px" border="0px" width="{$THEME['tablewidth']}" align="center">
 <tr>
 <td bgcolor="{$THEME['bordercolor']}">
@@ -1233,7 +1234,7 @@ $subforums
 $forumrules
 $minimal_posts_needed
 <form method="post" action="viewforum.php?fid=$fid">
-<input type="hidden" name="token" value="$oToken->newToken" />
+<input type="hidden" name="csrf_token" value="$oToken->newToken" />
 <table cellspacing="0px" cellpadding="0px" border="0px" width="{$THEME['tablewidth']}" align="center">
 <tr>
 <td bgcolor="{$THEME['bordercolor']}">
@@ -1288,7 +1289,7 @@ $shadow
 </form>
 <br />
 <form name="massmod_form" method="post" action="viewforum.php?fid=$fid">
-<input type="hidden" name="token" value="$oToken->newToken" />
+<input type="hidden" name="csrf_token" value="$oToken->newToken" />
 <table width="{$THEME['tablewidth']}" cellspacing="0px" cellpadding="0px" align="center">
 <tr>
 <td class="post" align="$lang_nalign">&nbsp;$newtopiclink$newpolllink</td>
@@ -1455,7 +1456,7 @@ $shadow
 
 |#*GBB TEMPLATE FILE*#|viewtopic_poll|#*GBB TEMPLATE*#|
 <form method="post" name="poll" action="topicadmin.php?action=votepoll&amp;fid=$fid&amp;tid=$tid">
-<input type="hidden" name="token" value="$oToken->newToken" />
+<input type="hidden" name="csrf_token" value="$oToken->newToken" />
 <table cellspacing="0px" cellpadding="0px" border="0px" width="{$THEME['tablewidth']}" align="center">
 <tr>
 <td bgcolor="{$THEME['bordercolor']}"><table border="0px" cellspacing="{$THEME['borderwidth']}" cellpadding="{$THEME['tablespace']}" width="100%">
@@ -1741,7 +1742,7 @@ var max_addresses_per_entry = "{$lang['max_addresses_per_entry']}";
 <tr>
 <td bgcolor="{$THEME['bordercolor']}">
 <form method="post" action="address.php?action=delete">
-<input type="hidden" name="token" value="$oToken->newToken" />
+<input type="hidden" name="csrf_token" value="$oToken->newToken" />
 <table border="0px" cellspacing="{$THEME['borderwidth']}" cellpadding="{$THEME['tablespace']}" width="100%">
 <tr class="category">
 <td class="title" colspan="2">{$lang['editaddresslist']}</td>
@@ -1764,7 +1765,7 @@ $shadow
 <tr>
 <td bgcolor="{$THEME['bordercolor']}">
 <form method="post" action="address.php?action=add">
-<input type="hidden" name="token" value="$oToken->newToken" />
+<input type="hidden" name="csrf_token" value="$oToken->newToken" />
 <table border="0px" cellspacing="{$THEME['borderwidth']}" cellpadding="{$THEME['tablespace']}" width="100%">
 <tr class="category">
 <td class="title" colspan="2">{$lang['addtoaddresses']}</td>
@@ -1825,7 +1826,7 @@ $shadow
 
 |#*GBB TEMPLATE FILE*#|register_coppa|#*GBB TEMPLATE*#|
 <form method="post" action="register.php?action=reg">
-<input type="hidden" name="token" value="$oToken->newToken" />
+<input type="hidden" name="csrf_token" value="$oToken->newToken" />
 <table cellspacing="0px" cellpadding="0px" border="0px" width="{$THEME['tablewidth']}" align="center">
 <tr>
 <td bgcolor="{$THEME['bordercolor']}">
@@ -1847,7 +1848,7 @@ $shadow
 
 |#*GBB TEMPLATE FILE*#|search|#*GBB TEMPLATE*#|
 <form method="post" action="search.php">
-<input type="hidden" name="token" value="$oToken->newToken" />
+<input type="hidden" name="csrf_token" value="$oToken->newToken" />
 <table cellspacing="0px" cellpadding="0px" border="0px" width="{$THEME['tablewidth']}" align="center">
 <tr>
 <td bgcolor="{$THEME['bordercolor']}">
@@ -1908,7 +1909,7 @@ $shadow
 |#*GBB TEMPLATE FILE*#|register|#*GBB TEMPLATE*#|
 $captcha_js
 <form method="post" action="register.php?action=reg">
-<input type="hidden" name="token" value="$oToken->newToken" />
+<input type="hidden" name="csrf_token" value="$oToken->newToken" />
 <table cellspacing="0px" cellpadding="0px" border="0px" width="{$THEME['tablewidth']}" align="center">
 <tr>
 <td bgcolor="{$THEME['bordercolor']}">
@@ -2112,7 +2113,7 @@ $shadow
 |#*GBB TEMPLATE FILE*#|viewtopic_modoptions|#*GBB TEMPLATE*#|
 <a name="admintools"></a>
 <form action="topicadmin.php?tid=$tid&amp;fid=$fid" method="post">
-<input type="hidden" name="token" value="$oToken->newToken" />
+<input type="hidden" name="csrf_token" value="$oToken->newToken" />
 <select name="action" id="action" onchange="if(this.options[this.selectedIndex].value != '') { window.location=('topicadmin.php?tid=$tid&amp;fid=$fid&amp;action='+this.options[this.selectedIndex].value) }">
 <option value="" $selHTML>{$lang['textadminoptions']}</option>
 <option value="close">$closeopen</option>
@@ -2202,7 +2203,7 @@ $shadow
 |#*GBB TEMPLATE FILE*#|post_newthread|#*GBB TEMPLATE*#|
 $preview
 <form method="post" name="input" action="post.php?action=newthread&amp;fid=$fid" enctype="multipart/form-data">
-<input type="hidden" name="token" value="$oToken->newToken" />
+<input type="hidden" name="csrf_token" value="$oToken->newToken" />
 <table cellspacing="0px" cellpadding="0px" border="0px" width="{$THEME['tablewidth']}" align="center">
 <tr>
 <td bgcolor="{$THEME['bordercolor']}">
@@ -2287,7 +2288,7 @@ $captcha_js
 
 |#*GBB TEMPLATE FILE*#|topicadmin_openclose|#*GBB TEMPLATE*#|
 <form method="post" action="topicadmin.php?action=close">
-<input type="hidden" name="token" value="$oToken->newToken" />
+<input type="hidden" name="csrf_token" value="$oToken->newToken" />
 <table cellspacing="0px" cellpadding="0px" border="0px" width="{$THEME['tablewidth']}" align="center">
 <tr>
 <td bgcolor="{$THEME['bordercolor']}"><table border="0px" cellspacing="{$THEME['borderwidth']}" cellpadding="{$THEME['tablespace']}" width="100%">
@@ -2310,7 +2311,7 @@ $shadow
 
 |#*GBB TEMPLATE FILE*#|topicadmin_move|#*GBB TEMPLATE*#|
 <form method="post" action="topicadmin.php?action=move">
-<input type="hidden" name="token" value="$oToken->newToken" />
+<input type="hidden" name="csrf_token" value="$oToken->newToken" />
 <table cellspacing="0px" cellpadding="0px" border="0px" width="{$THEME['tablewidth']}" align="center">
 <tr>
 <td bgcolor="{$THEME['bordercolor']}">
@@ -2344,7 +2345,7 @@ $shadow
 
 |#*GBB TEMPLATE FILE*#|topicadmin_topuntop|#*GBB TEMPLATE*#|
 <form method="post" action="topicadmin.php?action=top">
-<input type="hidden" name="token" value="$oToken->newToken" />
+<input type="hidden" name="csrf_token" value="$oToken->newToken" />
 <table cellspacing="0px" cellpadding="0px" border="0px" width="{$THEME['tablewidth']}" align="center">
 <tr>
 <td bgcolor="{$THEME['bordercolor']}"><table border="0px" cellspacing="{$THEME['borderwidth']}" cellpadding="{$THEME['tablespace']}" width="100%">
@@ -2367,7 +2368,7 @@ $shadow
 
 |#*GBB TEMPLATE FILE*#|topicadmin_bump|#*GBB TEMPLATE*#|
 <form method="post" action="topicadmin.php?action=bump">
-<input type="hidden" name="token" value="$oToken->newToken" />
+<input type="hidden" name="csrf_token" value="$oToken->newToken" />
 <table cellspacing="0px" cellpadding="0px" border="0px" width="{$THEME['tablewidth']}" align="center">
 <tr>
 <td bgcolor="{$THEME['bordercolor']}"><table border="0px" cellspacing="{$THEME['borderwidth']}" cellpadding="{$THEME['tablespace']}" width="100%">
@@ -2390,7 +2391,7 @@ $shadow
 
 |#*GBB TEMPLATE FILE*#|topicadmin_split|#*GBB TEMPLATE*#|
 <form method="post" action="topicadmin.php?action=split">
-<input type="hidden" name="token" value="$oToken->newToken" />
+<input type="hidden" name="csrf_token" value="$oToken->newToken" />
 <table cellspacing="0px" cellpadding="0px" border="0px" width="{$THEME['tablewidth']}" align="center">
 <tr>
 <td bgcolor="{$THEME['bordercolor']}"><table border="0px" cellspacing="{$THEME['borderwidth']}" cellpadding="{$THEME['tablespace']}" width="100%">
@@ -2430,7 +2431,7 @@ $shadow
 
 |#*GBB TEMPLATE FILE*#|topicadmin_merge|#*GBB TEMPLATE*#|
 <form method="post" action="topicadmin.php?action=merge">
-<input type="hidden" name="token" value="$oToken->newToken" />
+<input type="hidden" name="csrf_token" value="$oToken->newToken" />
 <table cellspacing="0px" cellpadding="0px" border="0px" width="{$THEME['tablewidth']}" align="center">
 <tr>
 <td bgcolor="{$THEME['bordercolor']}">
@@ -2458,7 +2459,7 @@ $shadow
 
 |#*GBB TEMPLATE FILE*#|topicadmin_report|#*GBB TEMPLATE*#|
 <form method="post" name="input" action="topicadmin.php?action=report">
-<input type="hidden" name="token" value="$oToken->newToken" />
+<input type="hidden" name="csrf_token" value="$oToken->newToken" />
 <table cellspacing="0px" cellpadding="0px" border="0px" width="{$THEME['tablewidth']}" align="center">
 <tr>
 <td bgcolor="{$THEME['bordercolor']}"><table border="0px" cellspacing="{$THEME['borderwidth']}" cellpadding="{$THEME['tablespace']}" width="100%">
@@ -2482,7 +2483,7 @@ $shadow
 |#*GBB TEMPLATE FILE*#|viewforum_password|#*GBB TEMPLATE*#|
 <br />
 <form method="post" action="$url">
-<input type="hidden" name="token" value="$oToken->newToken" />
+<input type="hidden" name="csrf_token" value="$oToken->newToken" />
 <table cellspacing="0px" cellpadding="0px" border="0px" width="{$THEME['tablewidth']}" align="center">
 <tr>
 <td bgcolor="{$THEME['bordercolor']}">
@@ -2506,7 +2507,7 @@ $shadow
 
 |#*GBB TEMPLATE FILE*#|register_rules|#*GBB TEMPLATE*#|
 <form method="post" action="register.php?action=reg">
-<input type="hidden" name="token" value="$oToken->newToken" />
+<input type="hidden" name="csrf_token" value="$oToken->newToken" />
 <table cellspacing="0px" cellpadding="0px" border="0px" width="{$THEME['tablewidth']}" align="center">
 <tr>
 <td bgcolor="{$THEME['bordercolor']}">
@@ -2532,7 +2533,7 @@ $shadow
 |#*GBB TEMPLATE FILE*#|post_newpoll|#*GBB TEMPLATE*#|
 $preview
 <form method="post" name="input" action="post.php?action=newthread&amp;fid=$fid&amp;poll=yes" enctype="multipart/form-data">
-<input type="hidden" name="token" value="$oToken->newToken" />
+<input type="hidden" name="csrf_token" value="$oToken->newToken" />
 <table cellspacing="0px" cellpadding="0px" border="0px" width="{$THEME['tablewidth']}" align="center">
 <tr>
 <td bgcolor="{$THEME['bordercolor']}"><table border="0px" cellspacing="{$THEME['borderwidth']}" cellpadding="{$THEME['tablespace']}" width="100%">
@@ -2600,7 +2601,7 @@ $shadow
 |#*GBB TEMPLATE FILE*#|post_reply|#*GBB TEMPLATE*#|
 $preview
 <form method="post" name="input" action="post.php?action=reply&amp;fid=$fid&amp;tid=$tid" enctype="multipart/form-data">
-<input type="hidden" name="token" value="$oToken->newToken" />
+<input type="hidden" name="csrf_token" value="$oToken->newToken" />
 <table cellspacing="0px" cellpadding="0px" border="0px" width="{$THEME['tablewidth']}" align="center">
 <tr>
 <td bgcolor="{$THEME['bordercolor']}"><table border="0px" cellspacing="{$THEME['borderwidth']}" cellpadding="{$THEME['tablespace']}" width="100%">
@@ -2689,7 +2690,7 @@ $shadow
 |#*GBB TEMPLATE FILE*#|post_edit|#*GBB TEMPLATE*#|
 $preview
 <form method="post" name="input" action="post.php?action=edit" enctype="multipart/form-data">
-<input type="hidden" name="token" value="$oToken->newToken" />
+<input type="hidden" name="csrf_token" value="$oToken->newToken" />
 <input type="hidden" name="fid" value="$fid" />
 <input type="hidden" name="tid" value="$tid" />
 <input type="hidden" name="pid" value="$pid" />
@@ -2978,7 +2979,7 @@ $smilies
 
 |#*GBB TEMPLATE FILE*#|index_login|#*GBB TEMPLATE*#|
 <form method="post" action="login.php">
-<input type="hidden" name="token" value="$oToken->newToken" />
+<input type="hidden" name="csrf_token" value="$oToken->newToken" />
 <table cellspacing="0px" cellpadding="0px" border="0px" width="{$THEME['tablewidth']}" align="center">
 <tr>
 <td bgcolor="{$THEME['bordercolor']}">
@@ -3191,7 +3192,7 @@ $shadow
 
 |#*GBB TEMPLATE FILE*#|topicadmin_delete|#*GBB TEMPLATE*#|
 <form method="post" action="topicadmin.php?action=delete">
-<input type="hidden" name="token" value="$oToken->newToken" />
+<input type="hidden" name="csrf_token" value="$oToken->newToken" />
 <table cellspacing="0px" cellpadding="0px" border="0px" width="{$THEME['tablewidth']}" align="center">
 <tr>
 <td bgcolor="{$THEME['bordercolor']}"><table border="0px" cellspacing="{$THEME['borderwidth']}" cellpadding="{$THEME['tablespace']}" width="100%">
@@ -3214,7 +3215,7 @@ $shadow
 
 |#*GBB TEMPLATE FILE*#|topicadmin_empty|#*GBB TEMPLATE*#|
 <form method="post" action="topicadmin.php?action=empty">
-<input type="hidden" name="token" value="$oToken->newToken" />
+<input type="hidden" name="csrf_token" value="$oToken->newToken" />
 <table cellspacing="0px" cellpadding="0px" border="0px" width="{$THEME['tablewidth']}" align="center">
 <tr>
 <td bgcolor="{$THEME['bordercolor']}"><table border="0px" cellspacing="{$THEME['borderwidth']}" cellpadding="{$THEME['tablespace']}" width="100%">
@@ -3272,7 +3273,7 @@ $shadow
 |#*GBB TEMPLATE FILE*#|viewtopic_quickreply|#*GBB TEMPLATE*#|
 <br />
 <form method="post" name="input" action="post.php?action=reply&amp;fid=$fid&amp;tid=$tid">
-<input type="hidden" name="token" value="$oToken->newToken" />
+<input type="hidden" name="csrf_token" value="$oToken->newToken" />
 <table width="{$THEME['tablewidth']}" border="0px" align="center" cellpadding="0px" cellspacing="0px" bgcolor="{$THEME['bordercolor']}">
 <tr><td><input type="hidden" name="subject" value="" />
 <input type="hidden" name="subjectprefix" value="" />
@@ -3345,7 +3346,7 @@ $bbcodescript
 
 |#*GBB TEMPLATE FILE*#|topicadmin_threadprune|#*GBB TEMPLATE*#|
 <form method="post" action="topicadmin.php?action=threadprune">
-<input type="hidden" name="token" value="$oToken->newToken" />
+<input type="hidden" name="csrf_token" value="$oToken->newToken" />
 <table cellspacing="0px" cellpadding="0px" border="0px" width="{$THEME['tablewidth']}" align="center">
 <tr>
 <td bgcolor="{$THEME['bordercolor']}">
@@ -3398,7 +3399,7 @@ $css
 <tr class="tablerow">
 <td bgcolor="{$THEME['altbg1']}">
 <form action="#" onsubmit="javascript:add();">
-<input type="hidden" name="token" value="$oToken->newToken" />
+<input type="hidden" name="csrf_token" value="$oToken->newToken" />
 <table width="98%">
 <tr class="tablerow">
 <td bgcolor="{$THEME['altbg2']}" colspan="2"><strong>{$lang['textonline']}</strong></td>
@@ -3461,7 +3462,7 @@ $shadow2
 
 |#*GBB TEMPLATE FILE*#|usercp_profile|#*GBB TEMPLATE*#|
 <form method="post" action="usercp.php?action=profile" name="reg">
-<input type="hidden" name="token" value="$oToken->newToken" />
+<input type="hidden" name="csrf_token" value="$oToken->newToken" />
 <table cellspacing="0px" cellpadding="0px" border="0px" width="100%" align="center">
 <tr>
 <td bgcolor="{$THEME['bordercolor']}">
@@ -3550,7 +3551,7 @@ $shadow2
 
 |#*GBB TEMPLATE FILE*#|usercp_password|#*GBB TEMPLATE*#|
 <form method="post" action="usercp.php?action=password" name="reg">
-<input type="hidden" name="token" value="$oToken->newToken" />
+<input type="hidden" name="csrf_token" value="$oToken->newToken" />
 <table cellspacing="0px" cellpadding="0px" border="0px" width="100%" align="center">
 <tr>
 <td bgcolor="{$THEME['bordercolor']}">
@@ -3582,7 +3583,7 @@ $shadow2
 
 |#*GBB TEMPLATE FILE*#|usercp_email|#*GBB TEMPLATE*#|
 <form method="post" action="usercp.php?action=email" name="reg">
-<input type="hidden" name="token" value="$oToken->newToken" />
+<input type="hidden" name="csrf_token" value="$oToken->newToken" />
 <table cellspacing="0px" cellpadding="0px" border="0px" width="100%" align="center">
 <tr>
 <td bgcolor="{$THEME['bordercolor']}">
@@ -3609,7 +3610,7 @@ $shadow2
 
 |#*GBB TEMPLATE FILE*#|usercp_favs|#*GBB TEMPLATE*#|
 <form method="post" action="usercp.php?action=favorites">
-<input type="hidden" name="token" value="$oToken->newToken" />
+<input type="hidden" name="csrf_token" value="$oToken->newToken" />
 <table cellspacing="0px" cellpadding="0px" border="0px" width="100%" align="center">
 <tr>
 <td bgcolor="{$THEME['bordercolor']}">
@@ -3690,7 +3691,7 @@ $shadow2
 
 |#*GBB TEMPLATE FILE*#|usercp_subscriptions|#*GBB TEMPLATE*#|
 <form method="post" action="usercp.php?action=subscriptions">
-<input type="hidden" name="token" value="$oToken->newToken" />
+<input type="hidden" name="csrf_token" value="$oToken->newToken" />
 <table cellspacing="0px" cellpadding="0px" border="0px" width="100%" align="center"><tr><td bgcolor="{$THEME['bordercolor']}">
 <table border="0px" cellspacing="{$THEME['borderwidth']}" cellpadding="{$THEME['tablespace']}" width="100%">
 <tr class="category">
@@ -3911,7 +3912,7 @@ $shadow2
 
 |#*GBB TEMPLATE FILE*#|usercp_options|#*GBB TEMPLATE*#|
 <form method="post" action="usercp.php?action=options" name="reg">
-<input type="hidden" name="token" value="$oToken->newToken" />
+<input type="hidden" name="csrf_token" value="$oToken->newToken" />
 <table cellspacing="0px" cellpadding="0px" border="0px" width="100%" align="center">
 <tr>
 <td bgcolor="{$THEME['bordercolor']}">
@@ -4082,7 +4083,7 @@ $shadow2
 
 |#*GBB TEMPLATE FILE*#|usercp_avatar|#*GBB TEMPLATE*#|
 <form method="post" action="usercp.php?action=avatar" name="reg" enctype="multipart/form-data">
-<input type="hidden" name="token" value="$oToken->newToken" />
+<input type="hidden" name="csrf_token" value="$oToken->newToken" />
 <table cellspacing="0px" cellpadding="0px" border="0px" width="100%" align="center">
 <tr>
 <td bgcolor="{$THEME['bordercolor']}">
@@ -4125,7 +4126,7 @@ $shadow2
 
 |#*GBB TEMPLATE FILE*#|topic_activity|#*GBB TEMPLATE*#|
 <form method="post" action="activity.php">
-<input type="hidden" name="token" value="$oToken->newToken" />
+<input type="hidden" name="csrf_token" value="$oToken->newToken" />
 <table cellspacing="0px" cellpadding="0px" border="0px" width="{$THEME['tablewidth']}" align="center">
 <tr>
 <td bgcolor="{$THEME['bordercolor']}">
@@ -4293,7 +4294,7 @@ $shadow
 
 |#*GBB TEMPLATE FILE*#|usercp_signature|#*GBB TEMPLATE*#|
 <form method="post" action="usercp.php?action=signature" name="reg">
-<input type="hidden" name="token" value="$oToken->newToken" />
+<input type="hidden" name="csrf_token" value="$oToken->newToken" />
 <table cellspacing="0px" cellpadding="0px" border="0px" width="100%" align="center">
 <tr>
 <td bgcolor="{$THEME['bordercolor']}">
@@ -4333,7 +4334,7 @@ $sigblock
 
 |#*GBB TEMPLATE FILE*#|usercp_gallery|#*GBB TEMPLATE*#|
 <form method="post" action="usercp.php?action=gallery">
-<input type="hidden" name="token" value="$oToken->newToken" />
+<input type="hidden" name="csrf_token" value="$oToken->newToken" />
 <table cellspacing="0px" cellpadding="0px" border="0px" width="100%" align="center">
 <tr>
 <td bgcolor="{$THEME['bordercolor']}">
@@ -4540,7 +4541,7 @@ $bottomcorners
 
 |#*GBB TEMPLATE FILE*#|usercp_notepad|#*GBB TEMPLATE*#|
 <form method="post" action="usercp.php?action=notepad">
-<input type="hidden" name="token" value="$oToken->newToken" />
+<input type="hidden" name="csrf_token" value="$oToken->newToken" />
 <table cellspacing="0px" cellpadding="0px" border="0px" width="100%" align="center">
 <tr>
 <td bgcolor="{$THEME['bordercolor']}">
@@ -4805,7 +4806,7 @@ $shadow2
 
 |#*GBB TEMPLATE FILE*#|massmod_openclose|#*GBB TEMPLATE*#|
 <form method="post" action="viewforum.php?fid=$fid&amp;action=close">
-<input type="hidden" name="token" value="$oToken->newToken" />
+<input type="hidden" name="csrf_token" value="$oToken->newToken" />
 <table cellspacing="0px" cellpadding="0px" border="0px" width="{$THEME['tablewidth']}" align="center">
 <tr>
 <td bgcolor="{$THEME['bordercolor']}"><table border="0px" cellspacing="{$THEME['borderwidth']}" cellpadding="{$THEME['tablespace']}" width="100%">
@@ -4829,7 +4830,7 @@ $shadow
 
 |#*GBB TEMPLATE FILE*#|massmod_topuntop|#*GBB TEMPLATE*#|
 <form method="post" action="viewforum.php?fid=$fid&amp;action=top">
-<input type="hidden" name="token" value="$oToken->newToken" />
+<input type="hidden" name="csrf_token" value="$oToken->newToken" />
 <table cellspacing="0px" cellpadding="0px" border="0px" width="{$THEME['tablewidth']}" align="center">
 <tr>
 <td bgcolor="{$THEME['bordercolor']}"><table border="0px" cellspacing="{$THEME['borderwidth']}" cellpadding="{$THEME['tablespace']}" width="100%">
@@ -4853,7 +4854,7 @@ $shadow
 
 |#*GBB TEMPLATE FILE*#|massmod_bump|#*GBB TEMPLATE*#|
 <form method="post" action="viewforum.php?fid=$fid&amp;action=bump">
-<input type="hidden" name="token" value="$oToken->newToken" />
+<input type="hidden" name="csrf_token" value="$oToken->newToken" />
 <table cellspacing="0px" cellpadding="0px" border="0px" width="{$THEME['tablewidth']}" align="center">
 <tr>
 <td bgcolor="{$THEME['bordercolor']}"><table border="0px" cellspacing="{$THEME['borderwidth']}" cellpadding="{$THEME['tablespace']}" width="100%">
@@ -4877,7 +4878,7 @@ $shadow
 
 |#*GBB TEMPLATE FILE*#|massmod_copy|#*GBB TEMPLATE*#|
 <form method="post" action="viewforum.php?fid=$fid&amp;action=copy">
-<input type="hidden" name="token" value="$oToken->newToken" />
+<input type="hidden" name="csrf_token" value="$oToken->newToken" />
 <table cellspacing="0px" cellpadding="0px" border="0px" width="{$THEME['tablewidth']}" align="center">
 <tr>
 <td bgcolor="{$THEME['bordercolor']}">
@@ -4906,7 +4907,7 @@ $shadow
 
 |#*GBB TEMPLATE FILE*#|massmod_merge|#*GBB TEMPLATE*#|
 <form method="post" action="viewforum.php?fid=$fid&amp;action=merge">
-<input type="hidden" name="token" value="$oToken->newToken" />
+<input type="hidden" name="csrf_token" value="$oToken->newToken" />
 <table cellspacing="0px" cellpadding="0px" border="0px" width="{$THEME['tablewidth']}" align="center">
 <tr>
 <td bgcolor="{$THEME['bordercolor']}">
@@ -4939,7 +4940,7 @@ $shadow
 
 |#*GBB TEMPLATE FILE*#|massmod_delete|#*GBB TEMPLATE*#|
 <form method="post" action="viewforum.php?fid=$fid&amp;action=delete">
-<input type="hidden" name="token" value="$oToken->newToken" />
+<input type="hidden" name="csrf_token" value="$oToken->newToken" />
 <table cellspacing="0px" cellpadding="0px" border="0px" width="{$THEME['tablewidth']}" align="center">
 <tr>
 <td bgcolor="{$THEME['bordercolor']}"><table border="0px" cellspacing="{$THEME['borderwidth']}" cellpadding="{$THEME['tablespace']}" width="100%">
@@ -4963,7 +4964,7 @@ $shadow
 
 |#*GBB TEMPLATE FILE*#|massmod_empty|#*GBB TEMPLATE*#|
 <form method="post" action="viewforum.php?fid=$fid&amp;action=empty">
-<input type="hidden" name="token" value="$oToken->newToken" />
+<input type="hidden" name="csrf_token" value="$oToken->newToken" />
 <table cellspacing="0px" cellpadding="0px" border="0px" width="{$THEME['tablewidth']}" align="center">
 <tr>
 <td bgcolor="{$THEME['bordercolor']}"><table border="0px" cellspacing="{$THEME['borderwidth']}" cellpadding="{$THEME['tablespace']}" width="100%">
@@ -4987,7 +4988,7 @@ $shadow
 
 |#*GBB TEMPLATE FILE*#|massmod_move|#*GBB TEMPLATE*#|
 <form method="post" action="viewforum.php?fid=$fid&amp;action=move">
-<input type="hidden" name="token" value="$oToken->newToken" />
+<input type="hidden" name="csrf_token" value="$oToken->newToken" />
 <table cellspacing="0px" cellpadding="0px" border="0px" width="{$THEME['tablewidth']}" align="center">
 <tr>
 <td bgcolor="{$THEME['bordercolor']}">
@@ -5023,7 +5024,7 @@ $shadow
 
 |#*GBB TEMPLATE FILE*#|topicadmin_markthread|#*GBB TEMPLATE*#|
 <form method="post" action="topicadmin.php?action=markthread">
-<input type="hidden" name="token" value="$oToken->newToken" />
+<input type="hidden" name="csrf_token" value="$oToken->newToken" />
 <table cellspacing="0px" cellpadding="0px" border="0px" width="{$THEME['tablewidth']}" align="center">
 <tr>
 <td bgcolor="{$THEME['bordercolor']}">
@@ -5132,7 +5133,7 @@ $multipage
 $shadow
 <br />
 <form method="post" action="memberlist.php?action=list">
-<input type="hidden" name="token" value="$oToken->newToken" />
+<input type="hidden" name="csrf_token" value="$oToken->newToken" />
 <table cellspacing="0px" cellpadding="0px" border="0px" width="{$THEME['tablewidth']}" align="center">
 <tr>
 <td bgcolor="{$THEME['bordercolor']}">
@@ -5214,7 +5215,7 @@ $multipage
 $shadow
 <br />
 <form method="post" action="memberlist.php?action=list">
-<input type="hidden" name="token" value="$oToken->newToken" />
+<input type="hidden" name="csrf_token" value="$oToken->newToken" />
 <table cellspacing="0px" cellpadding="0px" border="0px" width="{$THEME['tablewidth']}" align="center">
 <tr>
 <td bgcolor="{$THEME['bordercolor']}">
@@ -5242,6 +5243,7 @@ $shadow
 
 |#*GBB TEMPLATE FILE*#|contactus|#*GBB TEMPLATE*#|
 <form method="post" action="{$contactLink}">
+<input type="hidden" name="csrf_token" value="$oToken->newToken" />
 <table cellspacing="0px" cellpadding="0px" border="0px" width="{$THEME['tablewidth']}" align="center">
 <tr>
 <td bgcolor="{$THEME['bordercolor']}">
@@ -5580,7 +5582,7 @@ $shadow
 
 |#*GBB TEMPLATE FILE*#|email_member|#*GBB TEMPLATE*#|
 <form method="post" action="email.php?memberid=$memberid">
-<input type="hidden" name="token" value="$oToken->newToken" />
+<input type="hidden" name="csrf_token" value="$oToken->newToken" />
 <table cellspacing="0px" cellpadding="0px" border="0px" width="{$THEME['tablewidth']}" align="center">
 <tr>
 <td bgcolor="{$THEME['bordercolor']}">
@@ -5643,7 +5645,7 @@ $shadow2
 
 |#*GBB TEMPLATE FILE*#|usercp_photo|#*GBB TEMPLATE*#|
 <form method="post" action="usercp.php?action=photo" name="reg" enctype="multipart/form-data">
-<input type="hidden" name="token" value="$oToken->newToken" />
+<input type="hidden" name="csrf_token" value="$oToken->newToken" />
 <table cellspacing="0px" cellpadding="0px" border="0px" width="100%" align="center">
 <tr>
 <td bgcolor="{$THEME['bordercolor']}">
@@ -5719,7 +5721,7 @@ $shadow2
 
 |#*GBB TEMPLATE FILE*#|pm_folders|#*GBB TEMPLATE*#|
 <form method="post" action="pm.php?action=folders">
-<input type="hidden" name="token" value="$oToken->newToken" />
+<input type="hidden" name="csrf_token" value="$oToken->newToken" />
 <table cellspacing="0px" cellpadding="0px" border="0px" width="100%" align="center">
 <tr>
 <td bgcolor="{$THEME['bordercolor']}"><table border="0px" cellspacing="{$THEME['borderwidth']}" cellpadding="{$THEME['tablespace']}" width="100%">
@@ -5764,7 +5766,7 @@ $shadow
 
 |#*GBB TEMPLATE FILE*#|pm_ignore|#*GBB TEMPLATE*#|
 <form method="post" action="pm.php?action=ignore">
-<input type="hidden" name="token" value="$oToken->newToken" />
+<input type="hidden" name="csrf_token" value="$oToken->newToken" />
 <table cellspacing="0px" cellpadding="0px" border="0px" width="100%" align="center">
 <tr>
 <td bgcolor="{$THEME['bordercolor']}"><table border="0px" cellspacing="{$THEME['borderwidth']}" cellpadding="{$THEME['tablespace']}" width="100%">
@@ -5811,7 +5813,7 @@ $shadow2
 
 |#*GBB TEMPLATE FILE*#|pm_main|#*GBB TEMPLATE*#|
 <form method="post" action="pm.php?action=mod&folder=$folder" name="pm_main">
-<input type="hidden" name="token" value="$oToken->newToken" />
+<input type="hidden" name="csrf_token" value="$oToken->newToken" />
 $pmlist
 <br />
 <table cellspacing="0px" cellpadding="0px" border="0px" width="100%" align="center">
@@ -5906,7 +5908,7 @@ $shadow2
 
 |#*GBB TEMPLATE FILE*#|pm_send|#*GBB TEMPLATE*#|
 <form method="post" name="input" action="pm.php?action=send" enctype="multipart/form-data">
-<input type="hidden" name="token" value="$oToken->newToken" />
+<input type="hidden" name="csrf_token" value="$oToken->newToken" />
 $pmpreview
 <table cellspacing="0px" cellpadding="0px" border="0px" width="100%" align="center">
 <tr>
@@ -6016,7 +6018,7 @@ $shadow2
 <tr>
 <td bgcolor="{$THEME['bordercolor']}">
 <form method="post" action="pm.php?action=modif">
-<input type="hidden" name="token" value="$oToken->newToken" />
+<input type="hidden" name="csrf_token" value="$oToken->newToken" />
 <table border="0px" cellspacing="{$THEME['borderwidth']}" cellpadding="{$THEME['tablespace']}" width="100%">
 <tr class="category">
 <td class="title">{$lang['textpmoptions']}</td>
@@ -6136,7 +6138,7 @@ $pm[msgfrom]&nbsp;{$lang['textattachedimg']}<br /><a href="pm.php?action=attachm
 <tr>
 <td colspan="8" bgcolor="{$THEME['altbg2']}" class="ctrtablerow">
 <form method="post" action="search.php">
-<input type="hidden" name="token" value="$oToken->newToken" />
+<input type="hidden" name="csrf_token" value="$oToken->newToken" />
 {$lang['textsearchfor']}&nbsp;<input type="text" name="srchtxt" size="30" maxlength="40" />&nbsp;{$lang['textlfrom']}&nbsp;
 <select name="srchfrom">
 <option value="86400">{$lang['day1']}</option>
@@ -6386,5 +6388,43 @@ $shadow2
 </tr>
 </table>
 $shadow
+
+|#*GBB TEMPLATE FILE*#|login_loginmaxmet|#*GBB TEMPLATE*#|
+<table cellspacing="0px" cellpadding="0px" border="0px" width="{$THEME['tablewidth']}" align="center">
+<tr>
+<td bgcolor="{$THEME['bordercolor']}">
+<table border="0px" cellspacing="{$THEME['borderwidth']}" cellpadding="{$THEME['tablespace']}" width="100%">
+<tr class="category">
+<td class="title" colspan="2">{$lang['textlogin_incorrect']}</td>
+</tr>
+<tr>
+<td class="ctrtablerow" bgcolor="{$THEME['altbg1']}" width="8%"><img src="{$THEME['imgdir']}/exclamation.gif" border="0px" alt="{$lang['featurewarning']}" title="{$lang['featurewarning']}" /></td>
+<td class="tablerow" bgcolor="{$THEME['altbg2']}"><span class="smalltxt"><strong>{$lang['login_max_met']}</strong></span><br /></td>
+</tr>
+</table>
+</td>
+</tr>
+</table>
+$shadow
+<br />
+
+|#*GBB TEMPLATE FILE*#|login_time_met|#*GBB TEMPLATE*#|
+<table cellspacing="0px" cellpadding="0px" border="0px" width="{$THEME['tablewidth']}" align="center">
+<tr>
+<td bgcolor="{$THEME['bordercolor']}">
+<table border="0px" cellspacing="{$THEME['borderwidth']}" cellpadding="{$THEME['tablespace']}" width="100%">
+<tr class="category">
+<td class="title" colspan="2">{$lang['textlogin_incorrect']}</td>
+</tr>
+<tr>
+<td class="ctrtablerow" bgcolor="{$THEME['altbg1']}" width="8%"><img src="{$THEME['imgdir']}/exclamation.gif" border="0px" alt="{$lang['featurewarning']}" title="{$lang['featurewarning']}" /></td>
+<td class="tablerow" bgcolor="{$THEME['altbg2']}"><span class="smalltxt"><strong>{$lang['login_time_met']}</strong></span><br /></td>
+</tr>
+</table>
+</td>
+</tr>
+</table>
+$shadow
+<br />
 
 |#*GBB TEMPLATE FILE*#|

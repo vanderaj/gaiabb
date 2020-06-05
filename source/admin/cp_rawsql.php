@@ -65,7 +65,7 @@ function viewPanel()
     ?>
     <form method="post" action="cp_rawsql.php" enctype="multipart/form-data">
         <input type="hidden" name="token"
-               value="<?php echo $oToken->get_new_token() ?>"/>
+               value="<?php echo $oToken->createToken() ?>"/>
         <table cellspacing="0px" cellpadding="0px" border="0px" width="100%"
                align="center">
             <tr>
@@ -111,7 +111,7 @@ function doPanel()
 {
     global $THEME, $lang, $shadow2, $oToken, $db, $CONFIG, $onlinetime;
 
-    $oToken->assert_token();
+    $oToken->assertToken();
 
     $upgrade = formVar('upgrade');
 

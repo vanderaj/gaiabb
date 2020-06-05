@@ -1,4 +1,5 @@
 <?php
+
 /**
  * GaiaBB
  * Copyright (c) 2009-2020 The GaiaBB Project
@@ -73,8 +74,7 @@ $action = getVar('action');
 if (X_GZIP && $action != 'attachment') {
     if (($res = ini_get('zlib.output_compression')) === 1) {
         // leave it
-    } else
-    if ($res === false) {
+    } elseif ($res === false) {
         // ini_get not supported. So let's just leave it
     } else {
         if (function_exists('gzopen')) {
@@ -115,24 +115,20 @@ $bbcode_js = '';
 if (strpos($useragent, 'Opera') !== false) {
     $browser = 'opera';
     $bbcode_js = 'opera';
-} else
-if (strpos($useragent, 'MSIE') !== false && strpos($useragent, 'Opera') === false) {
+} elseif (strpos($useragent, 'MSIE') !== false && strpos($useragent, 'Opera') === false) {
     $browser = 'ie';
     $bbcode_js = 'ie';
-} else
-if (strpos($useragent, 'Gecko') !== false && strpos($useragent, 'Konqueror') === false) {
+} elseif (strpos($useragent, 'Gecko') !== false && strpos($useragent, 'Konqueror') === false) {
     if (strpos($useragent, 'Firefox') !== false) {
         $browser = 'firefox';
     } else {
         $browser = 'gecko';
     }
     $bbcode_js = 'mozilla';
-} else
-if (strpos($useragent, 'Safari') !== false) {
+} elseif (strpos($useragent, 'Safari') !== false) {
     $browser = 'safari';
     $bbcode_js = 'mozilla';
-} else
-if (strpos($useragent, 'Konqueror') !== false) {
+} elseif (strpos($useragent, 'Konqueror') !== false) {
     $browser = 'konqueror';
     $bbcode_js = 'mozilla';
 }
@@ -150,18 +146,18 @@ if (isset($_SERVER['REQUEST_URI'])) {
 
 include 'db/mysql5php5.class.php';
 
-$oToken = new page_token();
+$oToken = new csrfToken();
 $oToken->init();
 
-$contactLink = 'contact.php?token=' . $oToken->get_new_token() . '';
+$contactLink = 'contact.php';
 
 // initialize navigation
 nav();
 btitle();
 
 switch (CACHECONTROL) {
-    // Use for pages where caching is problematic (possibly post?)
-    // Use sparingly; for login pages, etc.
+        // Use for pages where caching is problematic (possibly post?)
+        // Use sparingly; for login pages, etc.
     case 'private':
     case 'nocache':
         header("Cache-Control: no-store, no-cache, must-revalidate"); // HTTP/1.1
@@ -443,7 +439,7 @@ if ($CONFIG['regstatus'] == 'on' && X_GUEST) {
 
 // Creates login/logout links
 if (X_MEMBER) {
-    $loginout = '<a href="' . 'logout.php?token=' . $oToken->get_new_token() . '">' . $lang['textlogout'] . '</a>';
+    $loginout = '<a href="' . 'logout.php?token=' . $oToken->createToken() . '">' . $lang['textlogout'] . '</a>';
     $usercp = '<a href="' . 'usercp.php">' . $lang['textusercp'] . '</a>';
     $onlineuser = $self['username'];
     $robotname = $cplink = $pmlink = $modcplink = '';

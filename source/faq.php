@@ -135,7 +135,7 @@ switch ($page) {
 
         $faq .= '
         <form method="post" action="faq.php?page=agreerules">
-        <input type="hidden" name="token" value="$oToken->get_new_token()" />
+        <input type="hidden" name="token" value="$oToken->createToken()" />
         <table cellspacing="0px" cellpadding="0px" border="0px" width="' . $THEME['tablewidth'] . '" align="center">
         <tr>
         <td bgcolor="' . $THEME['bordercolor'] . '"><table border="0px" cellspacing="' . $THEME['borderwidth'] . '" cellpadding="' . $THEME['tablespace'] . '" width="100%">
@@ -157,7 +157,7 @@ switch ($page) {
     case 'agreerules':
         $faq .= '
         <form method="post" action="faq.php?page=agreerules">
-        <input type="hidden" name="token" value="$oToken->get_new_token()" />
+        <input type="hidden" name="token" value="$oToken->createToken()" />
         <table cellspacing="0px" cellpadding="0px" border="0px" width="' . $THEME['tablewidth'] . '" align="center">
         <tr>
         <td bgcolor="' . $THEME['bordercolor'] . '"><table border="0px" cellspacing="' . $THEME['borderwidth'] . '" cellpadding="' . $THEME['tablespace'] . '" width="100%">

@@ -65,7 +65,7 @@ function viewPanel()
     ?>
     <form method="post" action="cp_forcelogout.php">
         <input type="hidden" name="token"
-               value="<?php echo $oToken->get_new_token() ?>"/>
+               value="<?php echo $oToken->createToken() ?>"/>
         <table cellspacing="0px" cellpadding="0px" border="0px" width="100%"
                align="center">
             <tr>
@@ -100,7 +100,7 @@ function doPanel()
 {
     global $THEME, $lang, $shadow2, $oToken, $db, $CONFIG;
 
-    $oToken->assert_token();
+    $oToken->assertToken();
 
     // Check which people have a forced logout planned and force a logout for the ones that haven't
     $query = $db->query("UPDATE " . X_PREFIX . "members SET forcelogout = 'yes' WHERE status != 'Administrator' && status != 'Super Administrator'");

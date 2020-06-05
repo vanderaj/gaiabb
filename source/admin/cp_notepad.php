@@ -66,7 +66,7 @@ function viewPanel()
     ?>
     <form method="post" action="cp_notepad.php">
         <input type="hidden" name="token"
-               value="<?php echo $oToken->get_new_token() ?>"/>
+               value="<?php echo $oToken->createToken() ?>"/>
         <table cellspacing="0px" cellpadding="0px" border="0px" width="100%"
                align="center">
             <tr>
@@ -111,7 +111,7 @@ function doAdminNoteUpdate()
 {
     global $lang, $db, $oToken;
 
-    $oToken->assert_token();
+    $oToken->assertToken();
 
     $adminnotesnew = $db->escape(formVar('adminnotes'));
     if (empty($adminnotesnew)) {
@@ -126,7 +126,7 @@ function doAdminNoteCLear()
 {
     global $lang, $db, $oToken;
 
-    $oToken->assert_token();
+    $oToken->assertToken();
 
     $db->query("UPDATE " . X_PREFIX . "settings SET config_value = '' WHERE config_name = 'adminnotes' LIMIT 1");
     cp_message($lang['Admin_Notes_Cleared'], false, '', '</td></tr></table>', 'cp_notepad.php', true, false, true);

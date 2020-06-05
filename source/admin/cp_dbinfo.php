@@ -69,7 +69,7 @@ function viewPanel()
     $count = 1;
     $showtables = '';
     foreach ($tables as $tablename) {
-        $showtables .= '<tr><td class="ctrtablerow" bgcolor="' . $THEME['altbg1'] . '" width="10%"><strong>' . $count . '</strong></td><td class="tablerow" bgcolor="' . $THEME['altbg2'] . '"><a href="cp_dbinfo.php?list=fields&amp;tablename=' . $tablename . '&amp;token=' . $oToken->get_new_token() . '">' . $tablename . '</a></td></tr>';
+        $showtables .= '<tr><td class="ctrtablerow" bgcolor="' . $THEME['altbg1'] . '" width="10%"><strong>' . $count . '</strong></td><td class="tablerow" bgcolor="' . $THEME['altbg2'] . '"><a href="cp_dbinfo.php?list=fields&amp;tablename=' . $tablename . '&amp;token=' . $oToken->createToken() . '">' . $tablename . '</a></td></tr>';
         $showtables .= "\n";
         $count++;
     }
@@ -108,7 +108,7 @@ function listFields()
     global $shadow2, $lang, $db, $THEME;
     global $oToken;
 
-    $oToken->assert_token();
+    $oToken->assertToken();
 
     $tablename = stripslashes(getRequestVar('tablename'));
 

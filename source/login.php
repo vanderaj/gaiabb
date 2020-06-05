@@ -55,7 +55,7 @@ if (X_MEMBER) {
 $errMessage = '';
 
 if (onSubmit('loginsubmit')) {
-    $oToken->assert_token();
+    $oToken->assertToken();
 
     $errMessage = $authC->checkExcessiveLogins();
 

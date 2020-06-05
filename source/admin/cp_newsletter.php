@@ -65,7 +65,7 @@ function viewPanel()
     ?>
     <form method="post" action="cp_newsletter.php">
         <input type="hidden" name="token"
-               value="<?php echo $oToken->get_new_token() ?>"/>
+               value="<?php echo $oToken->createToken() ?>"/>
         <table cellspacing="0px" cellpadding="0px" border="0px" width="100%"
                align="center">
             <tr>
@@ -149,7 +149,7 @@ function doPanel()
     ignore_user_abort(1);
     ob_implicit_flush(1);
 
-    $oToken->assert_token();
+    $oToken->assertToken();
 
     $config_cache->expire('settings');
     $config_cache->expire('newpmmsg');
