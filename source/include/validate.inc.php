@@ -154,13 +154,14 @@ class page_token
 /**
  * Make user input reasonably safe for display
  *
- * This function used to be used by XMB 1.9.1 and its use is now
+ * This function used to be used by XMB 1.9.1 and its use is now deprecated
  *
  * @param string $varname
  *            the variable to sanitize
  * @param boolean $striptags
  *            remove HTML and PHP tags from the input
  * @return string the "safe" string
+ * 
  * @deprecated discouraged in favor of using the correct formXXX / getXXX functions from this file
  *
  */

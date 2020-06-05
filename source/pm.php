@@ -107,21 +107,22 @@ $folder = getRequestVar('folder');
 if (!empty($folder)) {
     $folder = checkInput($folder);
     $_SESSION['folder'] = $folder;
-} else
-if (empty($folder) || !isset($folder)) {
-    if ($action == 'view' || $action == 'modif') {
-        $folder = '';
-    }
-    if ($action == '' || !isset($action)) {
-        $folder = 'Inbox';
-        $_SESSION['folder'] = $folder;
-    }
 } else {
-    if (isset($_SESSION['folder'])) {
-        $folder = $_SESSION['folder'];
+    if (empty($folder) || !isset($folder)) {
+        if ($action == 'view' || $action == 'modif') {
+            $folder = '';
+        }
+        if ($action == '' || !isset($action)) {
+            $folder = 'Inbox';
+            $_SESSION['folder'] = $folder;
+        }
     } else {
-        $folder = 'Inbox';
-        $_SESSION['folder'] = $folder;
+        if (isset($_SESSION['folder'])) {
+            $folder = $_SESSION['folder'];
+        } else {
+            $folder = 'Inbox';
+            $_SESSION['folder'] = $folder;
+        }
     }
 }
 
@@ -191,19 +192,19 @@ switch ($action) {
                 $pmCommand->markUnread($pmid, $type);
                 break;
             default:
-                $leftpane = $pmCommand->view($folders);
+                $leftpane = $pmCommand->view($pmid, $folders);
                 break;
         }
         break;
     case 'mod':
         switch ($modaction) {
             case 'delete':
-
                 if (empty($pm_select)) {
                     error($lang['textnonechosen'], false, '', '', 'pm.php', true, false, true);
                 }
                 $pmCommand->mod_delete($pm_select);
                 break;
+
             case 'move':
                 if (empty($tofolder)) {
                     error($lang['textnofolder'], false, '', '', 'pm.php', true, false, true);
@@ -214,9 +215,11 @@ switch ($action) {
                 }
                 $pmCommand->mod_move($tofolder, $pm_select);
                 break;
+
             case 'markunread':
                 $pmCommand->mod_markUnread($pm_select);
                 break;
+
             default:
                 error($lang['testnothingchos'], false, '', '', 'pm.php', true, false, true);
                 break;
