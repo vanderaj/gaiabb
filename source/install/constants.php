@@ -65,7 +65,7 @@ require_once '../include/functions.inc.php';
 // 2. DELETE THESE FILES AS SOON AS YOU'RE DONE WITH THEM
 // 3. Batteries not included. Void where applicable. Not suitable for kittens.
 
-define('DEBUG', false);
+define('DEBUG', true);
 
 if (DEBUG) {
     error_reporting(E_ALL || E_STRICT || E_DEPRECATED);

@@ -235,7 +235,7 @@ $db->connect($dbhost, $dbuser, $dbpw, $dbname, $pconnect, true);
 
 // Make all settings global, and put them in the $CONFIG[] array
 include 'class/cache.class.php';
-$config_cache = new cacheable('setcache', 60);
+$config_cache = new Cacheable('setcache', 60);
 
 $CONFIG = $config_cache->getData('settings');
 if ($CONFIG === false) {
@@ -276,7 +276,7 @@ if ($CONFIG === false) {
 }
 
 // Get the moderators and cache them for later use
-$moderators_cache = new cacheable('modcache', 3600);
+$moderators_cache = new Cacheable('modcache', 3600);
 
 $MODERATORS = $moderators_cache->getData('moderators');
 if ($MODERATORS === false) {

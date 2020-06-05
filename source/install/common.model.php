@@ -559,14 +559,6 @@ function process_db($path)
 function process_config($path)
 {
     $confMethod = formVar('confMethod');
-    if ($confMethod == '') {
-        view_header('Configuration', $path);
-        print_error('Configuration Error', 'Invalid configuration option supplied:' . $confMethod);
-    }
-
-    if ($confMethod == 'skip') {
-        return;
-    }
 
     if ($path == 'repair' && !file_exists('./emergency.php')) {
         view_header('Configuration', $path);
@@ -593,19 +585,26 @@ function process_config($path)
                 exit();
             }
             break;
+
         case 'download':
             view_config_download($config);
             exit();
             break;
+
         case 'view':
             view_header('Configuration', $path);
             view_config_screen($path, $config);
             view_footer();
             exit();
             break;
+
+        case 'skip':
+            // return and do nothing
+            break;
+
         default:
             view_header('Configuration', $path);
-            print_error('Configuration Error', 'Invalid configuration option supplied: ' . $confMethod);
+            print_error('Configuration Error', 'Invalid configuration option supplied: ' . htmlentities($confMethod));
             break;
     }
 }

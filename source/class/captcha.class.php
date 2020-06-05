@@ -89,7 +89,7 @@ class captcha
 
     public $word_start_y;
 
-    public function captcha()
+    public function __construct()
     {
         global $CONFIG;
 

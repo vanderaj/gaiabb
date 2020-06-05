@@ -309,7 +309,7 @@ function schema_create_members($db, $tablepre)
         `mood` varchar(75) NOT NULL DEFAULT 'Not Set',
         `pwdate` int(10) NOT NULL DEFAULT '0',
         `invisible` set('1','0') DEFAULT '0',
-		`pmfolders` text NOT NULL,
+		`pmfolders` text DEFAULT '',
 		`saveogpm` set('yes','no') NOT NULL DEFAULT 'yes',
 		`emailonpm` set('yes','no') NOT NULL DEFAULT 'no',
         `daylightsavings` set('3600','0') NOT NULL DEFAULT '0',
@@ -492,7 +492,7 @@ function schema_create_settings($db, $tablepre)
     $db->query("CREATE TABLE `" . $tablepre . "settings` (
 			`config_name` varchar(200) NOT NULL DEFAULT '',
 			`config_value` varchar(200) NOT NULL DEFAULT '',
-			PRIMARY KEY (`config_name`,`config_value`)
+			PRIMARY KEY (`config_name`)
 		) ENGINE=MyISAM
 	");
 }
@@ -1400,7 +1400,7 @@ function schema_insert_themes($db, $tablepre)
     $db->query("INSERT INTO `" . $tablepre . "themes` VALUES (0,'Pro Brown','#B8A47E','#786644','#A78C59','#000000','#4E3300','#A78C59','#000000','topbg.gif','catbar.gif','#000000','#000000','1px','97%','5px','Tahoma, Arial, Helvetica, Verdana','11px','logo.gif','images/probrown','images/smilies','#000000','#786644','square','100%','#4E3300','1px','on','image','on','lastpost.gif','on','on','','','','','','images/ricons','','on')");
 
     // Pro Charcoal
-    $db->query("INSERT INTO `" . $tablepre . "themes` VALUES (0,'Pro Charcoal','#8B8A8A','#626262','#6D6D6D','#000000','#000000','#6D6D6D','#000000','topbg.gif','catbar.gif','#000000','#000000','1px','97%','5px','Tahoma, Arial, Helvetica, Verdana','11px','logo.gif','images/procharcoal','images/smilies','#000000','#626262','square','100%','#000000','1px','on','image','on','lastpost.gif','on','on','','','','','','images/ricons','','on',)");
+    $db->query("INSERT INTO `" . $tablepre . "themes` VALUES (0,'Pro Charcoal','#8B8A8A','#626262','#6D6D6D','#000000','#000000','#6D6D6D','#000000','topbg.gif','catbar.gif','#000000','#000000','1px','97%','5px','Tahoma, Arial, Helvetica, Verdana','11px','logo.gif','images/procharcoal','images/smilies','#000000','#626262','square','100%','#000000','1px','on','image','on','lastpost.gif','on','on','','','','','','images/ricons','','on')");
 
     // Pro Green
     $db->query("INSERT INTO `" . $tablepre . "themes` VALUES (0,'Pro Green','#FFFFFF','#97BE97','#E4F1E4','#000000','#51B451','#E4F1E4','#000000','topbg.gif','catbar.gif','#000000','#000000','1px','97%','5px','Tahoma, Arial, Helvetica, Verdana','11px','logo.gif','images/progreen','images/smilies','#000000','#97BE97','square','100%','#51B451','1px','on','image','on','lastpost.gif','on','off','','','','','','images/ricons','','on')");

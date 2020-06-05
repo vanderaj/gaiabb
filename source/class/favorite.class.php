@@ -39,7 +39,7 @@ class favorite
 
     public $dirty;
 
-    public function favorite($tid = 0)
+    public function __construct($tid = 0)
     {
         if ($tid === 0) {
             $this->dirty = false;

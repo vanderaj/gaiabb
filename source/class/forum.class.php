@@ -35,7 +35,7 @@ if (!defined('IN_PROGRAM') && (defined('DEBUG') && DEBUG == false)) {
 class Forum
 {
 
-    public function Forum()
+    public function __construct()
     {
     }
 

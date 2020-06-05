@@ -39,7 +39,7 @@ class attachment
 
     public $attachments;
 
-    public function attachment()
+    public function __construct()
     {
     }
 

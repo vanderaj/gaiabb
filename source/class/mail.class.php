@@ -34,30 +34,20 @@ if (!defined('IN_PROGRAM') && (defined('DEBUG') && DEBUG == false)) {
 
 class MailSys
 {
-
     public $from;
-
     public $to;
-
     public $subject;
-
     public $message;
-
     public $headers;
-
     public $bcc;
-
     public $cc;
-
     public $smtp_conn;
 
     // Instantiate the class
-    public function MailSys()
+    public function __construct()
     {
         $OS = substr(PHP_OS, 0, 3);
         define('GAIABB_OS', $OS);
-
-        $this->bcc = '';
     }
 
     // Required calls
@@ -78,17 +68,6 @@ class MailSys
         $this->addHeader('From', $this->from);
         $this->addHeader('Reply-To', $email);
         return true;
-    }
-
-    public function addHeader($name = '', $value = '')
-    {
-        if (!empty($name) && !empty($value)) {
-            $break = "\n";
-
-            $this->headers .= $name . ': ' . $value . $break;
-            return true;
-        }
-        return false;
     }
 
     public function setTo($email)
@@ -120,19 +99,18 @@ class MailSys
         }
     }
 
-    // Optional calls
-
     public function setMessage($message = '')
     {
         $message = trim($message);
         if (!empty($message)) {
             $this->message = wordwrap($message, 70, "\n");
-            // $this->message = $message;
+            //$this->message = $message;
             return true;
         }
         return false;
     }
 
+    // Optional calls
     public function addBCC($email)
     {
         $email = trim($email);
@@ -155,30 +133,32 @@ class MailSys
         }
     }
 
-    // Committing calls
-
-    public function Send()
+    public function addHeader($name = '', $value = '')
     {
-        global $charset, $CONFIG;
+        if (!empty($name) && !empty($value)) {
+            $break = "\n";
 
-        $this->addHeader('Content-Type', 'text/plain; charset="' . $charset . '"');
-        $this->addHeader('X-Mailer', 'GaiaBB Forum Software');
-        $this->addHeader('X-AntiAbuse', 'Originating Site - ' . $_SERVER['HTTP_HOST']);
-        $this->addHeader('X-AntiAbuse', 'Request URI - ' . $_SERVER['PHP_SELF']);
-        $this->addHeader('X-AntiAbuse', 'Originating IP - ' . $_SERVER['REMOTE_ADDR']);
+            $this->headers .= $name . ': ' . $value . $break;
+            return true;
+        }
+        return false;
+    }
 
-        switch ($CONFIG['smtp_status']) {
-            case 'on':
-                $this->addHeader('X-AntiAbuse', 'Mail Method - SMTP');
-                if ($this->sendSMTP()) {
-                    return true;
-                }
-                break;
-            default:
-                $this->addHeader('X-AntiAbuse', 'Mail Method - MAIL');
-                if ($this->sendPHP()) {
-                    return true;
-                }
+    // Committing calls
+    public function sendPHP()
+    {
+        if (!empty($this->cc)) {
+            $this->cc = trim(implode(', ', $this->cc), ', ');
+            $this->addHeader('Cc', $this->cc);
+        }
+
+        if (!empty($this->bcc)) {
+            $this->bcc = trim(implode(', ', $this->bcc), ', ');
+            $this->addHeader('Bcc', $this->bcc);
+        }
+
+        if (mail($this->to, $this->subject, $this->message, $this->headers)) {
+            return true;
         }
         return false;
     }
@@ -212,45 +192,11 @@ class MailSys
         return false;
     }
 
-    public function dataSMTP()
+    public function disconnectSMTP()
     {
-        global $CONFIG;
-
         if (!empty($this->smtp_conn)) {
-            $this->SMTP_receive('CONNECT');
-            $this->SMTP_send('EHLO ' . $CONFIG['smtpServer']);
-            $this->SMTP_receive('EHLO');
-
-            if (!empty($CONFIG['smtpusername'])) {
-                $this->SMTP_send('AUTH LOGIN');
-                $this->SMTP_receive('AUTH LOGIN');
-                $this->SMTP_send(base64_encode($CONFIG['smtpusername']));
-                $this->SMTP_receive('USERNAME SENT');
-                $this->SMTP_send(base64_encode($CONFIG['smtppassword']));
-                $this->SMTP_receive('PASSWORD SENT');
-            }
-
-            $this->SMTP_send('MAIL FROM:' . $this->from);
-            $this->SMTP_receive('MAIL FROM');
-            $this->SMTP_send('RCPT TO:' . $this->to);
-
-            $bcc = array_unique(array_merge($this->bcc, $this->cc));
-
-            if (!empty($bcc)) {
-                foreach ($bcc as $rcpt_to) {
-                    $this->SMTP_send('RCPT TO:' . $rcpt_to);
-                }
-            }
-
-            $this->bcc = $bcc;
-
-            $this->SMTP_receive('RCPT TO (RECIPIENT)');
-            $this->SMTP_send('DATA');
-            $this->SMTP_receive('DATA');
-            $this->SMTP_send("To: $this->to\r\nFrom: $this->from\r\nSubject: $this->subject\r\n$this->headers\r\n$this->message", "\r\n.\r\n");
-            $this->SMTP_receive('Data');
-            $this->SMTP_send('QUIT');
-            $this->SMTP_receive('QUIT');
+            fclose($this->smtp_conn);
+            $this->smtp_conn = null;
             return true;
         }
         return false;
@@ -287,30 +233,70 @@ class MailSys
         }
     }
 
-    public function disconnectSMTP()
+    public function dataSMTP()
     {
+        global $CONFIG;
+
         if (!empty($this->smtp_conn)) {
-            fclose($this->smtp_conn);
-            $this->smtp_conn = null;
+            $this->SMTP_receive('CONNECT');
+            $this->SMTP_send('EHLO ' . $CONFIG['smtpServer']);
+            $this->SMTP_receive('EHLO');
+
+            if (!empty($CONFIG['smtpusername'])) {
+                $this->SMTP_send('AUTH LOGIN');
+                $this->SMTP_receive('AUTH LOGIN');
+                $this->SMTP_send(base64_encode($CONFIG['smtpusername']));
+                $this->SMTP_receive('USERNAME SENT');
+                $this->SMTP_send(base64_encode($CONFIG['smtppassword']));
+                $this->SMTP_receive('PASSWORD SENT');
+            }
+
+            $this->SMTP_send('MAIL FROM:' . $this->from);
+            $this->SMTP_receive('MAIL FROM');
+            $this->SMTP_send('RCPT TO:' . $this->to);
+
+            $this->bcc = array_unique(array_merge($this->bcc, $this->cc));
+
+            if (!empty($this->bcc)) {
+                foreach ($this->bcc as $rcpt_to) {
+                    $this->SMTP_send('RCPT TO:' . $rcpt_to);
+                }
+            }
+
+            $this->SMTP_receive('RCPT TO (RECIPIENT)');
+            $this->SMTP_send('DATA');
+            $this->SMTP_receive('DATA');
+            $this->SMTP_send("To: $this->to\r\nFrom: $this->from\r\nSubject: $this->subject\r\n$this->headers\r\n$this->message", "\r\n.\r\n");
+            $this->SMTP_receive('Data');
+            $this->SMTP_send('QUIT');
+            $this->SMTP_receive('QUIT');
             return true;
         }
         return false;
     }
 
-    public function sendPHP()
+    public function Send()
     {
-        if (!empty($this->cc)) {
-            $this->cc = trim(implode(', ', $this->cc), ', ');
-            $this->addHeader('Cc', $this->cc);
-        }
+        global $charset, $CONFIG;
 
-        if (!empty($this->bcc)) {
-            $this->bcc = trim(implode(', ', $this->bcc), ', ');
-            $this->addHeader('Bcc', $this->bcc);
-        }
+        $this->addHeader('Content-Type', 'text/plain; charset="' . $charset . '"');
+        $this->addHeader('X-Mailer', 'GaiaBB Forum Software');
+        $this->addHeader('X-AntiAbuse', 'Originating Site - ' . $_SERVER['HTTP_HOST']);
+        $this->addHeader('X-AntiAbuse', 'Request URI - ' . $_SERVER['PHP_SELF']);
+        $this->addHeader('X-AntiAbuse', 'Originating IP - ' . $_SERVER['REMOTE_ADDR']);
 
-        if (mail($this->to, $this->subject, $this->message, $this->headers)) {
-            return true;
+        switch ($CONFIG['smtp_status']) {
+            case 'on':
+                $this->addHeader('X-AntiAbuse', 'Mail Method - SMTP');
+                if ($this->sendSMTP()) {
+                    return true;
+                }
+                break;
+            default:
+                $this->addHeader('X-AntiAbuse', 'Mail Method - MAIL');
+                if ($this->sendPHP()) {
+                    return true;
+                }
         }
         return false;
     }
