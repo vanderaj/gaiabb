@@ -34,7 +34,22 @@ require_once 'include/topicadmin.inc.php';
 
 $kill = false;
 
-loadtpl('topicadmin_delete', 'topicadmin_openclose', 'topicadmin_move', 'topicadmin_topuntop', 'topicadmin_bump', 'topicadmin_empty', 'topicadmin_split_row', 'topicadmin_split', 'topicadmin_merge', 'topicadmin_threadprune_row', 'topicadmin_threadprune', 'topicadmin_copy', 'topicadmin_report', 'topicadmin_markthread');
+loadtpl(
+    'topicadmin_delete',
+    'topicadmin_openclose',
+    'topicadmin_move',
+    'topicadmin_topuntop',
+    'topicadmin_bump',
+    'topicadmin_empty',
+    'topicadmin_split_row',
+    'topicadmin_split',
+    'topicadmin_merge',
+    'topicadmin_threadprune_row',
+    'topicadmin_threadprune',
+    'topicadmin_copy',
+    'topicadmin_report',
+    'topicadmin_markthread'
+);
 
 $shadow = shadowfx();
 $meta = metaTags();
@@ -46,28 +61,27 @@ smcwcache();
 $thread = array();
 if ($tid > 0) {
     $query = $db->query("SELECT * FROM " . X_PREFIX . "threads WHERE tid = '$tid'");
-    $thread = $db->fetch_array($query);
+    $thread = $db->fetchArray($query);
     $thread['subject'] = stripslashes($thread['subject']);
     $thread['subject'] = shortenString(censor($thread['subject']), 100, X_SHORTEN_SOFT | X_SHORTEN_HARD, '...');
     $fid = $thread['fid'];
-    $db->free_result($query);
+    $db->freeResult($query);
 }
 
 $query = $db->query("SELECT * FROM " . X_PREFIX . "forums WHERE fid = '$fid'");
-$forums = $db->fetch_array($query);
-$db->free_result($query);
+$forums = $db->fetchArray($query);
+$db->freeResult($query);
 
 $query = $db->query("SELECT name, fid FROM " . X_PREFIX . "forums WHERE fid = '$forums[fup]'");
-$fup = $db->fetch_array($query);
-$db->free_result($query);
+$fup = $db->fetchArray($query);
+$db->freeResult($query);
 
 if (!empty($forums['type']) && isset($forums['type']) && $forums['type'] == 'forum') {
     nav('<a href="viewforum.php?fid=' . $fid . '">' . stripslashes($forums['name']) . '</a>');
     nav('<a href="viewtopic.php?tid=' . $tid . '">' . $thread['subject'] . '</a>');
     btitle(stripslashes($forums['name']));
     btitle(stripslashes($thread['subject']));
-} else
-if (isset($forums['type']) && isset($forums['type']) == 'sub') {
+} elseif (isset($forums['type']) && isset($forums['type']) == 'sub') {
     nav('<a href="viewforum.php?fid=' . $fup['fid'] . '">' . stripslashes($fup['name']) . '</a>');
     nav('<a href="viewforum.php?fid=' . $fid . '">' . stripslashes($forums['name']) . '</a>');
     nav('<a href="viewtopic.php?tid=' . $tid . '">' . $thread['subject'] . '</a>');
@@ -157,7 +171,7 @@ if ($kill) {
 
 eval('echo "' . template('header') . '";');
 
-$mod = new mod();
+$mod = new GaiaBB\Mod();
 
 if ($action != 'report' && $action != 'votepoll') {
     $mod->statuscheck($fid);
@@ -165,7 +179,6 @@ if ($action != 'report' && $action != 'votepoll') {
 
 switch ($action) {
     case 'report':
-
         // This get's unset by other code, so I've redefined it. ~martijn
         $pid = getRequestInt('pid');
 
@@ -204,12 +217,12 @@ switch ($action) {
         break;
     case 'close':
         $query = $db->query("SELECT closed FROM " . X_PREFIX . "threads WHERE fid = '$fid' AND tid = '$tid'");
-        if ($db->num_rows($query) == 0) {
-            $db->free_result($query);
+        if ($db->numRows($query) == 0) {
+            $db->freeResult($query);
             error($lang['textnothread'], false);
         }
         $closed = $db->result($query, 0);
-        $db->free_result($query);
+        $db->freeResult($query);
 
         if (onSubmit('closesubmit')) {
             $mod->doClose($closed);
@@ -228,11 +241,11 @@ switch ($action) {
         break;
     case 'top':
         $query = $db->query("SELECT topped FROM " . X_PREFIX . "threads WHERE fid = '$fid' AND tid = '$tid'");
-        if ($db->num_rows($query) == 0) {
+        if ($db->numRows($query) == 0) {
             error($lang['textnothread'], false);
         }
         $topped = $db->result($query, 0);
-        $db->free_result($query);
+        $db->freeResult($query);
 
         if (onSubmit('topsubmit')) {
             $mod->doTop($topped);

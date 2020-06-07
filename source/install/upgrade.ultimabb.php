@@ -28,9 +28,11 @@ if (!defined('IN_PROGRAM') && (defined('DEBUG') && DEBUG == false)) {
     exit('This file is not designed to be called directly');
 }
 
+namespace GaiaBB;
+
 require_once "upgrade.model.php";
 
-class upgrade_ultimaBB extends Upgrade
+class UpgradeUltimaBB extends Upgrade
 {
     public function __construct($indb, $in_prgbar)
     {
@@ -38,14 +40,14 @@ class upgrade_ultimaBB extends Upgrade
     }
 
     /**
-     * rename_tables() - rename database tables
+     * renameTables() - rename database tables
      *
      * GaiaBB has same table names as UltimaBB
      *
      * @param $prg - progress percentage
      * @return boolean - completed
      */
-    public function rename_tables($prg)
+    public function renameTables($prg)
     {
         setBar($this->prgbar, $prg);
 
@@ -53,44 +55,44 @@ class upgrade_ultimaBB extends Upgrade
     }
 
     /**
-     * add_tables() - add any new tables
+     * addTables() - add any new tables
      *
      * GaiaBB checks to see if FAQ tables exist and puts them back if not
      *
      * @param $prg - progress percentage
      * @return boolean - completed
      */
-    public function add_tables($prg)
+    public function addTables($prg)
     {
         setBar($this->prgbar, $prg);
         $this->prgbar += 0.01;
 
-        if (!$this->table_exists('faq')) {
+        if (!$this->tableExists('faq')) {
             schema_create_faq($this->db, X_PREFIX);
             schema_insert_faq($this->db, X_PREFIX);
         }
         setBar($this->prgbar, $prg);
         $this->prgbar += 0.01;
 
-        if (!$this->table_exists('guestcount')) {
+        if (!$this->tableExists('guestcount')) {
             schema_create_guestcount($this->db, X_PREFIX);
         }
         setBar($this->prgbar, $prg);
         $this->prgbar += 0.01;
 
-        if (!$this->table_exists('pluglinks')) {
+        if (!$this->tableExists('pluglinks')) {
             schema_create_pluglinks($this->db, X_PREFIX);
         }
         setBar($this->prgbar, $prg);
         $this->prgbar += 0.01;
 
-        if (!$this->table_exists('robotcount')) {
+        if (!$this->tableExists('robotcount')) {
             schema_create_robotcount($this->db, X_PREFIX);
         }
         setBar($this->prgbar, $prg);
         $this->prgbar += 0.01;
 
-        if (!$this->table_exists('subscriptions')) {
+        if (!$this->tableExists('subscriptions')) {
             schema_create_subscriptions($this->db, X_PREFIX);
         }
         setBar($this->prgbar, $prg);
@@ -100,31 +102,31 @@ class upgrade_ultimaBB extends Upgrade
     }
 
     /**
-     * delete_tables() - delete any unnecessary tables
+     * deleteTables() - delete any unnecessary tables
      *
      * GaiaBB removes a calendar and events from the UltimaBB database
      *
      * @param $prg - progress percentage
      * @return boolean - completed
      */
-    public function delete_tables($prg)
+    public function deleteTables($prg)
     {
         setBar($this->prgbar, $prg);
         $this->prgbar += 0.01;
 
-        if ($this->table_exists('calendar')) {
+        if ($this->tableExists('calendar')) {
             $this->db->query("DROP TABLE `" . X_PREFIX . "calendar`");
         }
         setBar($this->prgbar, $prg);
         $this->prgbar += 0.01;
 
-        if ($this->table_exists('events')) {
+        if ($this->tableExists('events')) {
             $this->db->query("DROP TABLE `" . X_PREFIX . "events`");
         }
         setBar($this->prgbar, $prg);
         $this->prgbar += 0.01;
 
-        if ($this->table_exists('holidays')) {
+        if ($this->tableExists('holidays')) {
             $this->db->query("DROP TABLE `" . X_PREFIX . "holidays`");
         }
         setBar($this->prgbar, $prg);
@@ -134,20 +136,19 @@ class upgrade_ultimaBB extends Upgrade
     }
 
     /**
-     * alter_tables() - alter database tables
+     * alterTables() - alter database tables
      *
      * Change the schema from UltimaBB to GaiaBB's
      *
      * @param $prg - progress percentage
      * @return boolean - completed
      */
-    public function alter_tables($prg)
+    public function alterTables($prg)
     {
         setBar($this->prgbar, $prg);
         $this->prgbar += 0.05;
 
         switch ($this->schemaver) {
-
             case 34:
                 $query = "ALTER TABLE `" . X_PREFIX . "forums` ";
                 $query .= "CHANGE `postperm` `postperm` varchar(7) NOT NULL DEFAULT ''";
@@ -188,14 +189,14 @@ class upgrade_ultimaBB extends Upgrade
     }
 
     /**
-     * migrate_data() - migrate data from UltimaBB
+     * migrateData() - migrate data from UltimaBB
      *
      * As UltimaBB and GaiaBB are close cousins, main thing is to reset templates
      *
      * @param $prg - progress percentage
      * @return boolean - completed
      */
-    public function migrate_data($prg)
+    public function migrateData($prg)
     {
         setBar($this->prgbar, $prg);
         $prg += 0.1;
@@ -208,14 +209,14 @@ class upgrade_ultimaBB extends Upgrade
     }
 
     /**
-     * migrate_settings() - migrate settings from UltimaBB
+     * migrateSettings() - migrate settings from UltimaBB
      *
      * As UltimaBB and GaiaBB are close cousins, nothing to do
      *
      * @param $prg - progress percentage
      * @return boolean - completed
      */
-    public function migrate_settings($prg)
+    public function migrateSettings($prg)
     {
         return true;
     }

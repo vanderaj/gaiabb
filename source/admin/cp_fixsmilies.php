@@ -29,6 +29,7 @@
  *
  **/
 
+// phpcs:disable PSR1.Files.SideEffects
 define('ROOT', '../');
 define('ROOTINC', '../include/');
 define('ROOTCLASS', '../class/');
@@ -104,13 +105,13 @@ function doPanel()
 
     $i = 0;
     $query = $db->query("SELECT code, COUNT(code) AS count FROM " . X_PREFIX . "smilies WHERE type = 'smiley' GROUP BY code");
-    while (($smilies = $db->fetch_array($query)) != false) {
+    while (($smilies = $db->fetchArray($query)) != false) {
         if ($smilies['count'] > 1) {
             $db->query("DELETE FROM " . X_PREFIX . "smilies WHERE code = '" . $smilies['code'] . "' ORDER BY id DESC LIMIT " . ($smilies['count'] - 1) . "");
             $i++;
         }
     }
-    $db->free_result($query);
+    $db->freeResult($query);
     cp_message($lang['fixsmiliesmsg'], false, '', '</td></tr></table>', 'index.php', true, false, true);
 }
 

@@ -32,10 +32,12 @@ if (!defined('IN_PROGRAM') && (defined('DEBUG') && DEBUG == false)) {
     exit('This file is not designed to be called directly');
 }
 
-class formHelper
+namespace GaiaBB;
+
+class FormHelper
 {
 
-    public function formHelper()
+    public function __construct()
     {
     }
 
@@ -52,7 +54,7 @@ class formHelper
                 </select></td>
         </tr>
         <?php
-}
+    }
 
     public static function formTextBox($setname, $setvarname, $setvalue, $setcols)
     {
@@ -66,7 +68,7 @@ class formHelper
             </td>
         </tr>
         <?php
-}
+    }
 
     public static function formTextBox2($setname, $setrows, $setvarname, $setcols, $setvalue)
     {
@@ -79,7 +81,7 @@ class formHelper
                         cols="<?php echo $setcols ?>"><?php echo $setvalue ?></textarea></td>
         </tr>
         <?php
-}
+    }
 
     public static function formTextPassBox($setname, $varname, $value, $size, $pass = false)
     {
@@ -88,23 +90,23 @@ class formHelper
         <tr class="tablerow">
             <td bgcolor="<?php echo $THEME['altbg1'] ?>" width="50%"><?php echo $setname ?></td>
             <?php
-if ($pass) {
-            ?>
+            if ($pass) {
+                ?>
                 <td bgcolor="<?php echo $THEME['altbg2'] ?>" width="50%"><input
                             type="password" AUTOCOMPLETE="off" size="<?php echo $size ?>"
                             value="<?php echo $value ?>" name="<?php echo $varname ?>"/></td>
                 <?php
-} else {
-            ?>
+            } else {
+                ?>
                 <td bgcolor="<?php echo $THEME['altbg2'] ?>" width="50%"><input
                             type="text" size="<?php echo $size ?>" value="<?php echo $value ?>"
                             name="<?php echo $varname ?>"/></td>
                 <?php
-}
-        ?>
+            }
+            ?>
         </tr>
         <?php
-}
+    }
 
     public static function formSelectList($setname, $boxname, $varnames, $values, $checked, $multi = true)
     {
@@ -112,22 +114,26 @@ if ($pass) {
 
         foreach ($varnames as $key => $val) {
             if (isset($checked[$key]) && $checked[$key] !== true) {
-                $optionlist[] = '<option value="' . $values[$key] . '">' . $varnames[$key] . '</option>';
+                $optionlist[] = '<option value="' . $values[$key] .
+                '">' . $varnames[$key] . '</option>';
             } else {
-                $optionlist[] = '<option value="' . $values[$key] . '" selected="selected">' . $varnames[$key] . '</option>';
+                $optionlist[] = '<option value="' . $values[$key] .
+                    '" selected="selected">' . $varnames[$key] . '</option>';
             }
         }
         $optionlist = implode("\n", $optionlist);
         ?>
         <tr class="tablerow">
             <td bgcolor="<?php echo $THEME['altbg1'] ?>" width="50%" valign="top"><?php echo $setname ?></td>
-            <td bgcolor="<?php echo $THEME['altbg2'] ?>" width="50%"><select
-                    <?php echo ($multi ? 'multiple="multiple"' : '') ?>
-                        name="<?php echo $boxname ?><?php echo ($multi ? '[]' : '') ?>"><?php echo $optionlist ?></select>
+            <td bgcolor="<?php echo $THEME['altbg2'] ?>" width="50%">
+            <select
+                <?php echo ($multi ? 'multiple="multiple"' : '') ?>
+                    name="<?php echo $boxname ?><?php echo ($multi ? '[]' : '') ?>"><?php echo $optionlist ?>
+            </select>
             </td>
         </tr>
         <?php
-}
+    }
 
     public static function formSelectYesNo($setname, $varname, $check1, $check2)
     {
@@ -142,7 +148,7 @@ if ($pass) {
                 </select></td>
         </tr>
         <?php
-}
+    }
 
     public static function formCheckBox($varname, $value, $checked, $setname)
     {
@@ -152,7 +158,7 @@ if ($pass) {
         <input type="checkbox" name="<?php echo $varname ?>"
                value="<?php echo $value ?>" <?php echo $checked ?> /><?php echo $setname ?><br/>
         <?php
-}
+    }
 
     public static function getSettingOnOffHtml($setting, &$on, &$off)
     {

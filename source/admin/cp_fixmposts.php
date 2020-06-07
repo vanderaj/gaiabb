@@ -104,7 +104,7 @@ function doPanel()
 
     $oToken->assertToken();
 
-    $memObj = new member();
+    $memObj = new GaiaBB\Member();
     $memObj->fixPostTotals();
 
     cp_message($lang['tool_mempost'], false, '', '</td></tr></table>', 'index.php', true, false, true);

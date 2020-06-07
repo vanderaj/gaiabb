@@ -61,8 +61,8 @@ switch ($t_extension) {
     case 'jpg':
     case 'jpeg':
     case 'png':
-        $lang['toppedprefix'] = '<img src="' . $THEME['imgdir'] . '/' . $lang['toppedprefix'] . '" alt="' . $lang['toppedprefix'] .
-            '" title="' . $lang['toppedprefix'] . '" border="0px" />';
+        $lang['toppedprefix'] = '<img src="' . $THEME['imgdir'] . '/' . $lang['toppedprefix'] . '" alt="'
+            . $lang['toppedprefix'] . '" title="' . $lang['toppedprefix'] . '" border="0px" />';
         break;
 }
 
@@ -72,8 +72,8 @@ switch ($p_extension) {
     case 'jpg':
     case 'jpeg':
     case 'png':
-        $lang['pollprefix'] = '<img src="' . $THEME['imgdir'] . '/' . $lang['pollprefix'] . '" alt="' . $lang['pollprefix'] .
-            '" title="' . $lang['pollprefix'] . '" border="0px" />';
+        $lang['pollprefix'] = '<img src="' . $THEME['imgdir'] . '/' . $lang['pollprefix'] .
+            '" alt="' . $lang['pollprefix'] . '" title="' . $lang['pollprefix'] . '" border="0px" />';
         break;
 }
 
@@ -165,8 +165,10 @@ if ($CONFIG['dotfolders'] == 'on' && X_MEMBER) {
 $threadcount = 0;
 $threads = '';
 $fidarray = array();
-$query = $db->query("SELECT DISTINCT f.fid, f.password, f.private, f.userlist FROM (" . X_PREFIX . "threads t, " . X_PREFIX . "forums f) LEFT JOIN " . X_PREFIX . "lastposts l ON t.tid = l.tid WHERE l.dateline >= '$srchfrom' AND t.fid = f.fid");
-while (($forums = $db->fetch_array($query)) != false) {
+$query = $db->query("SELECT DISTINCT f.fid, f.password, f.private, f.userlist FROM (" .
+    X_PREFIX . "threads t, " . X_PREFIX . "forums f) LEFT JOIN " .
+    X_PREFIX . "lastposts l ON t.tid = l.tid WHERE l.dateline >= '$srchfrom' AND t.fid = f.fid");
+while (($forums = $db->fetchArray($query)) != false) {
     $authorization = privfcheck($forums['private'], $forums['userlist']);
     if ($authorization == true || X_SADMIN) {
         $fidpw = isset($_COOKIE['fidpw' . $forums['fid']]) ? $_COOKIE['fidpw' . $forums['fid']] : '';
@@ -175,11 +177,17 @@ while (($forums = $db->fetch_array($query)) != false) {
         }
     }
 }
-$db->free_result($query);
+$db->freeResult($query);
 
 $fidlist = "'" . implode("', '", $fidarray) . "'";
-$query = $db->query("SELECT $dotadd1 t.*, m.uid as authorid, f.name, l.uid as lp_uid, l.username as lp_user, l.dateline as lp_dateline, l.pid as lp_pid FROM (" . X_PREFIX . "threads t, " . X_PREFIX . "forums f) $dotadd2 LEFT JOIN " . X_PREFIX . "members m ON t.author = m.username LEFT JOIN " . X_PREFIX . "lastposts l ON (t.tid = l.tid) WHERE $srchtype l.dateline >= '$srchfrom' AND t.fid = f.fid AND f.fid IN ($fidlist) ORDER BY $srchsort $srchorder LIMIT $start_limit, " . $self['tpp']);
-while (($thread = $db->fetch_array($query)) != false) {
+$query = $db->query("SELECT $dotadd1 t.*, m.uid as authorid, f.name, l.uid as " .
+    "lp_uid, l.username as lp_user, l.dateline as lp_dateline, l.pid as lp_pid FROM (" .
+    X_PREFIX . "threads t, " .
+    X_PREFIX . "forums f) $dotadd2 LEFT JOIN " .
+    X_PREFIX . "members m ON t.author = m.username LEFT JOIN " .
+    X_PREFIX . "lastposts l ON (t.tid = l.tid) WHERE $srchtype l.dateline >= '$srchfrom' AND " .
+    "t.fid = f.fid AND f.fid IN ($fidlist) ORDER BY $srchsort $srchorder LIMIT $start_limit, " . $self['tpp']);
+while (($thread = $db->fetchArray($query)) != false) {
     $thread['subject'] = shortenString(censor($thread['subject']), 80, X_SHORTEN_SOFT | X_SHORTEN_HARD, '...');
     $tmOffset = ($self['timeoffset'] * 3600) + $self['daylightsavings'];
 
@@ -292,7 +300,7 @@ while (($thread = $db->fetch_array($query)) != false) {
     $prefix = '';
     $threadcount++;
 }
-$db->free_result($query);
+$db->freeResult($query);
 
 if ($threadcount == 0) {
     eval('$threads = "' . template('topic_activity_none') . '";');
@@ -397,9 +405,13 @@ if ($CONFIG['dotfolders'] == 'on' && X_MEMBER) {
     eval('$dotlegend = "' . template('topic_activity_dotfolders') . '";');
 }
 
-$totalquery = $db->query("SELECT $dotadd1 t.*, f.password, f.private, f.userlist, f.name FROM " . X_PREFIX . "threads t $dotadd2, " . X_PREFIX . "forums f, " . X_PREFIX . "lastposts l WHERE l.tid = t.tid AND $srchtype l.dateline >= '$srchfrom' AND t.fid = f.fid AND f.fid IN ($fidlist)");
-$total = $db->num_rows($totalquery);
-$db->free_result($totalquery);
+$totalquery = $db->query("SELECT $dotadd1 t.*, f.password, f.private, f.userlist, f.name FROM " .
+    X_PREFIX . "threads t $dotadd2, " .
+    X_PREFIX . "forums f, " .
+    X_PREFIX . "lastposts l WHERE l.tid = t.tid AND " .
+    $srchtype . " l.dateline >= '$srchfrom' AND t.fid = f.fid AND f.fid IN ($fidlist)");
+$total = $db->numRows($totalquery);
+$db->freeResult($totalquery);
 
 $mpurl = 'activity.php?type=' . $type . '&amp;days=' . $days . '&amp;sort=' . $sort . '&amp;order=' . $order;
 $multipage = '';

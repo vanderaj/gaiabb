@@ -64,7 +64,7 @@ if ($cmassmod) {
     $tids = (count($threads) > 1) ? implode(', ', $threads) : (int) $threads[0][0];
 }
 
-$mod = new mod();
+$mod = new GaiaBB\Mod();
 $mod->statuscheck($fid);
 
 function doEmptySubmit($fid, $tids)
@@ -76,8 +76,8 @@ function doEmptySubmit($fid, $tids)
 
     foreach ($tids as $post) {
         $query = $db->query("SELECT pid, author FROM " . X_PREFIX . "posts WHERE tid = '$post' ORDER BY pid ASC LIMIT 1");
-        $posts = $db->fetch_array($query);
-        $db->free_result($query);
+        $posts = $db->fetchArray($query);
+        $db->freeResult($query);
         $leavealone[] = $posts['pid'];
     }
 
@@ -104,16 +104,16 @@ function doDeleteSubmit($fid, $tids)
 
     $member = array();
     $query = $db->query("SELECT * FROM " . X_PREFIX . "posts WHERE tid IN ($tids)");
-    while (($result = $db->fetch_array($query)) != false) {
+    while (($result = $db->fetchArray($query)) != false) {
         $db->query("UPDATE " . X_PREFIX . "members SET postnum = postnum-1 WHERE username = '$result[author]'");
     }
-    $db->free_result($query);
+    $db->freeResult($query);
 
     $mod_tids = explode(', ', $tids);
     foreach ($mod_tids as $tid) {
         $query = $db->query("SELECT subject FROM " . X_PREFIX . "threads WHERE tid = '$tid'");
         $subject = $db->result($query, 0);
-        $db->free_result($query);
+        $db->freeResult($query);
         $mod->log($self['username'], $action . ": " . $subject, $fid, $tid);
     }
 
@@ -136,7 +136,7 @@ function doTopSubmit($fid, $tids)
     $top = array();
     $untop = array();
     $query = $db->query("SELECT tid, topped FROM " . X_PREFIX . "threads WHERE fid = '$fid' AND tid IN ($tids)");
-    while (($thread = $db->fetch_array($query)) != false) {
+    while (($thread = $db->fetchArray($query)) != false) {
         if ($thread['topped'] == 1) {
             $untop[] = $thread['tid'];
             $act = 'untop';
@@ -166,7 +166,7 @@ function doCloseSubmit($fid, $tids)
     $open = array();
 
     $query = $db->query("SELECT tid, closed FROM " . X_PREFIX . "threads WHERE fid = '$fid' AND tid IN ($tids)");
-    while (($thread = $db->fetch_array($query)) != false) {
+    while (($thread = $db->fetchArray($query)) != false) {
         if ($thread['closed'] == 'yes') {
             $open[] = $thread['tid'];
             $act = 'open';
@@ -242,7 +242,7 @@ switch ($action) {
 
         if (onSubmit('copysubmit')) {
             $query = $db->query("SELECT * FROM " . X_PREFIX . "threads WHERE tid IN ($tids)");
-            while (($thread = $db->fetch_array($query)) != false) {
+            while (($thread = $db->fetchArray($query)) != false) {
                 foreach ($thread as $key => $val) {
                     switch ($key) {
                         case 'tid':
@@ -277,14 +277,14 @@ switch ($action) {
                 $values = "'" . implode("', '", $vals) . "'";
 
                 $db->query("INSERT INTO " . X_PREFIX . "threads ($columns) VALUES ($values)");
-                $newtid = $db->insert_id();
+                $newtid = $db->insertId();
                 $db->query("INSERT INTO " . X_PREFIX . "lastposts (tid, uid, username, dateline, pid) SELECT '$newtid', uid, username, dateline, pid FROM " . X_PREFIX . "lastposts where tid = '$tid'");
 
                 $cols = array();
                 $vals = array();
 
                 $query2 = $db->query("SELECT * FROM " . X_PREFIX . "posts WHERE tid = '$tid' ORDER BY pid ASC");
-                while (($post = $db->fetch_array($query2)) != false) {
+                while (($post = $db->fetchArray($query2)) != false) {
                     $post['fid'] = $newfid;
                     $post['tid'] = $newtid;
 
@@ -305,12 +305,12 @@ switch ($action) {
                     $vals = array();
 
                     $db->query("INSERT INTO " . X_PREFIX . "posts ($columns) VALUES ($values)");
-                    $newpid = $db->insert_id();
+                    $newpid = $db->insertId();
                     $db->query("INSERT INTO " . X_PREFIX . "attachments (`tid`,`pid`,`filename`,`filetype`,`filesize`,`attachment`,`downloads`) SELECT '$newtid','$newpid',`filename`,`filetype`,`filesize`,`attachment`,`downloads` FROM " . X_PREFIX . "attachments WHERE pid = '$oldPid'");
                 }
-                $db->free_result($query2);
+                $db->freeResult($query2);
             }
-            $db->free_result($query);
+            $db->freeResult($query);
 
             updateforumcount($newfid);
 
@@ -358,9 +358,9 @@ switch ($action) {
             $type = formVar('type');
             if ($type == 'redirect') {
                 $query = $db->query("SELECT * FROM " . X_PREFIX . "threads WHERE tid IN ($tids)");
-                while (($info = $db->fetch_array($query)) != false) {
+                while (($info = $db->fetchArray($query)) != false) {
                     $db->query("INSERT INTO " . X_PREFIX . "threads (tid, fid, subject, icon, views, replies, author, closed, topped) VALUES('', '$info[fid]', '$info[subject]', '', '-', '-', '$info[author]', 'moved|$info[tid]', '$info[topped]')");
-                    $ntid = $db->insert_id();
+                    $ntid = $db->insertId();
                     $db->query("INSERT INTO " . X_PREFIX . "posts (fid, tid, author, message, subject) VALUES ('$info[fid]', '$ntid', '$info[author]', '$info[tid]', '$info[subject]')");
                     $db->query("INSERT INTO " . X_PREFIX . "lastposts (tid, uid, username, dateline, pid) SELECT '$ntid', uid, username, dateline, pid FROM " . X_PREFIX . "lastposts WHERE tid = '$info[tid]'");
                 }
@@ -375,8 +375,8 @@ switch ($action) {
             $tids = explode(', ', $tids);
             foreach ($tids as $tid) {
                 $query = $db->query("SELECT subject FROM " . X_PREFIX . "threads WHERE tid = '$tid'");
-                $subject = $db->fetch_array($query);
-                $db->free_result($query);
+                $subject = $db->fetchArray($query);
+                $db->freeResult($query);
 
                 $f = "$fid -> $moveto";
                 $mod->log($self['username'], $action . ': ' . $subject['subject'], $f, $tid);
@@ -405,14 +405,14 @@ switch ($action) {
 
             foreach ($tids as $tid) {
                 $query = $db->query("SELECT replies, fid FROM " . X_PREFIX . "threads WHERE tid = '$tid'");
-                if ($db->num_rows($query) == 0) {
+                if ($db->numRows($query) == 0) {
                     error($lang['mergenothread'], false);
                 }
             }
-            $db->free_result($query);
+            $db->freeResult($query);
 
             $query = $db->query("SELECT replies, fid FROM " . X_PREFIX . "threads WHERE tid = '$othertid'");
-            if ($db->num_rows($query) == 0) {
+            if ($db->numRows($query) == 0) {
                 error($lang['mergenothread'], false);
             }
 
@@ -434,12 +434,12 @@ switch ($action) {
                 error($lang['massmod_notids'], false);
             }
             $query = $db->query("SELECT mt_open, mt_close FROM " . X_PREFIX . "forums WHERE fid = '$fid'");
-            $forums = $db->fetch_array($query);
-            $db->free_result($query);
+            $forums = $db->fetchArray($query);
+            $db->freeResult($query);
 
             $query = $db->query("SELECT * FROM " . X_PREFIX . "threads WHERE tid IN ($tids)");
-            $thread = $db->fetch_array($query);
-            $db->free_result($query);
+            $thread = $db->fetchArray($query);
+            $db->freeResult($query);
 
             $openprefixes = explode(',', $forums['mt_open']);
             for ($i = 0; $i < count($openprefixes); $i++) {
@@ -473,8 +473,8 @@ switch ($action) {
         if (onSubmit('markthreadsubmit')) {
             $newmarkthread = formVar('newmarkthread');
             $query = $db->query("SELECT mt_open, mt_close FROM " . X_PREFIX . "forums WHERE fid = '$fid'");
-            $forums = $db->fetch_array($query);
-            $db->free_result($query);
+            $forums = $db->fetchArray($query);
+            $db->freeResult($query);
 
             $openprefixes = explode(',', $forums['mt_open']);
             for ($i = 0; $i < count($openprefixes); $i++) {
@@ -504,8 +504,8 @@ switch ($action) {
             $tids = explode(', ', $tids);
             foreach ($tids as $tid) {
                 $query = $db->query("SELECT p.*, t.tid FROM " . X_PREFIX . "posts p LEFT JOIN " . X_PREFIX . "threads t ON p.tid = t.tid WHERE p.tid = '$tid' ORDER BY dateline LIMIT 0, 1");
-                $post = $db->fetch_array($query);
-                $db->free_result($query);
+                $post = $db->fetchArray($query);
+                $db->freeResult($query);
 
                 foreach ($prefixes as $prefix) {
                     $prefix = trim($prefix);

@@ -62,14 +62,14 @@ function viewPanel()
     $select = array();
     $select[] = '<select name="postword"><option value=""></option>';
     $query = $db->query("SELECT find FROM " . X_PREFIX . "words");
-    while (($censors = $db->fetch_array($query)) != false) {
+    while (($censors = $db->fetchArray($query)) != false) {
         if (!empty($censors['find'])) {
             $select[] = '<option value="' . $censors['find'] . '">' . $censors['find'] . '</option>';
         }
     }
     $select[] = '</select>';
     $select = implode("\n", $select);
-    $db->free_result($query);
+    $db->freeResult($query);
     ?>
     <form method="post" action="cp_search.php">
         <input type="hidden" name="token"
@@ -139,17 +139,17 @@ function doPanel()
 
     if (!empty($userip) && is_ip($userip)) {
         $query = $db->query("SELECT * FROM " . X_PREFIX . "members WHERE regip LIKE '%$userip%'");
-        while (($users = $db->fetch_array($query)) != false) {
+        while (($users = $db->fetchArray($query)) != false) {
             $link = '../viewprofile.php?member=' . $users['username'] . '';
             $list[] = '<a href="' . $link . '">' . stripslashes($users['username']) . '<br />';
             $found++;
         }
-        $db->free_result($query);
+        $db->freeResult($query);
     }
 
     if (!empty($postip) && is_ip($postip)) {
         $query = $db->query("SELECT * FROM " . X_PREFIX . "posts WHERE useip LIKE '%$postip%'");
-        while (($users = $db->fetch_array($query)) != false) {
+        while (($users = $db->fetchArray($query)) != false) {
             $link = '../viewtopic.php?tid=' . $users['tid'] . '#pid' . $users['pid'] . '';
             if (!empty($users['subject'])) {
                 $list[] = '<a href="' . $link . '">' . stripslashes($users['subject']) . '<br />';
@@ -158,22 +158,22 @@ function doPanel()
             }
             $found++;
         }
-        $db->free_result($query);
+        $db->freeResult($query);
     }
 
     if (!empty($profileword)) {
         $query = $db->query("SELECT * FROM " . X_PREFIX . "members WHERE bio LIKE '%$profileword%' OR sig LIKE '%$profileword%'");
-        while (($users = $db->fetch_array($query)) != false) {
+        while (($users = $db->fetchArray($query)) != false) {
             $link = '../viewprofile.php?member=' . $users['username'] . '';
             $list[] = '<a href="' . $link . '">' . stripslashes($users['username']) . '<br />';
             $found++;
         }
-        $db->free_result($query);
+        $db->freeResult($query);
     }
 
     if (!empty($postword)) {
         $query = $db->query("SELECT * FROM " . X_PREFIX . "posts WHERE subject LIKE '%$postword%' OR message LIKE '%$postword%'");
-        while (($users = $db->fetch_array($query)) != false) {
+        while (($users = $db->fetchArray($query)) != false) {
             $link = '../viewtopic.php?tid=' . $users['tid'] . '#pid' . $users['pid'] . '';
             if (!empty($users['subject'])) {
                 $list[] = '<a href="' . $link . '">' . stripslashes($users['subject']) . '<br />';
@@ -182,7 +182,7 @@ function doPanel()
             }
             $found++;
         }
-        $db->free_result($query);
+        $db->freeResult($query);
     }
     ?>
     <table cellspacing="0px" cellpadding="0px" border="0px" width="100%"
@@ -197,8 +197,8 @@ function doPanel()
                         </td>
                     </tr>
                     <?php
-foreach ($list as $num => $val) {
-        ?>
+                    foreach ($list as $num => $val) {
+                        ?>
                         <tr class="tablerow" width="5%">
                             <td align="left" bgcolor="<?php echo $THEME['altbg2'] ?>"><strong><?php echo ($num + 1) ?>
                                     .</strong>
@@ -209,8 +209,8 @@ foreach ($list as $num => $val) {
                             </td>
                         </tr>
                         <?php
-}
-    ?>
+                    }
+                    ?>
                 </table>
             </td>
         </tr>

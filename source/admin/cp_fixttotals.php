@@ -29,6 +29,7 @@
  *
  **/
 
+// phpcs:disable PSR1.Files.SideEffects
 define('ROOT', '../');
 define('ROOTINC', '../include/');
 define('ROOTCLASS', '../class/');
@@ -103,12 +104,12 @@ function doPanel()
     $oToken->assertToken();
 
     $queryt = $db->query("SELECT tid, fid FROM " . X_PREFIX . "threads");
-    while (($threads = $db->fetch_array($queryt)) != false) {
+    while (($threads = $db->fetchArray($queryt)) != false) {
         $query = $db->query("SELECT count(*) FROM " . X_PREFIX . "posts WHERE tid = '$threads[tid]' AND fid = '$threads[fid]'");
         $replynum = $db->result($query, 0) - 1;
         $db->query("UPDATE " . X_PREFIX . "threads SET replies = '$replynum' WHERE tid = '$threads[tid]'");
     }
-    $db->free_result($queryt);
+    $db->freeResult($queryt);
     cp_message($lang['tool_threadtotal'], false, '', '</td></tr></table>', 'index.php', true, false, true);
 }
 

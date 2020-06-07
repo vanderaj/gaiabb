@@ -134,7 +134,7 @@ function repair_forum($path, $prgbar)
 
     define('X_PREFIX', $dbname . '.' . $tablepre);
 
-    $db = new mysql5Php5();
+    $db = new GaiaBB\MariaDB();
     $db->connect($dbhost, $dbuser, $dbpw, $dbname, $pconnect, true);
 
     setBar($prgbar, 0.4);

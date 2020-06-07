@@ -39,6 +39,6 @@ $dbname = 'DBNAME'; // Name of your database
 $dbuser = 'DBUSER'; // Username used to access it
 $dbpw = 'DBPW'; // Password used to access it
 $dbhost = 'localhost'; // Database host, usually 'localhost'
-$database = 'mysql5php5.class'; // Database type. mysql5php5.class
+$database = 'mariadb.class'; // Database type. mariadb.class is the only one supported
 $pconnect = 0; // Persistent connection, 1 = on, 0 = off, use if 'too many connections'-errors appear
 $tablepre = 'gaiabb_'; // Used in case you want to host multiple forums in the one database

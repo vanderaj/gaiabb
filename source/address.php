@@ -57,7 +57,7 @@ if (X_GUEST || isset($self['status']) && $self['status'] == 'Banned') {
     error($lang['pmnotloggedin']);
 }
 
-$addr = new Address();
+$addr = new GaiaBB\Address();
 
 switch ($action) {
     case 'add':

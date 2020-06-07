@@ -36,7 +36,55 @@ if (X_GUEST) {
     redirect('login.php', 0);
 }
 
-loadtpl('usercp_profile', 'usercp_options', 'usercp_favs_row', 'usercp_favs_none', 'usercp_favs', 'usercp_favs_button', 'usercp_subscriptions_row', 'usercp_subscriptions_none', 'usercp_subscriptions', 'usercp_subscriptions_button', 'usercp_home_pm_row', 'usercp_home_pm_none', 'usercp_home', 'usercp_home_favs_none', 'usercp_home_favs_row', 'usercp_home_layout', 'usercp_home_subscriptions_row', 'usercp_home_subscriptions_none', 'usercp_outputmsg', 'usercp_email', 'usercp_avatar', 'usercp_avatarurl', 'usercp_avataruser', 'usercp_avatarhidden', 'usercp_avatarsubmit', 'usercp_avatarnone', 'usercp_password', 'usercp_signature', 'usercp_gallery', 'usercp_gallery_multipage', 'usercp_home_themes', 'usercp_custom', 'usercp_custom_none', 'usercp_options_aka', 'usercp_notepad', 'functions_smilieinsert', 'functions_smilieinsert_smilie', 'functions_bbcodeinsert', 'functions_bbcode', 'usercp_sig_preview', 'usercp_home_pm', 'usercp_photourl', 'usercp_photouser', 'usercp_photohidden', 'usercp_photosubmit', 'usercp_photonone', 'usercp_photo');
+loadtpl(
+    'usercp_profile',
+    'usercp_options',
+    'usercp_favs_row',
+    'usercp_favs_none',
+    'usercp_favs',
+    'usercp_favs_button',
+    'usercp_subscriptions_row',
+    'usercp_subscriptions_none',
+    'usercp_subscriptions',
+    'usercp_subscriptions_button',
+    'usercp_home_pm_row',
+    'usercp_home_pm_none',
+    'usercp_home',
+    'usercp_home_favs_none',
+    'usercp_home_favs_row',
+    'usercp_home_layout',
+    'usercp_home_subscriptions_row',
+    'usercp_home_subscriptions_none',
+    'usercp_outputmsg',
+    'usercp_email',
+    'usercp_avatar',
+    'usercp_avatarurl',
+    'usercp_avataruser',
+    'usercp_avatarhidden',
+    'usercp_avatarsubmit',
+    'usercp_avatarnone',
+    'usercp_password',
+    'usercp_signature',
+    'usercp_gallery',
+    'usercp_gallery_multipage',
+    'usercp_home_themes',
+    'usercp_custom',
+    'usercp_custom_none',
+    'usercp_options_aka',
+    'usercp_notepad',
+    'functions_smilieinsert',
+    'functions_smilieinsert_smilie',
+    'functions_bbcodeinsert',
+    'functions_bbcode',
+    'usercp_sig_preview',
+    'usercp_home_pm',
+    'usercp_photourl',
+    'usercp_photouser',
+    'usercp_photohidden',
+    'usercp_photosubmit',
+    'usercp_photonone',
+    'usercp_photo'
+);
 
 $shadow = shadowfx();
 $shadow2 = shadowfx2();
@@ -144,12 +192,13 @@ switch ($action) {
         break;
 }
 
-$userObj = new userObj();
+$userObj = new GaiaBB\UserObj();
 
 switch ($action) {
     case 'quicktheme':
         $newtheme = getInt('newtheme');
-        $db->query("UPDATE " . X_PREFIX . "members SET theme = '$newtheme' WHERE username = '" . $self['username'] . "'");
+        $db->query("UPDATE " . X_PREFIX . "members SET theme = '$newtheme' WHERE username = '" .
+            $self['username'] . "'");
         redirect('usercp.php', 0);
         break;
     case 'notepad':
@@ -167,7 +216,8 @@ switch ($action) {
         }
 
         if (onSubmit('savesubmit')) {
-            $db->query("UPDATE " . X_PREFIX . "members SET notepad = '" . $db->escape(formVar('notes')) . "' WHERE username = '" . $self['username'] . "'");
+            $db->query("UPDATE " . X_PREFIX . "members SET notepad = '" .
+                $db->escape(formVar('notes')) . "' WHERE username = '" . $self['username'] . "'");
             $output = table_msg($lang['notepadsuccess']);
             eval('echo stripslashes("' . template('usercp_home_layout') . '");');
             redirect('usercp.php?action=notepad', 2.5, X_REDIRECT_JS);
@@ -318,11 +368,9 @@ switch ($action) {
 
         if (empty($subadd) && noSubmit('subsubmit')) {
             $userObj->viewSubscriptions();
-        } else
-        if (!empty($subadd) && noSubmit('subsubmit')) {
+        } elseif (!empty($subadd) && noSubmit('subsubmit')) {
             $userObj->submitAddSubscription($subadd);
-        } else
-        if (empty($subadd) && onSubmit('subsubmit')) {
+        } elseif (empty($subadd) && onSubmit('subsubmit')) {
             $userObj->submitManageSubscriptions();
         }
         break;

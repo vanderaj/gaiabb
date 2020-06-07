@@ -182,12 +182,12 @@ function doPanel()
     $_gbbuser = $db->escape(trim($self['username']));
 
     if ($sendvia == 'pm') {
-        while (($memnews = $db->fetch_array($query)) != false) {
+        while (($memnews = $db->fetchArray($query)) != false) {
             $db->query("INSERT INTO " . X_PREFIX . "pm (msgto, msgfrom, type, owner, folder, subject, message, dateline, readstatus, sentstatus, usesig) VALUES ('" . $db->escape($memnews['username']) . "', '" . $_gbbuser . "', 'incoming', '" . $db->escape($memnews['username']) . "', 'Inbox', '$newssubject', '$newsmessage', '" . time() . "', 'no', 'yes', 'no')");
         }
-        $db->free_result($query);
+        $db->freeResult($query);
     } else {
-        $memcount = (int) $db->num_rows($query);
+        $memcount = (int) $db->numRows($query);
         $i = 0;
 
         if (empty($CONFIG['adminemail'])) {
@@ -203,19 +203,19 @@ function doPanel()
         $mailsys->setSubject('[' . $CONFIG['bbname'] . '] ' . stripslashes($newssubject));
         $mailsys->setMessage(stripslashes($newsmessage));
 
-        while (($memnews = $db->fetch_array($query)) != false) {
+        while (($memnews = $db->fetchArray($query)) != false) {
             $mailsys->addBCC($memnews['email']);
             $i++;
 
             if ($i === 250 || $i === $memcount) {
-                $mailsys->Send();
+                $mailsys->sendMail();
                 if ($i === 250) {
                     sleep(3);
                 }
                 $i = 0;
             }
         }
-        $db->free_result($query);
+        $db->freeResult($query);
     }
     cp_message($lang['newslettersubmit'], false, '', '</td></tr></table>', 'index.php', true, false, true);
 }

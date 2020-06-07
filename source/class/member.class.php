@@ -83,7 +83,10 @@ require_once 'pm.class.php';
  * @package GaiaBB
  *
  */
-class member
+
+namespace GaiaBB;
+
+class Member
 {
 
     public $dirty;
@@ -225,9 +228,9 @@ class member
         global $db;
 
         $query = @$db->query("SELECT * FROM " . X_PREFIX . "members WHERE uid = '" . intval($uid) . "'");
-        if ($query && $db->num_rows($query) === 1) {
-            $this->record = $db->fetch_array($query);
-            $db->free_result($query);
+        if ($query && $db->numRows($query) === 1) {
+            $this->record = $db->fetchArray($query);
+            $db->freeResult($query);
             array_map('stripslashes', $this->record);
             $this->uid = $this->record['uid'];
             $this->dirty = true;
@@ -241,9 +244,9 @@ class member
         global $db;
 
         $query = @$db->query("SELECT * FROM " . X_PREFIX . "members WHERE username = '" . $db->escape($name) . "'");
-        if ($query && $db->num_rows($query) === 1) {
-            $this->record = $db->fetch_array($db);
-            $db->free_result($query);
+        if ($query && $db->numRows($query) === 1) {
+            $this->record = $db->fetchArray($db);
+            $db->freeResult($query);
             array_map('stripslashes', $this->record);
             $this->uid = $this->record['uid'];
             $this->dirty = true;
@@ -252,7 +255,7 @@ class member
         return false;
     }
 
-    public function findUsernameByUid($uid)
+    public static function findUsernameByUid($uid)
     {
         global $db;
 
@@ -261,12 +264,12 @@ class member
         }
 
         $query = $db->query("SELECT username FROM " . X_PREFIX . "members WHERE uid = '" . intval($uid) . "'");
-        if ($query === false || $db->num_rows($query) !== 1) {
-            $db->free_result($query);
+        if ($query === false || $db->numRows($query) !== 1) {
+            $db->freeResult($query);
             return false;
         }
         $username = $db->result($query);
-        $db->free_result($query);
+        $db->freeResult($query);
         return $username;
     }
 
@@ -279,12 +282,12 @@ class member
         }
 
         $query = $db->query("SELECT uid FROM " . X_PREFIX . "members WHERE username = '" . $db->escape($username) . "'");
-        if ($query === false || $db->num_rows($query) !== 1) {
-            $db->free_result($query);
+        if ($query === false || $db->numRows($query) !== 1) {
+            $db->freeResult($query);
             return false;
         }
         $uid = $db->result($query);
-        $db->free_result($query);
+        $db->freeResult($query);
         return $uid;
     }
 
@@ -298,7 +301,7 @@ class member
         }
 
         $query = $db->query("SELECT username FROM " . X_PREFIX . "members WHERE username='" . $db->escape($name) . "'$emailClause");
-        if ($db->num_rows($query) > 0) {
+        if ($db->numRows($query) > 0) {
             return true;
         }
         return false;
@@ -312,7 +315,7 @@ class member
 
         $fail = $efail = false;
         $query = $db->query("SELECT * FROM " . X_PREFIX . "restricted");
-        while (($restriction = $db->fetch_array($query)) != false) {
+        while (($restriction = $db->fetchArray($query)) != false) {
             if ($restriction['case_sensitivity'] == 1) {
                 $username = strtolower($username);
                 $email = strtolower($email);
@@ -341,7 +344,7 @@ class member
                 }
             }
         }
-        $db->free_result($query);
+        $db->freeResult($query);
         return ($fail || $efail);
     }
 
@@ -399,7 +402,7 @@ class member
         $this->update();
 
         // Find orphaned attachments and delete them
-        $attachObj = new attachment();
+        $attachObj = new Attachment();
         $count = $count2 = 0;
         $attachObj->fixOrphans($count, $count2);
 
@@ -489,7 +492,7 @@ class member
             $this->dirty = false;
             // Mark as a database object (stops repeat insertions)
             if ($this->uid == 0) {
-                $this->uid = $db->insert_id();
+                $this->uid = $db->insertId();
                 $this->record['uid'] = $this->uid;
             }
             return true;
@@ -559,12 +562,12 @@ class member
 
         // user must currently exist and must not become anyone else
         $query = $db->query("SELECT username FROM " . X_PREFIX . "members WHERE username = '$userfrom'");
-        $cUsrFrm = $db->num_rows($query);
-        $db->free_result($query);
+        $cUsrFrm = $db->numRows($query);
+        $db->freeResult($query);
 
         $query = $db->query("SELECT username FROM " . X_PREFIX . "members WHERE username = '$userto'");
-        $cUsrTo = $db->num_rows($query);
-        $db->free_result($query);
+        $cUsrTo = $db->numRows($query);
+        $db->freeResult($query);
 
         // userfrom must only be 1 (row), and userto must not exist (ie 0 rows)
         if (!($cUsrFrm == 1 && $cUsrTo == 0)) {
@@ -572,7 +575,7 @@ class member
         }
 
         // userto must not obviate restricted username rules
-        if (!$this->check_restricted($userto)) {
+        if (!$this->checkRestricted($userto)) {
             return $lang['restricted'];
         }
 
@@ -598,67 +601,67 @@ class member
 
         // update thread last posts
         $query = $db->query("SELECT tid FROM " . X_PREFIX . "lastposts WHERE username = '$userfrom'");
-        while (($result = $db->fetch_array($query)) != false) {
+        while (($result = $db->fetchArray($query)) != false) {
             $db->query("UPDATE " . X_PREFIX . "lastposts SET username = '$userto' WHERE tid = '" . $result['tid'] . "'");
         }
-        $db->free_result($query);
+        $db->freeResult($query);
 
         // update ignorepm
         $query = $db->query("SELECT ignorepm, uid FROM " . X_PREFIX . "members WHERE (ignorepm REGEXP '(^|(,))()*$userfrom()*((,)|$)')");
-        while (($usr = $db->fetch_array($query)) != false) {
+        while (($usr = $db->fetchArray($query)) != false) {
             $parts = explode(',', $usr['ignorepm']);
             $index = array_search($userfrom, $parts);
             $parts[$index] = $userto;
             $parts = implode(',', $parts);
             $db->query("UPDATE " . X_PREFIX . "members SET ignorepm = '" . $parts . "' WHERE uid = '" . $usr['uid'] . "'");
         }
-        $db->free_result($query);
+        $db->freeResult($query);
 
         // update forum-accesslists
         $query = $db->query("SELECT userlist, fid FROM " . X_PREFIX . "forums WHERE (userlist REGEXP '(^|(,))()*$userfrom()*((,)|$)')");
-        while (($list = $db->fetch_array($query)) != false) {
+        while (($list = $db->fetchArray($query)) != false) {
             $parts = array_unique(array_map('trim', explode(',', $list['userlist'])));
             $index = array_search($userfrom, $parts);
             $parts[$index] = $userto;
             $parts = implode(',', $parts);
             $db->query("UPDATE " . X_PREFIX . "forums SET userlist = '" . $parts . "' WHERE fid = '" . $list['fid'] . "'");
         }
-        $db->free_result($query);
+        $db->freeResult($query);
 
         // Moderator column in forums
         $query = $db->query("SELECT moderator, fid FROM " . X_PREFIX . "forums WHERE (moderator REGEXP '(^|(,))()*$userfrom()*((,)|$)')");
-        while (($mod = $db->fetch_array($query)) != false) {
+        while (($mod = $db->fetchArray($query)) != false) {
             $parts = explode(',', $mod['moderator']);
             $index = array_search($userfrom, $parts);
             $parts[$index] = $userto;
             $parts = implode(',', $parts);
             $db->query("UPDATE " . X_PREFIX . "forums SET moderator = '" . $parts . "' WHERE fid = '" . $mod['fid'] . "'");
         }
-        $db->free_result($query);
+        $db->freeResult($query);
 
         // update forum last posts
         $query = $db->query("SELECT fid, lastpost from " . X_PREFIX . "forums WHERE lastpost like '%$userfrom'");
-        while (($result = $db->fetch_array($query)) != false) {
+        while (($result = $db->fetchArray($query)) != false) {
             list($posttime, $lastauthor) = explode('|', $result['lastpost']);
             if ($lastauthor == $userfrom) {
                 $newlastpost = $posttime . '|' . $userto;
                 $db->query("UPDATE " . X_PREFIX . "forums SET lastpost = '$newlastpost' WHERE fid = '" . $result['fid'] . "'");
             }
         }
-        $db->free_result($query);
+        $db->freeResult($query);
 
         return (($self['username'] == $userfrom) ? $lang['admin_rename_warn_self'] : '') . $lang['admin_rename_success'];
     }
 
-    public function check_restricted($userto)
+    public function checkRestricted($userto)
     {
         global $db;
 
         $nameokay = true;
         $query = $db->query("SELECT * FROM " . X_PREFIX . "restricted");
 
-        if ($db->num_rows($query) > 0) {
-            while (($restriction = $db->fetch_array($query)) != false) {
+        if ($db->numRows($query) > 0) {
+            while (($restriction = $db->fetchArray($query)) != false) {
                 if ($restriction['case_sensitivity'] == 1) {
                     if ($restriction['partial'] == 1) {
                         if (strpos($userto, $restriction['name']) !== false) {
@@ -684,7 +687,7 @@ class member
                 }
             }
         }
-        $db->free_result($query);
+        $db->freeResult($query);
         return $nameokay;
     }
 
@@ -693,13 +696,13 @@ class member
         global $db;
 
         $query = $db->query("SELECT uid, username FROM " . X_PREFIX . "members");
-        while (($mem = $db->fetch_array($query)) != false) {
+        while (($mem = $db->fetchArray($query)) != false) {
             $inner_query = $db->query("SELECT COUNT(pid) FROM " . X_PREFIX . "posts WHERE author = '" . $db->escape($mem['username']) . "'");
             $postsnum = $db->result($inner_query, 0);
-            $db->free_result($inner_query);
+            $db->freeResult($inner_query);
             $db->query("UPDATE " . X_PREFIX . "members SET postnum = '$postsnum' WHERE uid = '" . $mem['uid'] . "'");
         }
-        $db->free_result($query);
+        $db->freeResult($query);
     }
 
     public function fixThreadTotals()
@@ -707,12 +710,12 @@ class member
         global $db;
 
         $query = $db->query("SELECT uid, username FROM " . X_PREFIX . "members");
-        while (($mem = $db->fetch_array($query)) != false) {
+        while (($mem = $db->fetchArray($query)) != false) {
             $inner_query = $db->query("SELECT COUNT(tid) FROM " . X_PREFIX . "threads WHERE author='" . $db->escape($mem['username']) . "'");
             $threadnum = $db->result($inner_query, 0);
-            $db->free_result($inner_query);
+            $db->freeResult($inner_query);
             $db->query("UPDATE " . X_PREFIX . "members SET threadnum = '$threadnum' WHERE uid = '" . $mem['uid'] . "'");
         }
-        $db->free_result($query);
+        $db->freeResult($query);
     }
 }

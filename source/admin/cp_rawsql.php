@@ -148,18 +148,18 @@ function doPanel()
                     <table border="0px" cellspacing="<?php echo $THEME['borderwidth'] ?>"
                            cellpadding="<?php echo $THEME['tablespace'] ?>" width="100%">
                         <tr bgcolor="<?php echo $THEME['altbg2'] ?>" class="tablerow">
-                            <td colspan="<?php echo $db->num_fields($query) ?>">
+                            <td colspan="<?php echo $db->numFields($query) ?>">
                                 <strong><?php echo $lang['upgraderesults'] ?></strong>&nbsp;<?php echo $explode[$num] ?>
                             </td>
                         </tr>
                         <?php
-$xn = strtoupper($explode[$num]);
-        if (strpos($xn, 'SELECT') !== false || strpos($xn, 'SHOW') !== false || strpos($xn, 'EXPLAIN') !== false || strpos($xn, 'DESCRIBE') !== false) {
-            dump_query($query, true);
-        } else {
-            $selq = false;
-        }
-        ?>
+                        $xn = strtoupper($explode[$num]);
+                        if (strpos($xn, 'SELECT') !== false || strpos($xn, 'SHOW') !== false || strpos($xn, 'EXPLAIN') !== false || strpos($xn, 'DESCRIBE') !== false) {
+                            dump_query($query, true);
+                        } else {
+                            $selq = false;
+                        }
+                        ?>
                     </table>
                 </td>
             </tr>
@@ -167,7 +167,7 @@ $xn = strtoupper($explode[$num]);
         <?php echo $shadow2 ?>
         <br/>
         <?php
-}
+    }
     ?>
     <table cellspacing="0px" cellpadding="0px" border="0px" width="100%"
            align="center">

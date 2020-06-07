@@ -36,7 +36,7 @@ define('ROOTHELPER', '../helper/');
 
 require_once '../header.php';
 require_once '../include/admincp.inc.php';
-require_once '../helper/formHelper.php';
+require_once '../helper/FormHelper.php';
 
 loadtpl('cp_header', 'cp_footer', 'cp_message', 'cp_error');
 
@@ -70,7 +70,7 @@ function viewPanel()
     $themelist = array();
     $themelist[] = '<select name="themenew">';
     $query = $db->query("SELECT themeid, name FROM " . X_PREFIX . "themes WHERE themestatus = 'on' ORDER BY name ASC");
-    while (($themeinfo = $db->fetch_array($query)) != false) {
+    while (($themeinfo = $db->fetchArray($query)) != false) {
         $themeinfo['name'] = stripslashes($themeinfo['name']);
         if ($themeinfo['themeid'] == $CONFIG['theme']) {
             $themelist[] = '<option value="' . $themeinfo['themeid'] . '" selected="selected">' . $themeinfo['name'] . '</option>';
@@ -80,7 +80,7 @@ function viewPanel()
     }
     $themelist[] = '</select>';
     $themelist = implode("\n", $themelist);
-    $db->free_result($query);
+    $db->freeResult($query);
 
     $timezone1 = $timezone2 = $timezone3 = $timezone4 = $timezone5 = $timezone6 = false;
     $timezone7 = $timezone8 = $timezone9 = $timezone10 = $timezone11 = $timezone12 = false;
@@ -216,7 +216,7 @@ function viewPanel()
     }
 
     $bbcimg_statuson = $bbcimg_statusoff = '';
-    formHelper::getSettingOnOffHtml('bbcimg_status', $bbcimg_statuson, $bbcimg_statusoff);
+    GaiaBB\FormHelper::getSettingOnOffHtml('bbcimg_status', $bbcimg_statuson, $bbcimg_statusoff);
 
     $timeformatlist = array();
     $timeformatlist[] = '<select name="timeformatnew">';
@@ -257,20 +257,20 @@ function viewPanel()
                             <td bgcolor="<?php echo $THEME['altbg2'] ?>"><?php echo $themelist ?></td>
                         </tr>
                         <?php
-formHelper::formTextBox($lang['textppp'], 'postperpagenew', $CONFIG['postperpage'], 3);
-    formHelper::formTextBox($lang['texttpp'], 'topicperpagenew', $CONFIG['topicperpage'], 3);
-    formHelper::formTextBox($lang['textmpp'], 'memberperpagenew', $CONFIG['memberperpage'], 3);
-    formHelper::formTextBox($lang['customposts'], 'custompostsnew', $CONFIG['customposts'], 3);
-    formHelper::formTextBox($lang['pmposts'], 'pmpostsnew', $CONFIG['pmposts'], 3);
-    formHelper::formTextBox($lang['max_reg_day'], 'max_reg_daynew', $CONFIG['max_reg_day'], 3);
-    formHelper::formTextBox($lang['set_maxsigchars'], 'maxsigcharsnew', $CONFIG['maxsigchars'], 3);
-    formHelper::formTextBox($lang['viewsigminposts'], 'viewsigminpostsnew', $CONFIG['viewsigminposts'], 3);
-    formHelper::formTextBox($lang['attachnumdef'], 'attachnumnew', $attach_num, 2);
-    formHelper::formTextBox($lang['max_attheight'], 'max_attheightnew', $CONFIG['max_attheight'], 3);
-    formHelper::formTextBox($lang['max_attwidth'], 'max_attwidthnew', $CONFIG['max_attwidth'], 3);
-    formHelper::formSelectOnOff($lang['bbcimg_status'], 'bbcimg_statusnew', $bbcimg_statuson, $bbcimg_statusoff);
-    formHelper::formTextBox($lang['bbc_maxht'], 'bbc_maxhtnew', $CONFIG['bbc_maxht'], 3);
-    formHelper::formTextBox($lang['bbc_maxwd'], 'bbc_maxwdnew', $CONFIG['bbc_maxwd'], 3);
+    GaiaBB\FormHelper::formTextBox($lang['textppp'], 'postperpagenew', $CONFIG['postperpage'], 3);
+    GaiaBB\FormHelper::formTextBox($lang['texttpp'], 'topicperpagenew', $CONFIG['topicperpage'], 3);
+    GaiaBB\FormHelper::formTextBox($lang['textmpp'], 'memberperpagenew', $CONFIG['memberperpage'], 3);
+    GaiaBB\FormHelper::formTextBox($lang['customposts'], 'custompostsnew', $CONFIG['customposts'], 3);
+    GaiaBB\FormHelper::formTextBox($lang['pmposts'], 'pmpostsnew', $CONFIG['pmposts'], 3);
+    GaiaBB\FormHelper::formTextBox($lang['max_reg_day'], 'max_reg_daynew', $CONFIG['max_reg_day'], 3);
+    GaiaBB\FormHelper::formTextBox($lang['set_maxsigchars'], 'maxsigcharsnew', $CONFIG['maxsigchars'], 3);
+    GaiaBB\FormHelper::formTextBox($lang['viewsigminposts'], 'viewsigminpostsnew', $CONFIG['viewsigminposts'], 3);
+    GaiaBB\FormHelper::formTextBox($lang['attachnumdef'], 'attachnumnew', $attach_num, 2);
+    GaiaBB\FormHelper::formTextBox($lang['max_attheight'], 'max_attheightnew', $CONFIG['max_attheight'], 3);
+    GaiaBB\FormHelper::formTextBox($lang['max_attwidth'], 'max_attwidthnew', $CONFIG['max_attwidth'], 3);
+    GaiaBB\FormHelper::formSelectOnOff($lang['bbcimg_status'], 'bbcimg_statusnew', $bbcimg_statuson, $bbcimg_statusoff);
+    GaiaBB\FormHelper::formTextBox($lang['bbc_maxht'], 'bbc_maxhtnew', $CONFIG['bbc_maxht'], 3);
+    GaiaBB\FormHelper::formTextBox($lang['bbc_maxwd'], 'bbc_maxwdnew', $CONFIG['bbc_maxwd'], 3);
     ?>
                         <tr class="tablerow">
                             <td bgcolor="<?php echo $THEME['altbg1'] ?>"><?php echo $lang['daylightsavings'] ?></td>
@@ -292,7 +292,7 @@ if ($CONFIG['predformat'] == 'on') {
     }
     $df = $df . "\t<td bgcolor=\"$THEME[altbg2]\"><select name=\"dateformatnew\">\n";
     $querydf = $db->query("SELECT * FROM " . X_PREFIX . "dateformats");
-    while (($dformats = $db->fetch_array($querydf)) != false) {
+    while (($dformats = $db->fetchArray($querydf)) != false) {
         if ($CONFIG['predformat'] == 'on') {
             $example = gmdate(formatDate($dformats['dateformat']), $gbblva + ($self['timeoffset'] * 3600) + $self['daylightsavings']);
         } else {
@@ -307,9 +307,9 @@ if ($CONFIG['predformat'] == 'on') {
     }
     $df = $df . "\t</select>\n\t</td>\n</tr>";
     echo $df;
-    $db->free_result($querydf);
+    $db->freeResult($querydf);
 
-    formHelper::formSelectList($lang['textoffset'], 'new_def_tz', array(
+    GaiaBB\FormHelper::formSelectList($lang['textoffset'], 'new_def_tz', array(
         $lang['timezone1'],
         $lang['timezone2'],
         $lang['timezone3'],

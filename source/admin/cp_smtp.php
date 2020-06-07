@@ -29,6 +29,7 @@
  *
  **/
 
+// phpcs:disable PSR1.Files.SideEffects
 define('ROOT', '../');
 define('ROOTINC', '../include/');
 define('ROOTCLASS', '../class/');
@@ -36,7 +37,7 @@ define('ROOTHELPER', '../helper/');
 
 require_once '../header.php';
 require_once '../include/admincp.inc.php';
-require_once '../helper/formHelper.php';
+require_once '../helper/FormHelper.php';
 
 loadtpl('cp_header', 'cp_footer', 'cp_message', 'cp_error');
 
@@ -65,7 +66,7 @@ function viewPanel()
     global $oToken, $CONFIG, $cheHTML, $selHTML;
 
     $smtp_statuson = $smtp_statusoff = '';
-    formHelper::getSettingOnOffHtml('smtp_status', $smtp_statuson, $smtp_statusoff);
+    GaiaBB\FormHelper::getSettingOnOffHtml('smtp_status', $smtp_statuson, $smtp_statusoff);
 
     $CONFIG['smtpServer'] = stripslashes($CONFIG['smtpServer']);
     $CONFIG['smtpusername'] = stripslashes($CONFIG['smtpusername']);
@@ -84,19 +85,50 @@ function viewPanel()
                     <table border="0px" cellspacing="<?php echo $THEME['borderwidth'] ?>"
                            cellpadding="<?php echo $THEME['tablespace'] ?>" width="100%">
                         <tr>
-                            <td colspan="2" class="category"><strong><font
-                                            color="<?php echo $THEME['cattext'] ?>"><?php echo $lang['Smtp_Settings'] ?></font></strong>
-                            </td>
+                            <td colspan="2" class="category"><strong>
+                            <font color="<?php echo $THEME['cattext'] ?>"><?php echo $lang['Smtp_Settings'] ?>
+                            </font></strong></td>
                         </tr>
                         <?php
-formHelper::formSelectOnOff($lang['Smtp_Status'], 'smtp_statusnew', $smtp_statuson, $smtp_statusoff);
-    formHelper::formTextBox($lang['Smtp_Server'], 'smtpServernew', $CONFIG['smtpServer'], 50);
-    formHelper::formTextBox($lang['Smtp_Port_Number'], 'smtpportnew', $CONFIG['smtpport'], 4);
-    formHelper::formTextBox($lang['Smtp_Timeout'], 'smtptimeoutnew', $CONFIG['smtptimeout'], 3);
-    formHelper::formTextBox($lang['Smtp_Username'], 'smtpusernamenew', $CONFIG['smtpusername'], 50);
-    formHelper::formTextPassBox($lang['Smtp_Password'], 'smtppasswordnew', $CONFIG['smtppassword'], 50, true);
-    formHelper::formTextBox($lang['Smtp_Host'], 'smtphostnew', $CONFIG['smtphost'], 50);
-    ?>
+                        GaiaBB\FormHelper::formSelectOnOff(
+                            $lang['Smtp_Status'],
+                            'smtp_statusnew',
+                            $smtp_statuson,
+                            $smtp_statusoff
+                        );
+                        GaiaBB\FormHelper::formTextBox(
+                            $lang['Smtp_Server'],
+                            'smtpServernew',
+                            $CONFIG['smtpServer'],
+                            50
+                        );
+                        GaiaBB\FormHelper::formTextBox(
+                            $lang['Smtp_Port_Number'],
+                            'smtpportnew',
+                            $CONFIG['smtpport'],
+                            4
+                        );
+                        GaiaBB\FormHelper::formTextBox(
+                            $lang['Smtp_Timeout'],
+                            'smtptimeoutnew',
+                            $CONFIG['smtptimeout'],
+                            3
+                        );
+                        GaiaBB\FormHelper::formTextBox(
+                            $lang['Smtp_Username'],
+                            'smtpusernamenew',
+                            $CONFIG['smtpusername'],
+                            50
+                        );
+                        GaiaBB\FormHelper::formTextPassBox(
+                            $lang['Smtp_Password'],
+                            'smtppasswordnew',
+                            $CONFIG['smtppassword'],
+                            50,
+                            true
+                        );
+                        GaiaBB\FormHelper::formTextBox($lang['Smtp_Host'], 'smtphostnew', $CONFIG['smtphost'], 50);
+                        ?>
                         <tr>
                             <td class="ctrtablerow" bgcolor="<?php echo $THEME['altbg2'] ?>"
                                 colspan="2"><input class="submit" type="submit" name="smtpsubmit"

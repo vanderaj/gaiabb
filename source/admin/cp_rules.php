@@ -29,6 +29,7 @@
  *
  **/
 
+// phpcs:disable PSR1.Files.SideEffects
 define('ROOT', '../');
 define('ROOTINC', '../include/');
 define('ROOTCLASS', '../class/');
@@ -36,7 +37,7 @@ define('ROOTHELPER', '../helper/');
 
 require_once '../header.php';
 require_once '../include/admincp.inc.php';
-require_once '../helper/formHelper.php';
+require_once '../helper/FormHelper.php';
 
 loadtpl('cp_header', 'cp_footer', 'cp_message', 'cp_error', 'functions_bbcode', 'functions_bbcodeinsert');
 
@@ -102,40 +103,42 @@ function viewPanel()
                             <td colspan="2" class="title"><?php echo $lang['textbbrules'] ?></td>
                         </tr>
                         <?php
-$ruleson = $rulesoff = '';
-    formHelper::getSettingOnOffHtml('bbrules', $ruleson, $rulesoff);
+                        $ruleson = $rulesoff = '';
+                        GaiaBB\FormHelper::getSettingOnOffHtml('bbrules', $ruleson, $rulesoff);
 
-    $queryg = $db->query("SELECT * FROM " . X_PREFIX . "faq WHERE type = 'rulesset'");
-    $frules = $db->fetch_array($queryg);
-    $db->free_result($queryg);
+                        $queryg = $db->query("SELECT * FROM " . X_PREFIX . "faq WHERE type = 'rulesset'");
+                        $frules = $db->fetchArray($queryg);
+                        $db->freeResult($queryg);
 
-    if ($frules['allowsmilies'] == 'yes') {
-        $checked1 = $cheHTML;
-    } else
-    if ($frules['allowsmilies'] == 'no') {
-        $checked1 = '';
-    }
+                        if ($frules['allowsmilies'] == 'yes') {
+                            $checked1 = $cheHTML;
+                        } elseif ($frules['allowsmilies'] == 'no') {
+                            $checked1 = '';
+                        }
 
-    if ($frules['allowbbcode'] == 'yes') {
-        $checked2 = $cheHTML;
-    } else
-    if ($frules['allowbbcode'] == 'no') {
-        $checked2 = '';
-    }
+                        if ($frules['allowbbcode'] == 'yes') {
+                            $checked2 = $cheHTML;
+                        } elseif ($frules['allowbbcode'] == 'no') {
+                            $checked2 = '';
+                        }
 
-    if ($frules['allowimgcode'] == 'yes') {
-        $checked3 = $cheHTML;
-    } else
-    if ($frules['allowimgcode'] == 'no') {
-        $checked3 = '';
-    }
+                        if ($frules['allowimgcode'] == 'yes') {
+                            $checked3 = $cheHTML;
+                        } elseif ($frules['allowimgcode'] == 'no') {
+                            $checked3 = '';
+                        }
 
-    $nameo = stripslashes($frules['name']);
-    $CONFIG['bbrulestxt'] = stripslashes($CONFIG['bbrulestxt']);
+                        $nameo = stripslashes($frules['name']);
+                        $CONFIG['bbrulestxt'] = stripslashes($CONFIG['bbrulestxt']);
 
-    formHelper::formSelectOnOff($lang['board_rules_status'], 'bbrulesnew', $ruleson, $rulesoff);
-    echo $bbcodeinsert;
-    ?>
+                        GaiaBB\FormHelper::formSelectOnOff(
+                            $lang['board_rules_status'],
+                            'bbrulesnew',
+                            $ruleson,
+                            $rulesoff
+                        );
+                        echo $bbcodeinsert;
+                        ?>
                         <tr class="tablerow">
                             <td bgcolor="<?php echo $THEME['altbg1'] ?>" valign="top"
                                 width="50%"><?php echo $lang['textbbrulestxt'] ?></td>
@@ -165,9 +168,10 @@ $ruleson = $rulesoff = '';
                         <tr class="tablerow">
                             <td bgcolor="<?php echo $THEME['altbg1'] ?>"
                                 valign="top"><?php echo $lang['rules_D'] ?></td>
-                            <td bgcolor="<?php echo $THEME['altbg2'] ?>"><textarea rows="5"
-                                                                                   cols="50"
-                                                                                   name="namenew"><?php echo $nameo ?></textarea>
+                            <td bgcolor="<?php echo $THEME['altbg2'] ?>">
+                            <textarea rows="5" cols="50" name="namenew">
+                                <?php echo $nameo ?>
+                            </textarea>
                             </td>
                         </tr>
                         <tr>
@@ -216,8 +220,10 @@ function doPanel()
         WHERE type = 'rulesset'
     ");
 
-    $db->query("UPDATE " . X_PREFIX . "settings SET config_value = '$bbrulesnew' WHERE config_name = 'bbrules' LIMIT 1");
-    $db->query("UPDATE " . X_PREFIX . "settings SET config_value = '$bbrulestxtnew' WHERE config_name = 'bbrulestxt' LIMIT 1");
+    $db->query("UPDATE " . X_PREFIX .
+        "settings SET config_value = '$bbrulesnew' WHERE config_name = 'bbrules' LIMIT 1");
+    $db->query("UPDATE " . X_PREFIX .
+    "settings SET config_value = '$bbrulestxtnew' WHERE config_name = 'bbrulestxt' LIMIT 1");
 
     $allmembers = formOnOff('allmembers');
     if ($allmembers == 'on') {

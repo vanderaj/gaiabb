@@ -43,147 +43,6 @@ function process_upgrade_config()
     $_SESSION['resetset'] = formOnOff('resetset');
 }
 
-class Upgrade
-{
-    public $db;
-    public $prgbar;
-    public $schemaver;
-
-    /**
-     * __construct() - constructor for Upgrade base class
-     *
-     * Constructor
-     *
-     */
-    public function __construct($indb, $in_prgbar)
-    {
-        $this->db = $indb;
-        $this->prgbar = $in_prgbar;
-
-        if ($this->column_exists('settings', 'schemaver')) {
-            $query = $this->db->query("SELECT schemaver FROM `" . X_PREFIX . "settings`");
-            $this->schemaver = $this->db->result($query, 0);
-            $this->db->free_result($query);
-        }
-    }
-
-    /**
-     * function() - short description of function
-     *
-     * TODO: Long description of function
-     *
-     * @param $varname type,
-     *            what it does
-     * @return type, what the return does
-     */
-    public function column_exists($table, $column)
-    {
-        $query = $this->db->query("SHOW COLUMNS FROM `" . X_PREFIX . $table . "` LIKE '" . $column . "'");
-        $rows = $this->db->num_rows($query);
-        return ($rows > 0) ? true : false;
-    }
-
-    /**
-     * function() - short description of function
-     *
-     * TODO: Long description of function
-     *
-     * @param $varname type,
-     *            what it does
-     * @return type, what the return does
-     */
-    public function table_exists($table)
-    {
-        $query = $this->db->query("SHOW TABLES LIKE '" . X_PREFIX . $table . "'");
-        $rows = $this->db->num_rows($query);
-        return ($rows > 0) ? true : false;
-    }
-
-    /**
-     * function() - short description of function
-     *
-     * TODO: Long description of function
-     *
-     * @param $varname type,
-     *            what it does
-     * @return type, what the return does
-     */
-    public function rename_tables($prg)
-    {
-        return true;
-    }
-
-    /**
-     * function() - short description of function
-     *
-     * TODO: Long description of function
-     *
-     * @param $varname type,
-     *            what it does
-     * @return type, what the return does
-     */
-    public function add_tables($prg)
-    {
-        return true;
-    }
-
-    /**
-     * function() - short description of function
-     *
-     * TODO: Long description of function
-     *
-     * @param $varname type,
-     *            what it does
-     * @return type, what the return does
-     */
-    public function delete_tables($prg)
-    {
-        return true;
-    }
-
-    /**
-     * function() - short description of function
-     *
-     * TODO: Long description of function
-     *
-     * @param $varname type,
-     *            what it does
-     * @return type, what the return does
-     */
-    public function alter_tables($prg)
-    {
-        return true;
-    }
-
-    /**
-     * function() - short description of function
-     *
-     * TODO: Long description of function
-     *
-     * @param $varname type,
-     *            what it does
-     * @return type, what the return does
-     */
-    public function migrate_data($prg)
-    {
-        return true;
-    }
-
-    /**
-     * function() - short description of function
-     *
-     * TODO: Long description of function
-     *
-     * @param $varname type,
-     *            what it does
-     * @return type, what the return does
-     */
-    public function migrate_settings($prg)
-    {
-        return true;
-    }
-}
-
 require_once "upgrade.ultimabb.php";
 
 /**
@@ -204,12 +63,19 @@ function upgrade_forum($path, $prgbar)
     $version = phpversion();
     if (version_compare($version, "5.4.0") < 0) {
         setCol($prgbar, '#ff0000');
-        print_error('Version error', 'GaiaBB requires PHP 5.4.0 or later and prefers the latest version.');
+        print_error(
+            'Version error',
+            'GaiaBB requires PHP 5.4.0 or later and prefers the latest version.'
+        );
     }
 
     if (version_compare($version, "5.5.13") < 0) {
         setCol($prgbar, '#ffff00');
-        print_error('Version warning', 'GaiaBB prefers recent PHP releases. Strongly consider upgrading the version of PHP you are using.', false);
+        print_error(
+            'Version warning',
+            'GaiaBB prefers recent PHP releases. Strongly consider upgrading the version of PHP you are using.',
+            false
+        );
         $warn = true;
     }
 
@@ -257,7 +123,7 @@ function upgrade_forum($path, $prgbar)
 
     define('X_PREFIX', $tablepre);
 
-    $db = new mysql5Php5();
+    $db = new GaiaBB\MariaDB();
     $db->connect($dbhost, $dbuser, $dbpw, $dbname, $pconnect, true);
 
     setBar($prgbar, 0.07);
@@ -282,29 +148,32 @@ function upgrade_forum($path, $prgbar)
     $admin = is_admin($db, $tablepre);
     if (!$admin) {
         setCol($prgbar, '#ff0000');
-        print_error('Security notice', 'The user specified is not a super administrator. The upgrade utility cannot continue.');
+        print_error(
+            'Security notice',
+            'The user specified is not a super administrator. The upgrade utility cannot continue.'
+        );
     }
 
     setBar($prgbar, 0.1);
 
-    $upgrade = new upgrade_ultimaBB($db, $prgbar);
+    $upgrade = new GaiaBB\UpgradeUltimaBB($db, $prgbar);
 
     // Reset the settings row to sane values and turn off board
     if ($_SESSION['resetset'] == 'on') {
         schema_create_settings($db, $tablepre);
         reset_settings($db, $tablepre);
     } else {
-        $upgrade->migrate_settings();
+        $upgrade->migrateSettings($prgbar);
     }
     disable_gbb($db, $tablepre); // we turn the board off for safety reasons
 
     // Some operations take time. If your script fails, set this higher
     set_time_limit(300);
 
-    $upgrade->add_tables(0.15);
-    $upgrade->rename_tables(0.2);
-    $upgrade->alter_tables(0.3);
-    $upgrade->migrate_data(0.9);
+    $upgrade->addTables(0.15);
+    $upgrade->renameTables(0.2);
+    $upgrade->alterTables(0.3);
+    $upgrade->migrateData(0.9);
 
     setBar($prgbar, 1.0);
     return $warn;

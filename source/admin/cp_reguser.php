@@ -121,13 +121,11 @@ function doPanel()
         cp_error($lang['regempty'], false, '', '</td></tr></table>');
     }
 
-    if (empty($CONFIG['adminemail'])) // The mail class can handle this error, but it'll describe it vaguely
-    {
+    if (empty($CONFIG['adminemail'])) {
         error($lang['noadminemail'], false, '', '', 'cp_reguser.php', true, false, true);
     }
 
-    if (empty($CONFIG['bbname'])) // The mail class can handle this error, but it'll describe it vaguely
-    {
+    if (empty($CONFIG['bbname'])) {
         error($lang['nobbname'], false, '', '', 'cp_reguser.php', true, false, true);
     }
 
@@ -143,8 +141,8 @@ function doPanel()
     }
 
     $query = $db->query("SELECT username$email1 FROM " . X_PREFIX . "members WHERE username = '$regusername' $email2");
-    $usercheck = $db->num_rows($query);
-    $db->free_result($query);
+    $usercheck = $db->numRows($query);
+    $db->freeResult($query);
 
     if (!($usercheck == 0)) {
         cp_error($lang['regcheck'], false, '', '</td></tr></table>');
@@ -152,7 +150,7 @@ function doPanel()
 
     $fail = $efail = false;
     $query = $db->query("SELECT * FROM " . X_PREFIX . "restricted");
-    while (($restriction = $db->fetch_array($query)) != false) {
+    while (($restriction = $db->fetchArray($query)) != false) {
         if ($restriction['case_sensitivity'] == 1) {
             if ($restriction['partial'] == 1) {
                 if (strpos($regusername, $restriction['name']) !== false) {
@@ -195,7 +193,7 @@ function doPanel()
             }
         }
     }
-    $db->free_result($query);
+    $db->freeResult($query);
 
     if ($efail || $fail) {
         cp_error($lang['regerestricted'], false, '', '</td></tr></table>');
@@ -221,8 +219,8 @@ function doPanel()
     $mailsys->setSubject('[' . $CONFIG['bbname'] . '] ' . $lang['textyourpw']);
     $mailsys->setMessage($lang['textyourpwis'] . "\n\n" . $regusername . "\n" . $regpassword);
 
-    if (!$mailsys->Send()) {
-        $uid = $db->insert_id();
+    if (!$mailsys->sendMail()) {
+        $uid = $db->insertId();
         if ($uid > 0) {
             $db->query("DELETE FROM " . X_PREFIX . "members WHERE uid = " . $uid);
         }

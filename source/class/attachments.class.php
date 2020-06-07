@@ -34,7 +34,9 @@ if (!defined('IN_PROGRAM') && (defined('DEBUG') && DEBUG == false)) {
 
 require_once 'mimetypes.inc.php';
 
-class attachment
+namespace GaiaBB;
+
+class Attachment
 {
 
     public $attachments;
@@ -65,15 +67,15 @@ class attachment
 
         $pids = array();
         $q = $db->query("SELECT pid FROM " . X_PREFIX . "posts WHERE tid = '$tid' ORDER BY pid LIMIT $start_limit, " . $self['ppp']);
-        if ($q === false || $db->num_rows($q) == 0) {
-            $db->free_result($q);
+        if ($q === false || $db->numRows($q) == 0) {
+            $db->freeResult($q);
             return false;
         }
 
-        while (($row = $db->fetch_array($q)) != false) {
+        while (($row = $db->fetchArray($q)) != false) {
             $pids[] = $row['pid'];
         }
-        $db->free_result($q);
+        $db->freeResult($q);
 
         if (empty($pids)) {
             return false;
@@ -83,15 +85,15 @@ class attachment
         $this->attachments = array();
         $q = $db->query("SELECT * FROM " . X_PREFIX . "attachments WHERE pid IN($pids)");
 
-        if ($q === false || $db->num_rows($q) == 0) {
-            $db->free_result($q);
+        if ($q === false || $db->numRows($q) == 0) {
+            $db->freeResult($q);
             return false;
         }
 
-        while (($row = $db->fetch_array($q)) != false) {
+        while (($row = $db->fetchArray($q)) != false) {
             $this->attachments[] = $row;
         }
-        $db->free_result($q);
+        $db->freeResult($q);
 
         return true;
     }
@@ -123,8 +125,7 @@ class attachment
 
                     if ($CONFIG['viewattach'] == 'no' && X_GUEST) {
                         eval("\$post['message'] .= \"" . template('viewtopic_post_attachment_none') . "\";");
-                    } else
-                    if ($CONFIG['attachimgpost'] == 'on' && ($extension == 'jpg' || $extension == 'jpeg' || $extension == 'gif' || $extension == 'png' || $extension == 'bmp')) {
+                    } elseif ($CONFIG['attachimgpost'] == 'on' && ($extension == 'jpg' || $extension == 'jpeg' || $extension == 'gif' || $extension == 'png' || $extension == 'bmp')) {
                         if ($attach['fileheight'] != '' && $attach['filewidth'] != '') {
                             $CONFIG['max_attheight'] = (int) $CONFIG['max_attheight'];
                             $CONFIG['max_attwidth'] = (int) $CONFIG['max_attwidth'];
@@ -133,8 +134,7 @@ class attachment
                             if (($attach['fileheight'] <= $CONFIG['max_attheight']) && ($attach['filewidth'] <= $CONFIG['max_attwidth'])) {
                                 $n_height = $attach['fileheight'];
                                 $n_width = $attach['filewidth'];
-                            } else
-                            if (($w_ratio * $attach['fileheight']) < $CONFIG['max_attheight']) {
+                            } elseif (($w_ratio * $attach['fileheight']) < $CONFIG['max_attheight']) {
                                 $n_height = ceil($w_ratio * $attach['fileheight']);
                                 $n_width = $CONFIG['max_attwidth'];
                             } else {
@@ -198,11 +198,9 @@ class attachment
     {
         if ($bytes >= 1073741824) {
             $bytes = round($bytes / 1073741824 * 100) / 100 . "gb";
-        } else
-        if ($bytes >= 1048576) {
+        } elseif ($bytes >= 1048576) {
             $bytes = round($bytes / 1048576 * 100) / 100 . "mb";
-        } else
-        if ($bytes >= 1024) {
+        } elseif ($bytes >= 1024) {
             $bytes = round($bytes / 1024 * 100) / 100 . "kb";
         } else {
             $bytes = $bytes . "b";
@@ -216,16 +214,16 @@ class attachment
 
         $query = $db->query("SELECT pid, aid FROM " . X_PREFIX . "attachments WHERE 1 ORDER BY pid ASC");
         $count = $count2 = 0;
-        while (($attach = $db->fetch_array($query)) != false) {
+        while (($attach = $db->fetchArray($query)) != false) {
             $count2++;
             $query2 = $db->query("SELECT pid FROM " . X_PREFIX . "posts WHERE pid = $attach[pid]");
-            $thread = $db->fetch_array($query2);
-            $db->free_result($query2);
+            $thread = $db->fetchArray($query2);
+            $db->freeResult($query2);
             if (empty($thread['pid'])) {
                 $count++;
                 $db->query("DELETE FROM " . X_PREFIX . "attachments WHERE pid = $attach[pid] AND aid = '$attach[aid]'");
             }
         }
-        $db->free_result($query);
+        $db->freeResult($query);
     }
 }

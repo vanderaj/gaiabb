@@ -84,10 +84,9 @@ function viewPanel()
                             <td align="center"><?php echo $lang['smilies'] ?></td>
                         </tr>
                         <?php
-
-    $query = $db->query("SELECT * FROM " . X_PREFIX . "smilies WHERE type = 'smiley' ORDER BY id ASC");
-    while (($smilie = $db->fetch_array($query)) != false) {
-        ?>
+                        $query = $db->query("SELECT * FROM " . X_PREFIX . "smilies WHERE type = 'smiley' ORDER BY id ASC");
+                        while (($smilie = $db->fetchArray($query)) != false) {
+                            ?>
                             <tr>
                                 <td bgcolor="<?php echo $THEME['altbg2'] ?>" class="ctrtablerow"><input
                                             type="checkbox" name="smdelete[<?php echo $smilie['id'] ?>]"
@@ -104,9 +103,9 @@ function viewPanel()
                                             title="<?php echo $smilie['code'] ?>"/></td>
                             </tr>
                             <?php
-}
-    $db->free_result($query);
-    ?>
+                        }
+                        $db->freeResult($query);
+                        ?>
                         <tr bgcolor="<?php echo $THEME['altbg1'] ?>" class="tablerow">
                             <td><?php echo $lang['textnewsmilie'] ?></td>
                             <td><input type="text" name="newcode" value=""/></td>
@@ -160,7 +159,7 @@ function doPanel()
     }
 
     $querysmilie = $db->query("SELECT id FROM " . X_PREFIX . "smilies WHERE type = 'smiley'");
-    while (($smilie = $db->fetch_array($querysmilie)) != false) {
+    while (($smilie = $db->fetchArray($querysmilie)) != false) {
         $id = $smilie['id'];
         if (!empty($smdelete[$id]) && $smdelete[$id] == 1) {
             $query = $db->query("DELETE FROM " . X_PREFIX . "smilies WHERE id = '$id'");
@@ -172,7 +171,7 @@ function doPanel()
             $query = $db->query("UPDATE " . X_PREFIX . "smilies SET code = '$code', url = '$url' WHERE id = '$id' AND type = 'smiley'");
         }
     }
-    $db->free_result($querysmilie);
+    $db->freeResult($querysmilie);
 
     $newcode = formVar('newcode');
     if (!empty($newcode)) {
@@ -189,11 +188,11 @@ function doPanel()
         $smiley_code = array();
 
         $query = $db->query("SELECT * FROM " . X_PREFIX . "smilies WHERE type = 'smiley' ORDER BY id ASC");
-        while (($smiley = $db->fetch_array($query)) != false) {
+        while (($smiley = $db->fetchArray($query)) != false) {
             $smiley_url[] = $smiley['url'];
             $smiley_code[] = $smiley['code'];
         }
-        $db->free_result($query);
+        $db->freeResult($query);
 
         $dir = opendir(ROOT . $THEME['smdir']);
         while (($smiley = readdir($dir)) != false) {

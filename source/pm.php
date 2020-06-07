@@ -95,7 +95,7 @@ if ($CONFIG['pmstatus'] == 'off' && isset($self['status']) && $self['status'] ==
     error($lang['pmstatusdisabled'], false, '', '', 'index.php', true, false, true);
 }
 
-$pmCommand = new pmModel();
+$pmCommand = new GaiaBB\PmModel();
 
 $page = getInt('page');
 if (!$page) {
@@ -233,7 +233,7 @@ switch ($action) {
         if (isset($_GET['memberid'])) {
             $memberid = getInt('memberid');
             $gmem_query = $db->query("SELECT username FROM " . X_PREFIX . "members WHERE uid = '$memberid' LIMIT 1");
-            $gmem_array = $db->fetch_array($gmem_query);
+            $gmem_array = $db->fetchArray($gmem_query);
             $username = $gmem_array['username'];
         }
 
@@ -259,8 +259,8 @@ switch ($action) {
         }
 
         $query = $db->query("SELECT * FROM " . X_PREFIX . "pm_attachments WHERE pmid = '$pmid' AND aid = '$aid' AND owner = '$self[username]'");
-        $file = $db->fetch_array($query);
-        $db->free_result($query);
+        $file = $db->fetchArray($query);
+        $db->freeResult($query);
 
         if ($file['filesize'] != strlen($file['attachment'])) {
             error($lang['File_Corrupt'], false, '', '', false, true, false, true);
@@ -288,10 +288,10 @@ switch ($action) {
     case 'emptytrash':
         $in = '';
         $iquery = $db->query("SELECT pmid FROM " . X_PREFIX . "pm WHERE folder = 'Trash' AND owner = '$self[username]'");
-        while (($ids = $db->fetch_array($iquery)) != false) {
+        while (($ids = $db->fetchArray($iquery)) != false) {
             $in .= (empty($in)) ? $ids['pmid'] : "," . $ids['pmid'];
         }
-        $db->free_result($iquery);
+        $db->freeResult($iquery);
         $db->query("DELETE FROM " . X_PREFIX . "pm WHERE pmid IN($in)");
         $db->query("DELETE FROM " . X_PREFIX . "pm_attachments WHERE pmid IN($in)");
         message($lang['texttrashemptied'], false, '', '', 'pm.php', true, false, true);

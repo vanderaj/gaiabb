@@ -30,6 +30,9 @@
  *
  **/
 
+// phpcs:disable PSR1.Files.SideEffects
+use GaiaBB\MariaDB;
+
 // Production PHP error level, suppresses all warnings
 error_reporting(0);
 ini_set('display_errors', false);
@@ -63,6 +66,9 @@ $onlinetime = time();
 include 'include/constants.inc.php';
 include 'include/validate.inc.php';
 include 'include/functions.inc.php';
+include 'class/authc.class.php';
+include 'class/cache.class.php';
+include 'class/csrf.class.php';
 
 // GZIP compression requires action to be set ... or it will not work
 
@@ -144,9 +150,9 @@ if (isset($_SERVER['REQUEST_URI'])) {
     $url = $_SERVER['REQUEST_URI'];
 }
 
-include 'db/mysql5php5.class.php';
+include 'db/mariadb.class.php';
 
-$oToken = new csrfToken();
+$oToken = new GaiaBB\CsrfToken();
 $oToken->init();
 
 $contactLink = 'contact.php';
@@ -156,8 +162,8 @@ nav();
 btitle();
 
 switch (CACHECONTROL) {
-        // Use for pages where caching is problematic (possibly post?)
-        // Use sparingly; for login pages, etc.
+    // Use for pages where caching is problematic (possibly post?)
+    // Use sparingly; for login pages, etc.
     case 'private':
     case 'nocache':
         header("Cache-Control: no-store, no-cache, must-revalidate"); // HTTP/1.1
@@ -171,7 +177,6 @@ switch (CACHECONTROL) {
         break;
     case 'public':
     default:
-
         // header("Cache-Control: private, no-cache=\"set-cookie\""); // HTTP/1.1
         // header("Expires: 0");
         // header("Pragma: no-cache");
@@ -179,7 +184,8 @@ switch (CACHECONTROL) {
 }
 
 // Fix annoying bug in windows... *sigh*
-if ($action != 'attachment' && !($action == 'templates' && onSubmit('download')) && !($action == 'themes' && onSubmit('download'))) {
+if ($action != 'attachment' && !($action == 'templates' &&
+    onSubmit('download')) && !($action == 'themes' && onSubmit('download'))) {
     header("Content-type: text/html");
 }
 
@@ -230,17 +236,17 @@ foreach ($tables as $name) {
 // create secure table prefix by John
 define('X_PREFIX', $tablepre);
 
-$db = new mysql5Php5();
+$db = new MariaDB();
 $db->connect($dbhost, $dbuser, $dbpw, $dbname, $pconnect, true);
 
 // Make all settings global, and put them in the $CONFIG[] array
-include 'class/cache.class.php';
-$config_cache = new Cacheable('setcache', 60);
+
+$config_cache = new GaiaBB\Cacheable('setcache', 60);
 
 $CONFIG = $config_cache->getData('settings');
 if ($CONFIG === false) {
     $sq = $db->query("SELECT * FROM " . X_PREFIX . "settings");
-    while (($srow = $db->fetch_array($sq)) != false) {
+    while (($srow = $db->fetchArray($sq)) != false) {
         $key = $srow['config_name'];
         $val = $srow['config_value'];
 
@@ -251,38 +257,42 @@ if ($CONFIG === false) {
 
     if ($CONFIG['postperpage'] < 5) {
         $CONFIG['postperpage'] = 30;
-        $db->query("UPDATE " . X_PREFIX . "settings SET config_value='" . $CONFIG['postperpage'] . "' WHERE config_name='postperpage'");
+        $db->query("UPDATE " . X_PREFIX . "settings SET config_value='" .
+            $CONFIG['postperpage'] . "' WHERE config_name='postperpage'");
     }
 
     if ($CONFIG['topicperpage'] < 5) {
         $CONFIG['topicperpage'] = 30;
-        $db->query("UPDATE " . X_PREFIX . "settings SET config_value='" . $CONFIG['topicperpage'] . "' WHERE config_name='topicperpage'");
+        $db->query("UPDATE " . X_PREFIX . "settings SET config_value='" .
+            $CONFIG['topicperpage'] . "' WHERE config_name='topicperpage'");
     }
 
     // Add in inactive users if it doesn't already exist.
 
     if (!isset($CONFIG['inactiveusers'])) {
         $CONFIG['inactiveusers'] = 0;
-        $db->query("INSERT INTO " . X_PREFIX . "settings (config_name, config_value) VALUES ('inactiveusers', '" . $CONFIG['inactiveusers'] . "')");
+        $db->query("INSERT INTO " . X_PREFIX . "settings (config_name, config_value) VALUES ('inactiveusers', '" .
+            $CONFIG['inactiveusers'] . "')");
     }
 
     // Prune new users who have never logged in. Tempered by the number of days grace set in Admin > Settings.
     if ($CONFIG['inactiveusers'] > 0) {
         $inactivebefore = $onlinetime - (60 * 60 * 24 * $CONFIG['inactiveusers']);
-        $db->query("DELETE FROM " . X_PREFIX . "members WHERE lastvisit = 0 AND regdate < $inactivebefore AND status = 'Member'");
+        $db->query("DELETE FROM " . X_PREFIX .
+            "members WHERE lastvisit = 0 AND regdate < $inactivebefore AND status = 'Member'");
     }
 
     $config_cache->setData('settings', $CONFIG);
 }
 
 // Get the moderators and cache them for later use
-$moderators_cache = new Cacheable('modcache', 3600);
+$moderators_cache = new GaiaBB\Cacheable('modcache', 3600);
 
 $MODERATORS = $moderators_cache->getData('moderators');
 if ($MODERATORS === false) {
     $MODERATORS = array();
     $modq = $db->query("SELECT moderator FROM " . X_PREFIX . "forums WHERE moderator != ''");
-    while (($moda = $db->fetch_array($modq)) != false) {
+    while (($moda = $db->fetchArray($modq)) != false) {
         $mods = explode(', ', $moda['moderator']);
         foreach ($mods as $mod_user) {
             $m_check = array_search(strtolower($mod_user), $MODERATORS);
@@ -327,10 +337,8 @@ if (isset($array['path'])) {
 
 $lastvisit = $lastvisit2 = 0;
 
-require_once 'class/authc.class.php';
-
-$authState = new AuthState();
-$authC = new AuthC();
+$authState = new GaiaBB\AuthState();
+$authC = new GaiaBB\AuthC();
 
 // Update last visit, old topics
 
@@ -451,7 +459,9 @@ if (X_MEMBER) {
         $cplink = ' - <a href="' . 'admin/index.php">' . $lang['textcp'] . '</a>';
     }
 
-    $notify = $lang['loggedin'] . ' <a href="' . 'viewprofile.php?memberid=' . intval($self['uid']) . '"><strong>' . trim($self['username']) . '</strong></a> - [ ' . $loginout . ' - ' . $pmlink . '' . $usercp . '' . $modcplink . '' . $cplink . ' ]';
+    $notify = $lang['loggedin'] . ' <a href="' . 'viewprofile.php?memberid=' . intval($self['uid']) . '"><strong>' .
+    trim($self['username']) . '</strong></a> - [ ' . $loginout . ' - ' . $pmlink . '' . $usercp .
+        '' . $modcplink . '' . $cplink . ' ]';
 } else {
     $loginout = '<a href="' . 'login.php">' . $lang['textlogin'] . '</a>';
     $onlineuser = 'xguest123';
@@ -460,15 +470,16 @@ if (X_MEMBER) {
     $robotname = '';
     if (isset($_SERVER['HTTP_USER_AGENT']) && $_SERVER['HTTP_USER_AGENT'] != null) {
         $useragent = strtolower((string) $_SERVER['HTTP_USER_AGENT']);
-        $rq = $db->query("SELECT LENGTH(robot_string) AS strlen, robot_string, robot_fullname FROM " . X_PREFIX . "robots ORDER BY strlen DESC");
-        while (($result = $db->fetch_array($rq)) != false) {
+        $rq = $db->query("SELECT LENGTH(robot_string) AS strlen, robot_string, robot_fullname FROM " .
+            X_PREFIX . "robots ORDER BY strlen DESC");
+        while (($result = $db->fetchArray($rq)) != false) {
             if (strpos($useragent, $result['robot_string']) !== false) {
                 $onlineuser = 'xrobot123';
                 $robotname = $result['robot_fullname'];
                 break;
             }
         }
-        $db->free_result($rq);
+        $db->freeResult($rq);
     }
 }
 
@@ -506,27 +517,27 @@ if ($tid !== 0 && $action != 'templates') {
     }
 
     if ($forumtheme === false || $fid === false) {
-        $q = $db->query("SELECT f.fid, f.theme FROM " . X_PREFIX . "forums f, " . X_PREFIX . "threads t WHERE f.fid = t.fid AND t.tid = '$tid'");
-        while (($locate = $db->fetch_array($q)) != false) {
+        $q = $db->query("SELECT f.fid, f.theme FROM " . X_PREFIX . "forums f, " .
+            X_PREFIX . "threads t WHERE f.fid = t.fid AND t.tid = '$tid'");
+        while (($locate = $db->fetchArray($q)) != false) {
             $fid = $locate['fid'];
             $forumtheme = $locate['theme'];
         }
-        $db->free_result($q);
+        $db->freeResult($q);
         $config_cache->setData('fid', '' . $fid . '');
         $config_cache->setData('forumtheme' . $fid, '' . $forumtheme . '');
     }
-} else
-if ($fid !== 0) {
+} elseif ($fid !== 0) {
     $config_cache->setData('fid', '' . $fid . '');
     $forumtheme = $config_cache->getData('forumtheme' . $fid);
     if ($forumtheme === false) {
         $q = $db->query("SELECT theme FROM " . X_PREFIX . "forums WHERE fid = '$fid'");
-        if ($db->num_rows($q) === 1) {
+        if ($db->numRows($q) === 1) {
             $forumtheme = $db->result($q, 0);
         } else {
             $forumtheme = 0;
         }
-        $db->free_result($q);
+        $db->freeResult($q);
         $config_cache->setData('forumtheme' . $fid, '' . $forumtheme . '');
     }
 }
@@ -540,28 +551,38 @@ if ($CONFIG['whosoptomized'] == 'on') {
 
     if ($whosonlineDone === false) {
         // clear out old entries and guests/robots
-        $db->query("DELETE FROM " . X_PREFIX . "whosonline WHERE ((ip = '$onlineip' && (username = 'xguest123' OR username = 'xrobot123')) OR (username = '$self[username]') OR (time < '$newtime'))");
-        $db->query("INSERT INTO " . X_PREFIX . "whosonline (username, ip, time, location, invisible, robotname) VALUES ('$onlineuser', '$onlineip', " . $db->time($onlinetime) . ", '$wollocation', '$self[invisible]', '$robotname')");
+        $db->query("DELETE FROM " . X_PREFIX . "whosonline " .
+            "WHERE ((ip = '$onlineip' && (username = 'xguest123' OR username = 'xrobot123'))" .
+            "OR (username = '$self[username]') OR (time < '$newtime'))");
+        $db->query("INSERT INTO " . X_PREFIX . "whosonline (username, ip, time, location, invisible, robotname) " .
+            "VALUES ('$onlineuser', '$onlineip', " .
+            $db->time($onlinetime) . ", '$wollocation', '$self[invisible]', '$robotname')");
 
         $online24 = $onlinetime - (60 * 60 * 24);
-        $db->query("DELETE FROM " . X_PREFIX . "guestcount WHERE ((ipaddress = '$onlineip') OR (onlinetime < '$online24'))");
-        $db->query("DELETE FROM " . X_PREFIX . "robotcount WHERE ((ipaddress = '$onlineip') OR (onlinetime < '$online24'))");
+        $db->query("DELETE FROM " .
+            X_PREFIX . "guestcount WHERE ((ipaddress = '$onlineip') OR (onlinetime < '$online24'))");
+        $db->query("DELETE FROM " .
+            X_PREFIX . "robotcount WHERE ((ipaddress = '$onlineip') OR (onlinetime < '$online24'))");
 
         if ($onlineuser == 'xguest123') {
-            $db->query("INSERT INTO " . X_PREFIX . "guestcount (ipaddress, onlinetime) VALUES ('$onlineip', '$onlinetime')");
-        } else
-        if ($onlineuser == 'xrobot123') {
-            $db->query("INSERT INTO " . X_PREFIX . "robotcount (ipaddress, onlinetime) VALUES ('$onlineip', '$onlinetime')");
+            $db->query("INSERT INTO " . X_PREFIX .
+                "guestcount (ipaddress, onlinetime) VALUES ('$onlineip', '$onlinetime')");
+        } elseif ($onlineuser == 'xrobot123') {
+            $db->query("INSERT INTO " . X_PREFIX .
+                "robotcount (ipaddress, onlinetime) VALUES ('$onlineip', '$onlinetime')");
         }
 
         if (X_MEMBER) {
-            $result = $db->query("SELECT COUNT(username) FROM " . X_PREFIX . "whosonline WHERE (username = '$self[username]')");
+            $result = $db->query("SELECT COUNT(username) FROM " . X_PREFIX .
+                "whosonline WHERE (username = '$self[username]')");
             $usercount = $db->result($result, 0);
             if ($usercount > 1) {
                 $db->query("DELETE FROM " . X_PREFIX . "whosonline WHERE (username = '$self[username]')");
-                $db->query("INSERT INTO " . X_PREFIX . "whosonline (username, ip, time, location, invisible, robotname) VALUES ('$onlineuser', '$onlineip', " . $db->time($onlinetime) . ", '$wollocation', '$self[invisible]', '$robotname')");
+                $db->query("INSERT INTO " . X_PREFIX . "whosonline " .
+                    "(username, ip, time, location, invisible, robotname) VALUES ('$onlineuser', '$onlineip', " .
+                    $db->time($onlinetime) . ", '$wollocation', '$self[invisible]', '$robotname')");
             }
-            $db->free_result($result);
+            $db->freeResult($result);
         }
         $config_cache->setData('whosonline', 'true');
     }
@@ -571,36 +592,46 @@ if ($CONFIG['whosoptomized'] == 'on') {
     $username = isset($username) ? $username : '';
 
     // clear out old entries and guests/robots
-    $db->query("DELETE FROM " . X_PREFIX . "whosonline WHERE ((ip = '$onlineip' && (username = 'xguest123' OR username = 'xrobot123')) OR (username = '$self[username]') OR (time < '$newtime'))");
-    $db->query("INSERT INTO " . X_PREFIX . "whosonline (username, ip, time, location, invisible, robotname) VALUES ('$onlineuser', '$onlineip', " . $db->time($onlinetime) . ", '$wollocation', '$self[invisible]', '$robotname')");
+    $db->query("DELETE FROM " . X_PREFIX . "whosonline WHERE ((ip = '" . $onlineip .
+        "' && (username = 'xguest123' OR username = 'xrobot123')) OR (username = '" . $self['username'] .
+        "') OR (time < '$newtime'))");
+
+    $db->query("INSERT INTO " . X_PREFIX . "whosonline (username, ip, time, location, invisible, robotname) " .
+        "VALUES ('$onlineuser', '$onlineip', " . $db->time($onlinetime) .
+        ", '$wollocation', '$self[invisible]', '$robotname')");
 
     $online24 = $onlinetime - (60 * 60 * 24);
-    $db->query("DELETE FROM " . X_PREFIX . "guestcount WHERE ((ipaddress = '$onlineip') OR (onlinetime < '$online24'))");
-    $db->query("DELETE FROM " . X_PREFIX . "robotcount WHERE ((ipaddress = '$onlineip') OR (onlinetime < '$online24'))");
+    $db->query("DELETE FROM " . X_PREFIX .
+        "guestcount WHERE ((ipaddress = '$onlineip') OR (onlinetime < '$online24'))");
+    $db->query("DELETE FROM " . X_PREFIX .
+        "robotcount WHERE ((ipaddress = '$onlineip') OR (onlinetime < '$online24'))");
 
     if ($onlineuser == 'xguest123') {
-        $db->query("INSERT INTO " . X_PREFIX . "guestcount (ipaddress, onlinetime) VALUES ('$onlineip', '$onlinetime')");
-    } else
-    if ($onlineuser == 'xrobot123') {
-        $db->query("INSERT INTO " . X_PREFIX . "robotcount (ipaddress, onlinetime) VALUES ('$onlineip', '$onlinetime')");
+        $db->query("INSERT INTO " . X_PREFIX .
+            "guestcount (ipaddress, onlinetime) VALUES ('$onlineip', '$onlinetime')");
+    } elseif ($onlineuser == 'xrobot123') {
+        $db->query("INSERT INTO " . X_PREFIX .
+            "robotcount (ipaddress, onlinetime) VALUES ('$onlineip', '$onlinetime')");
     }
 
     if (X_MEMBER) {
-        $result = $db->query("SELECT COUNT(username) FROM " . X_PREFIX . "whosonline WHERE (username = '$self[username]')");
+        $result = $db->query("SELECT COUNT(username) FROM " . X_PREFIX .
+            "whosonline WHERE (username = '$self[username]')");
         $usercount = $db->result($result, 0);
         if ($usercount > 1) {
             $db->query("DELETE FROM " . X_PREFIX . "whosonline WHERE (username = '$self[username]')");
-            $db->query("INSERT INTO " . X_PREFIX . "whosonline (username, ip, time, location, invisible, robotname) VALUES ('$onlineuser', '$onlineip', " . $db->time($onlinetime) . ", '$wollocation', '$self[invisible]', '$robotname')");
+            $db->query("INSERT INTO " . X_PREFIX . "whosonline (username, ip, time, location, invisible, robotname) " .
+                "VALUES ('$onlineuser', '$onlineip', " . $db->time($onlinetime) .
+                ", '$wollocation', '$self[invisible]', '$robotname')");
         }
-        $db->free_result($result);
+        $db->freeResult($result);
     }
 }
 
 // Check what theme to use
 if (!empty($forumtheme) && (int) $forumtheme > 0) {
     $theme = (int) $forumtheme;
-} else
-if (!empty($self['theme']) && (int) $self['theme'] > 0) {
+} elseif (!empty($self['theme']) && (int) $self['theme'] > 0) {
     $theme = (int) $self['theme'];
 } else {
     $theme = (int) $CONFIG['theme'];
@@ -610,7 +641,7 @@ if (!empty($self['theme']) && (int) $self['theme'] > 0) {
 $THEME = $config_cache->getData('theme');
 if ($THEME === false) {
     $tquery = $db->query("SELECT * FROM " . X_PREFIX . "themes WHERE themeid = '$theme'");
-    foreach ($db->fetch_array($tquery) as $key => $val) {
+    foreach ($db->fetchArray($tquery) as $key => $val) {
         if ($key != 'name') {
             $$key = $val;
         } else {
@@ -619,7 +650,7 @@ if ($THEME === false) {
         }
         $THEME[$key] = $val;
     }
-    $db->free_result($tquery);
+    $db->freeResult($tquery);
     $config_cache->setData('theme', $THEME);
 }
 
@@ -628,7 +659,8 @@ $THEME['imgdir'] = ROOT . $THEME['imgdir'];
 
 // CSS file load for addons
 if (file_exists($THEME['imgdir'] . '/theme.css')) {
-    $cssadd = '<style type="text/css">' . "\n" . "@import url('" . $THEME['imgdir'] . "/theme.css');" . "\n" . '</style>';
+    $cssadd = '<style type="text/css">' . "\n" .
+        "@import url('" . $THEME['imgdir'] . "/theme.css');" . "\n" . '</style>';
 } else {
     $cssadd = '';
 }
@@ -649,12 +681,28 @@ if (false === strpos($THEME['outerbgcolor'], '.')) {
 switch ($THEME['outertable']) {
     case 'round':
         $background = $outerbgcode;
-        $topcorners = '<table cellspacing="0px" cellpadding="0px" border="0px" width="' . $THEME['outertablewidth'] . '" align="center"><tr><td align="left"><img src="' . $THEME['imgdir'] . '/top_left.gif" alt="" title="" border="0px" /></td><td align="center" width="100%" ' . $bgcode . '><img src="' . $THEME['imgdir'] . '/pixel.gif" alt="" title="" border="0px" /></td><td align="right"><img src="' . $THEME['imgdir'] . '/top_right.gif" alt="" title="" border="0px" /></td></tr><tr><td ' . $bgcode . ' colspan="3">';
-        $bottomcorners = '</td></tr><tr><td align="left"><img src="' . $THEME['imgdir'] . '/bottom_left.gif" alt="" title="" border="0px" /></td><td align="center" width="100%" ' . $bgcode . '><img src="' . $THEME['imgdir'] . '/pixel.gif" alt="" title="" border="0px" /></td><td align="right"><img src="' . $THEME['imgdir'] . '/bottom_right.gif" alt="" title="" border="0px" /></td></tr></table>';
+        $topcorners = '<table cellspacing="0px" cellpadding="0px" border="0px" width="' .
+            $THEME['outertablewidth'] . '" align="center"><tr><td align="left"><img src="' .
+            $THEME['imgdir'] . '/top_left.gif" alt="" title="" border="0px" /></td><td align="center" width="100%" ' .
+            $bgcode . '><img src="' .
+            $THEME['imgdir'] .
+            '/pixel.gif" alt="" title="" border="0px" /></td><td align="right"><img src="' .
+            $THEME['imgdir'] . '/top_right.gif" alt="" title="" border="0px" /></td></tr><tr><td ' .
+            $bgcode . ' colspan="3">';
+        $bottomcorners = '</td></tr><tr><td align="left"><img src="' .
+            $THEME['imgdir'] .
+            '/bottom_left.gif" alt="" title="" border="0px" /></td><td align="center" width="100%" ' .
+            $bgcode . '><img src="' .
+            $THEME['imgdir'] . '/pixel.gif" alt="" title="" border="0px" /></td><td align="right"><img src="' .
+            $THEME['imgdir'] . '/bottom_right.gif" alt="" title="" border="0px" /></td></tr></table>';
         break;
     case 'square':
         $background = $outerbgcode;
-        $topcorners = '<table cellspacing="0px" cellpadding="0px" border="0px" width="' . $THEME['outertablewidth'] . '" bgcolor="' . $THEME['outerbordercolor'] . '" align="center"><tr><td><table border="0px" cellspacing="' . $THEME['outerborderwidth'] . '" cellpadding="' . $THEME['tablespace'] . '" width="100%" align="center"><tr><td ' . $bgcode . '><br />';
+        $topcorners = '<table cellspacing="0px" cellpadding="0px" border="0px" width="' .
+            $THEME['outertablewidth'] . '" bgcolor="' .
+            $THEME['outerbordercolor'] . '" align="center"><tr><td><table border="0px" cellspacing="' .
+            $THEME['outerborderwidth'] . '" cellpadding="' .
+            $THEME['tablespace'] . '" width="100%" align="center"><tr><td ' . $bgcode . '><br />';
         $bottomcorners = '<br /></td></tr></table></td></tr></table>';
         break;
     default:
@@ -679,8 +727,11 @@ if (false === strpos($THEME['top'], '.')) {
 
 // create navigation symbol
 $THEME['navsymbol'] = (isset($THEME['navsymbol']) ? $THEME['navsymbol'] : '&raquo;');
-if (stristr($THEME['navsymbol'], '.bmp') || stristr($THEME['navsymbol'], '.gif') || stristr($THEME['navsymbol'], '.jpg') || stristr($THEME['navsymbol'], '.png')) {
-    $THEME['navsymbol'] = '<img src="' . $THEME['imgdir'] . '/' . $THEME['navsymbol'] . '" border="0px" alt="' . $lang['navsymbolalt'] . '" title="' . $lang['navsymbolalt'] . '" />';
+if (stristr($THEME['navsymbol'], '.bmp') || stristr($THEME['navsymbol'], '.gif') ||
+    stristr($THEME['navsymbol'], '.jpg') || stristr($THEME['navsymbol'], '.png')) {
+    $THEME['navsymbol'] = '<img src="' . $THEME['imgdir'] . '/' .
+        $THEME['navsymbol'] . '" border="0px" alt="' . $lang['navsymbolalt'] .
+        '" title="' . $lang['navsymbolalt'] . '" />';
 }
 
 // check if it's an URL or just a image
@@ -690,7 +741,8 @@ if (strlen($THEME['boardimg'] = trim($THEME['boardimg'])) > 0) {
     if (!isset($l['scheme']) || !isset($l['host'])) {
         $THEME['boardimg'] = $THEME['imgdir'] . '/' . $THEME['boardimg'];
     }
-    $logo = '<a href="' . 'index.php"><img src="' . $THEME['boardimg'] . '" alt="' . $lang['altboardlogo'] . '" title="' . $lang['altboardlogo'] . '" border="0px" /></a>';
+    $logo = '<a href="' . 'index.php"><img src="' . $THEME['boardimg'] .
+        '" alt="' . $lang['altboardlogo'] . '" title="' . $lang['altboardlogo'] . '" border="0px" /></a>';
 } else {
     $logo = '<a href="' . 'index.php">' . stripslashes($CONFIG['bbname']) . '</a>';
 }
@@ -716,42 +768,58 @@ if (isset($lastvisit) && X_MEMBER) {
 // begin naviagtion header links
 // Search-link
 if (isset($CONFIG['siteurl']) && !empty($CONFIG['siteurl'])) {
-    $links[] = '<img src="' . $THEME['imgdir'] . '/home.gif" alt="' . $lang['texthome'] . '" title="' . $lang['texthome'] . '" border="0px" />&nbsp;<a href="' . $CONFIG['siteurl'] . '"><font class="navtd">' . $lang['texthome'] . '</font></a>';
+    $links[] = '<img src="' . $THEME['imgdir'] . '/home.gif" alt="' . $lang['texthome'] .
+        '" title="' . $lang['texthome'] . '" border="0px" />&nbsp;<a href="' .
+        $CONFIG['siteurl'] . '"><font class="navtd">' . $lang['texthome'] . '</font></a>';
 }
 
 // Search-link
 if (X_MEMBER && $CONFIG['searchstatus'] == 'on') {
-    $links[] = '<img src="' . $THEME['imgdir'] . '/search.gif" alt="' . $lang['altsearch'] . '" title="' . $lang['altsearch'] . '" border="0px" />&nbsp;<a href="' . 'search.php"><font class="navtd">' . $lang['textsearch'] . '</font></a>';
+    $links[] = '<img src="' . $THEME['imgdir'] . '/search.gif" alt="' .
+        $lang['altsearch'] . '" title="' . $lang['altsearch'] . '" border="0px" />&nbsp;<a href="' .
+        'search.php"><font class="navtd">' . $lang['textsearch'] . '</font></a>';
 }
 
 // Faq-link
 if ($CONFIG['faqstatus'] == 'on') {
-    $links[] = '<img src="' . $THEME['imgdir'] . '/faq.gif" alt="' . $lang['altfaq'] . '" title="' . $lang['altfaq'] . '" border="0px" />&nbsp;<a href="' . 'faq.php"><font class="navtd">' . $lang['textfaq'] . '</font></a>';
+    $links[] = '<img src="' . $THEME['imgdir'] . '/faq.gif" alt="' . $lang['altfaq'] . '" title="' .
+        $lang['altfaq'] . '" border="0px" />&nbsp;<a href="' . 'faq.php"><font class="navtd">' .
+        $lang['textfaq'] . '</font></a>';
 }
 
 // Member List-link
 if (X_MEMBER && $CONFIG['memliststatus'] == 'on') {
-    $links[] = '<img src="' . $THEME['imgdir'] . '/members_list.gif" alt="' . $lang['altmemberlist'] . '" title="' . $lang['altmemberlist'] . '" border="0px" />&nbsp;<a href="' . 'memberlist.php?action=list"><font class="navtd">' . $lang['textmemberlist'] . '</font></a>';
+    $links[] = '<img src="' . $THEME['imgdir'] . '/members_list.gif" alt="' . $lang['altmemberlist'] .
+        '" title="' . $lang['altmemberlist'] . '" border="0px" />&nbsp;<a href="' .
+        'memberlist.php?action=list"><font class="navtd">' . $lang['textmemberlist'] . '</font></a>';
 }
 
 // Topic Activity-link
 if ($CONFIG['topicactivity_status'] == 'on') {
-    $links[] = '<img src="' . $THEME['imgdir'] . '/todays_posts.gif" alt="' . $lang['topicactivityalt'] . '" title="' . $lang['topicactivityalt'] . '" border="0px" />&nbsp;<a href="' . 'activity.php"><font class="navtd">' . $lang['topicactivity'] . '</font></a>';
+    $links[] = '<img src="' . $THEME['imgdir'] . '/todays_posts.gif" alt="' . $lang['topicactivityalt'] .
+        '" title="' . $lang['topicactivityalt'] . '" border="0px" />&nbsp;<a href="' .
+        'activity.php"><font class="navtd">' . $lang['topicactivity'] . '</font></a>';
 }
 
 // Stats-link
 if ($CONFIG['stats'] == 'on') {
-    $links[] = '<img src="' . $THEME['imgdir'] . '/stats.gif" alt="' . $lang['altstats'] . '" title="' . $lang['altstats'] . '" border="0px" />&nbsp;<a href="' . 'stats.php"><font class="navtd">' . $lang['navstats'] . '</font></a>';
+    $links[] = '<img src="' . $THEME['imgdir'] . '/stats.gif" alt="' . $lang['altstats'] .
+        '" title="' . $lang['altstats'] . '" border="0px" />&nbsp;<a href="' .
+        'stats.php"><font class="navtd">' . $lang['navstats'] . '</font></a>';
 }
 
 // Contact Us-link
 if ($CONFIG['contactus'] == 'on') {
-    $links[] = '<img src="' . $THEME['imgdir'] . '/contact.gif" alt="' . $lang['contactus'] . '" title="' . $lang['contactus'] . '" border="0px" />&nbsp;<a href="' . $contactLink . '"><font class="navtd">' . $lang['contactus'] . '</font></a>';
+    $links[] = '<img src="' . $THEME['imgdir'] . '/contact.gif" alt="' . $lang['contactus'] .
+        '" title="' . $lang['contactus'] . '" border="0px" />&nbsp;<a href="' . $contactLink .
+        '"><font class="navtd">' . $lang['contactus'] . '</font></a>';
 }
 
 // Board Rules-link
 if ($CONFIG['bbrules'] == 'on') {
-    $links[] = '<img src="' . $THEME['imgdir'] . '/bbrules.gif" alt="' . $lang['altrules'] . '" title="' . $lang['altrules'] . '" border="0px" />&nbsp;<a href="' . 'faq.php?page=forumrules"><font class="navtd">' . $lang['textbbrules'] . '</font></a>';
+    $links[] = '<img src="' . $THEME['imgdir'] . '/bbrules.gif" alt="' . $lang['altrules'] .
+        '" title="' . $lang['altrules'] . '" border="0px" />&nbsp;<a href="' .
+        'faq.php?page=forumrules"><font class="navtd">' . $lang['textbbrules'] . '</font></a>';
 }
 
 $links = implode('&nbsp;&nbsp;', $links);
@@ -778,13 +846,16 @@ if (!isset($CONFIG['max_reg_day']) || $CONFIG['max_reg_day'] < 1 || $CONFIG['max
 
 // display version build (John)
 if ($CONFIG['show_full_info'] == 'on') {
-    $versionlong = '<br />Powered by <a href="https://github.com/vanderaj/gaiabb" target="_blank"><strong>' . $versionshort . '</strong></a>, &copy; 2009-2020 The GaiaBB Group';
+    $versionlong = '<br />Powered by <a href="https://github.com/vanderaj/gaiabb" target="_blank"><strong>' .
+        $versionshort . '</strong></a>, &copy; 2009-2020 The GaiaBB Group';
 } else {
-    $versionlong = '<br />Powered by <a href="https://github.com/vanderaj/gaiabb" target="_blank"><strong>' . $versionshort . '</strong></a>, &copy; 2009-2020 The GaiaBB Group';
+    $versionlong = '<br />Powered by <a href="https://github.com/vanderaj/gaiabb" target="_blank"><strong>' .
+        $versionshort . '</strong></a>, &copy; 2009-2020 The GaiaBB Group';
 }
 
 // If the board is offline, display an appropriate message
-if ($CONFIG['bbstatus'] == 'off' && !(X_ADMIN) && false === strpos($url, "login.php") && false === strpos($url, "logout.php") && false === strpos($url, "contact.php")) {
+if ($CONFIG['bbstatus'] == 'off' && !(X_ADMIN) && false === strpos($url, "login.php") &&
+    false === strpos($url, "logout.php") && false === strpos($url, "contact.php")) {
     eval('$css = "' . template('css') . '";');
     $CONFIG['bboffreason'] = postify($CONFIG['bboffreason']);
     $shadow = shadowfx();
@@ -794,11 +865,16 @@ if ($CONFIG['bbstatus'] == 'off' && !(X_ADMIN) && false === strpos($url, "login.
 
 // If the board is set to 'reg-only' use, check if someone is logged in, and if not display a message
 if ($CONFIG['regviewonly'] == 'on') {
-    if (X_GUEST && $action != 'reg' && $action != 'coppa' && $action != 'captcha' && false === strpos($url, "lostpw.php") && false === strpos($url, "login.php") && false === strpos($url, "logout.php")) {
+    if (X_GUEST && $action != 'reg' && $action != 'coppa' && $action != 'captcha' &&
+        false === strpos($url, "lostpw.php") &&
+        false === strpos($url, "login.php") &&
+        false === strpos($url, "logout.php")) {
         if ($CONFIG['coppa'] == 'on') {
-            $message = $lang['reggedonly'] . ' <a href="' . 'register.php?action=coppa">' . $lang['textregister'] . '</a> ' . $lang['textor'] . ' <a href="' . 'login.php">' . $lang['textlogin'] . '</a>';
+            $message = $lang['reggedonly'] . ' <a href="' . 'register.php?action=coppa">' . $lang['textregister'] .
+                '</a> ' . $lang['textor'] . ' <a href="' . 'login.php">' . $lang['textlogin'] . '</a>';
         } else {
-            $message = $lang['reggedonly'] . ' <a href="' . 'register.php?action=reg">' . $lang['textregister'] . '</a> ' . $lang['textor'] . ' <a href="login.php">' . $lang['textlogin'] . '</a>';
+            $message = $lang['reggedonly'] . ' <a href="' . 'register.php?action=reg">' . $lang['textregister'] .
+                '</a> ' . $lang['textor'] . ' <a href="login.php">' . $lang['textlogin'] . '</a>';
         }
         eval('$css = "' . template('css') . '";');
         $shadow = shadowfx();
@@ -817,9 +893,14 @@ if (strpos($url, '/admin/') !== false) {
 // Check if the user is ip-banned
 $ips = explode('.', $onlineip);
 // also disable 'ban all'-possibility
-$qre = $db->query("SELECT id FROM " . X_PREFIX . "banned WHERE ((ip1 = '$ips[0]' OR ip1 = '-1') AND (ip2 = '$ips[1]' OR ip2 = '-1') AND (ip3 = '$ips[2]' OR ip3 = '-1') AND (ip4 = '$ips[3]' OR ip4 = '-1')) AND NOT (ip1 = '-1' AND ip2 = '-1' AND ip3 = '-1' AND ip4 = '-1')");
-$result = $db->fetch_array($qre);
-$db->free_result($qre);
+$qre = $db->query("SELECT id FROM " . X_PREFIX . "banned WHERE " .
+    "((ip1 = '$ips[0]' OR ip1 = '-1') AND " .
+    "(ip2 = '$ips[1]' OR ip2 = '-1') AND " .
+    "(ip3 = '$ips[2]' OR ip3 = '-1') AND " .
+    "(ip4 = '$ips[3]' OR ip4 = '-1')) " .
+    "AND NOT (ip1 = '-1' AND ip2 = '-1' AND ip3 = '-1' AND ip4 = '-1')");
+$result = $db->fetchArray($qre);
+$db->freeResult($qre);
 
 // don't *ever* ban a (super-)admin!
 if (!X_ADMIN && (isset($self['status']) && $self['status'] == 'Banned' || $result)) {
@@ -832,7 +913,11 @@ $authC->checkForceLogout();
 
 // check if user needs to be forced to read board rules
 // credited to FunForum
-if (isset($self['status']) && $self['status'] == 'Member' && $CONFIG['bbrules'] == 'on' && isset($self['status']) && $self['readrules'] == 'yes') {
+if (isset($self['status'])
+    && $self['status'] == 'Member'
+    && $CONFIG['bbrules'] == 'on'
+    && isset($self['status'])
+    && $self['readrules'] == 'yes') {
     if (!strstr($url, 'faq.php?page=agreerules')) {
         $fly = explode('/', $_SERVER['REQUEST_URI']); // Only want filename
         redirect('faq.php?page=agreerules&flyto=' . $fly[count($fly) - 1], 0);
@@ -841,12 +926,17 @@ if (isset($self['status']) && $self['status'] == 'Member' && $CONFIG['bbrules'] 
 
 // if the user is logged in, check for new pm's
 $newpmmsg = $config_cache->getData('newpmmsg');
-if (X_MEMBER && $newpmmsg === false && !($CONFIG['pmstatus'] == 'off' && isset($self['status']) && $self['status'] == 'Member')) {
-    $qpm = $db->query("SELECT COUNT(readstatus) FROM " . X_PREFIX . "pm WHERE owner = '$self[username]' AND folder = 'Inbox' AND readstatus = 'no'");
+if (X_MEMBER
+    && $newpmmsg === false
+    && !($CONFIG['pmstatus'] == 'off' && isset($self['status'])
+        && $self['status'] == 'Member')) {
+    $qpm = $db->query("SELECT COUNT(readstatus) FROM " . X_PREFIX .
+        "pm WHERE owner = '$self[username]' AND folder = 'Inbox' AND readstatus = 'no'");
     $newpmnum = $db->result($qpm, 0);
-    $db->free_result($qpm);
+    $db->freeResult($qpm);
     if ($newpmnum > 0) {
-        $newpmmsg = '<a href="' . 'pm.php">' . $lang['newpm1'] . ' <strong>' . $newpmnum . '</strong> ' . $lang['newpm2'] . '</a>';
+        $newpmmsg = '<a href="' . 'pm.php">' . $lang['newpm1'] . ' <strong>' .
+            $newpmnum . '</strong> ' . $lang['newpm2'] . '</a>';
     }
     $config_cache->setData('newpmmsg', base64_encode($newpmmsg));
 } else {

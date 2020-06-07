@@ -28,6 +28,8 @@
  *    along with GaiaBB.  If not, see <http://www.gnu.org/licenses/>.
  *
  **/
+
+// phpcs:disable PSR1.Files.SideEffects
 define('ROOT', '../');
 define('ROOTINC', '../include/');
 define('ROOTCLASS', '../class/');
@@ -57,7 +59,11 @@ smcwcache();
 
 displayAdminPanel();
 
-$query = $db->query("SELECT COUNT(uid) FROM " . X_PREFIX . "members UNION ALL SELECT COUNT(tid) FROM " . X_PREFIX . "threads UNION ALL SELECT COUNT(pid) FROM " . X_PREFIX . "posts UNION ALL SELECT COUNT(pmid) FROM " . X_PREFIX . "pm");
+$query = $db->query("SELECT COUNT(uid) FROM " .
+    X_PREFIX . "members UNION ALL SELECT COUNT(tid) FROM " .
+    X_PREFIX . "threads UNION ALL SELECT COUNT(pid) FROM " .
+    X_PREFIX . "posts UNION ALL SELECT COUNT(pmid) FROM " .
+    X_PREFIX . "pm");
 $members = $db->result($query, 0);
 if ($members == false) {
     $members = 0;
@@ -76,67 +82,67 @@ $pms = $db->result($query, 3);
 if ($pms == false) {
     $pms = 0;
 }
-$db->free_result($query);
+$db->freeResult($query);
 
 $query = $db->query("SELECT COUNT(username) FROM " . X_PREFIX . "whosonline WHERE username LIKE 'xguest123'");
 $gonline = $db->result($query, 0);
-$db->free_result($query);
+$db->freeResult($query);
 
 $query = $db->query("SELECT COUNT(username) FROM " . X_PREFIX . "whosonline WHERE username LIKE 'xrobot123'");
 $ronline = $db->result($query, 0);
-$db->free_result($query);
+$db->freeResult($query);
 
 $query = $db->query("SELECT COUNT(username) FROM " . X_PREFIX . "whosonline WHERE username NOT LIKE 'xguest123'");
 $monline = $db->result($query, 0);
-$db->free_result($query);
+$db->freeResult($query);
 
 $query = $db->query("SELECT COUNT(status) FROM " . X_PREFIX . "members WHERE status = 'Moderator'");
 $mods = $db->result($query, 0);
-$db->free_result($query);
+$db->freeResult($query);
 
 $query = $db->query("SELECT COUNT(status) FROM " . X_PREFIX . "members WHERE status = 'Administrator'");
 $admins = $db->result($query, 0);
-$db->free_result($query);
+$db->freeResult($query);
 
 $query = $db->query("SELECT COUNT(fid) FROM " . X_PREFIX . "forums WHERE type = 'forum'");
 $forums = $db->result($query, 0);
-$db->free_result($query);
+$db->freeResult($query);
 
 $query = $db->query("SELECT COUNT(fid) FROM " . X_PREFIX . "forums WHERE type = 'forum' AND status = 'on'");
 $forumsa = $db->result($query, 0);
-$db->free_result($query);
+$db->freeResult($query);
 
 $query = $db->query("SELECT COUNT(postnum) FROM " . X_PREFIX . "members WHERE postnum = '0'");
 $inactive = $db->result($query, 0);
-$db->free_result($query);
+$db->freeResult($query);
 
 $query = $db->query("SELECT COUNT(readstatus) FROM " . X_PREFIX . "pm WHERE readstatus = 'yes'");
 $readpms = $db->result($query, 0);
-$db->free_result($query);
+$db->freeResult($query);
 
 $query = $db->query("SELECT COUNT(status) FROM " . X_PREFIX . "members WHERE status = 'Super Moderator'");
 $supmods = $db->result($query, 0);
-$db->free_result($query);
+$db->freeResult($query);
 
 $query = $db->query("SELECT COUNT(status) FROM " . X_PREFIX . "members WHERE status = 'Super Administrator'");
 $supadmins = $db->result($query, 0);
-$db->free_result($query);
+$db->freeResult($query);
 
 $query = $db->query("SELECT COUNT(aid) FROM " . X_PREFIX . "attachments");
 $attacht = $db->result($query, 0);
-$db->free_result($query);
+$db->freeResult($query);
 
 $query = $db->query("SELECT COUNT(aid) FROM " . X_PREFIX . "pm_attachments");
 $attachu = $db->result($query, 0);
-$db->free_result($query);
+$db->freeResult($query);
 
 $query = $db->query("SELECT COUNT(type) FROM " . X_PREFIX . "favorites WHERE type = 'favorite'");
 $favt = $db->result($query, 0);
-$db->free_result($query);
+$db->freeResult($query);
 
 $query = $db->query("SELECT COUNT(type) FROM " . X_PREFIX . "subscriptions WHERE type = 'subscription'");
 $subt = $db->result($query, 0);
-$db->free_result($query);
+$db->freeResult($query);
 
 $mysqlver = $db->getVersion();
 $phpver = phpversion();

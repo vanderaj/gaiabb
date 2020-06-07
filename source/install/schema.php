@@ -1,5 +1,4 @@
 <?php
-
 /**
  * GaiaBB
  * Copyright (c) 2009-2020 The GaiaBB Project
@@ -34,6 +33,8 @@
 if (!defined('IN_PROGRAM') && (defined('DEBUG') && DEBUG == false)) {
     exit('This file is not designed to be called directly');
 }
+
+// phpcs:disable Generic.Files.LineLength
 
 require_once 'common.model.php';
 
@@ -1386,7 +1387,7 @@ function schema_insert_robots($db, $tablepre)
 function schema_insert_themes($db, $tablepre)
 {
     $db->query("INSERT INTO `" . $tablepre . "themes` VALUES (0, 'Pro Blue', '#FFFFFF', '#97A6BF', '#E4EAF2', '#000000', '#5176B5', '#E4EAF2', '#000000', 'topbg.gif', 'catbar.gif', '#000000', '#000000', '1px', '97%', '5px', 'Tahoma, Arial, Helvetica, Verdana', '11px', 'logo.png', 'images/problue', 'images/smilies', '#000000', '#97A6BF', 'square', '100%', '#5176B5', '1px', 'on', 'image', 'on', 'lastpost.gif', 'on', 'on', '', '', '', '', '', 'images/ricons', '', 'on')");
-    $themeid = $db->insert_id();
+    $themeid = $db->insertId();
 
     // Set the default theme to be Pro Blue
     $db->query("UPDATE `" . $tablepre . "settings` SET config_value = '$themeid' WHERE config_name = 'theme'");

@@ -169,8 +169,7 @@ switch ($action) {
         if ($order != 'username' && $order != 'postnum' && $order != 'status' && $order != 'threadnum' && $order != 'lastvisit') {
             $orderby = 'uid';
             $order = 'uid';
-        } else
-        if ($order == 'status') {
+        } elseif ($order == 'status') {
             $orderby = "if (status = 'Super Administrator',1, if (status = 'Administrator', 2, if (status = 'Super Moderator', 3, if (status = 'Moderator', 4, if (status = 'member', 5, if (status = 'banned', 6, 7))))))";
         } else {
             $orderby = $db->escape($order);
@@ -233,11 +232,11 @@ switch ($action) {
         $adjTime = ($self['timeoffset'] * 3600) + $self['daylightsavings'];
 
         $members = $oldst = '';
-        if ($db->num_rows($qmem) == 0) {
-            $db->free_result($qmem);
+        if ($db->numRows($qmem) == 0) {
+            $db->freeResult($qmem);
             eval('$members = "' . template('memberlist_results_none') . '";');
         } else {
-            while (($member = $db->fetch_array($qmem)) != false) {
+            while (($member = $db->fetchArray($qmem)) != false) {
                 $member['regdate'] = gmdate($self['dateformat'], $member['regdate'] + $adjTime);
 
                 if (!($member['lastvisit'] > 0)) {
@@ -260,8 +259,7 @@ switch ($action) {
                     $member['firstname'] = stripslashes($member['firstname']);
                     $member['lastname'] = censor($member['lastname']);
                     $member['lastname'] = stripslashes($member['lastname']);
-                } else
-                if (empty($member['firstname']) || empty($member['lastname']) && $member['showname'] == 'no') {
+                } elseif (empty($member['firstname']) || empty($member['lastname']) && $member['showname'] == 'no') {
                     $member['firstname'] = $lang['profilenoinformation'];
                     $member['lastname'] = '';
                 }
@@ -336,7 +334,7 @@ switch ($action) {
                 }
                 eval('$members .= "' . template('memberlist_row') . '";');
             }
-            $db->free_result($qmem);
+            $db->freeResult($qmem);
         }
 
         if (!isset($CONFIG['memberperpage'])) {

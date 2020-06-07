@@ -24,6 +24,8 @@
  *    along with GaiaBB.  If not, see <http://www.gnu.org/licenses/>.
  *
  **/
+
+// phpcs:disable PSR1.Files.SideEffects
 define('IN_PROGRAM', true);
 
 session_start();
@@ -57,33 +59,33 @@ switch ($path) {
             case 'preflight':
                 $_SESSION = array(); // clear the session variables out
                 if (isInstalled()) {
-                    view_header('Previous installation detected', $path);
+                    viewHeader('Previous installation detected', $path);
                     print_error('Previous installation', 'Install cannot continue as there is an existing board. Please review the installation notes for more details.');
                     exit();
                 }
-                view_header('License Agreement', $path);
+                viewHeader('License Agreement', $path);
                 view_eula($path);
                 break;
             case 'eula': // no reason to backup a new installation
             case 'backup':
-                view_header('Administrator Credentials', $path);
+                viewHeader('Administrator Credentials', $path);
                 view_admin($path);
                 break;
             case 'admin':
                 process_admin_creds($path);
-                view_header('Database Details', $path);
+                viewHeader('Database Details', $path);
                 view_database($path);
                 break;
             case 'db':
                 process_db($path);
-                view_header('Configuration File', $path);
+                viewHeader('Configuration File', $path);
                 view_config($path);
                 break;
             case 'conf':
                 if (formVar('confMethod') !== 'skip') {
                     process_config($path);
                 }
-                view_header('Installing GaiaBB', $path);
+                viewHeader('Installing GaiaBB', $path);
                 $prgbar = view_install_index();
                 $warn = install_forum($prgbar);
                 if (!$warn) {
@@ -92,7 +94,7 @@ switch ($path) {
                 } else {
                     view_install_warncomplete();
                 }
-                view_footer();
+                viewFooter();
                 exit();
                 break;
             default:
@@ -106,22 +108,22 @@ switch ($path) {
             case 'preflight':
             case 'eula':
                 $_SESSION = array(); // clear the session variables out
-                view_header('Have you backed up your files?', $path);
+                viewHeader('Have you backed up your files?', $path);
                 view_backup($path);
                 break;
             case 'backup':
                 process_backup($path);
-                view_header('Upgrade options', $path);
+                viewHeader('Upgrade options', $path);
                 view_upgrade_index($path);
                 break;
             case 'upgrade':
                 process_upgrade_config();
-                view_header('Administrator Credentials', $path);
+                viewHeader('Administrator Credentials', $path);
                 view_admin($path);
                 break;
             case 'admin':
                 process_admin_creds($path);
-                view_header('Upgrading GaiaBB', $path);
+                viewHeader('Upgrading GaiaBB', $path);
                 $prgbar = view_upgrade_action();
                 $warn = upgrade_forum($path, $prgbar);
                 if (!$warn) {
@@ -130,7 +132,7 @@ switch ($path) {
                 } else {
                     view_upgrade_warncomplete();
                 }
-                view_footer();
+                viewFooter();
                 exit();
                 break;
             default:
@@ -143,35 +145,35 @@ switch ($path) {
             case 'preflight':
             case 'eula':
                 $_SESSION = array(); // clear the session variables out
-                view_header('Have you backed up your files?', $path);
+                viewHeader('Have you backed up your files?', $path);
                 view_backup($path);
                 break;
             case 'backup':
                 process_backup($path);
-                view_header('Repair options', $path);
+                viewHeader('Repair options', $path);
                 view_repair_index($path);
                 break;
             case 'repair':
                 process_repair_config();
-                view_header('Administrator Credentials', $path);
+                viewHeader('Administrator Credentials', $path);
                 view_admin($path);
                 break;
             case 'db':
                 process_db($path);
-                view_header('Configuration File', $path);
+                viewHeader('Configuration File', $path);
                 view_config($path);
                 break;
             case 'admin':
                 process_admin_creds($path);
                 if ($_SESSION['config'] == 'on') {
-                    view_header('Database Details', $path);
+                    viewHeader('Database Details', $path);
                     view_database($path);
-                    view_footer();
+                    viewFooter();
                     exit();
                 }
             // deliberate fall-through - DO NOT CHANGE
             case 'conf':
-                view_header('Repairing GaiaBB', $path);
+                viewHeader('Repairing GaiaBB', $path);
                 $prgbar = view_repair_action();
                 $warn = repair_forum($path, $prgbar);
                 if (!$warn) {
@@ -180,7 +182,7 @@ switch ($path) {
                 } else {
                     view_repair_warncomplete();
                 }
-                view_footer();
+                viewFooter();
                 exit();
                 break;
             default:
@@ -194,22 +196,22 @@ switch ($path) {
             case 'preflight':
             case 'eula':
                 $_SESSION = array(); // clear the session variables out
-                view_header('Have you backed up your files?', $path);
+                viewHeader('Have you backed up your files?', $path);
                 view_backup($path, $boardtype);
                 break;
             case 'backup':
                 process_backup($path);
-                view_header('Have you installed GaiaBB?', $path);
+                viewHeader('Have you installed GaiaBB?', $path);
                 view_convert_index($path);
                 break;
             case 'preconvert':
                 process_convert_index($path);
-                view_header('Forum Database Details', $path);
+                viewHeader('Forum Database Details', $path);
                 view_convert_details($path, $boardtype);
                 break;
             case 'convert':
                 process_convert_details($path);
-                view_header('Converting XMB', $path);
+                viewHeader('Converting XMB', $path);
                 $prgbar = view_convert_action($boardtype);
                 $warn = convert_forum($path, $prgbar);
                 if (!$warn) {
@@ -218,7 +220,7 @@ switch ($path) {
                 } else {
                     view_convert_warncomplete($boardtype);
                 }
-                view_footer();
+                viewFooter();
                 exit();
                 break;
             default:
@@ -227,13 +229,13 @@ switch ($path) {
         }
         break;
     case 'convertphpbb':
-        view_header('phpBB Converter', $path);
+        viewHeader('phpBB Converter', $path);
         print_error('Not implemented', 'Sorry, this feature is not yet implemented.');
         exit();
         break;
     default:
-        view_header('Welcome to GaiaBB', $path);
+        viewHeader('Welcome to GaiaBB', $path);
         view_default_index();
         break;
 }
-view_footer();
+viewFooter();

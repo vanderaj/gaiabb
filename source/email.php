@@ -56,9 +56,10 @@ if (noSubmit('emailsubmit')) {
         error($lang['emailmemnomem'], false);
     }
 
-    $query = $db->query("SELECT uid, email, username, showemail FROM " . X_PREFIX . "members WHERE uid = '$memberid' AND status != 'Banned'");
-    $sendto = $db->fetch_array($query);
-    $db->free_result($query);
+    $query = $db->query("SELECT uid, email, username, showemail FROM " .
+        X_PREFIX . "members WHERE uid = '$memberid' AND status != 'Banned'");
+    $sendto = $db->fetchArray($query);
+    $db->freeResult($query);
 
     if (empty($sendto)) {
         error($lang['emailmemnoexist'], false);
@@ -74,9 +75,10 @@ if (noSubmit('emailsubmit')) {
 }
 
 if (onSubmit('emailsubmit')) {
-    $query = $db->query("SELECT uid, email, username, showemail FROM " . X_PREFIX . "members WHERE uid = '$memberid' AND status != 'Banned'");
-    $sendto = $db->fetch_array($query);
-    $db->free_result($query);
+    $query = $db->query("SELECT uid, email, username, showemail FROM " .
+        X_PREFIX . "members WHERE uid = '$memberid' AND status != 'Banned'");
+    $sendto = $db->fetchArray($query);
+    $db->freeResult($query);
 
     if (empty($sendto)) {
         error($lang['emailmemnoexist'], false);
@@ -122,9 +124,18 @@ if (onSubmit('emailsubmit')) {
     $mailsys->setFrom($email, $name);
     $mailsys->setSubject('[' . $CONFIG['bbname'] . '] ' . $subject);
     $mailsys->setMessage($msgbody);
-    $mailsys->Send();
+    $mailsys->sendMail();
 
-    message($lang['emailmemsubmitted'], false, '', '', 'viewprofile.php?memberid=' . intval($sendto['uid']), true, false, true);
+    message(
+        $lang['emailmemsubmitted'],
+        false,
+        '',
+        '',
+        'viewprofile.php?memberid=' . intval($sendto['uid']),
+        true,
+        false,
+        true
+    );
 }
 
 loadtime();

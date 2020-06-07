@@ -77,9 +77,9 @@ function viewPanel($queryd)
                             <td class="title"><?php echo $lang['exdateformat'] ?></td>
                         </tr>
                         <?php
-while (($dformat = $db->fetch_array($queryd)) != false) {
-        if ($dformat['did'] != 1) {
-            ?>
+                        while (($dformat = $db->fetchArray($queryd)) != false) {
+                            if ($dformat['did'] != 1) {
+                                ?>
                                 <tr bgcolor="<?php echo $THEME['altbg2'] ?>">
                                     <td class="ctrtablerow"><input type="checkbox"
                                                                    name="delete<?php echo $dformat['did'] ?>"
@@ -90,10 +90,10 @@ while (($dformat = $db->fetch_array($queryd)) != false) {
                                     <td class="tablerow"><?php echo gmdate(formatDate($dformat['dateformat']), $gbblva + ($self['timeoffset'] * 3600) + $self['daylightsavings']) ?></td>
                                 </tr>
                                 <?php
-}
-    }
-    $db->free_result($queryd);
-    ?>
+                            }
+                        }
+                                $db->freeResult($queryd);
+                        ?>
                         <tr bgcolor="<?php echo $THEME['altbg1'] ?>" class="ctrtablerow">
                             <td colspan="3"><?php echo $lang['textnewcode'] ?>&nbsp;<input
                                         type="text" size="20" name="newfind" value=""/></td>
@@ -123,7 +123,7 @@ function doPanel($querydate)
 
     $oToken->assertToken();
 
-    while (($dformat = $db->fetch_array($querydate)) != false) {
+    while (($dformat = $db->fetchArray($querydate)) != false) {
         $find = "find" . $dformat['did'];
         $find = $db->escape(formVar($find));
         $delete = "delete" . $dformat['did'];
@@ -133,7 +133,7 @@ function doPanel($querydate)
         }
         $db->query("UPDATE " . X_PREFIX . "dateformats SET dateformat='$find' WHERE did='$dformat[did]'");
     }
-    $db->free_result($querydate);
+    $db->freeResult($querydate);
 
     $newfind = $db->escape(formVar('newfind'));
     if (isset($newfind) && $newfind != '') {
@@ -208,7 +208,7 @@ if (!in_array($tablename, $tables)) {
 }
 
 $query = $db->query("SELECT * FROM " . X_PREFIX . "dateformats");
-if ($db->num_rows($query) < 1) {
+if ($db->numRows($query) < 1) {
     dateRestoreTable();
 }
 

@@ -82,38 +82,38 @@ function viewPanel()
                             <td class="title" align="center"><?php echo $lang['textavatar'] ?></td>
                         </tr>
                         <?php
-$avatarno = $avataryes = '';
-    $query = $db->query("SELECT * FROM " . X_PREFIX . "ranks ORDER BY id");
-    while (($rank = $db->fetch_array($query)) != false) {
-        $staff_disable = '';
-        switch ($rank['title']) {
-            case 'Super Administrator':
-                $staff_disable = 'disabled="disabled"';
-                break;
-            case 'Administrator':
-                $staff_disable = 'disabled="disabled"';
-                break;
-            case 'Super Moderator':
-                $staff_disable = 'disabled="disabled"';
-                break;
-            case 'Moderator':
-                $staff_disable = 'disabled="disabled"';
-                break;
-            default:
-                $staff_disable = '';
-                break;
-        }
+                        $avatarno = $avataryes = '';
+                        $query = $db->query("SELECT * FROM " . X_PREFIX . "ranks ORDER BY id");
+                        while (($rank = $db->fetchArray($query)) != false) {
+                            $staff_disable = '';
+                            switch ($rank['title']) {
+                                case 'Super Administrator':
+                                    $staff_disable = 'disabled="disabled"';
+                                    break;
+                                case 'Administrator':
+                                    $staff_disable = 'disabled="disabled"';
+                                    break;
+                                case 'Super Moderator':
+                                    $staff_disable = 'disabled="disabled"';
+                                    break;
+                                case 'Moderator':
+                                    $staff_disable = 'disabled="disabled"';
+                                    break;
+                                default:
+                                    $staff_disable = '';
+                                    break;
+                            }
 
-        $avataryes = $avatarno = '';
-        switch ($rank['allowavatars']) {
-            case 'yes':
-                $avataryes = $selHTML;
-                break;
-            default:
-                $avatarno = $selHTML;
-                break;
-        }
-        ?>
+                            $avataryes = $avatarno = '';
+                            switch ($rank['allowavatars']) {
+                                case 'yes':
+                                    $avataryes = $selHTML;
+                                    break;
+                                default:
+                                    $avatarno = $selHTML;
+                                    break;
+                            }
+                            ?>
                             <tr class="ctrtablerow" bgcolor="<?php echo $THEME['altbg2'] ?>">
                                 <td><input type="checkbox" name="delete[<?php echo $rank['id'] ?>]"
                                            value="1" <?php echo $staff_disable ?> /></td>
@@ -134,9 +134,9 @@ $avatarno = $avataryes = '';
                                            size="20"/></td>
                             </tr>
                             <?php
-}
-    $db->free_result($query);
-    ?>
+                        }
+                        $db->freeResult($query);
+                        ?>
                         <tr class="tablerow" bgcolor="<?php echo $THEME['altbg1'] ?>">
                             <td colspan="6">&nbsp;</td>
                         </tr>
@@ -184,13 +184,13 @@ function doPanel()
     // Load the existing ranks in
     $query = $db->query("SELECT * FROM " . X_PREFIX . "ranks ORDER BY id ASC");
     $staffranks = array();
-    while (($ranks = $db->fetch_array($query)) != false) {
+    while (($ranks = $db->fetchArray($query)) != false) {
         if ($ranks['title'] == 'Super Administrator' || $ranks['title'] == 'Administrator' || $ranks['title'] == 'Super Moderator' || $ranks['title'] == 'Moderator') {
             $title[$ranks['id']] = $ranks['title'];
             $staffranks[$ranks['id']] = $ranks['title'];
         }
     }
-    $db->free_result($query);
+    $db->freeResult($query);
 
     // Process existing ranks to be deleted
     $delete_keys = array();

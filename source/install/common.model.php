@@ -24,6 +24,11 @@
  *    along with GaiaBB.  If not, see <http://www.gnu.org/licenses/>.
  *
  **/
+
+// phpcs:disable PSR1.Files.SideEffects
+
+use GaiaBB\MariaDB;
+
 if (!defined('IN_PROGRAM') && (defined('DEBUG') && DEBUG == false)) {
     exit('This file is not designed to be called directly');
 }
@@ -53,7 +58,6 @@ function get_boardurl()
                 $boardurl = "https://" . $boardurl . $self;
                 break;
             default:
-
                 // for the purposes of $boardurl, it is not really that important to get the
                 // protocol right
                 $boardurl = "http://" . $boardurl . ':' . $_SERVER['SERVER_PORT'] . $self;
@@ -413,7 +417,7 @@ function isInstalled($db = false)
             define('X_PREFIX', $tablepre);
             include_once "../db/mysql5php5.php";
 
-            $db = new mysql5Php5();
+            $db = new GaiaBB\MariaDB();
             $db->connect($dbhost, $dbuser, $dbpw, $dbname, $pconnect, false);
 
             if (@in_array(X_PREFIX . 'settings', $db->getTables())) {
@@ -451,9 +455,9 @@ function is_admin($db, $tablepre)
     if ($query === false) {
         return false;
     }
-    $user = $db->fetch_array($query);
-    $rows = $db->num_rows($query);
-    $db->free_result($query);
+    $user = $db->fetchArray($query);
+    $rows = $db->numRows($query);
+    $db->freeResult($query);
     if ($rows === 1 && $admin === $user['username'] && $adminpw === $user['password'] && $user['status'] === 'Super Administrator') {
         return true;
     }
@@ -500,7 +504,7 @@ function is_admin_pw_same()
 function process_admin_creds($path)
 {
     if (!is_admin_pw_same()) {
-        view_header('Error: Administrator Credentials', $path);
+        viewHeader('Error: Administrator Credentials', $path);
         print_error('Error', 'Administration passwords do not match or are blank. Please go back and try again.');
     }
 
@@ -534,7 +538,7 @@ function process_db($path)
     }
 
     if (!$found) {
-        view_header('Error: Database Configuration', $path);
+        viewHeader('Error: Database Configuration', $path);
         print_error('Error', 'The supplied database type is not available on this host.');
     }
 
@@ -561,13 +565,13 @@ function process_config($path)
     $confMethod = formVar('confMethod');
 
     if ($path == 'repair' && !file_exists('./emergency.php')) {
-        view_header('Configuration', $path);
+        viewHeader('Configuration', $path);
         print_error('Configuration Warning', 'Cannot process repair configuration as emergency.php does not exist.');
         return;
     }
 
     if ($path == 'install' && isInstalled()) {
-        view_header('Configuration', $path);
+        viewHeader('Configuration', $path);
         print_error('Configuration Error', 'Forum is already installed, cannot process configuration.');
         exit();
     }
@@ -579,9 +583,9 @@ function process_config($path)
     switch ($confMethod) {
         case 'create':
             if (!create_config($config)) {
-                view_header('Configuration', $path);
+                viewHeader('Configuration', $path);
                 print_error('File system permissions', 'Could not write out config.php. Please check permissions or write manually', false);
-                view_footer();
+                viewFooter();
                 exit();
             }
             break;
@@ -592,9 +596,9 @@ function process_config($path)
             break;
 
         case 'view':
-            view_header('Configuration', $path);
+            viewHeader('Configuration', $path);
             view_config_screen($path, $config);
-            view_footer();
+            viewFooter();
             exit();
             break;
 
@@ -603,7 +607,7 @@ function process_config($path)
             break;
 
         default:
-            view_header('Configuration', $path);
+            viewHeader('Configuration', $path);
             print_error('Configuration Error', 'Invalid configuration option supplied: ' . htmlentities($confMethod));
             break;
     }
@@ -622,7 +626,7 @@ function process_config($path)
 function process_backup($path)
 {
     if (formVar('fbackup') == '' || formVar('dbackup') == '') {
-        view_header('Unsafe', $path);
+        viewHeader('Unsafe', $path);
         print_error('Cannot continue', 'GaiaBB cannot support you if you do not have a backup. Please make a backup and try again');
     }
 }

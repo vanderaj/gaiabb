@@ -171,8 +171,8 @@ function viewMembers()
     $sql .= ") ";
 
     $q1 = $db->query("SELECT uid " . $sql);
-    $num = $db->num_rows($q1);
-    $db->free_result($q1);
+    $num = $db->numRows($q1);
+    $db->freeResult($q1);
 
     $mpurl = 'cp_members.php?action=search' . $srchmemtxt . $srchemailtxt . $srchranktxt;
 
@@ -182,7 +182,7 @@ function viewMembers()
     }
 
     $q1 = $db->query("SELECT * " . $sql . " ORDER BY username LIMIT $start, $CONFIG[memberperpage]");
-    $rowsFound = $db->num_rows($q1);
+    $rowsFound = $db->numRows($q1);
     ?>
     <form method="post" action="cp_members.php?action=members">
         <input type="hidden" name="token"
@@ -208,7 +208,7 @@ function viewMembers()
                             <td colspan="9"><?php echo $multipage ?></td>
                         </tr>
                         <?php
-while (($member = $db->fetch_array($q1)) != false) {
+while (($member = $db->fetchArray($q1)) != false) {
         $readrulesyes = $readrulesno = '';
         switch ($member['readrules']) {
             case 'yes':
@@ -333,7 +333,7 @@ $readrulesyes = $readrulesno = $staff_disable = '';
         $modselect = $memselect = $banselect = '';
         $pmban = $postban = $bothban = $noban = '';
     }
-    $db->free_result($q1);
+    $db->freeResult($q1);
     if ($rowsFound < 1) {
         ?>
                             <tr bgcolor="<?php echo $THEME['altbg1'] ?>" class="ctrtablerow">
@@ -376,7 +376,7 @@ function processMembers()
 
     $query = $db->query("SELECT MIN(uid) FROM " . X_PREFIX . "members WHERE status = 'Super Administrator'");
     $sa_uid = $db->result($query, 0);
-    $db->free_result($query);
+    $db->freeResult($query);
 
     $start = ($page - 1) * $CONFIG['memberperpage'];
 
@@ -401,7 +401,7 @@ function processMembers()
     }
 
     $q2 = $db->query($sql . " ORDER BY username LIMIT $start, $CONFIG[memberperpage]");
-    while (($mem = $db->fetch_array($q2)) != false) {
+    while (($mem = $db->fetchArray($q2)) != false) {
         $to['status'] = formVar("status" . $mem['uid']);
         if ($to['status'] == '') {
             $to['status'] = 'Member';
@@ -441,13 +441,13 @@ function processMembers()
             $un = $db->result($db->query("SELECT username FROM " . X_PREFIX . "members WHERE uid = '$delete'"), 0);
             $db->query("DELETE FROM " . X_PREFIX . "members WHERE uid = '$delete'");
             $queryr = $db->query("SELECT t.tid as ttid, count(p.pid) as postcount FROM " . X_PREFIX . "threads t LEFT JOIN " . X_PREFIX . "posts p ON p.tid = t.tid WHERE t.author = '$un' GROUP BY t.tid");
-            while (($row = $db->fetch_array($queryr)) != false) {
+            while (($row = $db->fetchArray($queryr)) != false) {
                 $q2 = $db->query("SELECT count(pid) FROM " . X_PREFIX . "posts WHERE author = '$un' AND tid = '$row[ttid]'");
                 if ($row['postcount'] == $db->result($q2, 0)) {
                     $rem[] = $row['ttid'];
                 }
             }
-            $db->free_result($queryr);
+            $db->freeResult($queryr);
 
             if (!empty($rem)) {
                 $rem = implode(',', $rem);
@@ -461,10 +461,10 @@ function processMembers()
 
             $rem = array();
             $queryp = $db->query("SELECT pid FROM " . X_PREFIX . "posts WHERE author = '$un'");
-            while (($row = $db->fetch_array($queryp)) != false) {
+            while (($row = $db->fetchArray($queryp)) != false) {
                 $rem[] = $row['pid'];
             }
-            $db->free_result($queryp);
+            $db->freeResult($queryp);
 
             if (!empty($rem)) {
                 $rem = implode(',', $rem);
@@ -488,7 +488,7 @@ function processMembers()
             }
         }
     }
-    $db->free_result($q2);
+    $db->freeResult($q2);
     cp_message($lang['textmembersupdate'], false, '', '</td></tr></table>', 'cp_members.php?action=members', true, false, true);
 }
 
@@ -498,7 +498,7 @@ function processDeletePosts()
 
     $member = getInt('member');
     if ($member > 0) {
-        $memObj = new member($member);
+        $memObj = new GaiaBB\Member($member);
         $retval = $memObj->deletePosts($member);
         if ($retval === true) {
             cp_message($lang['postsDeleted'], false, '', '</td></tr></table>', 'cp_members.php?action=members', true, false, true);

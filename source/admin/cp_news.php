@@ -36,7 +36,7 @@ define('ROOTHELPER', '../helper/');
 
 require_once '../header.php';
 require_once '../include/admincp.inc.php';
-require_once '../helper/formHelper.php';
+require_once '../helper/FormHelper.php';
 
 loadtpl('cp_header', 'cp_footer', 'cp_message', 'cp_error', 'functions_bbcode', 'functions_bbcodeinsert');
 
@@ -74,7 +74,7 @@ function viewPanel()
     $bbcodeinsert = bbcodeinsert();
 
     $indexnewson = $indexnewsoff = '';
-    formHelper::getSettingOnOffHtml('indexnews', $indexnewson, $indexnewsoff);
+    GaiaBB\FormHelper::getSettingOnOffHtml('indexnews', $indexnewson, $indexnewsoff);
 
     $CONFIG['indexnewstxt'] = stripslashes($CONFIG['indexnewstxt']);
     ?>
@@ -91,9 +91,9 @@ function viewPanel()
                             <td class="title" colspan="2"><?php echo $lang['indexnewscp'] ?></td>
                         </tr>
                         <?php
-formHelper::formSelectOnOff($lang['set_indexnews'], 'indexnewsnew', $indexnewson, $indexnewsoff);
-    echo $bbcodeinsert;
-    ?>
+                        GaiaBB\FormHelper::formSelectOnOff($lang['set_indexnews'], 'indexnewsnew', $indexnewson, $indexnewsoff);
+                        echo $bbcodeinsert;
+                        ?>
                         <tr class="tablerow">
                             <td bgcolor="<?php echo $THEME['altbg1'] ?>" valign="top"
                                 width="50%"><?php echo $lang['set_indexnewstxt'] ?></td>

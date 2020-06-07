@@ -28,6 +28,8 @@
  *    along with GaiaBB.  If not, see <http://www.gnu.org/licenses/>.
  *
  **/
+
+// phpcs:disable PSR1.Files.SideEffects
 if (isset($GET['action']) && $_GET['action'] == 'attachment') {
     define('CACHECONTROL', 'IMAGE');
 }
@@ -54,7 +56,7 @@ if ($goto == 'lastpost') {
     if ($tid > 0) {
         $query = $db->query("SELECT COUNT(pid) FROM " . X_PREFIX . "posts WHERE tid = '$tid'");
         $posts = $db->result($query, 0);
-        $db->free_result($query);
+        $db->freeResult($query);
 
         if ($posts == 0) {
             eval('$css = "' . template('css') . '";');
@@ -63,28 +65,28 @@ if ($goto == 'lastpost') {
 
         $query = $db->query("SELECT pid FROM " . X_PREFIX . "lastposts WHERE tid = '$tid' LIMIT 1");
         $pid = $db->result($query, 0);
-        $db->free_result($query);
+        $db->freeResult($query);
     } else {
         if ($fid > 0) {
             $query = $db->query("SELECT f.lastpost as tid, l.pid FROM " . X_PREFIX . "forums f LEFT JOIN " . X_PREFIX . "lastposts l ON l.tid = f.lastpost WHERE fid = '$fid' LIMIT 1");
-            $lastpost = $db->fetch_array($query);
-            $db->free_result($query);
-    
+            $lastpost = $db->fetchArray($query);
+            $db->freeResult($query);
+
             $pid = $lastpost['pid'];
             $tid = $lastpost['tid'];
-    
+
             $query = $db->query("SELECT p.pid, p.tid FROM " . X_PREFIX . "posts p, " . X_PREFIX . "forums f WHERE p.fid = f.fid and (f.fup = '$fid') ORDER BY p.pid DESC LIMIT 0,1");
-            $fupPosts = $db->fetch_array($query);
-            $db->free_result($query);
-    
+            $fupPosts = $db->fetchArray($query);
+            $db->freeResult($query);
+
             if ($fupPosts['pid'] > $pid) {
                 $pid = $fupPosts['pid'];
                 $tid = $fupPosts['tid'];
             }
-    
+
             $query = $db->query("SELECT COUNT(pid) FROM " . X_PREFIX . "posts WHERE tid = '$tid'");
             $posts = $db->result($query, 0);
-            $db->free_result($query);
+            $db->freeResult($query);
         }
     }
 
@@ -96,7 +98,54 @@ if ($goto == 'lastpost') {
     redirect("viewtopic.php?tid=$tid&page=$page#pid$pid", 0);
 }
 
-loadtpl('functions_bbcode', 'functions_bbcodeinsert', 'functions_smilieinsert_smilie', 'functions_smilieinsert', 'viewtopic_reply', 'viewtopic_quickreply', 'viewtopic', 'viewtopic_invalid', 'viewtopic_modoptions', 'viewtopic_newpoll', 'viewtopic_newtopic', 'viewtopic_poll_options_view', 'viewtopic_poll_options', 'viewtopic_poll_submitbutton', 'viewtopic_poll', 'viewtopic_post', 'viewtopic_post_email', 'viewtopic_post_site', 'viewtopic_post_icq', 'viewtopic_post_aim', 'viewtopic_post_msn', 'viewtopic_post_yahoo', 'viewtopic_post_search', 'viewtopic_post_profile', 'viewtopic_post_pm', 'viewtopic_post_ip', 'viewtopic_post_repquote', 'viewtopic_post_report', 'viewtopic_post_edit', 'viewtopic_post_delete', 'viewtopic_post_attachmentimage', 'viewtopic_post_attachment', 'viewtopic_post_attach_noborder', 'viewtopic_post_attimg_noborder', 'viewtopic_post_sig', 'viewtopic_post_nosig', 'viewtopic_printable', 'viewtopic_printable_row', 'viewtopic_multipage', 'viewtopic_post_attachment_none', 'viewforum_rules', 'viewtopic_post_blog', 'viewtopic_post_rpg', 'viewforum_mpn_info', 'viewtopic_next_prev_links', 'viewtopic_captcha');
+loadtpl(
+    'functions_bbcode',
+    'functions_bbcodeinsert',
+    'functions_smilieinsert_smilie',
+    'functions_smilieinsert',
+    'viewtopic_reply',
+    'viewtopic_quickreply',
+    'viewtopic',
+    'viewtopic_invalid',
+    'viewtopic_modoptions',
+    'viewtopic_newpoll',
+    'viewtopic_newtopic',
+    'viewtopic_poll_options_view',
+    'viewtopic_poll_options',
+    'viewtopic_poll_submitbutton',
+    'viewtopic_poll',
+    'viewtopic_post',
+    'viewtopic_post_email',
+    'viewtopic_post_site',
+    'viewtopic_post_icq',
+    'viewtopic_post_aim',
+    'viewtopic_post_msn',
+    'viewtopic_post_yahoo',
+    'viewtopic_post_search',
+    'viewtopic_post_profile',
+    'viewtopic_post_pm',
+    'viewtopic_post_ip',
+    'viewtopic_post_repquote',
+    'viewtopic_post_report',
+    'viewtopic_post_edit',
+    'viewtopic_post_delete',
+    'viewtopic_post_attachmentimage',
+    'viewtopic_post_attachment',
+    'viewtopic_post_attach_noborder',
+    'viewtopic_post_attimg_noborder',
+    'viewtopic_post_sig',
+    'viewtopic_post_nosig',
+    'viewtopic_printable',
+    'viewtopic_printable_row',
+    'viewtopic_multipage',
+    'viewtopic_post_attachment_none',
+    'viewforum_rules',
+    'viewtopic_post_blog',
+    'viewtopic_post_rpg',
+    'viewforum_mpn_info',
+    'viewtopic_next_prev_links',
+    'viewtopic_captcha'
+);
 
 $shadow = shadowfx();
 $meta = metaTags();
@@ -106,13 +155,13 @@ eval('$css = "' . template('css') . '";');
 $notexist = false;
 $notexist_txt = $posts = $captcha = '';
 $query = $db->query("SELECT t.tid, t.fid, t.subject, t.views, t.replies, t.closed, t.topped, l.uid as lp_uid, l.username as lp_user, l.dateline as lp_dateline, l.pid as lp_pid FROM " . X_PREFIX . "threads t LEFT JOIN " . X_PREFIX . "lastposts l ON l.tid = t.tid WHERE t.tid = '$tid'");
-if ($query === false || $db->num_rows($query) != 1) {
-    $db->free_result($query);
+if ($query === false || $db->numRows($query) != 1) {
+    $db->freeResult($query);
     error($lang['textnothread']);
 }
 
-$thread = $db->fetch_array($query);
-$db->free_result($query);
+$thread = $db->fetchArray($query);
+$db->freeResult($query);
 
 if (strpos($thread['closed'], '|') !== false) {
     $moved = explode('|', $thread['closed']);
@@ -136,22 +185,22 @@ $fid = intval($thread['fid']);
 
 $query = $db->query("SELECT * FROM " . X_PREFIX . "forums WHERE fid='$fid' AND status='on'");
 if ($query === false) {
-    $db->free_result($query);
+    $db->freeResult($query);
     error($lang['textnoforum']);
 }
-$forum = $db->fetch_array($query);
+$forum = $db->fetchArray($query);
 
-if ((isset($forum['type']) && $forum['type'] != 'forum' && $forum['type'] != 'sub') || $db->num_rows($query) != 1) {
-    $db->free_result($query);
+if ((isset($forum['type']) && $forum['type'] != 'forum' && $forum['type'] != 'sub') || $db->numRows($query) != 1) {
+    $db->freeResult($query);
     error($lang['textnoforum']);
 }
-$db->free_result($query);
+$db->freeResult($query);
 
 $authorization = true;
 if (isset($forum['type']) && $forum['type'] == 'sub') {
     $query = $db->query("SELECT name, fid, private, userlist FROM " . X_PREFIX . "forums WHERE fid = '$forum[fup]'");
-    $fup = $db->fetch_array($query);
-    $db->free_result($query);
+    $fup = $db->fetchArray($query);
+    $db->freeResult($query);
     $authorization = privfcheck($fup['private'], $fup['userlist']);
 }
 
@@ -334,7 +383,7 @@ if (empty($action)) {
     $specialrank = array();
     $rankposts = array();
     $qranks = $db->query("SELECT id, title, posts, stars, allowavatars, avatarrank FROM " . X_PREFIX . "ranks");
-    while (($query = $db->fetch_array($qranks)) != false) {
+    while (($query = $db->fetchArray($qranks)) != false) {
         $title = $query['title'];
         $rposts = $query['posts'];
 
@@ -354,12 +403,12 @@ if (empty($action)) {
             $rankposts[$rposts]['avatarrank'] = $query['avatarrank'];
         }
     }
-    $db->free_result($qranks);
+    $db->freeResult($qranks);
 
     $db->query("UPDATE " . X_PREFIX . "threads SET views = views+1 WHERE tid = '$tid' LIMIT 1");
     $query = $db->query("SELECT COUNT(pid) FROM " . X_PREFIX . "posts WHERE tid = '$tid'");
     $num = $db->result($query, 0);
-    $db->free_result($query);
+    $db->freeResult($query);
 
     $mpurl = 'viewtopic.php?tid=' . $tid;
     $multipage = '';
@@ -369,8 +418,8 @@ if (empty($action)) {
 
     // Check if the Next-Thread-Link and Previous-Thread-Link should exist
     $next_prev_links = $npt_list = '';
-    $threadController = new thread();
-    if (($npt_list = $threadController->PrevNextThreads()) != false) {
+    $threadController = new GaiaBB\Thread();
+    if (($npt_list = $threadController->prevNextThreads()) != false) {
         if (isset($npt_list['previous']) && isset($npt_list['next'])) {
             $npt_list['previous'] = '<td class="navtd" align="' . $lang_align . '" width="50%"><font class="smalltxt"><strong>&laquo;&nbsp;<a href="' . $npt_list['previous'] . '">' . $lang['prevthread'] . '</a></strong></font></td>';
             $npt_list['next'] = '<td class="navtd" align="' . $lang_nalign . '" width="50%"><font class="smalltxt"><strong><a href="' . $npt_list['next'] . '">' . $lang['nextthread'] . '</a>&nbsp;&raquo;</strong></font></td>';
@@ -388,21 +437,22 @@ if (empty($action)) {
         eval('$next_prev_links = "' . template('viewtopic_next_prev_links') . '";');
     }
 
-    $pollhtml = $poll = '';
+    $pollhtml = '';
+    $poll = array();
     $vote_id = $voted = 0;
 
     $query = $db->query("SELECT vote_id FROM " . X_PREFIX . "vote_desc WHERE topic_id = '$tid'");
     if ($query) {
-        $vote_id = $db->fetch_array($query);
+        $vote_id = $db->fetchArray($query);
         $vote_id = (int) $vote_id['vote_id'];
     }
-    $db->free_result($query);
+    $db->freeResult($query);
 
     if ($vote_id > 0 && isset($forum['pollstatus']) && $forum['pollstatus'] != 'off') {
         if (X_MEMBER) {
             $query = $db->query("SELECT COUNT(vote_id) AS cVotes FROM " . X_PREFIX . "vote_voters WHERE vote_id = '$vote_id' AND vote_user_id = '$self[uid]'");
             if ($query) {
-                $voted = $db->fetch_array($query);
+                $voted = $db->fetchArray($query);
                 $voted = (int) $voted['cVotes'];
             }
         }
@@ -417,14 +467,14 @@ if (empty($action)) {
 
             $num_votes = 0;
             $query = $db->query("SELECT vote_result, vote_option_text FROM " . X_PREFIX . "vote_results WHERE vote_id = '$vote_id'");
-            while (($result = $db->fetch_array($query)) != false) {
+            while (($result = $db->fetchArray($query)) != false) {
                 $num_votes += $result['vote_result'];
                 $pollentry = array();
                 $pollentry['name'] = postify($result['vote_option_text']);
                 $pollentry['votes'] = $result['vote_result'];
                 $poll[] = $pollentry;
             }
-            $db->free_result($query);
+            $db->freeResult($query);
 
             reset($poll);
             foreach ($poll as $num => $array) {
@@ -448,24 +498,24 @@ if (empty($action)) {
         } else {
             $results = ' - [ <a href="viewtopic.php?tid=' . $tid . '&amp;viewresults=yes"><font color="' . $THEME['cattext'] . '">' . $lang['viewresults'] . '</font></a> ]';
             $query = $db->query("SELECT vote_option_id, vote_option_text FROM " . X_PREFIX . "vote_results WHERE vote_id = '$vote_id'");
-            while (($result = $db->fetch_array($query)) != false) {
+            while (($result = $db->fetchArray($query)) != false) {
                 $poll['id'] = (int) $result['vote_option_id'];
                 $poll['name'] = $result['vote_option_text'];
                 eval('$pollhtml .= "' . template('viewtopic_poll_options') . '";');
             }
-            $db->free_result($query);
+            $db->freeResult($query);
             eval('$buttoncode = "' . template('viewtopic_poll_submitbutton') . '";');
         }
         eval('$poll = "' . template('viewtopic_poll') . '";');
     }
 
-    $attachments = new attachment();
+    $attachments = new GaiaBB\Attachment();
     $attachments->get_attachments($tid);
 
     $thisbg = $THEME['altbg2'];
     $querypost = $db->query("SELECT p.*, m.*,w.time FROM " . X_PREFIX . "posts p LEFT JOIN " . X_PREFIX . "members m ON m.username = p.author LEFT JOIN " . X_PREFIX . "whosonline w ON p.author = w.username WHERE p.fid = '$fid' AND p.tid = '$tid' ORDER BY p.pid $self[psorting] LIMIT $start_limit, " . $self['ppp']);
     $tmoffset = ($self['timeoffset'] * 3600) + $self['daylightsavings'];
-    while (($post = $db->fetch_array($querypost)) != false) {
+    while (($post = $db->fetchArray($querypost)) != false) {
         $onlinenow = $lang['memberisoff'];
         if (!empty($post['time']) && $post['author'] != 'xguest123') {
             switch ($post['invisible']) {
@@ -861,7 +911,7 @@ if (empty($action)) {
             $thisbg = $THEME['altbg2'];
         }
     }
-    $db->free_result($querypost);
+    $db->freeResult($querypost);
 
     $modoptions = $mt_option = '';
     if ($status1 == 'Moderator') {
@@ -923,8 +973,8 @@ if (empty($action)) {
     }
 
     $query = $db->query("SELECT * FROM " . X_PREFIX . "attachments WHERE pid = '$pid' AND tid = '$tid' AND aid = '$aid'");
-    $file = $db->fetch_array($query);
-    $db->free_result($query);
+    $file = $db->fetchArray($query);
+    $db->freeResult($query);
 
     $db->query("UPDATE " . X_PREFIX . "attachments SET downloads = downloads+1 WHERE pid = '$pid' AND aid = '$aid'");
 
@@ -958,7 +1008,7 @@ if (empty($action)) {
         $querypost = $db->query("SELECT p.*, m.*,w.time FROM " . X_PREFIX . "posts p LEFT JOIN " . X_PREFIX . "members m ON m.username = p.author LEFT JOIN " . X_PREFIX . "whosonline w ON p.author = w.username WHERE p.fid = '$fid' AND p.tid = '$tid' ORDER BY p.pid $self[psorting] LIMIT $start_limit, " . $self['ppp']);
         $posts = '';
         $tmoffset = ($self['timeoffset'] * 3600) + $self['daylightsavings'];
-        while (($post = $db->fetch_array($querypost)) != false) {
+        while (($post = $db->fetchArray($querypost)) != false) {
             if ($post['status'] == 'Banned') {
                 $post['message'] = $lang['bannedpostmsg'];
             } else {
@@ -971,7 +1021,7 @@ if (empty($action)) {
 
             eval('$posts .= "' . template('viewtopic_printable_row') . '";');
         }
-        $db->free_result($querypost);
+        $db->freeResult($querypost);
         eval('echo stripslashes("' . template('viewtopic_printable') . '");');
     }
 }

@@ -78,10 +78,9 @@ function viewPanel()
                             <td align="center"><?php echo $lang['picons'] ?></td>
                         </tr>
                         <?php
-
-    $query = $db->query("SELECT * FROM " . X_PREFIX . "smilies WHERE type = 'picon' ORDER BY id ASC");
-    while (($smilie = $db->fetch_array($query)) != false) {
-        ?>
+                        $query = $db->query("SELECT * FROM " . X_PREFIX . "smilies WHERE type = 'picon' ORDER BY id ASC");
+                        while (($smilie = $db->fetchArray($query)) != false) {
+                            ?>
                             <tr bgcolor="<?php echo $THEME['altbg2'] ?>">
                                 <td class="ctrtablerow"><input type="checkbox"
                                                                name="pidelete[<?php echo $smilie['id'] ?>]" value="1"/>
@@ -95,9 +94,9 @@ function viewPanel()
                                             title="<?php echo $smilie['url'] ?>"/></td>
                             </tr>
                             <?php
-}
-    $db->free_result($query);
-    ?>
+                        }
+                        $db->freeResult($query);
+                        ?>
                         <tr bgcolor="<?php echo $THEME['altbg1'] ?>" class="tablerow">
                             <td><?php echo $lang['textnewpicon'] ?></td>
                             <td colspan="2"><input type="text" name="newurl2" value=""/></td>
@@ -144,7 +143,7 @@ function doPanel()
         }
     }
     $querysmilie = $db->query("SELECT id FROM " . X_PREFIX . "smilies WHERE type = 'picon' ORDER BY id ASC");
-    while (($picon = $db->fetch_array($querysmilie)) != false) {
+    while (($picon = $db->fetchArray($querysmilie)) != false) {
         $id = $picon['id'];
         if (isset($pidelete[$id]) && $pidelete[$id] == 1) {
             $query = $db->query("DELETE FROM " . X_PREFIX . "smilies WHERE id = '$picon[id]'");
@@ -152,7 +151,7 @@ function doPanel()
         }
         $query = $db->query("UPDATE " . X_PREFIX . "smilies SET url = '$piurl[$id]' WHERE id = '$picon[id]' AND type = 'picon'");
     }
-    $db->free_result($querysmilie);
+    $db->freeResult($querysmilie);
     if ($newurl2 != '') {
         if ($db->result($db->query("SELECT count(id) FROM " . X_PREFIX . "smilies WHERE url = '$newurl2' AND type = 'picon'"), 0) > 0) {
             cp_error($lang['piconexists'], false, '', '</td></tr></table>', 'cp_posticons.php', true, false, true);
@@ -163,10 +162,10 @@ function doPanel()
         $posticons_count = $newposticons_count = 0;
         $posticon_url = array();
         $query = $db->query("SELECT * FROM " . X_PREFIX . "smilies WHERE type = 'picon'");
-        while (($picon = $db->fetch_array($query)) != false) {
+        while (($picon = $db->fetchArray($query)) != false) {
             $posticon_url[] = $picon['url'];
         }
-        $db->free_result($query);
+        $db->freeResult($query);
         $dir = opendir(ROOT . $THEME['smdir']);
         while (($picon = readdir($dir)) != false) {
             if ($picon != '.' && $picon != '..' && (strpos($picon, '.gif') || strpos($picon, '.jpg') || strpos($picon, '.bmp') || strpos($picon, '.png'))) {

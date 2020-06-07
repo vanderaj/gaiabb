@@ -86,10 +86,12 @@ function viewPanel()
                             <td colspan="2"><?php echo $lang['confirm_analyze'] ?></td>
                         </tr>
                         <tr class="ctrtablerow" bgcolor="<?php echo $THEME['altbg2'] ?>">
-                            <td colspan="2"><input class="submit" type="submit"
-                                                   name="yessubmit" value="<?php echo $lang['textyes'] ?>"/>&nbsp;-&nbsp;<input
-                                        class="submit" type="submit" name="nosubmit"
-                                        value="<?php echo $lang['textno'] ?>"/></td>
+                            <td colspan="2">
+                                <input class="submit" type="submit" name="yessubmit" 
+                                    value="<?php echo $lang['textyes'] ?>"/>&nbsp;-&nbsp;
+                                <input class="submit" type="submit" name="nosubmit"
+                                    value="<?php echo $lang['textno'] ?>"/>
+                            </td>
                         </tr>
                     </table>
                 </td>
@@ -127,23 +129,23 @@ function doPanel()
                 <table border="0px" cellspacing="<?php echo $THEME['borderwidth'] ?>"
                        cellpadding="<?php echo $THEME['tablespace'] ?>" width="100%">
                     <?php
-if (!((bool) ini_get('safe_mode'))) {
-        set_time_limit(180);
-    }
+                    if (!((bool) ini_get('safe_mode'))) {
+                        set_time_limit(180);
+                    }
 
-    $tables = $db->getTables();
+                    $tables = $db->getTables();
 
-    $q = array();
-    $start = true;
-    foreach ($tables as $key => $val) {
-        if ($start) {
-            dump_query($db->query('ANALYZE TABLE `' . $val . '`'));
-            $start = false;
-        } else {
-            dump_query($db->query('ANALYZE TABLE `' . $val . '`'), false);
-        }
-    }
-    ?>
+                    $q = array();
+                    $start = true;
+                    foreach ($tables as $key => $val) {
+                        if ($start) {
+                            dump_query($db->query('ANALYZE TABLE `' . $val . '`'));
+                            $start = false;
+                        } else {
+                            dump_query($db->query('ANALYZE TABLE `' . $val . '`'), false);
+                        }
+                    }
+                    ?>
                 </table>
             </td>
         </tr>

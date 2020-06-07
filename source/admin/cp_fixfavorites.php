@@ -29,6 +29,7 @@
  *
  **/
 
+ // phpcs:disable PSR1.Files.SideEffects
 define('ROOT', '../');
 define('ROOTINC', '../include/');
 define('ROOTCLASS', '../class/');
@@ -104,17 +105,17 @@ function doPanel()
     $oToken->assertToken();
     $query = $db->query("SELECT tid, username FROM " . X_PREFIX . "favorites WHERE 1 ORDER BY tid ASC");
     $count = $count2 = 0;
-    while (($favs = $db->fetch_array($query)) != false) {
+    while (($favs = $db->fetchArray($query)) != false) {
         $count2++;
         $query2 = $db->query("SELECT tid FROM " . X_PREFIX . "threads WHERE tid = $favs[tid]");
-        $thread = $db->fetch_array($query2);
+        $thread = $db->fetchArray($query2);
         if (empty($thread['tid'])) {
             $count++;
             $db->query("DELETE FROM " . X_PREFIX . "favorites WHERE tid = $favs[tid] AND username = '$favs[username]'");
             $db->query("DELETE FROM " . X_PREFIX . "favorites WHERE username = ''");
         }
     }
-    $db->free_result($query);
+    $db->freeResult($query);
     if ($count == 0) {
         $percent = 0;
     } else {

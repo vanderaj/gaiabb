@@ -36,326 +36,9 @@ if (!defined('IN_PROGRAM') && (defined('DEBUG') && DEBUG == false)) {
 
 require_once 'member.class.php';
 
-function makenav($current)
-{
-    global $THEME, $lang, $menu, $CONFIG, $shadow, $shadow2, $self;
+namespace GaiaBB;
 
-    if ($THEME['celloverfx'] == 'on') {
-        $sortby_fx = "onmouseover=\"this.style.backgroundColor='$THEME[altbg1]';\" onmouseout=\"this.style.backgroundColor='$THEME[altbg2]';\"";
-    } else {
-        $sortby_fx = '';
-    }
-
-    $menu .= '<tr class="category"><td width="20%" align="center" class="title">' . $lang['usercp_options'] . '</td></tr>';
-
-    if ($current == 'profile') {
-        $menu .= '<tr><td bgcolor="' . $THEME['altbg1'] . '" width="20%" class="tablerow"><strong>' . $lang['texteditpro'] . '</strong></td></tr>';
-    } else {
-        $menu .= '<tr><td bgcolor="' . $THEME['altbg2'] . '" width="20%" class="tablerow" ' . $sortby_fx . '><a href="./usercp.php?action=profile">' . $lang['texteditpro'] . '</a></td></tr>';
-    }
-
-    if ($current == 'options') {
-        $menu .= '<tr><td bgcolor="' . $THEME['altbg1'] . '" width="20%" class="tablerow"><strong>' . $lang['Edit_Options'] . '</strong></td></tr>';
-    } else {
-        $menu .= '<tr><td bgcolor="' . $THEME['altbg2'] . '" width="20%" class="tablerow" ' . $sortby_fx . '><a href="./usercp.php?action=options">' . $lang['Edit_Options'] . '</a></td></tr>';
-    }
-
-    if ($current == 'email') {
-        $menu .= '<tr><td bgcolor="' . $THEME['altbg1'] . '" width="20%" class="tablerow"><strong>' . $lang['Edit_Email'] . '</strong></td></tr>';
-    } else {
-        $menu .= '<tr><td bgcolor="' . $THEME['altbg2'] . '" width="20%" class="tablerow" ' . $sortby_fx . '><a href="./usercp.php?action=email">' . $lang['Edit_Email'] . '</a></td></tr>';
-    }
-
-    if ($CONFIG['avastatus'] == 'on' || $CONFIG['avatar_whocanupload'] != 'off') {
-        if ($current == 'avatar') {
-            $menu .= '<tr><td bgcolor="' . $THEME['altbg1'] . '" width="20%" class="tablerow"><strong>' . $lang['Edit_Avatar'] . '</strong></td></tr>';
-        } else {
-            $menu .= '<tr><td bgcolor="' . $THEME['altbg2'] . '" width="20%" class="tablerow" ' . $sortby_fx . '><a href="./usercp.php?action=avatar">' . $lang['Edit_Avatar'] . '</a></td></tr>';
-        }
-    }
-
-    if ($current == 'password') {
-        $menu .= '<tr><td bgcolor="' . $THEME['altbg1'] . '" width="20%" class="tablerow"><strong>' . $lang['Edit_Password'] . '</strong></td></tr>';
-    } else {
-        $menu .= '<tr><td bgcolor="' . $THEME['altbg2'] . '" width="20%" class="tablerow" ' . $sortby_fx . '><a href="./usercp.php?action=password">' . $lang['Edit_Password'] . '</a></td></tr>';
-    }
-
-    if ($current == 'signature') {
-        $menu .= '<tr><td bgcolor="' . $THEME['altbg1'] . '" width="20%" class="tablerow"><strong>' . $lang['Edit_Signature'] . '</strong></td></tr>';
-    } else {
-        $menu .= '<tr><td bgcolor="' . $THEME['altbg2'] . '" width="20%" class="tablerow" ' . $sortby_fx . '><a href="./usercp.php?action=signature">' . $lang['Edit_Signature'] . '</a></td></tr>';
-    }
-
-    if ($CONFIG['photostatus'] == 'on' || $CONFIG['photo_whocanupload'] != 'off') {
-        if ($current == 'photo') {
-            $menu .= '<tr><td bgcolor="' . $THEME['altbg1'] . '" width="20%" class="tablerow"><strong>' . $lang['edit_personal_photo'] . '</strong></td></tr>';
-        } else {
-            $menu .= '<tr><td bgcolor="' . $THEME['altbg2'] . '" width="20%" class="tablerow" ' . $sortby_fx . '><a href="./usercp.php?action=photo">' . $lang['edit_personal_photo'] . '</a></td></tr>';
-        }
-    }
-
-    $menu .= '<tr class="category"><td width="20%" align="center"><font color="' . $THEME['cattext'] . '"><strong>' . $lang['Subscribed_Threads'] . '</strong></font></td></tr>';
-
-    if ($current == 'favorites') {
-        $menu .= '<tr><td bgcolor="' . $THEME['altbg1'] . '" width="20%" class="tablerow"><strong>' . $lang['List_Favorites'] . '</strong></td></tr>';
-    } else {
-        $menu .= '<tr><td bgcolor="' . $THEME['altbg2'] . '" width="20%" class="tablerow" ' . $sortby_fx . '><a href="./usercp.php?action=favorites">' . $lang['List_Favorites'] . '</a></td></tr>';
-    }
-
-    if ($current == 'subscriptions') {
-        $menu .= '<tr><td bgcolor="' . $THEME['altbg1'] . '" width="20%" class="tablerow"><strong>' . $lang['List_Subscriptions'] . '</strong></td></tr>';
-    } else {
-        $menu .= '<tr><td bgcolor="' . $THEME['altbg2'] . '" width="20%" class="tablerow" ' . $sortby_fx . '><a href="./usercp.php?action=subscriptions">' . $lang['List_Subscriptions'] . '</a></td></tr>';
-    }
-
-    $menu .= '<tr class="category"><td width="20%" align="center"><font color="' . $THEME['cattext'] . '"><strong>' . $lang['usercp_miscellaneous'] . '</strong></font></td></tr>';
-
-    $menu .= "<tr><td bgcolor=\"$THEME[altbg2]\" width=\"20%\" class=\"tablerow\" " . $sortby_fx . "><a href=\"#\" onclick=\"Popup('./address.php?', 'Window', 450, 400);\">" . $lang['textaddresslist'] . "</a></td></tr>";
-
-    if (X_MEMBER && !($CONFIG['pmstatus'] == 'off' && isset($self['status']) && $self['status'] == 'Member')) {
-        $menu .= '<tr><td bgcolor="' . $THEME['altbg2'] . '" width="20%" class="tablerow" ' . $sortby_fx . '><a href="./pm.php">' . $lang['textpmmessenger'] . '</a></td></tr>';
-    }
-
-    if ($CONFIG['avatars_status'] == 'on') {
-        if ($current == 'gallery') {
-            $menu .= '<tr><td bgcolor="' . $THEME['altbg1'] . '" width="20%" class="tablerow"><strong>' . $lang['avatargallery'] . '</strong></td></tr>';
-        } else {
-            $menu .= '<tr><td bgcolor="' . $THEME['altbg2'] . '" width="20%" class="tablerow" ' . $sortby_fx . '><a href="usercp.php?action=gallery">' . $lang['avatargallery'] . '</a></td></tr>';
-        }
-    }
-
-    if ($CONFIG['notepadstatus'] == 'on') {
-        if ($current == 'notepad') {
-            $menu .= '<tr><td bgcolor="' . $THEME['altbg1'] . '" width="20%" class="tablerow"><strong>' . $lang['notepad'] . '</strong></td></tr>';
-        } else {
-            $menu .= '<tr><td bgcolor="' . $THEME['altbg2'] . '" width="20%" class="tablerow" ' . $sortby_fx . '><a href="./usercp.php?action=notepad">' . $lang['notepad'] . '</a></td></tr>';
-        }
-    }
-}
-
-function table_msg($outputmsg, $return = 0)
-{
-    global $THEME, $shadow, $shadow2, $lang;
-
-    $output = '';
-
-    if (isset($return) && $return == 1) {
-        $return = true;
-    } else {
-        $return = false;
-    }
-
-    eval('$output = "' . template('usercp_outputmsg') . '";');
-
-    if ($return === false) {
-        return $output;
-    } else {
-        echo $output;
-    }
-}
-
-function BDayDisplay()
-{
-    global $db, $member, $self;
-    global $sel0, $sel1, $sel2, $sel3, $sel4, $sel5, $sel6;
-    global $sel7, $sel8, $sel9, $sel10, $sel11, $sel12;
-    global $dayselect, $num, $selHTML, $lang, $bday;
-
-    $bday = str_replace(',', '', $member['bday']);
-    $bday = explode(' ', $bday);
-
-    if ($bday[0] == '') {
-        $sel0 = $selHTML;
-    } else
-    if ($bday[0] == $lang['textjan']) {
-        $sel1 = $selHTML;
-    } else
-    if ($bday[0] == $lang['textfeb']) {
-        $sel2 = $selHTML;
-    } else
-    if ($bday[0] == $lang['textmar']) {
-        $sel3 = $selHTML;
-    } else
-    if ($bday[0] == $lang['textapr']) {
-        $sel4 = $selHTML;
-    } else
-    if ($bday[0] == $lang['textmay']) {
-        $sel5 = $selHTML;
-    } else
-    if ($bday[0] == $lang['textjun']) {
-        $sel6 = $selHTML;
-    } else
-    if ($bday[0] == $lang['textjul']) {
-        $sel7 = $selHTML;
-    } else
-    if ($bday[0] == $lang['textaug']) {
-        $sel8 = $selHTML;
-    } else
-    if ($bday[0] == $lang['textsep']) {
-        $sel9 = $selHTML;
-    } else
-    if ($bday[0] == $lang['textoct']) {
-        $sel10 = $selHTML;
-    } else
-    if ($bday[0] == $lang['textnov']) {
-        $sel11 = $selHTML;
-    } else
-    if ($bday[0] == $lang['textdec']) {
-        $sel12 = $selHTML;
-    }
-
-    $dayselect = array();
-    $dayselect[] = '<select name="day">';
-    $dayselect[] = '<option value="">' . $lang['textnone'] . '</option>';
-    for ($num = 1; $num <= 31; $num++) {
-        if (isset($bday[1]) && $bday[1] == $num) {
-            $dayselect[] = '<option value="' . $num . '" ' . $selHTML . '>' . $num . '</option>';
-        } else {
-            $dayselect[] = '<option value="' . $num . '">' . $num . '</option>';
-        }
-    }
-    $dayselect[] = '</select>';
-    $dayselect = implode("\n", $dayselect);
-
-    $bday[2] = (isset($bday[2])) ? $bday[2] : '';
-}
-
-function TimeOffsetDisplay()
-{
-    global $db, $member, $self, $selHTML, $lang;
-    global $timezone1, $timezone2, $timezone3, $timezone4, $timezone5, $timezone6;
-    global $timezone7, $timezone8, $timezone9, $timezone10, $timezone11, $timezone12;
-    global $timezone13, $timezone14, $timezone15, $timezone16, $timezone17, $timezone18;
-    global $timezone19, $timezone20, $timezone21, $timezone22, $timezone23, $timezone24;
-    global $timezone25, $timezone26, $timezone27, $timezone28, $timezone29, $timezone30;
-    global $timezone31, $timezone32, $timezone33;
-
-    $timezone1 = $timezone2 = $timezone3 = $timezone4 = $timezone5 = $timezone6 = '';
-    $timezone7 = $timezone8 = $timezone9 = $timezone10 = $timezone11 = $timezone12 = '';
-    $timezone13 = $timezone14 = $timezone15 = $timezone16 = $timezone17 = $timezone18 = '';
-    $timezone19 = $timezone20 = $timezone21 = $timezone22 = $timezone23 = $timezone24 = '';
-    $timezone25 = $timezone26 = $timezone27 = $timezone28 = $timezone29 = $timezone30 = '';
-    $timezone31 = $timezone32 = $timezone33 = '';
-    switch ($member['timeoffset']) {
-        case '-12.00':
-            $timezone1 = $selHTML;
-            break;
-        case '-11.00':
-            $timezone2 = $selHTML;
-            break;
-        case '-10.00':
-            $timezone3 = $selHTML;
-            break;
-        case '-9.00':
-            $timezone4 = $selHTML;
-            break;
-        case '-8.00':
-            $timezone5 = $selHTML;
-            break;
-        case '-7.00':
-            $timezone6 = $selHTML;
-            break;
-        case '-6.00':
-            $timezone7 = $selHTML;
-            break;
-        case '-5.00':
-            $timezone8 = $selHTML;
-            break;
-        case '-4.00':
-            $timezone9 = $selHTML;
-            break;
-        case '-3.50':
-            $timezone10 = $selHTML;
-            break;
-        case '-3.00':
-            $timezone11 = $selHTML;
-            break;
-        case '-2.00':
-            $timezone12 = $selHTML;
-            break;
-        case '-1.00':
-            $timezone13 = $selHTML;
-            break;
-        case '1.00':
-            $timezone15 = $selHTML;
-            break;
-        case '2.00':
-            $timezone16 = $selHTML;
-            break;
-        case '3.00':
-            $timezone17 = $selHTML;
-            break;
-        case '3.50':
-            $timezone18 = $selHTML;
-            break;
-        case '4.00':
-            $timezone19 = $selHTML;
-            break;
-        case '4.50':
-            $timezone20 = $selHTML;
-            break;
-        case '5.00':
-            $timezone21 = $selHTML;
-            break;
-        case '5.50':
-            $timezone22 = $selHTML;
-            break;
-        case '5.75':
-            $timezone23 = $selHTML;
-            break;
-        case '6.00':
-            $timezone24 = $selHTML;
-            break;
-        case '6.50':
-            $timezone25 = $selHTML;
-            break;
-        case '7.00':
-            $timezone26 = $selHTML;
-            break;
-        case '8.00':
-            $timezone27 = $selHTML;
-            break;
-        case '9.00':
-            $timezone28 = $selHTML;
-            break;
-        case '9.50':
-            $timezone29 = $selHTML;
-            break;
-        case '10.00':
-            $timezone30 = $selHTML;
-            break;
-        case '11.00':
-            $timezone31 = $selHTML;
-            break;
-        case '12.00':
-            $timezone32 = $selHTML;
-            break;
-        case '13.00':
-            $timezone33 = $selHTML;
-            break;
-        case '0.00':
-        default:
-            $timezone14 = $selHTML;
-            break;
-    }
-}
-
-function memberYesNo($self, &$yes, &$no)
-{
-    global $member, $selHTML;
-
-    $yes = $no = '';
-    switch ($member[$self]) {
-        case 'yes':
-            $yes = $selHTML;
-            break;
-        default:
-            $no = $selHTML;
-            break;
-    }
-}
-
-class userObj
+class UserObj
 {
 
     public function viewProfile()
@@ -512,7 +195,7 @@ class userObj
         $themelist[] = '<select name="thememem">';
         $themelist[] = '<option value="0">' . $lang['textusedefault'] . '</option>';
         $query = $db->query("SELECT themeid, name FROM " . X_PREFIX . "themes WHERE themestatus = 'on' ORDER BY name ASC");
-        while (($themeinfo = $db->fetch_array($query)) != false) {
+        while (($themeinfo = $db->fetchArray($query)) != false) {
             if ($themeinfo['themeid'] == $member['theme']) {
                 $themelist[] = '<option value="' . $themeinfo['themeid'] . '" ' . $selHTML . '>' . stripslashes($themeinfo['name']) . '</option>';
             } else {
@@ -521,7 +204,7 @@ class userObj
         }
         $themelist[] = '</select>';
         $themelist = implode("\n", $themelist);
-        $db->free_result($query);
+        $db->freeResult($query);
 
         $langfileselect = langSelect();
 
@@ -550,7 +233,7 @@ class userObj
 
         $df .= "\t<td bgcolor=\"$THEME[altbg2]\" class=\"tablerow\"><select name=\"dateformatnew\">\n";
         $querydf = $db->query("SELECT * FROM " . X_PREFIX . "dateformats");
-        while (($dformats = $db->fetch_array($querydf)) != false) {
+        while (($dformats = $db->fetchArray($querydf)) != false) {
             if ($CONFIG['predformat'] == 'on') {
                 $example = gmdate(formatDate($dformats['dateformat']), $gbblva + ($self['timeoffset'] * 3600) + $self['daylightsavings']);
             } else {
@@ -576,7 +259,7 @@ class userObj
             }
         }
         $df .= "\t</select>\n\t</td>\n</tr>";
-        $db->free_result($querydf);
+        $db->freeResult($querydf);
 
         $akablock = '';
         if (!empty($self['firstname']) || !empty($self['firstname'])) {
@@ -694,7 +377,7 @@ class userObj
 
         $efail = false;
         $query = $db->query("SELECT * FROM " . X_PREFIX . "restricted");
-        while (($erestrict = $db->fetch_array($query)) != false) {
+        while (($erestrict = $db->fetchArray($query)) != false) {
             if ($erestrict['case_sensitivity'] == 1) {
                 if ($erestrict['partial'] == 1) {
                     if (strpos($email, $erestrict['name']) !== false) {
@@ -720,7 +403,7 @@ class userObj
                 }
             }
         }
-        $db->free_result($query);
+        $db->freeResult($query);
 
         if ($efail) {
             error($lang['emailvaliderror1'], false);
@@ -731,7 +414,6 @@ class userObj
         }
 
         if ($email != $member->record['email']) {
-
             $newpass = $get = $max = $chars = '';
 
             $chars = "23456789abcdefghjkmnpqrstuvwxyz";
@@ -751,7 +433,7 @@ class userObj
             $mailsys->setFrom($CONFIG['adminemail'], $CONFIG['bbname']);
             $mailsys->setSubject($lang['textyourpw']);
             $mailsys->setMessage($messagebody);
-            $mailsys->Send();
+            $mailsys->sendMail();
 
             $authC->logout();
         }
@@ -782,8 +464,7 @@ class userObj
 
             if (($CONFIG['photo_whocanupload'] == 'all') && X_MEMBER) {
                 eval('$photohidden = "' . template('usercp_photohidden') . '";');
-            } else
-            if (($CONFIG['photo_whocanupload'] == 'staff') && X_STAFF) {
+            } elseif (($CONFIG['photo_whocanupload'] == 'staff') && X_STAFF) {
                 eval('$photohidden = "' . template('usercp_photohidden') . '";');
             }
         }
@@ -834,8 +515,7 @@ class userObj
                 $size = @getimagesize($photo);
                 if ($size === false) {
                     error($lang['pic_not_located'], false);
-                } else
-                if (($size[0] > $max_size[0] && $max_size[0] > 0) || ($size[1] > $max_size[1] && $max_size[1] > 0) && !X_ADMIN) {
+                } elseif (($size[0] > $max_size[0] && $max_size[0] > 0) || ($size[1] > $max_size[1] && $max_size[1] > 0) && !X_ADMIN) {
                     error($lang['photo_too_big'] . $CONFIG['max_photo_size'] . $lang['photo_Pixels'], false);
                 }
             }
@@ -910,8 +590,7 @@ class userObj
             if ($width > $CONFIG['photo_max_width']) {
                 $newwidth = $CONFIG['photo_new_width'];
                 $newheight = ($newwidth / $width) * $height;
-            } else
-            if ($height > $CONFIG['photo_max_height']) {
+            } elseif ($height > $CONFIG['photo_max_height']) {
                 $newheight = $CONFIG['photo_new_height'];
                 $newwidth = ($newheight / $height) * $width;
             }
@@ -947,7 +626,6 @@ class userObj
         }
 
         if (onSubmit('photosubmit') && isset($_POST['photodel']) != 1 && empty($_POST['newphoto']) && empty($_FILES['photofile']['name'])) {
-
             $db->query("UPDATE " . X_PREFIX . "members SET photo = '$self[photo]' WHERE uid = '" . $self['uid'] . "'");
         }
         if (isset($_POST['photodel']) && isset($_POST['photodel']) == 1 && empty($_FILES['photofile']['name'])) {
@@ -1033,8 +711,8 @@ class userObj
 
             $curpassword = md5($curpassword);
             $curpwq = $db->query("SELECT password FROM " . X_PREFIX . "members WHERE uid = '" . $self['uid'] . "'");
-            $curpwdata = $db->fetch_array($curpwq);
-            $db->free_result($curpwq);
+            $curpwdata = $db->fetchArray($curpwq);
+            $db->freeResult($curpwq);
 
             if ($curpassword != $curpwdata['password']) {
                 $output = table_msg($lang['pwcurincorrect']);
@@ -1246,8 +924,7 @@ class userObj
                 $size = @getimagesize($avatar);
                 if ($size === false) {
                     error($lang['pic_not_located'], false);
-                } else
-                if (($size[0] > $max_size[0] && $max_size[0] > 0) || ($size[1] > $max_size[1] && $max_size[1] > 0) && !X_ADMIN) {
+                } elseif (($size[0] > $max_size[0] && $max_size[0] > 0) || ($size[1] > $max_size[1] && $max_size[1] > 0) && !X_ADMIN) {
                     error($lang['avatar_too_big'] . $CONFIG['max_avatar_size'] . $lang['Avatar_Pixels'], false);
                 }
             }
@@ -1323,8 +1000,7 @@ class userObj
             if ($width > $CONFIG['avatar_max_width']) {
                 $newwidth = $CONFIG['avatar_new_width'];
                 $newheight = ($newwidth / $width) * $height;
-            } else
-            if ($height > $CONFIG['avatar_max_height']) {
+            } elseif ($height > $CONFIG['avatar_max_height']) {
                 $newheight = $CONFIG['avatar_new_height'];
                 $newwidth = ($newheight / $height) * $width;
             }
@@ -1526,8 +1202,7 @@ class userObj
 
         if ($total > 0) {
             $submitbutton = '<tr><td class="ctrtablerow" bgcolor="' . $THEME['altbg2'] . '" colspan="2"><input type="submit" name="avatarsubmit" value="' . $lang['updateavatar'] . '" /></td></tr>';
-        } else
-        if ($total < 0) {
+        } elseif ($total < 0) {
             error($lang['noavatarsinfolder'], false);
         }
         eval('$output = "' . template('usercp_gallery') . '";');
@@ -1562,8 +1237,7 @@ class userObj
             $size = getimagesize($avatar);
             if ($size === false) {
                 $self['avatar'] = '';
-            } else
-            if (($size[0] > $max_size[0] && $max_size[0] > 0) || ($size[1] > $max_size[1] && $max_size[1] > 0) && !X_ADMIN) {
+            } elseif (($size[0] > $max_size[0] && $max_size[0] > 0) || ($size[1] > $max_size[1] && $max_size[1] > 0) && !X_ADMIN) {
                 error($lang['avatar_too_big'] . $CONFIG['max_avatar_size'] . $lang['avatarpixels'], false);
             }
         }
@@ -1602,17 +1276,17 @@ class userObj
 
         $query = $db->query("SELECT f.*, t.fid, t.icon, l.uid as lp_uid, l.username as lp_user, l.dateline as lp_dateline, t.subject, t.replies FROM " . X_PREFIX . "favorites f, " . X_PREFIX . "threads t LEFT JOIN " . X_PREFIX . "lastposts l ON l.tid = t.tid WHERE f.tid = t.tid AND f.username = '" . $self['username'] . "' AND f.type = 'favorite' ORDER BY l.dateline DESC");
         $favArray = array();
-        while (($row = $db->fetch_array($query)) != false) {
+        while (($row = $db->fetchArray($query)) != false) {
             $favArray[] = $row;
         }
-        $db->free_result($query);
+        $db->freeResult($query);
         $favnum = 0;
         $favs = '';
         $tmOffset = ($self['timeoffset'] * 3600) + $self['daylightsavings'];
         foreach ($favArray as $fav) {
             $query2 = $db->query("SELECT name, fup, fid FROM " . X_PREFIX . "forums WHERE fid = '$fav[fid]'");
-            $forum = $db->fetch_array($query2);
-            $db->free_result($query2);
+            $forum = $db->fetchArray($query2);
+            $db->freeResult($query2);
 
             $dalast = $fav['lp_dateline'];
             $fav['lp_user'] = '<a href="viewprofile.php?memberid=' . intval($fav['lp_uid']) . '">' . trim($fav['lp_user']) . '</a>';
@@ -1632,7 +1306,7 @@ class userObj
             $favnum++;
             eval('$favs .= "' . template('usercp_favs_row') . '";');
         }
-        $db->free_result($query);
+        $db->freeResult($query);
 
         $favsbtn = '';
         if ($favnum != 0) {
@@ -1666,17 +1340,17 @@ class userObj
 
         $query = $db->query("SELECT f.*, t.fid, t.icon, l.uid as lp_uid, l.username as lp_user, l.dateline as lp_dateline, t.subject, t.replies FROM " . X_PREFIX . "subscriptions f, " . X_PREFIX . "threads t LEFT JOIN " . X_PREFIX . "lastposts l ON l.tid = t.tid WHERE f.tid = t.tid AND f.username = '" . $self['username'] . "' AND f.type = 'subscription' ORDER BY l.dateline DESC");
         $favArray = array();
-        while (($row = $db->fetch_array($query)) != false) {
+        while (($row = $db->fetchArray($query)) != false) {
             $favArray[] = $row;
         }
-        $db->free_result($query);
+        $db->freeResult($query);
         $subnum = 0;
         $subscriptions = '';
         $tmOffset = ($self['timeoffset'] * 3600) + $self['daylightsavings'];
         foreach ($favArray as $fav) {
             $query2 = $db->query("SELECT name, fup, fid FROM " . X_PREFIX . "forums WHERE fid = '$fav[fid]'");
-            $forum = $db->fetch_array($query2);
-            $db->free_result($query2);
+            $forum = $db->fetchArray($query2);
+            $db->freeResult($query2);
 
             $dalast = $fav['lp_dateline'];
             $fav['lp_user'] = '<a href="viewprofile.php?memberid=' . intval($fav['lp_uid']) . '">' . trim($fav['lp_user']) . '</a>';
@@ -1750,8 +1424,8 @@ class userObj
         global $selHTML, $self, $shadow2, $menu;
 
         $query = $db->query("SELECT * FROM " . X_PREFIX . "members WHERE uid = '" . $self['uid'] . "'");
-        $member = $db->fetch_array($query);
-        $db->free_result($query);
+        $member = $db->fetchArray($query);
+        $db->freeResult($query);
 
         $limit = "posts <= '$member[postnum]' AND title != 'Super Administrator' AND title != 'Administrator' AND title != 'Super Moderator' AND title != 'Super Moderator' AND title != 'Moderator'";
         switch ($member['status']) {
@@ -1771,7 +1445,7 @@ class userObj
                 $limit = "posts <= '$member[postnum]' AND title != 'Super Administrator' AND title != 'Administrator' AND title != 'Super Moderator' AND title != 'Super Moderator' AND title != 'Moderator'";
                 break;
         }
-        $rank = $db->fetch_array($db->query("SELECT * FROM " . X_PREFIX . "ranks WHERE $limit ORDER BY posts DESC LIMIT 1"));
+        $rank = $db->fetchArray($db->query("SELECT * FROM " . X_PREFIX . "ranks WHERE $limit ORDER BY posts DESC LIMIT 1"));
 
         $allowavatars = $rank['allowavatars'];
 
@@ -1903,7 +1577,7 @@ class userObj
         $listquickthemes = array();
         $query = $db->query("SELECT themeid, name FROM " . X_PREFIX . "themes WHERE themestatus = 'on' ORDER BY name ASC");
         $quickthemes = '';
-        while (($qt = $db->fetch_array($query)) != false) {
+        while (($qt = $db->fetchArray($query)) != false) {
             if ($theme == $qt['themeid']) {
                 $listquickthemes[] = '<option value="' . $qt['themeid'] . '" ' . $selHTML . '>' . stripslashes($qt['name']) . '</option>';
             } else {
@@ -1912,16 +1586,16 @@ class userObj
         }
         $listquickthemes = implode("\n", $listquickthemes);
         eval('$quickthemes = "' . template('usercp_home_themes') . '";');
-        $db->free_result($query);
+        $db->freeResult($query);
 
         $pmblock = '';
         if (!($CONFIG['pmstatus'] == 'off' && isset($self['status']) && $self['status'] == 'Member')) {
             $query = $db->query("SELECT * FROM " . X_PREFIX . "pm WHERE owner = '$self[username]' AND folder = 'Inbox' AND readstatus = 'no' ORDER BY dateline DESC LIMIT 0,5");
             $msgArray = array();
-            while (($row = $db->fetch_array($query)) != false) {
+            while (($row = $db->fetchArray($query)) != false) {
                 $msgArray[] = $row;
             }
-            $db->free_result($query);
+            $db->freeResult($query);
             $pmnum = count($msgArray);
             $messages = '';
             $tmOffset = ($self['timeoffset'] * 3600) + $self['daylightsavings'];
@@ -1958,16 +1632,16 @@ class userObj
 
         $query = $db->query("SELECT f.*, t.*, p.*, l.uid as lp_uid, l.username as lp_user, l.dateline as lp_dateline FROM " . X_PREFIX . "favorites f, " . X_PREFIX . "threads t, " . X_PREFIX . "posts p, " . X_PREFIX . "lastposts l WHERE l.tid = t.tid AND f.tid = t.tid AND p.tid = t.tid AND p.subject = t.subject AND f.username = '" . $self['username'] . "' AND f.type = 'favorite' ORDER BY l.dateline DESC LIMIT 0,5");
         $favArray = array();
-        while (($row = $db->fetch_array($query)) != false) {
+        while (($row = $db->fetchArray($query)) != false) {
             $favArray[] = $row;
         }
-        $db->free_result($query);
+        $db->freeResult($query);
         $favnum = count($favArray);
         $favs = '';
         $tmOffset = ($self['timeoffset'] * 3600) + $self['daylightsavings'];
         foreach ($favArray as $fav) {
             $query = $db->query("SELECT name, fup, fid FROM " . X_PREFIX . "forums WHERE fid = '$fav[fid]'");
-            $forum = $db->fetch_array($query);
+            $forum = $db->fetchArray($query);
 
             $dalast = $fav['lp_dateline'];
             $fav['lp_user'] = '<a href="viewprofile.php?memberid=' . intval($fav['lp_uid']) . '">' . trim($fav['lp_user']) . '</a>';
@@ -1993,17 +1667,17 @@ class userObj
 
         $query = $db->query("SELECT f.*, t.fid, t.icon, l.uid as lp_uid, l.username as lp_user, l.dateline as lp_dateline, t.subject, t.replies FROM " . X_PREFIX . "subscriptions f, " . X_PREFIX . "threads t LEFT JOIN " . X_PREFIX . "lastposts l ON l.tid = t.tid WHERE f.tid = t.tid AND f.username = '" . $self['username'] . "' AND f.type = 'subscription' ORDER BY l.dateline DESC LIMIT 0,5");
         $favArray = array();
-        while (($row = $db->fetch_array($query)) != false) {
+        while (($row = $db->fetchArray($query)) != false) {
             $favArray[] = $row;
         }
-        $db->free_result($query);
+        $db->freeResult($query);
         $subnum = 0;
         $subscriptions = '';
         $tmOffset = ($self['timeoffset'] * 3600) + $self['daylightsavings'];
         foreach ($favArray as $fav) {
             $query4 = $db->query("SELECT name, fup, fid FROM " . X_PREFIX . "forums WHERE fid = '$fav[fid]'");
-            $forum = $db->fetch_array($query4);
-            $db->free_result($query4);
+            $forum = $db->fetchArray($query4);
+            $db->freeResult($query4);
 
             $dalast = $fav['lp_dateline'];
             $fav['lp_user'] = '<a href="viewprofile.php?memberid=' . intval($fav['lp_uid']) . '">' . trim($fav['lp_user']) . '</a>';

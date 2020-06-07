@@ -32,6 +32,10 @@ if (!defined('IN_PROGRAM') && (defined('DEBUG') && DEBUG == false)) {
     exit('This file is not designed to be called directly');
 }
 
+require __DIR__ . "/sendgrid-php/sendgrid-php.php";
+
+namespace GaiaBB;
+
 class MailSys
 {
     public $from;
@@ -43,11 +47,16 @@ class MailSys
     public $cc;
     public $smtp_conn;
 
+    private $sendgrid;
+    private $email;
+
     // Instantiate the class
     public function __construct()
     {
         $OS = substr(PHP_OS, 0, 3);
         define('GAIABB_OS', $OS);
+
+        $this->email = new \SendGrid\Mail\Mail();
     }
 
     // Required calls
@@ -104,7 +113,6 @@ class MailSys
         $message = trim($message);
         if (!empty($message)) {
             $this->message = wordwrap($message, 70, "\n");
-            //$this->message = $message;
             return true;
         }
         return false;
@@ -182,7 +190,13 @@ class MailSys
         global $CONFIG;
 
         if (empty($this->smtp_conn)) {
-            $this->smtp_conn = fsockopen($CONFIG['smtphost'], $CONFIG['smtpport'], $errno, $errstr, $CONFIG['smtptimeout']);
+            $this->smtp_conn = fsockopen(
+                $CONFIG['smtphost'],
+                $CONFIG['smtpport'],
+                $errno,
+                $errstr,
+                $CONFIG['smtptimeout']
+            );
             if ($this->smtp_conn) {
                 socket_set_blocking($this->smtp_conn, 0);
                 return true;
@@ -202,7 +216,7 @@ class MailSys
         return false;
     }
 
-    public function SMTP_receive($cmd = '')
+    public function smtpReceive($cmd = '')
     {
         global $lang;
 
@@ -224,7 +238,7 @@ class MailSys
         }
     }
 
-    public function SMTP_send($cmd = '', $lb = "\r\n")
+    public function smtpSend($cmd = '', $lb = "\r\n")
     {
         global $lang;
 
@@ -238,44 +252,47 @@ class MailSys
         global $CONFIG;
 
         if (!empty($this->smtp_conn)) {
-            $this->SMTP_receive('CONNECT');
-            $this->SMTP_send('EHLO ' . $CONFIG['smtpServer']);
-            $this->SMTP_receive('EHLO');
+            $this->smtpReceive('CONNECT');
+            $this->smtpSend('EHLO ' . $CONFIG['smtpServer']);
+            $this->smtpReceive('EHLO');
 
             if (!empty($CONFIG['smtpusername'])) {
-                $this->SMTP_send('AUTH LOGIN');
-                $this->SMTP_receive('AUTH LOGIN');
-                $this->SMTP_send(base64_encode($CONFIG['smtpusername']));
-                $this->SMTP_receive('USERNAME SENT');
-                $this->SMTP_send(base64_encode($CONFIG['smtppassword']));
-                $this->SMTP_receive('PASSWORD SENT');
+                $this->smtpSend('AUTH LOGIN');
+                $this->smtpReceive('AUTH LOGIN');
+                $this->smtpSend(base64_encode($CONFIG['smtpusername']));
+                $this->smtpReceive('USERNAME SENT');
+                $this->smtpSend(base64_encode($CONFIG['smtppassword']));
+                $this->smtpReceive('PASSWORD SENT');
             }
 
-            $this->SMTP_send('MAIL FROM:' . $this->from);
-            $this->SMTP_receive('MAIL FROM');
-            $this->SMTP_send('RCPT TO:' . $this->to);
+            $this->smtpSend('MAIL FROM:' . $this->from);
+            $this->smtpReceive('MAIL FROM');
+            $this->smtpSend('RCPT TO:' . $this->to);
 
             $this->bcc = array_unique(array_merge($this->bcc, $this->cc));
 
             if (!empty($this->bcc)) {
                 foreach ($this->bcc as $rcpt_to) {
-                    $this->SMTP_send('RCPT TO:' . $rcpt_to);
+                    $this->smtpSend('RCPT TO:' . $rcpt_to);
                 }
             }
 
-            $this->SMTP_receive('RCPT TO (RECIPIENT)');
-            $this->SMTP_send('DATA');
-            $this->SMTP_receive('DATA');
-            $this->SMTP_send("To: $this->to\r\nFrom: $this->from\r\nSubject: $this->subject\r\n$this->headers\r\n$this->message", "\r\n.\r\n");
-            $this->SMTP_receive('Data');
-            $this->SMTP_send('QUIT');
-            $this->SMTP_receive('QUIT');
+            $this->smtpReceive('RCPT TO (RECIPIENT)');
+            $this->smtpSend('DATA');
+            $this->smtpReceive('DATA');
+            $this->smtpSend(
+                "To: $this->to\r\nFrom: $this->from\r\nSubject: $this->subject\r\n$this->headers\r\n$this->message",
+                "\r\n.\r\n"
+            );
+            $this->smtpReceive('Data');
+            $this->smtpSend('QUIT');
+            $this->smtpReceive('QUIT');
             return true;
         }
         return false;
     }
 
-    public function Send()
+    public function sendMail()
     {
         global $charset, $CONFIG;
 

@@ -1,14 +1,18 @@
 <?xml version="1.0"?>
-<ruleset name="YourStandard">
- <description>Foo is the best bar on baz</description>
+<ruleset name="GaiaBBStandard">
+       <description>GaiaBB Coding Standard</description>
 
-<!-- Include the whole PSR 2 standard -->
- <rule ref="/home/vanderaj/.composer/vendor/squizlabs/php_codesniffer/src/Standards/PSR2/ruleset.xml"/>
+       <!-- Include the whole PSR 2 standard -->
+       <rule ref="/home/vanderaj/.composer/vendor/squizlabs/php_codesniffer/src/Standards/PSR2/ruleset.xml"/>
 
- <rule ref="Generic.Files.LineLength">
-  <properties>
-   <property name="lineLimit" value="132"/>
-   <property name="absoluteLineLimit" value="0"/>
-  </properties>
- </rule>
+       <rule ref="Generic.Files.LineLength">
+              <properties>
+                     <property name="lineLimit" value="300"/>
+                     <property name="absoluteLineLimit" value="0"/>
+              </properties>
+       </rule>
+
+       <!-- <rule ref="PSR2">
+              <exclude name="PSR1.Files.SideEffects"/>
+       </rule> -->
 </ruleset>

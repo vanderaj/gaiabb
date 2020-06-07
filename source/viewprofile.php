@@ -54,7 +54,7 @@ $memberinfo = array();
 
 $memberid = getInt('memberid');
 if ($memberid > 0) {
-    $memberinfo = $db->fetch_array($db->query("SELECT * FROM " . X_PREFIX . "members WHERE uid='$memberid'"));
+    $memberinfo = $db->fetchArray($db->query("SELECT * FROM " . X_PREFIX . "members WHERE uid='$memberid'"));
     $member = $memberinfo['username'];
 } else {
     error($lang['nomember']);
@@ -66,7 +66,7 @@ if ($memberinfo['status'] == 'Administrator' || $memberinfo['status'] == 'Super 
 } else {
     $limit = "posts <= '$memberinfo[postnum]' AND title!='Super Administrator' AND title!='Administrator' AND title!='Super Moderator' AND title!='Moderator'";
 }
-$rank = $db->fetch_array($db->query("SELECT * FROM " . X_PREFIX . "ranks WHERE $limit ORDER BY posts DESC LIMIT 1"));
+$rank = $db->fetchArray($db->query("SELECT * FROM " . X_PREFIX . "ranks WHERE $limit ORDER BY posts DESC LIMIT 1"));
 
 if ($memberinfo['uid'] == '') {
     error($lang['nomember']);
@@ -230,7 +230,7 @@ if ($memberinfo['uid'] == '') {
     }
     $stars = str_repeat('<img src="' . $THEME['imgdir'] . '/' . $star . '" alt="*" title="*" border="0px" />', $rank['stars']);
 
-    $q = $db->fetch_array($db->query("SELECT invisible FROM " . X_PREFIX . "whosonline WHERE username='$member'"));
+    $q = $db->fetchArray($db->query("SELECT invisible FROM " . X_PREFIX . "whosonline WHERE username='$member'"));
     if (!$q) {
         $onlinenow = $lang['memberisoff'];
     } else {
@@ -265,7 +265,7 @@ if ($memberinfo['uid'] == '') {
 
     $query = $db->query("SELECT COUNT(tid) FROM " . X_PREFIX . "threads");
     $threads = $db->result($query, 0);
-    $db->free_result($query);
+    $db->freeResult($query);
 
     $threadtot = $threads;
     if ($threadtot == 0 || $memberinfo['threadnum'] == 0) {
@@ -277,7 +277,7 @@ if ($memberinfo['uid'] == '') {
 
     $query = $db->query("SELECT COUNT(pid) FROM " . X_PREFIX . "posts");
     $posts = $db->result($query, 0);
-    $db->free_result($query);
+    $db->freeResult($query);
 
     $posttot = $posts;
     if ($posttot == 0 || $memberinfo['postnum'] == 0) {
@@ -373,11 +373,15 @@ if ($memberinfo['uid'] == '') {
     switch ($self['status']) {
         case 'Member':
             $restrict .= " f.password='' AND f.private!='3' AND";
+            // no break
         case 'Moderator':
+            // no break
         case 'Super Moderator':
             $restrict .= " f.password='' AND f.private!='2' AND";
+            // no break
         case 'Administrator':
             $restrict .= " f.userlist='' AND f.password='' AND";
+            // no break
         case 'Super Administrator':
             break;
         default:
@@ -386,8 +390,8 @@ if ($memberinfo['uid'] == '') {
     }
 
     $query = $db->query("SELECT f.name, p.fid, COUNT(DISTINCT p.pid) as posts FROM " . X_PREFIX . "posts p LEFT JOIN " . X_PREFIX . "forums f ON p.fid=f.fid WHERE $restrict p.author='$member' GROUP BY p.fid ORDER BY posts DESC LIMIT 1");
-    $forum = $db->fetch_array($query);
-    $db->free_result($query);
+    $forum = $db->fetchArray($query);
+    $db->freeResult($query);
 
     if ($forum['posts'] < 1 || $memberinfo['postnum'] < 1) {
         $topforum = $lang['textnopostsyet'];
@@ -396,7 +400,7 @@ if ($memberinfo['uid'] == '') {
     }
 
     $query = $db->query("SELECT t.tid, t.subject, p.dateline FROM (" . X_PREFIX . "posts p, " . X_PREFIX . "threads t) LEFT JOIN " . X_PREFIX . "forums f ON p.fid=f.fid WHERE $restrict t.author='$member' AND p.tid=t.tid ORDER BY t.tid DESC LIMIT 1");
-    if (($thread = $db->fetch_array($query)) != false) {
+    if (($thread = $db->fetchArray($query)) != false) {
         $lastthreaddate = gmdate($self['dateformat'], $thread['dateline'] + ($self['timeoffset'] * 3600) + $self['daylightsavings']);
         $lastthreadtime = gmdate($self['timecode'], $thread['dateline'] + ($self['timeoffset'] * 3600) + $self['daylightsavings']);
         $lastthreadtext = $lastthreaddate . ' ' . $lang['textat'] . ' ' . $lastthreadtime;
@@ -405,10 +409,10 @@ if ($memberinfo['uid'] == '') {
     } else {
         $lastthread = $lang['textnothreadsyet'];
     }
-    $db->free_result($query);
+    $db->freeResult($query);
 
     $query = $db->query("SELECT t.tid, t.subject, p.dateline, p.pid FROM (" . X_PREFIX . "posts p, " . X_PREFIX . "threads t) LEFT JOIN " . X_PREFIX . "forums f ON p.fid=f.fid WHERE $restrict p.author='$member' AND p.tid=t.tid ORDER BY p.dateline DESC LIMIT 1");
-    if (($post = $db->fetch_array($query)) != false) {
+    if (($post = $db->fetchArray($query)) != false) {
         $posts = $db->result($db->query("SELECT COUNT(pid) FROM " . X_PREFIX . "posts WHERE tid = '$post[tid]' AND pid < '$post[pid]'"), 0) + 1;
 
         validatePpp();
@@ -423,7 +427,7 @@ if ($memberinfo['uid'] == '') {
     } else {
         $lastpost = $lang['textnopostsyet'];
     }
-    $db->free_result($query);
+    $db->freeResult($query);
 
     $lang['searchusermsg'] = str_replace('*USER*', $memberinfo['username'], $lang['searchusermsg']);
 

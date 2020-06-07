@@ -29,6 +29,7 @@
  *
  **/
 
+// phpcs:disable PSR1.Files.SideEffects
 define('ROOT', '../');
 define('ROOTINC', '../include/');
 define('ROOTCLASS', '../class/');
@@ -87,10 +88,10 @@ function viewPanel()
                             <td align="center" class="title"><?php echo $lang['textcensorreplace'] ?></td>
                         </tr>
                         <?php
-$query = $db->query("SELECT * FROM " . X_PREFIX . "words ORDER BY id");
-    $rowsFound = $db->num_rows($query);
-    while (($censor = $db->fetch_array($query)) != false) {
-        ?>
+                        $query = $db->query("SELECT * FROM " . X_PREFIX . "words ORDER BY id");
+                        $rowsFound = $db->numRows($query);
+                        while (($censor = $db->fetchArray($query)) != false) {
+                            ?>
                             <tr bgcolor="<?php echo $THEME['altbg2'] ?>" class="ctrtablerow">
                                 <td><input type="checkbox" name="delete<?php echo $censor['id'] ?>"
                                            value="<?php echo $censor['id'] ?>"/></td>
@@ -102,17 +103,17 @@ $query = $db->query("SELECT * FROM " . X_PREFIX . "words ORDER BY id");
                                            value="<?php echo $censor['replace1'] ?>"/></td>
                             </tr>
                             <?php
-}
-    $db->free_result($query);
+                        }
+                            $db->freeResult($query);
 
-    if ($rowsFound < 1) {
-        ?>
+                        if ($rowsFound < 1) {
+                            ?>
                             <tr bgcolor="<?php echo $THEME['altbg1'] ?>" class="ctrtablerow">
                                 <td colspan="3"><?php echo $lang['textnone'] ?></td>
                             </tr>
                             <?php
-}
-    ?>
+                        }
+                        ?>
                         <tr bgcolor="<?php echo $THEME['altbg2'] ?>" class="ctrtablerow">
                             <td><strong><?php echo $lang['textnewcode'] ?></strong></td>
                             <td><input type="text" size="20" name="newfind"/></td>
@@ -152,7 +153,7 @@ function doPanel()
     $oToken->assertToken();
 
     $querycensor = $db->query("SELECT id FROM " . X_PREFIX . "words");
-    while (($censor = $db->fetch_array($querycensor)) != false) {
+    while (($censor = $db->fetchArray($querycensor)) != false) {
         $delete = "delete" . $censor['id'];
         $delete = formInt($delete);
         if ($delete > 0) {
@@ -166,7 +167,7 @@ function doPanel()
         $replace = $db->escape(formVar($replace));
         $db->query("UPDATE " . X_PREFIX . "words SET find = '$find', replace1 = '$replace' WHERE id = '$censor[id]'");
     }
-    $db->free_result($querycensor);
+    $db->freeResult($querycensor);
 
     $newfind = $db->escape(formVar('newfind'));
     $newreplace = $db->escape(formVar('newreplace'));

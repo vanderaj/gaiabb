@@ -35,15 +35,17 @@ if (!defined('IN_PROGRAM') && (defined('DEBUG') && DEBUG == false)) {
 }
 
 /**
- * Class thread - provides generic business logic for thread management
+ * Class Pm 
  *
- * thread routines
- * Static initialization allowed, does not require instantiation before first use.
+ * Private messages
  *
  * @package GaiaBB
  *
  */
-class pm
+
+namespace GaiaBB;
+
+class Pm
 {
 
     public $uid;

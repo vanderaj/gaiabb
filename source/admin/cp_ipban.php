@@ -80,8 +80,8 @@ function viewPanel()
                         </tr>
                         <?php
 $query = $db->query("SELECT * FROM " . X_PREFIX . "banned ORDER BY dateline");
-    $rowsFound = $db->num_rows($query);
-    while (($ipaddress = $db->fetch_array($query)) != false) {
+    $rowsFound = $db->numRows($query);
+    while (($ipaddress = $db->fetchArray($query)) != false) {
         for ($i = 1; $i <= 4; ++$i) {
             $j = "ip" . $i;
             if ($ipaddress[$j] == -1) {
@@ -100,10 +100,10 @@ $query = $db->query("SELECT * FROM " . X_PREFIX . "banned ORDER BY dateline");
                             </tr>
                             <?php
 }
-    $db->free_result($query);
+    $db->freeResult($query);
 
     $query = $db->query("SELECT id FROM " . X_PREFIX . "banned WHERE (ip1 = '$ips[0]' OR ip1 = '-1') AND (ip2 = '$ips[1]' OR ip2 = '-1') AND (ip3 = '$ips[2]' OR ip3 = '-1') AND (ip4 = '$ips[3]' OR ip4 = '-1')");
-    $result = $db->fetch_array($query);
+    $result = $db->fetchArray($query);
 
     if ($result) {
         $warning = $lang['ipwarning'];
@@ -158,13 +158,13 @@ function doPanel()
     $oToken->assertToken();
 
     $query = $db->query("SELECT id FROM " . X_PREFIX . "banned");
-    while (($ip = $db->fetch_array($query)) != false) {
+    while (($ip = $db->fetchArray($query)) != false) {
         $delete = "delete" . $ip['id'];
         if (formOnOff($delete) == 'on') {
             $db->query("DELETE FROM " . X_PREFIX . "banned WHERE id = '" . $ip['id'] . "'");
         }
     }
-    $db->free_result($query);
+    $db->freeResult($query);
 
     $msg = $lang['textipupdate'];
 
@@ -193,7 +193,7 @@ function doPanel()
 
     if ($msg === $lang['textipupdate']) {
         $query = $db->query("SELECT id FROM " . X_PREFIX . "banned WHERE (ip1 = '$ip[1]' OR ip1 = '-1') AND (ip2 = '$ip[2]' OR ip2 = '-1') AND (ip3 = '$ip[3]' OR ip3 = '-1') AND (ip4 = '$ip[4]' OR ip4 = '-1')");
-        $result = $db->fetch_array($query);
+        $result = $db->fetchArray($query);
         if ($result) {
             $msg = $lang['existingip'];
         } else {

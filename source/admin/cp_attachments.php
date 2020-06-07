@@ -28,6 +28,8 @@
  *    along with GaiaBB.  If not, see <http://www.gnu.org/licenses/>.
  *
  **/
+
+// phpcs:disable PSR1.Files.SideEffects
 define('ROOT', '../');
 define('ROOTINC', '../include/');
 define('ROOTCLASS', '../class/');
@@ -206,15 +208,19 @@ function doDelete()
         $querydlcountmore = "AND a.downloads > $dlcountmore ";
     }
 
-    $query = $db->query("SELECT a.*, p.*, t.tid, t.subject AS tsubject, f.name AS fname FROM " . X_PREFIX . "attachments a, " . X_PREFIX . "posts p, " . X_PREFIX . "threads t, " . X_PREFIX . "forums f WHERE a.pid = p.pid AND t.tid = a.tid AND f.fid = p.fid $queryforum $querydate $queryauthor $queryname $querysizeless $querysizemore");
-    while (($attachment = $db->fetch_array($query)) != false) {
+    $query = $db->query("SELECT a.*, p.*, t.tid, t.subject AS tsubject, f.name AS fname FROM " .
+                            X_PREFIX . "attachments a, " . X_PREFIX . "posts p, " .
+                            X_PREFIX . "threads t, " .
+                            X_PREFIX . "forums f WHERE a.pid = p.pid AND t.tid = a.tid AND f.fid = p.fid " .
+                            " $queryforum $querydate $queryauthor $queryname $querysizeless $querysizemore");
+    while (($attachment = $db->fetchArray($query)) != false) {
         $afilename = "filename$attachment[aid]";
         $afilename = formVar($afilename);
         if ($attachment['filename'] != $afilename) {
             $db->query("UPDATE " . X_PREFIX . "attachments SET filename = '$afilename' WHERE aid = '$attachment[aid]'");
         }
     }
-    $db->free_result($query);
+    $db->freeResult($query);
     cp_message($lang['textattachmentsupdate'], false, '', '</td></tr></table>', 'cp_attachments.php?action=attachments', true, false, true);
 }
 
@@ -253,74 +259,72 @@ function doSearch()
                             <td width="5%"><?php echo $lang['textdownloads'] ?></td>
                         </tr>
                         <?php
-$restriction = $orderby = '';
-    $forumprune = formInt('forumprune');
-    if ($forumprune != 0) {
-        $restriction .= "AND p.fid=$forumprune ";
-    }
+                        $restriction = $orderby = '';
+                        $forumprune = formInt('forumprune');
+                        if ($forumprune != 0) {
+                            $restriction .= "AND p.fid=$forumprune ";
+                        }
 
-    $daysold = formInt('daysold');
-    if ($daysold != 0) {
-        $datethen = $onlinetime - (86400 * $daysold);
-        $restriction .= "AND p.dateline <= $datethen ";
-        $orderby = ' ORDER BY p.dateline ASC';
-    }
+                        $daysold = formInt('daysold');
+                        if ($daysold != 0) {
+                            $datethen = $onlinetime - (86400 * $daysold);
+                            $restriction .= "AND p.dateline <= $datethen ";
+                            $orderby = ' ORDER BY p.dateline ASC';
+                        }
 
-    $author = formVar('author');
-    if (!empty($author)) {
-        $author = $db->escape($author);
-        $restriction .= "AND p.author = '$author' ";
-        $orderby = ' ORDER BY p.author ASC';
-    }
+                        $author = formVar('author');
+                        if (!empty($author)) {
+                            $author = $db->escape($author);
+                            $restriction .= "AND p.author = '$author' ";
+                            $orderby = ' ORDER BY p.author ASC';
+                        }
 
-    $filename = formVar('filename'); // TODO make filename safe
-    if (!empty($filename)) {
-        $filename = $db->escape($filename);
-        $restriction .= "AND a.filename LIKE '%$filename%' ";
-    }
+                        $filename = formVar('filename'); // TODO make filename safe
+                        if (!empty($filename)) {
+                            $filename = $db->escape($filename);
+                            $restriction .= "AND a.filename LIKE '%$filename%' ";
+                        }
 
-    $sizeless = formInt('sizeless');
-    if ($sizeless > 0) {
-        $restriction .= "AND a.filesize < $sizeless ";
-        $orderby = ' ORDER BY a.filesize DESC';
-    }
+                        $sizeless = formInt('sizeless');
+                        if ($sizeless > 0) {
+                            $restriction .= "AND a.filesize < $sizeless ";
+                            $orderby = ' ORDER BY a.filesize DESC';
+                        }
 
-    $sizemore = formInt('sizemore');
-    if ($sizemore > 0) {
-        $restriction .= "AND a.filesize > $sizemore ";
-        $orderby = ' ORDER BY a.filesize DESC';
-    }
+                        $sizemore = formInt('sizemore');
+                        if ($sizemore > 0) {
+                            $restriction .= "AND a.filesize > $sizemore ";
+                            $orderby = ' ORDER BY a.filesize DESC';
+                        }
 
-    $dlcountless = formInt('dlcountless');
-    if ($dlcountless > 0) {
-        $restriction .= "AND a.downloads < $dlcountless ";
-        $orderby = ' ORDER BY a.downloads DESC';
-    }
+                        $dlcountless = formInt('dlcountless');
+                        if ($dlcountless > 0) {
+                            $restriction .= "AND a.downloads < $dlcountless ";
+                            $orderby = ' ORDER BY a.downloads DESC';
+                        }
 
-    $dlcountmore = formInt('dlcountmore');
-    if ($dlcountmore > 0) {
-        $restriction .= "AND a.downloads > $dlcountmore ";
-        $orderby = ' ORDER BY a.downloads DESC ';
-    }
+                        $dlcountmore = formInt('dlcountmore');
+                        if ($dlcountmore > 0) {
+                            $restriction .= "AND a.downloads > $dlcountmore ";
+                            $orderby = ' ORDER BY a.downloads DESC ';
+                        }
 
-    $query = $db->query("SELECT a.*, m.uid as author_uid, p.*, t.tid, t.subject AS tsubject, f.name AS fname FROM " . X_PREFIX . "attachments a, " . X_PREFIX . "members m, " . X_PREFIX . "posts p, " . X_PREFIX . "threads t, " . X_PREFIX . "forums f WHERE a.pid = p.pid AND p.author = m.username AND t.tid = a.tid AND f.fid = p.fid $restriction $orderby");
-    while (($attachment = $db->fetch_array($query)) != false) {
-        $attachsize = strlen($attachment['attachment']);
-        if ($attachsize >= 1073741824) {
-            $attachsize = round($attachsize / 1073741824 * 100) / 100 . "gb";
-        } else
-        if ($attachsize >= 1048576) {
-            $attachsize = round($attachsize / 1048576 * 100) / 100 . "mb";
-        } else
-        if ($attachsize >= 1024) {
-            $attachsize = round($attachsize / 1024 * 100) / 100 . "kb";
-        } else {
-            $attachsize = $attachsize . "b";
-        }
-        $attachment['tsubject'] = stripslashes($attachment['tsubject']);
-        $attachment['fname'] = stripslashes($attachment['fname']);
-        $attachment['filename'] = stripslashes($attachment['filename']);
-        ?>
+                        $query = $db->query("SELECT a.*, m.uid as author_uid, p.*, t.tid, t.subject AS tsubject, f.name AS fname FROM " . X_PREFIX . "attachments a, " . X_PREFIX . "members m, " . X_PREFIX . "posts p, " . X_PREFIX . "threads t, " . X_PREFIX . "forums f WHERE a.pid = p.pid AND p.author = m.username AND t.tid = a.tid AND f.fid = p.fid $restriction $orderby");
+                        while (($attachment = $db->fetchArray($query)) != false) {
+                            $attachsize = strlen($attachment['attachment']);
+                            if ($attachsize >= 1073741824) {
+                                $attachsize = round($attachsize / 1073741824 * 100) / 100 . "gb";
+                            } elseif ($attachsize >= 1048576) {
+                                $attachsize = round($attachsize / 1048576 * 100) / 100 . "mb";
+                            } elseif ($attachsize >= 1024) {
+                                $attachsize = round($attachsize / 1024 * 100) / 100 . "kb";
+                            } else {
+                                $attachsize = $attachsize . "b";
+                            }
+                            $attachment['tsubject'] = stripslashes($attachment['tsubject']);
+                            $attachment['fname'] = stripslashes($attachment['fname']);
+                            $attachment['filename'] = stripslashes($attachment['filename']);
+                            ?>
                             <tr>
                                 <td bgcolor="<?php echo $THEME['altbg1'] ?>" class="ctrtablerow"
                                     valign="middle"><a
@@ -350,9 +354,9 @@ $restriction = $orderby = '';
                                     valign="top" align="center"><?php echo $attachment['downloads'] ?></td>
                             </tr>
                             <?php
-}
-    $db->free_result($query);
-    ?>
+                        }
+                                $db->freeResult($query);
+                        ?>
                         <tr class="ctrtablerow" bgcolor="<?php echo $THEME['altbg2'] ?>">
                             <td colspan="6"><input class="submit" type="submit"
                                                    name="deletesubmit"

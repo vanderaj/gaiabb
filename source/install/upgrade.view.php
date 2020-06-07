@@ -60,7 +60,7 @@ function view_upgrade_index($path)
     </tr>
     </table>
     <?php
-view_shadow();
+    viewShadow();
 }
 
 /**
@@ -99,7 +99,6 @@ function view_upgrade_action()
                                 <tr>
                                     <td>
                                         <script type="text/javascript" language="javascript1.2">
-                                            <!--
                                             var upgradeBar = new progressBar(
                                                 1,         //border thickness
                                                 '#000000', //border colour
@@ -109,7 +108,6 @@ function view_upgrade_action()
                                                 16,        //height of bar (excluding border)
                                                 1          //direction of progress: 1 = right, 2 = down, 3 = left, 4 = up
                                             );
-                                            //-->
                                         </script>
                                     </td>
                                 </tr>
@@ -128,7 +126,7 @@ function view_upgrade_action()
         </tr>
     </table>
     <?php
-return "upgradeBar";
+    return "upgradeBar";
 }
 
 /**

@@ -32,94 +32,9 @@ if (!defined('IN_PROGRAM') && (defined('DEBUG') && DEBUG == false)) {
     exit('This file is not designed to be called directly');
 }
 
-class AuthState
-{
+namespace GaiaBB;
 
-    public $gbbuid;
-    public $gbbpw;
-    private $state;
-
-    public function __construct()
-    {
-        $this->state = array();
-        $this->gbbuid = '';
-        $this->gbbpw = '';
-
-        $this->get();
-    }
-
-    public function get()
-    {
-        if (isset($_COOKIE['gbbstate'])) {
-            try {
-                $tmpState = $_COOKIE['gbbstate'];
-
-                $tmpState = base64_decode($tmpState, true);
-
-                if ($tmpState === false) {
-                    throw new Exception("Invalid decode of state string");
-                }
-
-                // $this->state = mcrypt_decrypt(MCRYPT_RIJNDAEL_256, GAIABB_MASTERKEY, $tmpState, MCRYPT_MODE_ECB, mcrypt_create_iv(mcrypt_get_iv_size(MCRYPT_RIJNDAEL_256, MCRYPT_MODE_ECB), MCRYPT_RAND));
-                // if ($this->state === false)
-                // {
-                // throw new Exception("Invalid decryption");
-                // }
-                $this->state = unserialize($tmpState);
-
-                if (isset($this->state['version']) && $this->state['version'] != 1) {
-                    throw new Exception("Invalid state version, or state is not valid.");
-                }
-
-                $this->gbbuid = $this->state['gbbuid'];
-                $this->gbbpw = $this->state['gbbpw'];
-            } catch (Exception $e) {
-                global $db;
-
-                $db->panic("authState :: get() - Failed to decrypt authentication state", $e);
-            }
-        }
-    }
-
-    public function convert()
-    {
-        if (isset($_COOKIE['gbbuid'])) {
-            $this->gbbuid = $_COOKIE['gbbuid'];
-        }
-
-        if (isset($_COOKIE['gbbpw'])) {
-            $this->gbbpw = $_COOKIE['gbbpw'];
-        }
-
-        $this->update();
-    }
-
-    public function update()
-    {
-        global $onlinetime, $cookiepath, $cookiedomain;
-
-        try {
-            $this->state['version'] = 1;
-            $this->state['gbbuid'] = $this->gbbuid;
-            $this->state['gbbpw'] = $this->gbbpw;
-
-            $tmpState = serialize($this->state);
-
-            // $tmpState = mcrypt_encrypt(MCRYPT_RIJNDAEL_256, GAIABB_MASTERKEY, $tmpState, MCRYPT_MODE_ECB, mcrypt_create_iv(mcrypt_get_iv_size(MCRYPT_RIJNDAEL_256, MCRYPT_MODE_ECB), MCRYPT_RAND));
-            // if ($this->state === false)
-            // {
-            // throw new Exception("Invalid encryption");
-            // }
-            $tmpState = base64_encode($tmpState);
-            $currtime = $onlinetime + (86400 * 30);
-            setcookie('gbbstate', $tmpState, $currtime, $cookiepath, $cookiedomain);
-        } catch (Exception $e) {
-            global $db;
-
-            $db->panic("authState :: update() - Failed to update authentication state", $e);
-        }
-    }
-}
+require_once 'authstate.class.php';
 
 class AuthC
 {
@@ -140,11 +55,9 @@ class AuthC
 
         if (isset($_SESSION['gbbuid']) && $_SESSION['gbbuid'] > 0) {
             $auto = $this->autoLoginViaSession();
-        } else
-        if (isset($_COOKIE['gbbstate'])) {
+        } elseif (isset($_COOKIE['gbbstate'])) {
             $auto = $this->autoLoginViaAuthState();
-        } else
-        if (isset($_COOKIE['gbbuid'])) {
+        } elseif (isset($_COOKIE['gbbuid'])) {
             $auto = $this->autoLoginViaCookie();
         }
 
@@ -153,12 +66,12 @@ class AuthC
         $userrec = array();
         if ($auto && intval($gbbuid) > 0) {
             $mq = $db->query("SELECT * FROM " . X_PREFIX . "members WHERE uid = '$gbbuid'");
-            $userrec = $db->fetch_array($mq);
-            if (($db->num_rows($mq) == 1) && ($userrec['password'] == $gbbpw)) {
+            $userrec = $db->fetchArray($mq);
+            if (($db->numRows($mq) == 1) && ($userrec['password'] == $gbbpw)) {
                 $db->query("UPDATE " . X_PREFIX . "members SET lastvisit = " . $db->time($onlinetime) . " WHERE uid = '$gbbuid'");
                 $q = true;
             }
-            $db->free_result($mq);
+            $db->freeResult($mq);
         }
 
         if ($q) {
@@ -417,10 +330,10 @@ class AuthC
         $username = $db->escape($username, -1, true);
 
         $query = $db->query("SELECT * FROM " . X_PREFIX . "members WHERE username = '$username'");
-        if ($query && $db->num_rows($query) == 1) {
-            $member = $db->fetch_array($query);
+        if ($query && $db->numRows($query) == 1) {
+            $member = $db->fetchArray($query);
         }
-        $db->free_result($query);
+        $db->freeResult($query);
 
         if (count($member) > 0 && $member['password'] == $password) {
             unset($_SESSION['login_next_attempt']);

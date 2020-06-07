@@ -60,11 +60,11 @@ function template($name)
 
     if (($template = templatecache(X_CACHE_GET, $name)) === false) {
         $query = $db->query("SELECT template FROM " . X_PREFIX . "templates WHERE name = '$name'");
-        if ($db->num_rows($query) == 1) {
+        if ($db->numRows($query) == 1) {
             if (X_SADMIN && DEBUG) {
                 trigger_error('Efficiency Notice: The template `' . $name . '` was not preloaded.', E_USER_NOTICE);
             }
-            $gettemplate = $db->fetch_array($query);
+            $gettemplate = $db->fetchArray($query);
             templatecache(X_CACHE_PUT, $name, $gettemplate['template']);
             $template = $gettemplate['template'];
         } else {
@@ -72,7 +72,7 @@ function template($name)
                 trigger_error('Efficiency Warning: The template `' . $name . '` could not be found.', E_USER_WARNING);
             }
         }
-        $db->free_result($query);
+        $db->freeResult($query);
     }
 
     $template = str_replace("\\'", "'", $template);
@@ -84,19 +84,22 @@ function template($name)
     }
 }
 
-function templatecache($type = X_CACHE_GET, $name, $data = '')
+function templatecache($type, $name, $data = '')
 {
     static $cache;
     $retval = false;
     switch ($type) {
-        case X_CACHE_GET:
-            if (isset($cache[$name])) {
-                $retval = $cache[$name];
-            }
-            break;
         case X_CACHE_PUT:
             $cache[$name] = $data;
             $retval = true;
+            break;
+
+        case X_CACHE_GET:
+            // no break
+        default:
+            if (isset($cache[$name])) {
+                $retval = $cache[$name];
+            }
             break;
     }
 
@@ -129,10 +132,10 @@ function loadtpl($tpl)
         )));
         $sql = "'" . implode("', '", $namesarray) . "'";
         $query = $db->query("SELECT name, template FROM " . X_PREFIX . "templates WHERE name IN ($sql)");
-        while (($template = $db->fetch_array($query)) != false) {
+        while (($template = $db->fetchArray($query)) != false) {
             templatecache(X_CACHE_PUT, $template['name'], $template['template']);
         }
-        $db->free_result($query);
+        $db->freeResult($query);
     }
 }
 
@@ -144,7 +147,7 @@ function censor($txt, $ignorespaces = false)
         if (count($censorcache) > 0) {
             reset($censorcache);
 
-            while ((list($find, $replace) = each($censorcache)) != false) {
+            foreach ($censorcache as $find => $replace) {
                 if ($ignorespaces === true) {
                     $txt = str_replace($find, $replace, $txt);
                 } else {
@@ -207,8 +210,7 @@ function check_image_size($matches)
         if (($height <= $CONFIG['bbc_maxht']) && ($width <= $CONFIG['bbc_maxwd'])) {
             $n_height = $height;
             $n_width = $width;
-        } else
-        if (($w_ratio * $height) < $CONFIG['bbc_maxht']) {
+        } elseif (($w_ratio * $height) < $CONFIG['bbc_maxht']) {
             $n_height = ceil($w_ratio * $height);
             $n_width = $CONFIG['bbc_maxwd'];
         } else {
@@ -370,7 +372,7 @@ function bbcode(&$message, $allowimgcode, $allowurlcode)
         $check = substr_count($message, $value) - substr_count($message, $end[$key]);
         if ($check > 0) {
             $message .= str_repeat($end[$key], $check);
-        } else if ($check < 0) {
+        } elseif ($check < 0) {
             $message = str_repeat($value, abs($check)) . $message;
         }
     }
@@ -646,7 +648,7 @@ function forum($forum, $template)
                         $moderators_cache->expire('moderators');
 
                         $lpquery = $db->query("SELECT uid FROM " . X_PREFIX . "members WHERE username = '$moderators[$num]' LIMIT 1");
-                        $lparray = $db->fetch_array($lpquery);
+                        $lparray = $db->fetchArray($lpquery);
                         $forum['moderator'][] = '<option value="viewprofile.php?memberid=' . intval($lparray['uid']) . '">' . trim($moderators[$num]) . '</option>';
                     } else {
                         $forum['moderator'][] = '<option value="viewprofile.php?memberid=' . intval($mcheck) . '">' . trim($moderators[$num]) . '</option>';
@@ -703,14 +705,11 @@ function multi($num, $perpage, $page, $mpurl, $strict = false)
             } else {
                 $to = 3;
             }
-        } else
-        if ($page == $pages) {
+        } elseif ($page == $pages) {
             $to = $pages;
-        } else
-        if ($page == $pages - 1) {
+        } elseif ($page == $pages - 1) {
             $to = $page + 1;
-        } else
-        if ($page == $pages - 2) {
+        } elseif ($page == $pages - 2) {
             $to = $page + 2;
         } else {
             $to = $page + 3;
@@ -751,8 +750,7 @@ function multi($num, $perpage, $page, $mpurl, $strict = false)
         } else {
             $multipage .= '&nbsp;&nbsp;<strong>' . $pages . '</strong>';
         }
-    } else
-    if ($strict !== true) {
+    } elseif ($strict !== true) {
         return false;
     }
 
@@ -781,7 +779,7 @@ function smilieinsert()
             $querysmilie = $db->query("SELECT * FROM " . X_PREFIX . "smilies WHERE type = 'smiley' ORDER BY id ASC LIMIT $CONFIG[smtotal]");
         }
 
-        while (($smilie = $db->fetch_array($querysmilie)) != false) {
+        while (($smilie = $db->fetchArray($querysmilie)) != false) {
             eval('$smilies .= "' . template('functions_smilieinsert_smilie') . '";');
 
             $col_smilies++;
@@ -795,7 +793,7 @@ function smilieinsert()
                 $col_smilies = 0;
             }
         }
-        $db->free_result($querysmilie);
+        $db->freeResult($querysmilie);
 
         if ($col_smilies > 0) {
             $smilies .= '</tr>';
@@ -824,28 +822,28 @@ function updateforumcount($fid)
     $postcount = $threadcount = 0;
     $query = $db->query("SELECT COUNT(pid) FROM " . X_PREFIX . "posts WHERE fid = '$fid'");
     $postcount = $db->result($query, 0);
-    $db->free_result($query);
+    $db->freeResult($query);
 
     $query = $db->query("SELECT COUNT(tid) FROM " . X_PREFIX . "threads WHERE (fid = '$fid' AND closed != 'moved')");
     $threadcount = $db->result($query, 0);
-    $db->free_result($query);
+    $db->freeResult($query);
 
     $query = $db->query("SELECT fid FROM " . X_PREFIX . "forums WHERE fup = '$fid'");
-    while (($children = $db->fetch_array($query)) != false) {
+    while (($children = $db->fetchArray($query)) != false) {
         $chquery1 = $db->query("SELECT COUNT(pid) FROM " . X_PREFIX . "posts WHERE fid = '$children[fid]'");
         $postcount += $db->result($chquery1, 0);
-        $db->free_result($chquery1);
+        $db->freeResult($chquery1);
 
         $chquery2 = $db->query("SELECT COUNT(tid) FROM " . X_PREFIX . "threads WHERE fid = '$children[fid]' AND closed != 'moved'");
         $threadcount += $db->result($chquery2, 0);
-        $db->free_result($chquery2);
+        $db->freeResult($chquery2);
     }
-    $db->free_result($query);
+    $db->freeResult($query);
 
     $query = $db->query("SELECT tid FROM " . X_PREFIX . "posts WHERE fid = '$fid' ORDER BY pid DESC LIMIT 0,1");
     $lastpost = $db->result($query, 0);
     $db->query("UPDATE " . X_PREFIX . "forums SET posts = '$postcount', threads = '$threadcount', lastpost = '$lastpost' WHERE fid = '$fid'");
-    $db->free_result($query);
+    $db->freeResult($query);
 }
 
 function updatethreadcount($tid)
@@ -854,12 +852,12 @@ function updatethreadcount($tid)
 
     $query = $db->query("SELECT count(tid) FROM " . X_PREFIX . "posts WHERE tid = '$tid'");
     $replycount = $db->result($query, 0);
-    $db->free_result($query);
+    $db->freeResult($query);
     $replycount--;
 
     $query = $db->query("SELECT p.author, m.uid, p.dateline, p.pid FROM " . X_PREFIX . "posts p LEFT JOIN " . X_PREFIX . "members m ON p.author = m.username WHERE tid = '$tid' ORDER BY dateline DESC LIMIT 0,1");
-    $lp = $db->fetch_array($query);
-    $db->free_result($query);
+    $lp = $db->fetchArray($query);
+    $db->freeResult($query);
 
     $db->query("UPDATE " . X_PREFIX . "threads SET replies = '$replycount' WHERE tid = '$tid' LIMIT 1");
     $db->query("UPDATE " . X_PREFIX . "lastposts SET uid = '$lp[uid]', username = '$lp[author]', dateline = '$lp[dateline]', pid = '$lp[pid]' WHERE tid = '$tid' LIMIT 1");
@@ -871,28 +869,28 @@ function updatelastposts()
 
     // Forums
     $query = $db->query("SELECT fid FROM " . X_PREFIX . "forums ORDER BY fid DESC");
-    while (($forums = $db->fetch_array($query)) != false) {
+    while (($forums = $db->fetchArray($query)) != false) {
         $posts = $db->query("SELECT tid FROM " . X_PREFIX . "posts WHERE fid = '$forums[fid]' ORDER BY pid DESC LIMIT 0,1");
-        $lp2 = $db->fetch_array($posts);
+        $lp2 = $db->fetchArray($posts);
         $lp = $lp2['tid'];
 
         $db->query("UPDATE " . X_PREFIX . "forums SET lastpost = '$lp' WHERE fid = '$forums[fid]' LIMIT 1");
     }
-    $db->free_result($query);
+    $db->freeResult($query);
 
     // Threads
     $query = $db->query("SELECT tid FROM " . X_PREFIX . "threads ORDER BY tid DESC");
-    while (($threads = $db->fetch_array($query)) != false) {
+    while (($threads = $db->fetchArray($query)) != false) {
         $posts = $db->query("SELECT p.author, m.uid, p.dateline, p.pid FROM " . X_PREFIX . "posts p, " . X_PREFIX . "members m WHERE p.author = m.username AND tid = '$threads[tid]' ORDER BY dateline DESC LIMIT 0,1");
-        $lp = $db->fetch_array($posts);
-        $db->free_result($posts);
+        $lp = $db->fetchArray($posts);
+        $db->freeResult($posts);
         $db->query("UPDATE " . X_PREFIX . "lastposts SET uid = '$lp[uid]', username = '$lp[author]', dateline = '$lp[dateline]', pid = '$lp[pid]' WHERE tid = '$threads[tid]' LIMIT 1");
     }
-    $db->free_result($query);
+    $db->freeResult($query);
 
     // NULL Threads -> If these exist, they'll cause double forums and such.
     $query = $db->query("DELETE FROM " . X_PREFIX . "lastposts WHERE tid = '0'");
-    $db->free_result($query);
+    $db->freeResult($query);
 }
 
 function smcwcache()
@@ -905,25 +903,25 @@ function smcwcache()
         $censorcache = array();
 
         $query = $db->query("SELECT code, url FROM " . X_PREFIX . "smilies WHERE type = 'smiley'");
-        $smiliesnum = $db->num_rows($query);
+        $smiliesnum = $db->numRows($query);
 
         if ($smiliesnum > 0) {
-            while (($smilie = $db->fetch_array($query)) != false) {
+            while (($smilie = $db->fetchArray($query)) != false) {
                 $code = $smilie['code'];
                 $smiliecache[$code] = $smilie['url'];
             }
         }
-        $db->free_result($query);
+        $db->freeResult($query);
 
         $query = $db->query("SELECT find, replace1 FROM " . X_PREFIX . "words");
-        $wordsnum = $db->num_rows($query);
+        $wordsnum = $db->numRows($query);
         if ($wordsnum > 0) {
-            while (($word = $db->fetch_array($query)) != false) {
+            while (($word = $db->fetchArray($query)) != false) {
                 $find = $word['find'];
                 $censorcache[$find] = $word['replace1'];
             }
         }
-        $db->free_result($query);
+        $db->freeResult($query);
 
         $cached = true;
         return true;
@@ -992,7 +990,7 @@ function loadtime()
     return $footerstuff;
 }
 
-function pwverify($pass = '', $url, $fid, $showHeader = false)
+function pwverify($pass, $url, $fid, $showHeader = false)
 {
     global $self, $cookiepath, $cookiedomain, $lang;
 
@@ -1047,7 +1045,7 @@ function redirect($path, $timeout = 2, $type = X_REDIRECT_HEADER)
             setTimeout("redirect();", <?php echo ($timeout * 1000) ?>);
         </script>
         <?php
-} else {
+    } else {
         if ($timeout == 0) {
             header("Location: $path");
         } else {
@@ -1332,12 +1330,12 @@ function postperm(&$forums, $type)
                 return true;
             }
             break;
-        case 4:
 
+        case 4:
             // none can see, so just return false
             break;
-        default:
 
+        default:
             // shouldn't get here, so fail closed
             break;
     }
@@ -1628,6 +1626,20 @@ function message($msg, $showheader = true, $prepend = '', $append = '', $redirec
     return $return;
 }
 
+/*
+ * cp_message() - Display a control panel message
+ *
+ * Admin control panels display things slightly differently
+ *
+ * @param $msg          string      Message to display
+ * @param $showheader = true
+ * @param $prepend
+ * @param $append
+ * @param $redirect     string      false = don't redirect, string = URL to redirect
+ * @param $die = true
+ * @param $return_as_string
+ * @param $showfooter
+ */
 function cp_message($msg, $showheader = true, $prepend = '', $append = '', $redirect = false, $die = true, $return_as_string = false, $showfooter = true)
 {
     global $footerstuff, $lang, $navigation;
@@ -1750,25 +1762,25 @@ function dump_query($resource, $header = true)
     global $db, $THEME;
 
     if (!$db->error()) {
-        $count = $db->num_fields($resource);
+        $count = $db->numFields($resource);
         if ($header) {
             ?>
 <tr class="category" bgcolor="<?php echo $THEME['altbg2'] ?>"
     align="center">
-    <?php
-for ($i = 0; $i < $count; $i++) {
+            <?php
+            for ($i = 0; $i < $count; $i++) {
                 echo '<td align="left">';
-                echo '<strong><font color=' . $THEME['cattext'] . '>' . $db->field_name($resource, $i) . '</font></strong>';
+                echo '<strong><font color=' . $THEME['cattext'] . '>' . $db->fieldName($resource, $i) . '</font></strong>';
                 echo '</td>';
             }
             echo '</tr>';
         }
 
-        while (($a = $db->fetch_array($resource, SQL_NUM)) != false) {
+        while (($a = $db->fetchArray($resource, SQL_NUM)) != false) {
             ?>
-<tr bgcolor="<?php echo $THEME['altbg1'] ?>" class="ctrtablerow">
-    <?php
-for ($i = 0; $i < $count; $i++) {
+            <tr bgcolor="<?php echo $THEME['altbg1'] ?>" class="ctrtablerow">
+            <?php
+            for ($i = 0; $i < $count; $i++) {
                 echo '<td align="left">';
 
                 if (trim($a[$i]) == '') {
@@ -1819,11 +1831,11 @@ function put_cookie($name, $value = null, $expire = null, $path = null, $domain 
                 setcookie(<?php echo $name ?>, <?php echo $value ?>, <?php echo $expire ?>, <?php echo $path ?>, <?php echo $domain ?>, <?php echo $secure ?>);
             </script>
             <?php
-return true;
+            return true;
     }
 }
 
-function adminaudit($user = '', $action = '', $fid, $tid, $reason = '')
+function adminaudit($user, $action, $fid, $tid, $reason = '')
 {
     global $self, $db, $onlineip;
 
@@ -1855,7 +1867,7 @@ function adminaudit($user = '', $action = '', $fid, $tid, $reason = '')
     return true;
 }
 
-function modaudit($user = '', $action, $fid, $tid, $reason = '')
+function modaudit($user, $action, $fid, $tid, $reason = '')
 {
     global $self, $db;
 
@@ -1900,13 +1912,18 @@ function forumList($selectname = 'srchfid', $multiple = false, $allowall = true)
     switch ($self['status']) {
         case 'Member':
             $restrict[] = "private != '3'";
+            // no break
         case 'Moderator':
+            // no break
         case 'Super Moderator':
             $restrict[] = "private != '2'";
+            // no break
         case 'Administrator':
             $restrict[] = "userlist = ''";
+            // no break
         case 'Super Administrator':
             break;
+
         default:
             $restrict[] = "private != '5'";
             $restrict[] = "private != '3'";
@@ -1927,7 +1944,7 @@ function forumList($selectname = 'srchfid', $multiple = false, $allowall = true)
     $forums = array();
     $categories = array();
     $subforums = array();
-    while (($forum = $db->fetch_array($sql)) != false) {
+    while (($forum = $db->fetchArray($sql)) != false) {
         if (!X_SADMIN && $forum['password'] != '') {
             $fidpw = isset($_COOKIE['fidpw' . $forum['fid']]) ? trim($_COOKIE['fidpw' . $forum['fid']]) : '';
             if ($forum['password'] !== $fidpw) {
@@ -1958,7 +1975,7 @@ function forumList($selectname = 'srchfid', $multiple = false, $allowall = true)
                 break;
         }
     }
-    $db->free_result($sql);
+    $db->freeResult($sql);
 
     $forumselect = array();
     if (!$multiple) {
@@ -1969,8 +1986,7 @@ function forumList($selectname = 'srchfid', $multiple = false, $allowall = true)
 
     if ($allowall) {
         $forumselect[] = '<option value="all" ' . $selHTML . '>' . $lang['textallforumsandsubs'] . '</option>';
-    } else
-    if (!$allowall && !$multiple) {
+    } elseif (!$allowall && !$multiple) {
         $forumselect[] = '<option value="" disabled="disabled" ' . $selHTML . '>' . $lang['textforum'] . '</option>';
     }
 
@@ -2174,13 +2190,18 @@ function forumJump()
     switch ($self['status']) {
         case 'Member':
             $restrict[] = "private != '3'";
+            // no break
         case 'Moderator':
+            // no break
         case 'Super Moderator':
             $restrict[] = "private != '2'";
+            // no break
         case 'Administrator':
             $restrict[] = "userlist = ''";
+            // no break
         case 'Super Administrator':
             break;
+
         default:
             $restrict[] = "private != '5'";
             $restrict[] = "private != '3'";
@@ -2201,7 +2222,7 @@ function forumJump()
     $forums = array();
     $categories = array();
     $subforums = array();
-    while (($forum = $db->fetch_array($sql)) != false) {
+    while (($forum = $db->fetchArray($sql)) != false) {
         if (!X_SADMIN && $forum['password'] != '') {
             $fidpw = isset($_COOKIE['fidpw' . $forum['fid']]) ? trim($_COOKIE['fidpw' . $forum['fid']]) : '';
             if ($forum['password'] !== $fidpw) {
@@ -2232,7 +2253,7 @@ function forumJump()
                 break;
         }
     }
-    $db->free_result($sql);
+    $db->freeResult($sql);
 
     $forumselect = array();
     $forumselect[] = "<select onchange=\"if (this.options[this.selectedIndex].value) {window.location=(''+this.options[this.selectedIndex].value)}\">";
@@ -2274,7 +2295,7 @@ function getPlugLinks()
 
     $pluglinks = array();
     $qp = $db->query("SELECT * FROM " . X_PREFIX . "pluglinks ORDER BY displayorder ASC");
-    while (($plug = $db->fetch_array($qp)) != false) {
+    while (($plug = $db->fetchArray($qp)) != false) {
         if (isset($plug['status']) && $plug['status'] == 'on') {
             $img = '';
             if (isset($plug['img']) && !empty($plug['img'])) {
@@ -2283,7 +2304,7 @@ function getPlugLinks()
             $pluglinks[] = '&nbsp;' . $img . '<a href="' . stripslashes($plug['url']) . '"><font class="navtd">' . stripslashes($plug['name']) . '</font></a>';
         }
     }
-    $db->free_result($qp);
+    $db->freeResult($qp);
     $config_cache->setData('pluglinks', $pluglinks);
     return $pluglinks;
 }
@@ -2342,6 +2363,313 @@ function langSelect()
     natcasesort($lfs);
 
     return ('<select name="langfilenew">' . implode("\n", $lfs) . '</select>');
+}
+
+function makenav($current)
+{
+    global $THEME, $lang, $menu, $CONFIG, $shadow, $shadow2, $self;
+
+    if ($THEME['celloverfx'] == 'on') {
+        $sortby_fx = "onmouseover=\"this.style.backgroundColor='$THEME[altbg1]';\" onmouseout=\"this.style.backgroundColor='$THEME[altbg2]';\"";
+    } else {
+        $sortby_fx = '';
+    }
+
+    $menu .= '<tr class="category"><td width="20%" align="center" class="title">' . $lang['usercp_options'] . '</td></tr>';
+
+    if ($current == 'profile') {
+        $menu .= '<tr><td bgcolor="' . $THEME['altbg1'] . '" width="20%" class="tablerow"><strong>' . $lang['texteditpro'] . '</strong></td></tr>';
+    } else {
+        $menu .= '<tr><td bgcolor="' . $THEME['altbg2'] . '" width="20%" class="tablerow" ' . $sortby_fx . '><a href="./usercp.php?action=profile">' . $lang['texteditpro'] . '</a></td></tr>';
+    }
+
+    if ($current == 'options') {
+        $menu .= '<tr><td bgcolor="' . $THEME['altbg1'] . '" width="20%" class="tablerow"><strong>' . $lang['Edit_Options'] . '</strong></td></tr>';
+    } else {
+        $menu .= '<tr><td bgcolor="' . $THEME['altbg2'] . '" width="20%" class="tablerow" ' . $sortby_fx . '><a href="./usercp.php?action=options">' . $lang['Edit_Options'] . '</a></td></tr>';
+    }
+
+    if ($current == 'email') {
+        $menu .= '<tr><td bgcolor="' . $THEME['altbg1'] . '" width="20%" class="tablerow"><strong>' . $lang['Edit_Email'] . '</strong></td></tr>';
+    } else {
+        $menu .= '<tr><td bgcolor="' . $THEME['altbg2'] . '" width="20%" class="tablerow" ' . $sortby_fx . '><a href="./usercp.php?action=email">' . $lang['Edit_Email'] . '</a></td></tr>';
+    }
+
+    if ($CONFIG['avastatus'] == 'on' || $CONFIG['avatar_whocanupload'] != 'off') {
+        if ($current == 'avatar') {
+            $menu .= '<tr><td bgcolor="' . $THEME['altbg1'] . '" width="20%" class="tablerow"><strong>' . $lang['Edit_Avatar'] . '</strong></td></tr>';
+        } else {
+            $menu .= '<tr><td bgcolor="' . $THEME['altbg2'] . '" width="20%" class="tablerow" ' . $sortby_fx . '><a href="./usercp.php?action=avatar">' . $lang['Edit_Avatar'] . '</a></td></tr>';
+        }
+    }
+
+    if ($current == 'password') {
+        $menu .= '<tr><td bgcolor="' . $THEME['altbg1'] . '" width="20%" class="tablerow"><strong>' . $lang['Edit_Password'] . '</strong></td></tr>';
+    } else {
+        $menu .= '<tr><td bgcolor="' . $THEME['altbg2'] . '" width="20%" class="tablerow" ' . $sortby_fx . '><a href="./usercp.php?action=password">' . $lang['Edit_Password'] . '</a></td></tr>';
+    }
+
+    if ($current == 'signature') {
+        $menu .= '<tr><td bgcolor="' . $THEME['altbg1'] . '" width="20%" class="tablerow"><strong>' . $lang['Edit_Signature'] . '</strong></td></tr>';
+    } else {
+        $menu .= '<tr><td bgcolor="' . $THEME['altbg2'] . '" width="20%" class="tablerow" ' . $sortby_fx . '><a href="./usercp.php?action=signature">' . $lang['Edit_Signature'] . '</a></td></tr>';
+    }
+
+    if ($CONFIG['photostatus'] == 'on' || $CONFIG['photo_whocanupload'] != 'off') {
+        if ($current == 'photo') {
+            $menu .= '<tr><td bgcolor="' . $THEME['altbg1'] . '" width="20%" class="tablerow"><strong>' . $lang['edit_personal_photo'] . '</strong></td></tr>';
+        } else {
+            $menu .= '<tr><td bgcolor="' . $THEME['altbg2'] . '" width="20%" class="tablerow" ' . $sortby_fx . '><a href="./usercp.php?action=photo">' . $lang['edit_personal_photo'] . '</a></td></tr>';
+        }
+    }
+
+    $menu .= '<tr class="category"><td width="20%" align="center"><font color="' . $THEME['cattext'] . '"><strong>' . $lang['Subscribed_Threads'] . '</strong></font></td></tr>';
+
+    if ($current == 'favorites') {
+        $menu .= '<tr><td bgcolor="' . $THEME['altbg1'] . '" width="20%" class="tablerow"><strong>' . $lang['List_Favorites'] . '</strong></td></tr>';
+    } else {
+        $menu .= '<tr><td bgcolor="' . $THEME['altbg2'] . '" width="20%" class="tablerow" ' . $sortby_fx . '><a href="./usercp.php?action=favorites">' . $lang['List_Favorites'] . '</a></td></tr>';
+    }
+
+    if ($current == 'subscriptions') {
+        $menu .= '<tr><td bgcolor="' . $THEME['altbg1'] . '" width="20%" class="tablerow"><strong>' . $lang['List_Subscriptions'] . '</strong></td></tr>';
+    } else {
+        $menu .= '<tr><td bgcolor="' . $THEME['altbg2'] . '" width="20%" class="tablerow" ' . $sortby_fx . '><a href="./usercp.php?action=subscriptions">' . $lang['List_Subscriptions'] . '</a></td></tr>';
+    }
+
+    $menu .= '<tr class="category"><td width="20%" align="center"><font color="' . $THEME['cattext'] . '"><strong>' . $lang['usercp_miscellaneous'] . '</strong></font></td></tr>';
+
+    $menu .= "<tr><td bgcolor=\"$THEME[altbg2]\" width=\"20%\" class=\"tablerow\" " . $sortby_fx . "><a href=\"#\" onclick=\"Popup('./address.php?', 'Window', 450, 400);\">" . $lang['textaddresslist'] . "</a></td></tr>";
+
+    if (X_MEMBER && !($CONFIG['pmstatus'] == 'off' && isset($self['status']) && $self['status'] == 'Member')) {
+        $menu .= '<tr><td bgcolor="' . $THEME['altbg2'] . '" width="20%" class="tablerow" ' . $sortby_fx . '><a href="./pm.php">' . $lang['textpmmessenger'] . '</a></td></tr>';
+    }
+
+    if ($CONFIG['avatars_status'] == 'on') {
+        if ($current == 'gallery') {
+            $menu .= '<tr><td bgcolor="' . $THEME['altbg1'] . '" width="20%" class="tablerow"><strong>' . $lang['avatargallery'] . '</strong></td></tr>';
+        } else {
+            $menu .= '<tr><td bgcolor="' . $THEME['altbg2'] . '" width="20%" class="tablerow" ' . $sortby_fx . '><a href="usercp.php?action=gallery">' . $lang['avatargallery'] . '</a></td></tr>';
+        }
+    }
+
+    if ($CONFIG['notepadstatus'] == 'on') {
+        if ($current == 'notepad') {
+            $menu .= '<tr><td bgcolor="' . $THEME['altbg1'] . '" width="20%" class="tablerow"><strong>' . $lang['notepad'] . '</strong></td></tr>';
+        } else {
+            $menu .= '<tr><td bgcolor="' . $THEME['altbg2'] . '" width="20%" class="tablerow" ' . $sortby_fx . '><a href="./usercp.php?action=notepad">' . $lang['notepad'] . '</a></td></tr>';
+        }
+    }
+}
+
+function table_msg($outputmsg, $return = 0)
+{
+    global $THEME, $shadow, $shadow2, $lang;
+
+    $output = '';
+
+    if (isset($return) && $return == 1) {
+        $return = true;
+    } else {
+        $return = false;
+    }
+
+    eval('$output = "' . template('usercp_outputmsg') . '";');
+
+    if ($return === false) {
+        return $output;
+    } else {
+        echo $output;
+    }
+}
+
+function BDayDisplay()
+{
+    global $db, $member, $self;
+    global $sel0, $sel1, $sel2, $sel3, $sel4, $sel5, $sel6;
+    global $sel7, $sel8, $sel9, $sel10, $sel11, $sel12;
+    global $dayselect, $num, $selHTML, $lang, $bday;
+
+    $bday = str_replace(',', '', $member['bday']);
+    $bday = explode(' ', $bday);
+
+    if ($bday[0] == '') {
+        $sel0 = $selHTML;
+    } elseif ($bday[0] == $lang['textjan']) {
+        $sel1 = $selHTML;
+    } elseif ($bday[0] == $lang['textfeb']) {
+        $sel2 = $selHTML;
+    } elseif ($bday[0] == $lang['textmar']) {
+        $sel3 = $selHTML;
+    } elseif ($bday[0] == $lang['textapr']) {
+        $sel4 = $selHTML;
+    } elseif ($bday[0] == $lang['textmay']) {
+        $sel5 = $selHTML;
+    } elseif ($bday[0] == $lang['textjun']) {
+        $sel6 = $selHTML;
+    } elseif ($bday[0] == $lang['textjul']) {
+        $sel7 = $selHTML;
+    } elseif ($bday[0] == $lang['textaug']) {
+        $sel8 = $selHTML;
+    } elseif ($bday[0] == $lang['textsep']) {
+        $sel9 = $selHTML;
+    } elseif ($bday[0] == $lang['textoct']) {
+        $sel10 = $selHTML;
+    } elseif ($bday[0] == $lang['textnov']) {
+        $sel11 = $selHTML;
+    } elseif ($bday[0] == $lang['textdec']) {
+        $sel12 = $selHTML;
+    }
+
+    $dayselect = array();
+    $dayselect[] = '<select name="day">';
+    $dayselect[] = '<option value="">' . $lang['textnone'] . '</option>';
+    for ($num = 1; $num <= 31; $num++) {
+        if (isset($bday[1]) && $bday[1] == $num) {
+            $dayselect[] = '<option value="' . $num . '" ' . $selHTML . '>' . $num . '</option>';
+        } else {
+            $dayselect[] = '<option value="' . $num . '">' . $num . '</option>';
+        }
+    }
+    $dayselect[] = '</select>';
+    $dayselect = implode("\n", $dayselect);
+
+    $bday[2] = (isset($bday[2])) ? $bday[2] : '';
+}
+
+function TimeOffsetDisplay()
+{
+    global $db, $member, $self, $selHTML, $lang;
+    global $timezone1, $timezone2, $timezone3, $timezone4, $timezone5, $timezone6;
+    global $timezone7, $timezone8, $timezone9, $timezone10, $timezone11, $timezone12;
+    global $timezone13, $timezone14, $timezone15, $timezone16, $timezone17, $timezone18;
+    global $timezone19, $timezone20, $timezone21, $timezone22, $timezone23, $timezone24;
+    global $timezone25, $timezone26, $timezone27, $timezone28, $timezone29, $timezone30;
+    global $timezone31, $timezone32, $timezone33;
+
+    $timezone1 = $timezone2 = $timezone3 = $timezone4 = $timezone5 = $timezone6 = '';
+    $timezone7 = $timezone8 = $timezone9 = $timezone10 = $timezone11 = $timezone12 = '';
+    $timezone13 = $timezone14 = $timezone15 = $timezone16 = $timezone17 = $timezone18 = '';
+    $timezone19 = $timezone20 = $timezone21 = $timezone22 = $timezone23 = $timezone24 = '';
+    $timezone25 = $timezone26 = $timezone27 = $timezone28 = $timezone29 = $timezone30 = '';
+    $timezone31 = $timezone32 = $timezone33 = '';
+    switch ($member['timeoffset']) {
+        case '-12.00':
+            $timezone1 = $selHTML;
+            break;
+        case '-11.00':
+            $timezone2 = $selHTML;
+            break;
+        case '-10.00':
+            $timezone3 = $selHTML;
+            break;
+        case '-9.00':
+            $timezone4 = $selHTML;
+            break;
+        case '-8.00':
+            $timezone5 = $selHTML;
+            break;
+        case '-7.00':
+            $timezone6 = $selHTML;
+            break;
+        case '-6.00':
+            $timezone7 = $selHTML;
+            break;
+        case '-5.00':
+            $timezone8 = $selHTML;
+            break;
+        case '-4.00':
+            $timezone9 = $selHTML;
+            break;
+        case '-3.50':
+            $timezone10 = $selHTML;
+            break;
+        case '-3.00':
+            $timezone11 = $selHTML;
+            break;
+        case '-2.00':
+            $timezone12 = $selHTML;
+            break;
+        case '-1.00':
+            $timezone13 = $selHTML;
+            break;
+        case '1.00':
+            $timezone15 = $selHTML;
+            break;
+        case '2.00':
+            $timezone16 = $selHTML;
+            break;
+        case '3.00':
+            $timezone17 = $selHTML;
+            break;
+        case '3.50':
+            $timezone18 = $selHTML;
+            break;
+        case '4.00':
+            $timezone19 = $selHTML;
+            break;
+        case '4.50':
+            $timezone20 = $selHTML;
+            break;
+        case '5.00':
+            $timezone21 = $selHTML;
+            break;
+        case '5.50':
+            $timezone22 = $selHTML;
+            break;
+        case '5.75':
+            $timezone23 = $selHTML;
+            break;
+        case '6.00':
+            $timezone24 = $selHTML;
+            break;
+        case '6.50':
+            $timezone25 = $selHTML;
+            break;
+        case '7.00':
+            $timezone26 = $selHTML;
+            break;
+        case '8.00':
+            $timezone27 = $selHTML;
+            break;
+        case '9.00':
+            $timezone28 = $selHTML;
+            break;
+        case '9.50':
+            $timezone29 = $selHTML;
+            break;
+        case '10.00':
+            $timezone30 = $selHTML;
+            break;
+        case '11.00':
+            $timezone31 = $selHTML;
+            break;
+        case '12.00':
+            $timezone32 = $selHTML;
+            break;
+        case '13.00':
+            $timezone33 = $selHTML;
+            break;
+        case '0.00':
+        default:
+            $timezone14 = $selHTML;
+            break;
+    }
+}
+
+function memberYesNo($self, &$yes, &$no)
+{
+    global $member, $selHTML;
+
+    $yes = $no = '';
+    switch ($member[$self]) {
+        case 'yes':
+            $yes = $selHTML;
+            break;
+        default:
+            $no = $selHTML;
+            break;
+    }
 }
 
 ?>

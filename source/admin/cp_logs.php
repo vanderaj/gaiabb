@@ -83,31 +83,30 @@ function viewModLogPanel($page)
                         </td>
                     </tr>
                     <?php
-$count = $db->result($db->query("SELECT count(fid) FROM " . X_PREFIX . "modlogs WHERE NOT (fid = '0' AND tid = '0')"), 0);
+                    $count = $db->result($db->query("SELECT count(fid) FROM " . X_PREFIX . "modlogs WHERE NOT (fid = '0' AND tid = '0')"), 0);
 
-    if (!isset($page) || $page < 1) {
-        $page = 1;
-    }
+                    if (!isset($page) || $page < 1) {
+                        $page = 1;
+                    }
 
-    $old = (($page - 1) * 25);
-    $current = ($page * 25);
+                    $old = (($page - 1) * 25);
+                    $current = ($page * 25);
 
-    $firstpage = $prevpage = $nextpage = $random_var = '';
-    $query = $db->query("SELECT l.*, t.subject FROM " . X_PREFIX . "modlogs l LEFT JOIN " . X_PREFIX . "threads t ON l.tid = t.tid WHERE NOT (l.fid = '0' AND l.tid = '0') ORDER BY date ASC LIMIT $old, 25");
-    $url = '';
-    while (($recordinfo = $db->fetch_array($query)) != false) {
-        $date = gmdate($self['dateformat'], $recordinfo['date'] + ($self['timeoffset'] * 3600) + $self['daylightsavings']);
-        $time = gmdate($self['timecode'], $recordinfo['date'] + ($self['timeoffset'] * 3600) + $self['daylightsavings']);
-        if ($recordinfo['tid'] > 0 && $recordinfo['action'] != 'delete' && trim($recordinfo['subject']) != '') {
-            $url = '<a href="../viewtopic.php?tid=' . $recordinfo['tid'] . '" target="_blank">' . stripslashes($recordinfo['subject']) . '</a>';
-        } else
-        if ($recordinfo['action'] == 'delete') {
-            $recordinfo['action'] = '<strong>' . $recordinfo['action'] . '</strong>';
-            $url = '&nbsp;';
-        } else {
-            $url = 'tid=' . $recordinfo['tid'] . ' - fid:' . $recordinfo['fid'];
-        }
-        ?>
+                    $firstpage = $prevpage = $nextpage = $random_var = '';
+                    $query = $db->query("SELECT l.*, t.subject FROM " . X_PREFIX . "modlogs l LEFT JOIN " . X_PREFIX . "threads t ON l.tid = t.tid WHERE NOT (l.fid = '0' AND l.tid = '0') ORDER BY date ASC LIMIT $old, 25");
+                    $url = '';
+                    while (($recordinfo = $db->fetchArray($query)) != false) {
+                        $date = gmdate($self['dateformat'], $recordinfo['date'] + ($self['timeoffset'] * 3600) + $self['daylightsavings']);
+                        $time = gmdate($self['timecode'], $recordinfo['date'] + ($self['timeoffset'] * 3600) + $self['daylightsavings']);
+                        if ($recordinfo['tid'] > 0 && $recordinfo['action'] != 'delete' && trim($recordinfo['subject']) != '') {
+                            $url = '<a href="../viewtopic.php?tid=' . $recordinfo['tid'] . '" target="_blank">' . stripslashes($recordinfo['subject']) . '</a>';
+                        } elseif ($recordinfo['action'] == 'delete') {
+                            $recordinfo['action'] = '<strong>' . $recordinfo['action'] . '</strong>';
+                            $url = '&nbsp;';
+                        } else {
+                            $url = 'tid=' . $recordinfo['tid'] . ' - fid:' . $recordinfo['fid'];
+                        }
+                        ?>
                         <tr>
                             <td class="tablerow" bgcolor="<?php echo $THEME['altbg1'] ?>"><a
                                         href="../viewprofile.php?memberid=<?php echo $recordinfo['uid'] ?>"><?php echo $recordinfo['username'] ?></a>
@@ -119,69 +118,69 @@ $count = $db->result($db->query("SELECT count(fid) FROM " . X_PREFIX . "modlogs 
                                 bgcolor="<?php echo $THEME['altbg1'] ?>"><?php echo $recordinfo['action'] ?></td>
                         </tr>
                         <?php
-}
-    $db->free_result($query);
+                    }
+                    $db->freeResult($query);
 
-    if ($count > $current) {
-        $page = $current / 25;
-        if ($page > 1) {
-            $prevpage = '<a href="./cp_logs.php?action=modlog&amp;page=' . ($page - 1) . '">&laquo; ' . $lang['prevpage'] . '</a>';
-        }
+                    if ($count > $current) {
+                        $page = $current / 25;
+                        if ($page > 1) {
+                            $prevpage = '<a href="./cp_logs.php?action=modlog&amp;page=' . ($page - 1) . '">&laquo; ' . $lang['prevpage'] . '</a>';
+                        }
 
-        $nextpage = '<a href="./cp_logs.php?action=modlog&amp;page=' . ($page + 1) . '">' . $lang['nextpage'] . ' &raquo;</a>';
+                        $nextpage = '<a href="./cp_logs.php?action=modlog&amp;page=' . ($page + 1) . '">' . $lang['nextpage'] . ' &raquo;</a>';
 
-        if ($prevpage == '' || $nextpage == '') {
-            $random_var = '';
-        } else {
-            $random_var = '-';
-        }
+                        if ($prevpage == '' || $nextpage == '') {
+                            $random_var = '';
+                        } else {
+                            $random_var = '-';
+                        }
 
-        $last = ceil($count / 25);
-        if ($last > $page) {
-            $lastpage = '<a href="cp_logs.php?action=modlog&amp;page=' . $last . '">&nbsp;&raquo;&raquo;</a>';
-        }
+                        $last = ceil($count / 25);
+                        if ($last > $page) {
+                            $lastpage = '<a href="cp_logs.php?action=modlog&amp;page=' . $last . '">&nbsp;&raquo;&raquo;</a>';
+                        }
 
-        $first = 1;
-        if ($page > $first) {
-            $firstpage = '<a href="cp_logs.php?action=modlog&amp;page=' . $first . '">&nbsp;&laquo;&laquo;</a>';
-        }
-        ?>
-                        <tr class="header">
-                            <td colspan="4"><?php echo $firstpage ?><?php echo $prevpage ?><?php echo $random_var ?><?php echo $nextpage ?><?php echo $lastpage ?></td>
-                        </tr>
-                        <?php
-} else {
-        if ($page > 1) {
-            $prevpage = '<a href="cp_logs.php?action=modlog&amp;page=' . ($page - 1) . '">&laquo; ' . $lang['prevpage'] . '</a>';
-        }
+                        $first = 1;
+                        if ($page > $first) {
+                            $firstpage = '<a href="cp_logs.php?action=modlog&amp;page=' . $first . '">&nbsp;&laquo;&laquo;</a>';
+                        }
+                        ?>
+                                            <tr class="header">
+                                                <td colspan="4"><?php echo $firstpage ?><?php echo $prevpage ?><?php echo $random_var ?><?php echo $nextpage ?><?php echo $lastpage ?></td>
+                                            </tr>
+                                            <?php
+                    } else {
+                        if ($page > 1) {
+                            $prevpage = '<a href="cp_logs.php?action=modlog&amp;page=' . ($page - 1) . '">&laquo; ' . $lang['prevpage'] . '</a>';
+                        }
 
-        $first = 1;
-        if ($page > $first) {
-            $firstpage = '<a href="cp_logs.php?action=modlog&amp;page=' . $first . '">&nbsp;&laquo;&laquo;</a>';
-        } else {
-            $firstpage = '';
-        }
+                        $first = 1;
+                        if ($page > $first) {
+                            $firstpage = '<a href="cp_logs.php?action=modlog&amp;page=' . $first . '">&nbsp;&laquo;&laquo;</a>';
+                        } else {
+                            $firstpage = '';
+                        }
 
-        if ($prevpage == '' || $nextpage == '') {
-            $random_var = '';
-        } else {
-            $random_var = '-';
-        }
-        ?>
+                        if ($prevpage == '' || $nextpage == '') {
+                            $random_var = '';
+                        } else {
+                            $random_var = '-';
+                        }
+                        ?>
                         <tr class="header">
                             <td colspan="4"><?php echo $firstpage ?><?php echo $prevpage ?><?php echo $random_var ?><?php echo $nextpage ?></td>
                         </tr>
                         <?php
-}
+                    }
 
-    if ($count == 0) {
-        ?>
+                    if ($count == 0) {
+                        ?>
                         <tr class="header">
                             <td colspan="4"><?php echo $lang['nologspresent'] ?></td>
                         </tr>
                         <?php
-}
-    ?>
+                    }
+                    ?>
                 </table>
             </td>
         </tr>
@@ -218,30 +217,30 @@ function viewAdminLogPanel($page)
                         <td><?php echo $lang['textip'] ?>:</td>
                     </tr>
                     <?php
-$count = $db->result($db->query("SELECT count(fid) FROM " . X_PREFIX . "adminlogs WHERE (fid = '0' AND tid = '0')"), 0);
+                    $count = $db->result($db->query("SELECT count(fid) FROM " . X_PREFIX . "adminlogs WHERE (fid = '0' AND tid = '0')"), 0);
 
-    if (!isset($page) || $page < 1) {
-        $page = 1;
-    }
+                    if (!isset($page) || $page < 1) {
+                        $page = 1;
+                    }
 
-    $old = (($page - 1) * 25);
-    $current = ($page * 25);
-    $firstpage = $prevpage = $nextpage = $random_var = '';
+                    $old = (($page - 1) * 25);
+                    $current = ($page * 25);
+                    $firstpage = $prevpage = $nextpage = $random_var = '';
 
-    $query = $db->query("SELECT l.*, t.subject FROM " . X_PREFIX . "adminlogs l LEFT JOIN " . X_PREFIX . "threads t ON l.tid = t.tid WHERE (l.fid = '0' AND l.tid = '0') ORDER BY date ASC LIMIT $old, 25");
-    $url = '';
-    while (($recordinfo = $db->fetch_array($query)) != false) {
-        $date = gmdate($self['dateformat'], $recordinfo['date'] + ($self['timeoffset'] * 3600) + $self['daylightsavings']);
-        $time = gmdate($self['timecode'], $recordinfo['date'] + ($self['timeoffset'] * 3600) + $self['daylightsavings']);
-        $action = explode('|#|', $recordinfo['action']);
-        if (strpos($action[1], '/') === false) {
-            $recordinfo['action'] = $action[1];
-            $url = '&nbsp';
-        } else {
-            $recordinfo['action'] = '&nbsp;';
-            $url = $action[1];
-        }
-        ?>
+                    $query = $db->query("SELECT l.*, t.subject FROM " . X_PREFIX . "adminlogs l LEFT JOIN " . X_PREFIX . "threads t ON l.tid = t.tid WHERE (l.fid = '0' AND l.tid = '0') ORDER BY date ASC LIMIT $old, 25");
+                    $url = '';
+                    while (($recordinfo = $db->fetchArray($query)) != false) {
+                        $date = gmdate($self['dateformat'], $recordinfo['date'] + ($self['timeoffset'] * 3600) + $self['daylightsavings']);
+                        $time = gmdate($self['timecode'], $recordinfo['date'] + ($self['timeoffset'] * 3600) + $self['daylightsavings']);
+                        $action = explode('|#|', $recordinfo['action']);
+                        if (strpos($action[1], '/') === false) {
+                            $recordinfo['action'] = $action[1];
+                            $url = '&nbsp';
+                        } else {
+                            $recordinfo['action'] = '&nbsp;';
+                            $url = $action[1];
+                        }
+                        ?>
                         <tr>
                             <td class="tablerow" bgcolor="<?php echo $THEME['altbg1'] ?>"><a
                                         href="../viewprofile.php?memberid=<?php echo $recordinfo['uid'] ?>"><?php echo $recordinfo['username'] ?></a>
@@ -254,63 +253,63 @@ $count = $db->result($db->query("SELECT count(fid) FROM " . X_PREFIX . "adminlog
                             <td class="tablerow" bgcolor="<?php echo $THEME['altbg1'] ?>"><?php echo $action[0] ?></td>
                         </tr>
                         <?php
-}
-    $db->free_result($query);
+                    }
+                    $db->freeResult($query);
 
-    if ($count > $current) {
-        $page = $current / 25;
-        if ($page > 1) {
-            $prevpage = '<a href="cp_logs.php?action=cplog&amp;page=' . ($page - 1) . '">&laquo; ' . $lang['prevpage'] . '</a>';
-        }
+                    if ($count > $current) {
+                        $page = $current / 25;
+                        if ($page > 1) {
+                            $prevpage = '<a href="cp_logs.php?action=cplog&amp;page=' . ($page - 1) . '">&laquo; ' . $lang['prevpage'] . '</a>';
+                        }
 
-        $nextpage = '<a href="cp_logs.php?action=cplog&amp;page=' . ($page + 1) . '">' . $lang['nextpage'] . ' &raquo;</a>';
+                        $nextpage = '<a href="cp_logs.php?action=cplog&amp;page=' . ($page + 1) . '">' . $lang['nextpage'] . ' &raquo;</a>';
 
-        if ($prevpage == '' || $nextpage == '') {
-            $random_var = '';
-        } else {
-            $random_var = '-';
-        }
+                        if ($prevpage == '' || $nextpage == '') {
+                            $random_var = '';
+                        } else {
+                            $random_var = '-';
+                        }
 
-        $last = ceil($count / 25);
-        if ($last > $page) {
-            $lastpage = '<a href="cp_logs.php?action=cplog&amp;page=' . $last . '">&nbsp;&raquo;&raquo;</a>';
-        }
+                        $last = ceil($count / 25);
+                        if ($last > $page) {
+                            $lastpage = '<a href="cp_logs.php?action=cplog&amp;page=' . $last . '">&nbsp;&raquo;&raquo;</a>';
+                        }
 
-        $first = 1;
-        if ($page > $first) {
-            $firstpage = '<a href="cp_logs.php?action=cplog&amp;page=' . $first . '">&nbsp;&laquo;&laquo;</a>';
-        }
-        ?>
+                        $first = 1;
+                        if ($page > $first) {
+                            $firstpage = '<a href="cp_logs.php?action=cplog&amp;page=' . $first . '">&nbsp;&laquo;&laquo;</a>';
+                        }
+                        ?>
                         <tr class="header">
                             <td colspan="5"><?php echo $firstpage ?><?php echo $prevpage ?><?php echo $random_var ?><?php echo $nextpage ?><?php echo $lastpage ?></td>
                         </tr>
                         <?php
-} else {
-        if ($page == 1) {
-            $prevpage = '';
-        } else {
-            $prevpage = '<a href="cp_logs.php?action=cplog&amp;page=' . ($page - 1) . '">&laquo; ' . $lang['prevpage'] . '</a>';
-        }
+                    } else {
+                        if ($page == 1) {
+                            $prevpage = '';
+                        } else {
+                            $prevpage = '<a href="cp_logs.php?action=cplog&amp;page=' . ($page - 1) . '">&laquo; ' . $lang['prevpage'] . '</a>';
+                        }
 
-        $first = 1;
-        if ($page > $first) {
-            $firstpage = '<a href="cp_logs.php?action=cplog&amp;page=' . $first . '">&nbsp;&laquo;&laquo;</a>';
-        }
-        ?>
+                        $first = 1;
+                        if ($page > $first) {
+                            $firstpage = '<a href="cp_logs.php?action=cplog&amp;page=' . $first . '">&nbsp;&laquo;&laquo;</a>';
+                        }
+                        ?>
                         <tr class="header">
                             <td colspan="5"><?php echo $firstpage ?><?php echo $prevpage ?><?php echo $random_var ?><?php echo $nextpage ?></td>
                         </tr>
                         <?php
-}
+                    }
 
-    if ($count == 0) {
-        ?>
+                    if ($count == 0) {
+                        ?>
                         <tr class="header">
                             <td colspan="5"><?php echo $lang['nologspresent'] ?></td>
                         </tr>
                         <?php
-}
-    ?>
+                    }
+                    ?>
                 </table>
             </td>
         </tr>
@@ -332,8 +331,7 @@ if ($page < 1) {
 
 if ($action == 'modlog') {
     viewModLogPanel($page);
-} else
-if ($action == 'cplog') {
+} elseif ($action == 'cplog') {
     viewAdminLogPanel($page);
 }
 

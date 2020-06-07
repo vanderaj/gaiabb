@@ -103,7 +103,7 @@ function doPanel()
 
     $oToken->assertToken();
 
-    $forumObj = new forum();
+    $forumObj = new GaiaBB\Forum();
     $forumObj->fixThreadPostCount();
 
     cp_message($lang['tool_forumtotal'], false, '', '</td></tr></table>', 'index.php', true, false, true);

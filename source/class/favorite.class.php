@@ -32,7 +32,9 @@ if (!defined('IN_PROGRAM') && (defined('DEBUG') && DEBUG == false)) {
     exit('This file is not designed to be called directly');
 }
 
-class favorite
+namespace GaiaBB;
+
+class Favorite
 {
 
     public $tid;
@@ -70,11 +72,11 @@ class favorite
         }
 
         $query = $db->query("SELECT tid FROM " . X_PREFIX . "favorites WHERE tid = '" . intval($tid) . "' AND username = '" . $db->escape($self['username']) . "' AND type = 'favorite'");
-        if ($query && $db->num_rows($query) == 1) {
+        if ($query && $db->numRows($query) == 1) {
             $this->tid = $tid;
             $retval = true;
         }
-        $db->free_result($query);
+        $db->freeResult($query);
 
         return $retval;
     }
@@ -121,7 +123,7 @@ class favorite
             return false;
         }
 
-        $owner = $db->escape(member::findUsernameByUid($uid));
+        $owner = $db->escape(Member::findUsernameByUid($uid));
 
         $db->query("DELETE FROM " . X_PREFIX . "favorites WHERE username = '$owner'");
     }
@@ -133,13 +135,13 @@ class favorite
         $toDelete = array();
 
         $query = $db->query("SELECT tid FROM " . X_PREFIX . "favorites WHERE username = '" . $self['username'] . "' AND type='favorite'");
-        while (($sub = $db->fetch_array($query)) != false) {
+        while (($sub = $db->fetchArray($query)) != false) {
             $delete = formInt("delete" . $sub['tid'] . "");
             if (is_numeric($delete)) {
                 $toDelete[] = $delete;
             }
         }
-        $db->free_result($query);
+        $db->freeResult($query);
 
         if (!empty($toDelete)) {
             $in = implode(' ,', $toDelete);

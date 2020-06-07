@@ -142,7 +142,7 @@ function install_forum($prgbar)
         define('X_PREFIX', $dbname . '.' . $tablepre);
     }
 
-    $db = new mysql5Php5();
+    $db = new GaiaBB\MariaDB();
     $db->connect($dbhost, $dbuser, $dbpw, $dbname, $pconnect, false); // don't force panics
 
     setBar($prgbar, 0.4);

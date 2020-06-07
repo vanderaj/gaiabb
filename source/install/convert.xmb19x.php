@@ -30,7 +30,9 @@ if (!defined('IN_PROGRAM') && (defined('DEBUG') && DEBUG == false)) {
 
 define('X_CONVERT', 'xmb19x');
 
-class xmb19x extends convert
+namespace GaiaBB;
+
+class Xmb19x extends Convert
 {
 
     /**
@@ -77,9 +79,9 @@ class xmb19x extends convert
             setCol($this->prgbar, '#ff0000');
             print_error('Conversion Error', 'Please make sure your ' . X_PREFIX2 . 'members table at XMB is intact. There was a problem querying for your members.', true);
         }
-        $user = $this->fromDbHost->fetch_array($query);
-        $rows = $this->fromDbHost->num_rows($query);
-        $this->fromDbHost->free_result($query);
+        $user = $this->fromDbHost->fetchArray($query);
+        $rows = $this->fromDbHost->numRows($query);
+        $this->fromDbHost->freeResult($query);
 
         if ($rows != 1 || $admin != $user['username'] || $adminpw != $user['password'] || $user['status'] != 'Super Administrator') {
             setCol($this->prgbar, '#ff0000');
@@ -108,7 +110,7 @@ class xmb19x extends convert
 
         $this->toDbHost->query("TRUNCATE " . X_PREFIX . "members");
 
-        while (($row = $this->fromDbHost->fetch_array($memfromquery)) != false) {
+        while (($row = $this->fromDbHost->fetchArray($memfromquery)) != false) {
             $meminsert = $this->toDbHost->query("INSERT INTO `" . X_PREFIX . "members` (
             uid,
             username,
@@ -192,7 +194,7 @@ class xmb19x extends convert
                 print_error('Conversion Error', 'Please make sure that GaiaBB had successfully installed. There was a problem inserting into the ' . X_PREFIX . 'members table.', true);
             }
         }
-        $this->fromDbHost->free_result($memfromquery);
+        $this->fromDbHost->freeResult($memfromquery);
         setBar($this->prgbar, 0.3);
     }
 
@@ -214,14 +216,14 @@ class xmb19x extends convert
         }
 
         $this->toDbHost->query("TRUNCATE TABLE " . X_PREFIX . "posts");
-        while (($row = $this->fromDbHost->fetch_array($postquery)) != false) {
+        while (($row = $this->fromDbHost->fetchArray($postquery)) != false) {
             $posts_insert = $this->toDbHost->query("INSERT INTO " . X_PREFIX . "posts (fid, tid, pid, author, message, subject, dateline, icon, usesig, useip, bbcodeoff, smileyoff) VALUES ('$row[fid]','$row[tid]','$row[pid]','" . $this->toDbHost->escape($row['author']) . "','" . $this->toDbHost->escape($row['message']) . "','" . $this->toDbHost->escape(stripslashes($row['subject'])) . "','$row[dateline]','$row[icon]','$row[usesig]','$row[useip]','$row[bbcodeoff]','$row[smileyoff]')");
             if ($posts_insert === false) {
                 setCol($this->prgbar, '#ff0000');
                 print_error('Conversion Error', 'Please make sure that GaiaBB had successfully installed. There was a problem inserting into the ' . X_PREFIX . 'posts table.', true);
             }
         }
-        $this->fromDbHost->free_result($postquery);
+        $this->fromDbHost->freeResult($postquery);
         setBar($this->prgbar, 0.5);
     }
 
@@ -243,7 +245,7 @@ class xmb19x extends convert
         // Find all the threads which have non-blank polls
         $pollquery = $this->toDbHost->query("SELECT tid, pollopts, subject FROM " . X_PREFIX . "threads WHERE pollopts != ''");
         if ($pollquery) {
-            while (($row = $this->toDbHost->fetch_array($pollquery)) != false) {
+            while (($row = $this->toDbHost->fetchArray($pollquery)) != false) {
                 // skip over converted rows
                 if ($row['pollopts'] === '1') {
                     continue;
@@ -268,7 +270,7 @@ class xmb19x extends convert
                     setCol($this->prgbar, '#ff0000');
                     print_error('Conversion Error', 'Please make sure that GaiaBB had successfully installed. There was a problem inserting into the ' . X_PREFIX . 'vote_desc table.', true);
                 }
-                $vote_id = $this->toDbHost->insert_id();
+                $vote_id = $this->toDbHost->insertId();
 
                 foreach ($results as $r => $result) {
                     $vote_results_insert = $this->toDbHost->query("INSERT INTO " . X_PREFIX . "vote_results (vote_id, vote_option_id, vote_option_text, vote_result) VALUES ('$vote_id','$result[0]', '$result[1]', '$result[2]')");
@@ -289,7 +291,7 @@ class xmb19x extends convert
                     if ($user != '') {
                         $q = $this->toDbHost->query("SELECT uid FROM " . X_PREFIX . "members WHERE username = '$user'");
                         if ($q !== false) {
-                            $uid = $this->toDbHost->fetch_array($q);
+                            $uid = $this->toDbHost->fetchArray($q);
                             $uid = $uid['uid'];
                             $vote_voters_insert = $this->toDbHost->query("INSERT INTO " . X_PREFIX . "vote_voters (vote_id, vote_user_id, vote_user_ip) VALUES ('$vote_id', '$uid', '$eIP')");
                             if ($vote_voters_insert == false) {
@@ -304,7 +306,7 @@ class xmb19x extends convert
                 }
             }
         }
-        $this->toDbHost->free_result($pollquery);
+        $this->toDbHost->freeResult($pollquery);
         // Set pollopt to "yep" status
         $thread_update = $this->toDbHost->query("UPDATE " . X_PREFIX . "threads SET pollopts = '1' WHERE pollopts != ''");
         if ($thread_update == false) {
@@ -332,19 +334,19 @@ class xmb19x extends convert
         }
 
         $this->toDbHost->query("TRUNCATE TABLE " . X_PREFIX . "ranks");
-        while (($row = $this->fromDbHost->fetch_array($ranksquery)) != false) {
+        while (($row = $this->fromDbHost->fetchArray($ranksquery)) != false) {
             $ranks_insert = $this->toDbHost->query("INSERT INTO " . X_PREFIX . "ranks (title, posts, id, stars, allowavatars, avatarrank) VALUES ('" . $this->toDbHost->escape($row['title']) . "', '$row[posts]', '$row[id]', '$row[stars]', '$row[allowavatars]', '$row[avatarrank]')");
             if ($ranks_insert === false) {
                 setCol($this->prgbar, '#ff0000');
                 print_error('Conversion Error', 'Please make sure that GaiaBB had successfully installed. There was a problem inserting into the ' . X_PREFIX . 'ranks table.', true);
             }
         }
-        $this->fromDbHost->free_result($ranksquery);
+        $this->fromDbHost->freeResult($ranksquery);
 
         // Add back special ranks if they've been removed
         $query = $this->toDbHost->query("SELECT title FROM `" . X_PREFIX . "ranks` WHERE title in ('Moderator', 'Super Moderator', 'Administrator', 'Super Administrator')");
         if ($query) {
-            if ($this->toDbHost->num_rows($query) != 4) {
+            if ($this->toDbHost->numRows($query) != 4) {
                 $this->toDbHost->query("DELETE FROM `" . X_PREFIX . "ranks` WHERE title in ('Moderator', 'Super Moderator', 'Administrator', 'Super Administrator') OR posts = -1");
                 $this->toDbHost->query("INSERT INTO `" . X_PREFIX . "ranks` (title, posts, stars, allowavatars) VALUES ('Moderator', -1, 6, 'yes')");
                 $this->toDbHost->query("INSERT INTO `" . X_PREFIX . "ranks` (title, posts, stars, allowavatars) VALUES ('Super Moderator', -1, 7, 'yes')");
@@ -374,14 +376,14 @@ class xmb19x extends convert
         }
 
         $this->toDbHost->query("TRUNCATE TABLE " . X_PREFIX . "threads");
-        while (($row = $this->fromDbHost->fetch_array($threadsquery)) != false) {
+        while (($row = $this->fromDbHost->fetchArray($threadsquery)) != false) {
             $threads_insert = $this->toDbHost->query("INSERT INTO " . X_PREFIX . "threads (tid, fid, subject, icon, lastpost, views, replies, author, closed, topped, pollopts) VALUES ('$row[tid]','$row[fid]','" . $this->toDbHost->escape($row['subject']) . "','$row[icon]','$row[lastpost]','$row[views]','$row[replies]','$row[author]','$row[closed]','$row[topped]','" . $this->toDbHost->escape($row['pollopts']) . "')");
             if ($threads_insert === false) {
                 setCol($this->prgbar, '#ff0000');
                 print_error('Conversion Error', 'Please make sure that GaiaBB had successfully installed. There was a problem inserting into the ' . X_PREFIX . 'threads table.', true);
             }
         }
-        $this->fromDbHost->free_result($threadsquery);
+        $this->fromDbHost->freeResult($threadsquery);
         setBar($this->prgbar, 0.45);
     }
 
@@ -403,7 +405,7 @@ class xmb19x extends convert
         }
         $fupless = true;
         $this->toDbHost->query("TRUNCATE TABLE " . X_PREFIX . "forums");
-        while (($row = $this->fromDbHost->fetch_array($forumsquery)) != false) {
+        while (($row = $this->fromDbHost->fetchArray($forumsquery)) != false) {
             if ($row['type'] != 'group') {
                 $update = false;
                 $pp = trim($row['postperm']);
@@ -435,11 +437,11 @@ class xmb19x extends convert
         }
         if ($fupless) {
             $this->toDbHost->query("INSERT INTO `" . X_PREFIX . "forums` (`type`, `name`, `status`, `displayorder`, `private`, `description`, `fup`, `postperm`) VALUES ('group','DEFAULT Category','on',1,'' ,'',0,'')");
-            $newgroupfid = $this->toDbHost->insert_id();
+            $newgroupfid = $this->toDbHost->insertId();
             $this->toDbHost->query("UPDATE `" . X_PREFIX . "forums` SET fup='" . $newgroupfid . "' WHERE fup='0' AND type='forum'");
         }
 
-        $this->fromDbHost->free_result($forumsquery);
+        $this->fromDbHost->freeResult($forumsquery);
         setBar($this->prgbar, 0.4);
     }
 
@@ -459,8 +461,8 @@ class xmb19x extends convert
             setCol($this->prgbar, '#ff0000');
             print_error('Conversion Error', 'Please make sure your ' . X_PREFIX2 . 'attachments table at XMB is intact. There was a problem querying for your attachments.', true);
         }
-        $rows = $this->fromDbHost->num_rows($attachquery);
-        $this->fromDbHost->free_result($attachquery);
+        $rows = $this->fromDbHost->numRows($attachquery);
+        $this->fromDbHost->freeResult($attachquery);
 
         if ($rows > 1000) {
             $secs = $rows / 100; // Rough speed guess
@@ -480,7 +482,7 @@ class xmb19x extends convert
         }
 
         $attachquery = $this->toDbHost->query("SELECT aid, filetype, attachment  FROM " . X_PREFIX . "attachments");
-        while (($row = $this->toDbHost->fetch_array($attachquery)) != false) {
+        while (($row = $this->toDbHost->fetchArray($attachquery)) != false) {
             if (strpos($row['filetype'], 'image') !== false) {
                 $exsize = getimagesize($row['attachment']);
                 $attach_insert = $this->toDbHost->query("UPDATE " . X_PREFIX . "attachments set fileheight = '" . intval($exsize[1]) . "', filewidth = '" . intval($exsize[0]) . "' WHERE aid = '" . $row['aid'] . "'");
@@ -493,7 +495,7 @@ class xmb19x extends convert
             $row['attachment'] = null; // free up the blob
             $row = null;
         }
-        $this->toDbHost->free_result($attachquery);
+        $this->toDbHost->freeResult($attachquery);
         setBar($this->prgbar, 0.8);
     }
 
@@ -515,14 +517,14 @@ class xmb19x extends convert
         }
 
         $this->toDbHost->query("TRUNCATE TABLE " . X_PREFIX . "addresses");
-        while (($row = $this->fromDbHost->fetch_array($addressquery)) != false) {
+        while (($row = $this->fromDbHost->fetchArray($addressquery)) != false) {
             $address_insert = $this->toDbHost->query("INSERT INTO " . X_PREFIX . "addresses (username, addressname) VALUES ('" . $this->toDbHost->escape($row['username']) . "','" . $this->toDbHost->escape($row['buddyname']) . "')");
             if ($address_insert === false) {
                 setCol($this->prgbar, '#ff0000');
                 print_error('Conversion Error', 'Please make sure that GaiaBB had successfully installed. There was a problem inserting into the ' . X_PREFIX . 'addresses table.', true);
             }
         }
-        $this->fromDbHost->free_result($addressquery);
+        $this->fromDbHost->freeResult($addressquery);
         setBar($this->prgbar, 0.85);
     }
 
@@ -544,14 +546,14 @@ class xmb19x extends convert
         }
 
         $this->toDbHost->query("TRUNCATE TABLE " . X_PREFIX . "favorites");
-        while (($row = $this->fromDbHost->fetch_array($favquery)) != false) {
+        while (($row = $this->fromDbHost->fetchArray($favquery)) != false) {
             $favorites_insert = $this->toDbHost->query("INSERT INTO " . X_PREFIX . "favorites (tid, username, type) VALUES ('$row[tid]','" . $this->toDbHost->escape($row['username']) . "','$row[type]')");
             if ($favorites_insert === false) {
                 setCol($this->prgbar, '#ff0000');
                 print_error('Conversion Error', 'Please make sure that GaiaBB had successfully installed. There was a problem inserting into the ' . X_PREFIX . 'favorites table.', true);
             }
         }
-        $this->fromDbHost->free_result($favquery);
+        $this->fromDbHost->freeResult($favquery);
         setBar($this->prgbar, 0.87);
     }
 
@@ -573,14 +575,14 @@ class xmb19x extends convert
         }
 
         $this->toDbHost->query("TRUNCATE TABLE " . X_PREFIX . "subscriptions");
-        while (($row = $this->fromDbHost->fetch_array($subquery)) != false) {
+        while (($row = $this->fromDbHost->fetchArray($subquery)) != false) {
             $subs_insert = $this->toDbHost->query("INSERT INTO " . X_PREFIX . "subscriptions (tid, username, type) VALUES ('$row[tid]','" . $this->toDbHost->escape($row['username']) . "','$row[type]')");
             if ($subs_insert === false) {
                 setCol($this->prgbar, '#ff0000');
                 print_error('Conversion Error', 'Please make sure that GaiaBB had successfully installed. There was a problem inserting into the ' . X_PREFIX . 'subscriptions table.', true);
             }
         }
-        $this->fromDbHost->free_result($subquery);
+        $this->fromDbHost->freeResult($subquery);
         setBar($this->prgbar, 0.9);
     }
 
@@ -602,14 +604,14 @@ class xmb19x extends convert
         }
 
         $this->toDbHost->query("TRUNCATE TABLE " . X_PREFIX . "words");
-        while (($row = $this->fromDbHost->fetch_array($censorquery)) != false) {
+        while (($row = $this->fromDbHost->fetchArray($censorquery)) != false) {
             $word_insert = $this->toDbHost->query("INSERT INTO " . X_PREFIX . "words (find, replace1, id) VALUES ('" . $this->toDbHost->escape($row['find']) . "','" . $this->toDbHost->escape($row['replace1']) . "','$row[id]')");
             if ($word_insert === false) {
                 setCol($this->prgbar, '#ff0000');
                 print_error('Conversion Error', 'Please make sure that GaiaBB had successfully installed. There was a problem inserting into the ' . X_PREFIX . 'words table.', true);
             }
         }
-        $this->fromDbHost->free_result($censorquery);
+        $this->fromDbHost->freeResult($censorquery);
         setBar($this->prgbar, 0.91);
     }
 
@@ -631,14 +633,14 @@ class xmb19x extends convert
         }
 
         $this->toDbHost->query("TRUNCATE TABLE " . X_PREFIX . "banned");
-        while (($row = $this->fromDbHost->fetch_array($banquery)) != false) {
+        while (($row = $this->fromDbHost->fetchArray($banquery)) != false) {
             $ban_insert = $this->toDbHost->query("INSERT INTO " . X_PREFIX . "banned (ip1, ip2, ip3, ip4, dateline, id) VALUES ('$row[ip1]','$row[ip2]','$row[ip3]','$row[ip4]','$row[dateline]','$row[id]')");
             if ($ban_insert === false) {
                 setCol($this->prgbar, '#ff0000');
                 print_error('Conversion Error', 'Please make sure that GaiaBB had successfully installed. There was a problem inserting into the ' . X_PREFIX . 'banned table.', true);
             }
         }
-        $this->fromDbHost->free_result($banquery);
+        $this->fromDbHost->freeResult($banquery);
         setBar($this->prgbar, 0.92);
     }
 
@@ -658,7 +660,7 @@ class xmb19x extends convert
             setCol($this->prgbar, '#ff0000');
             print_error('Conversion Error', 'Please make sure your ' . X_PREFIX2 . 'settings table at XMB is intact. There was a problem querying for your settings.', true);
         }
-        $oldsettings = $this->fromDbHost->fetch_array($settingsquery);
+        $oldsettings = $this->fromDbHost->fetchArray($settingsquery);
 
         $settings_sql = "UPDATE `" . X_PREFIX . "settings` SET " . "bbname='" . $this->toDbHost->escape($oldsettings['bbname']) . "', " . "sitename='" . $this->toDbHost->escape($oldsettings['sitename']) . "', " . "bboffreason='" . $this->toDbHost->escape($oldsettings['bboffreason']) . "', " . "bbrulestxt='" . $this->toDbHost->escape($oldsettings['bbrulestxt']) . "', " . "siteurl='" . $this->toDbHost->escape($oldsettings['siteurl']) . "', " . "indexnewstxt='" . $this->toDbHost->escape($oldsettings['tickercontents']) . "', " . "sitename='" . $this->toDbHost->escape($oldsettings['sitename']) . "', " . "adminemail='" . $this->toDbHost->escape($oldsettings['adminemail']) . "', " .
 
@@ -675,7 +677,7 @@ class xmb19x extends convert
             setCol($this->prgbar, '#ff0000');
             print_error('Conversion Error', 'Please make sure that GaiaBB had successfully installed. There was a problem updating the ' . X_PREFIX . 'settings table', true);
         }
-        $this->fromDbHost->free_result($settingsquery);
+        $this->fromDbHost->freeResult($settingsquery);
         setBar($this->prgbar, 0.26);
     }
 
@@ -714,14 +716,14 @@ class xmb19x extends convert
         }
 
         $this->toDbHost->query("TRUNCATE TABLE " . X_PREFIX . "u2u");
-        while (($row = $this->fromDbHost->fetch_array($u2uquery)) != false) {
+        while (($row = $this->fromDbHost->fetchArray($u2uquery)) != false) {
             $u2u_insert = $this->toDbHost->query("INSERT INTO " . X_PREFIX . "u2u (u2uid, msgto, msgfrom, type, owner, folder, subject, message, dateline, readstatus, sentstatus) VALUES ('$row[u2uid]', '" . $this->toDbHost->escape($row['msgto']) . "', '" . $this->toDbHost->escape($row['msgfrom']) . "', '$row[type]', '" . $this->toDbHost->escape($row['owner']) . "', '" . $this->toDbHost->escape($row['folder']) . "', '" . $this->toDbHost->escape($row['subject']) . "', '" . $this->toDbHost->escape($row['message']) . "', '$row[dateline]', '$row[readstatus]', '$row[sentstatus]')");
             if ($u2u_insert === false) {
                 setCol($this->prgbar, '#ff0000');
                 print_error('Conversion Error', 'Please make sure that GaiaBB had successfully installed. There was a problem inserting into the ' . X_PREFIX . 'u2u table.', true);
             }
         }
-        $this->fromDbHost->free_result($u2uquery);
+        $this->fromDbHost->freeResult($u2uquery);
         setBar($this->prgbar, 0.97);
     }
 

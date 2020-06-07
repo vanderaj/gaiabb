@@ -35,7 +35,7 @@ define('ROOTHELPER', '../helper/');
 
 require_once '../header.php';
 require_once '../include/admincp.inc.php';
-require_once '../helper/formHelper.php';
+require_once '../helper/FormHelper.php';
 
 loadtpl('cp_header', 'cp_footer', 'cp_message', 'cp_error');
 
@@ -51,8 +51,8 @@ if (X_ADMIN) {
     if ($action == 'themes' && isset($download)) {
         $contents = array();
         $query = $db->query("SELECT * FROM " . X_PREFIX . "themes WHERE themeid='$download'");
-        $themebits = $db->fetch_array($query);
-        $db->free_result($query);
+        $themebits = $db->fetchArray($query);
+        $db->freeResult($query);
         foreach ($themebits as $key => $val) {
             if (!is_integer($key) && $key != 'themeid' && $key != 'dummy') {
                 $contents[] = $key . '=' . $val;
@@ -119,7 +119,7 @@ function doImportTheme()
 
     $query = $db->query("SELECT COUNT(themeid) FROM " . X_PREFIX . "themes WHERE name = '" . addslashes($name) . "'");
     if ($db->result($query, 0) > 0) {
-        $db->free_result($query);
+        $db->freeResult($query);
         cp_error($lang['theme_already_exists'], false, '', '</td></tr></table>', 'cp_themes.php?action=themes');
     }
 
@@ -134,7 +134,7 @@ function doImportTheme()
 
 function doUpdateTheme()
 {
-    global $db;
+    global $db, $lang, $CONFIG;
 
     $number_of_themes = $db->result($db->query("SELECT count(themeid) FROM " . X_PREFIX . "themes"), 0);
     $theme_delete = formArray('theme_delete');
@@ -143,7 +143,8 @@ function doUpdateTheme()
     }
     if (isset($theme_delete)) {
         foreach ($theme_delete as $themeid) {
-            $otherid = $db->result($db->query("SELECT themeid FROM " . X_PREFIX . "themes WHERE themeid != '$themeid' ORDER BY rand() LIMIT 1"), 0);
+            $otherid = $db->result($db->query("SELECT themeid FROM " .
+                X_PREFIX . "themes WHERE themeid != '$themeid' ORDER BY rand() LIMIT 1"), 0);
             $db->query("UPDATE " . X_PREFIX . "members SET theme = '$otherid' WHERE theme = '$themeid'");
             $db->query("UPDATE " . X_PREFIX . "forums SET theme = '0' WHERE theme = '$themeid'");
             if ($CONFIG['theme'] == $themeid) {
@@ -163,13 +164,13 @@ function doUpdateTheme()
 
 function doDisplayThemes()
 {
-    global $db, $oToken;
+    global $db, $oToken, $selHTML, $THEME, $lang, $shadow2;
 
     $single = formInt('single');
 
     $query = $db->query("SELECT * FROM " . X_PREFIX . "themes WHERE themeid = '$single'");
-    $themedata = $db->fetch_array($query);
-    $db->free_result($query);
+    $themedata = $db->fetchArray($query);
+    $db->freeResult($query);
 
     $roundon = $squareon = $none = '';
     switch ($themedata['outertable']) {
@@ -195,15 +196,15 @@ function doDisplayThemes()
     }
 
     $shadowon = $shadowoff = '';
-    formHelper::getThemeOnOffHtml('shadowfx', $shadowon, $shadowoff);
+    GaiaBB\FormHelper::getThemeOnOffHtml('shadowfx', $shadowon, $shadowoff);
     $themeon = $themeoff = '';
-    formHelper::getThemeOnOffHtml('themestatus', $themeon, $themeoff);
+    GaiaBB\FormHelper::getThemeOnOffHtml('themestatus', $themeon, $themeoff);
     $celloveron = $celloveroff = '';
-    formHelper::getThemeOnOffHtml('celloverfx', $celloveron, $celloveroff);
+    GaiaBB\FormHelper::getThemeOnOffHtml('celloverfx', $celloveron, $celloveroff);
     $riconon = $riconoff = '';
-    formHelper::getThemeOnOffHtml('riconstatus', $riconon, $riconoff);
+    GaiaBB\FormHelper::getThemeOnOffHtml('riconstatus', $riconon, $riconoff);
     $spacecatson = $spacecatsoff = '';
-    formHelper::getThemeOnOffHtml('space_cats', $spacecatson, $spacecatsoff);
+    GaiaBB\FormHelper::getThemeOnOffHtml('space_cats', $spacecatson, $spacecatsoff);
 
     $themedata['name'] = stripslashes($themedata['name']);
     $themedata['bgcolor'] = stripslashes($themedata['bgcolor']);
@@ -268,16 +269,22 @@ function doDisplayThemes()
                             <td bgcolor="<?php echo $THEME['altbg1'] ?>"><?php echo $lang['Theme_Status'] ?></td>
                             <td bgcolor="<?php echo $THEME['altbg2'] ?>" colspan="2"><select
                                         name="themestatusnew">
-                                    <option value="on" <?php echo $themeon ?>><?php echo $lang['texton'] ?></option>
-                                    <option value="off" <?php echo $themeoff ?>><?php echo $lang['textoff'] ?></option>
+                                    <option value="on" <?php echo $themeon ?>>
+                                        <?php echo $lang['texton'] ?></option>
+                                    <option value="off" <?php echo $themeoff ?>>
+                                        <?php echo $lang['textoff'] ?></option>
                                 </select></td>
                         </tr>
                         <tr class="tablerow">
                             <td bgcolor="<?php echo $THEME['altbg1'] ?>"><?php echo $lang['space_cats'] ?></td>
                             <td bgcolor="<?php echo $THEME['altbg2'] ?>" colspan="2"><select
                                         name="space_catsnew">
-                                    <option value="on" <?php echo $spacecatson ?>><?php echo $lang['texton'] ?></option>
-                                    <option value="off" <?php echo $spacecatsoff ?>><?php echo $lang['textoff'] ?></option>
+                                    <option value="on" <?php echo $spacecatson ?>>
+                                        <?php echo $lang['texton'] ?>
+                                    </option>
+                                    <option value="off" <?php echo $spacecatsoff ?>>
+                                        <?php echo $lang['textoff'] ?>
+                                    </option>
                                 </select></td>
                         </tr>
                         <tr class="tablerow">
@@ -292,34 +299,40 @@ function doDisplayThemes()
                             <td bgcolor="<?php echo $THEME['altbg1'] ?>"><?php echo $lang['themecell'] ?></td>
                             <td bgcolor="<?php echo $THEME['altbg2'] ?>" colspan="2"><select
                                         name="celloverfxnew">
-                                    <option value="on" <?php echo $celloveron ?>><?php echo $lang['texton'] ?></option>
-                                    <option value="off" <?php echo $celloveroff ?>><?php echo $lang['textoff'] ?></option>
+                                    <option value="on" <?php echo $celloveron ?>><?php echo $lang['texton'] ?>
+                                </option>
+                                    <option value="off" <?php echo $celloveroff ?>><?php echo $lang['textoff'] ?>
+                                </option>
                                 </select></td>
                         </tr>
                         <tr class="tablerow">
                             <td bgcolor="<?php echo $THEME['altbg1'] ?>"><?php echo $lang['riconstatus'] ?></td>
-                            <td bgcolor="<?php echo $THEME['altbg2'] ?>" colspan="2"><select
-                                        name="riconstatusnew">
-                                    <option value="on" <?php echo $riconon ?>><?php echo $lang['texton'] ?></option>
-                                    <option value="off" <?php echo $riconoff ?>><?php echo $lang['textoff'] ?></option>
-                                </select></td>
+                            <td bgcolor="<?php echo $THEME['altbg2'] ?>" colspan="2">
+                            <select name="riconstatusnew">
+                                <option value="on" <?php echo $riconon ?>><?php echo $lang['texton'] ?></option>
+                                <option value="off" <?php echo $riconoff ?>><?php echo $lang['textoff'] ?></option>
+                            </select>
+                        </td>
                         </tr>
                         <tr class="tablerow">
                             <td bgcolor="<?php echo $THEME['altbg1'] ?>"><?php echo $lang['outertable'] ?></td>
-                            <td bgcolor="<?php echo $THEME['altbg2'] ?>" colspan="2"><select
-                                        name="outertablenew">
-                                    <option value="none" <?php echo $none ?>><?php echo $lang['none'] ?></option>
-                                    <option value="round" <?php echo $roundon ?>><?php echo $lang['round'] ?></option>
-                                    <option value="square" <?php echo $squareon ?>><?php echo $lang['square'] ?></option>
-                                </select></td>
+                            <td bgcolor="<?php echo $THEME['altbg2'] ?>" colspan="2">
+                            <select name="outertablenew">
+                                <option value="none" <?php echo $none ?>><?php echo $lang['none'] ?></option>
+                                <option value="round" <?php echo $roundon ?>><?php echo $lang['round'] ?></option>
+                                <option value="square" <?php echo $squareon ?>><?php echo $lang['square'] ?></option>
+                            </select>
+                        </td>
                         </tr>
                         <tr class="tablerow">
                             <td bgcolor="<?php echo $THEME['altbg1'] ?>"><?php echo $lang['threadoptstatus'] ?></td>
-                            <td bgcolor="<?php echo $THEME['altbg2'] ?>" colspan="2"><select
-                                        name="threadoptsnew">
-                                    <option value="text" <?php echo $threadopttxt ?>><?php echo $lang['threadopttext'] ?></option>
-                                    <option value="image" <?php echo $threadoptimg ?>><?php echo $lang['threadoptimage'] ?></option>
-                                </select></td>
+                            <td bgcolor="<?php echo $THEME['altbg2'] ?>" colspan="2">
+                            <select name="threadoptsnew">
+                                <option value="text" <?php echo $threadopttxt ?>>
+                                <?php echo $lang['threadopttext'] ?></option>
+                                <option value="image" <?php echo $threadoptimg ?>>
+                                <?php echo $lang['threadoptimage'] ?></option>
+                            </select></td>
                         </tr>
                         <tr class="tablerow">
                             <td bgcolor="<?php echo $THEME['altbg1'] ?>"><?php echo $lang['texthemename'] ?></td>
@@ -329,175 +342,157 @@ function doDisplayThemes()
                         </tr>
                         <tr class="tablerow">
                             <td bgcolor="<?php echo $THEME['altbg1'] ?>"><?php echo $lang['navsymbol'] ?></td>
-                            <td bgcolor="<?php echo $THEME['altbg2'] ?>" colspan="2"><input
-                                        type="text" name="navsymbolnew"
-                                        value="<?php echo $themedata['navsymbol'] ?>"/></td>
+                            <td bgcolor="<?php echo $THEME['altbg2'] ?>" colspan="2">
+                                <input type="text" name="navsymbolnew" value="<?php echo $themedata['navsymbol'] ?>"/>
+                            </td>
                         </tr>
                         <tr class="tablerow">
                             <td bgcolor="<?php echo $THEME['altbg1'] ?>"><?php echo $lang['textbgcolor'] ?></td>
-                            <td bgcolor="<?php echo $THEME['altbg2'] ?>"><input type="text"
-                                                                                name="bgcolornew"
-                                                                                value="<?php echo $themedata['bgcolor'] ?>"/>
+                            <td bgcolor="<?php echo $THEME['altbg2'] ?>">
+                                <input type="text" name="bgcolornew" value="<?php echo $themedata['bgcolor'] ?>"/>
                             </td>
                             <td bgcolor="<?php echo $themedata['bgcolor'] ?>">&nbsp;</td>
                         </tr>
                         <tr class="tablerow">
                             <td bgcolor="<?php echo $THEME['altbg1'] ?>"><?php echo $lang['outerbgcolor'] ?></td>
-                            <td bgcolor="<?php echo $THEME['altbg2'] ?>"><input type="text"
-                                                                                name="outerbgcolornew"
-                                                                                value="<?php echo $themedata['outerbgcolor'] ?>"/>
+                            <td bgcolor="<?php echo $THEME['altbg2'] ?>">
+                            <input type="text" name="outerbgcolornew" value="<?php echo $themedata['outerbgcolor'] ?>"/>
                             </td>
                             <td bgcolor="<?php echo $themedata['outerbgcolor'] ?>">&nbsp;</td>
                         </tr>
                         <tr class="tablerow">
                             <td bgcolor="<?php echo $THEME['altbg1'] ?>"><?php echo $lang['textaltbg1'] ?></td>
-                            <td bgcolor="<?php echo $THEME['altbg2'] ?>"><input type="text"
-                                                                                name="altbg1new"
-                                                                                value="<?php echo $themedata['altbg1'] ?>"/>
+                            <td bgcolor="<?php echo $THEME['altbg2'] ?>">
+                            <input type="text" name="altbg1new" value="<?php echo $themedata['altbg1'] ?>"/>
                             </td>
                             <td bgcolor="<?php echo $themedata['altbg1'] ?>">&nbsp;</td>
                         </tr>
                         <tr class="tablerow">
                             <td bgcolor="<?php echo $THEME['altbg1'] ?>"><?php echo $lang['textaltbg2'] ?></td>
-                            <td bgcolor="<?php echo $THEME['altbg2'] ?>"><input type="text"
-                                                                                name="altbg2new"
-                                                                                value="<?php echo $themedata['altbg2'] ?>"/>
+                            <td bgcolor="<?php echo $THEME['altbg2'] ?>">
+                            <input type="text" name="altbg2new" value="<?php echo $themedata['altbg2'] ?>"/>
                             </td>
                             <td bgcolor="<?php echo $themedata['altbg2'] ?>">&nbsp;</td>
                         </tr>
                         <tr class="tablerow">
                             <td bgcolor="<?php echo $THEME['altbg1'] ?>"><?php echo $lang['highlight'] ?></td>
-                            <td bgcolor="<?php echo $THEME['altbg2'] ?>"><input type="text"
-                                                                                name="highlightnew"
-                                                                                value="<?php echo $themedata['highlight'] ?>"/>
+                            <td bgcolor="<?php echo $THEME['altbg2'] ?>">
+                            <input type="text" name="highlightnew" value="<?php echo $themedata['highlight'] ?>"/>
                             </td>
                             <td bgcolor="<?php echo $themedata['highlight'] ?>">&nbsp;</td>
                         </tr>
                         <tr class="tablerow">
                             <td bgcolor="<?php echo $THEME['altbg1'] ?>"><?php echo $lang['spacolor'] ?></td>
-                            <td bgcolor="<?php echo $THEME['altbg2'] ?>"><input type="text"
-                                                                                name="spacolornew"
-                                                                                value="<?php echo $themedata['spacolor'] ?>"/>
+                            <td bgcolor="<?php echo $THEME['altbg2'] ?>">
+                            <input type="text" name="spacolornew" value="<?php echo $themedata['spacolor'] ?>"/>
                             </td>
                             <td bgcolor="<?php echo $themedata['spacolor'] ?>">&nbsp;</td>
                         </tr>
                         <tr class="tablerow">
                             <td bgcolor="<?php echo $THEME['altbg1'] ?>"><?php echo $lang['admcolor'] ?></td>
-                            <td bgcolor="<?php echo $THEME['altbg2'] ?>"><input type="text"
-                                                                                name="admcolornew"
-                                                                                value="<?php echo $themedata['admcolor'] ?>"/>
+                            <td bgcolor="<?php echo $THEME['altbg2'] ?>">
+                            <input type="text" name="admcolornew" value="<?php echo $themedata['admcolor'] ?>"/>
                             </td>
                             <td bgcolor="<?php echo $themedata['admcolor'] ?>">&nbsp;</td>
                         </tr>
                         <tr class="tablerow">
                             <td bgcolor="<?php echo $THEME['altbg1'] ?>"><?php echo $lang['spmcolor'] ?></td>
-                            <td bgcolor="<?php echo $THEME['altbg2'] ?>"><input type="text"
-                                                                                name="spmcolornew"
-                                                                                value="<?php echo $themedata['spmcolor'] ?>"/>
+                            <td bgcolor="<?php echo $THEME['altbg2'] ?>">
+                            <input type="text" name="spmcolornew" value="<?php echo $themedata['spmcolor'] ?>"/>
                             </td>
                             <td bgcolor="<?php echo $themedata['spmcolor'] ?>">&nbsp;</td>
                         </tr>
                         <tr class="tablerow">
                             <td bgcolor="<?php echo $THEME['altbg1'] ?>"><?php echo $lang['modcolor'] ?></td>
-                            <td bgcolor="<?php echo $THEME['altbg2'] ?>"><input type="text"
-                                                                                name="modcolornew"
-                                                                                value="<?php echo $themedata['modcolor'] ?>"/>
+                            <td bgcolor="<?php echo $THEME['altbg2'] ?>">
+                            <input type="text" name="modcolornew" value="<?php echo $themedata['modcolor'] ?>"/>
                             </td>
                             <td bgcolor="<?php echo $themedata['modcolor'] ?>">&nbsp;</td>
                         </tr>
                         <tr class="tablerow">
                             <td bgcolor="<?php echo $THEME['altbg1'] ?>"><?php echo $lang['memcolor'] ?></td>
-                            <td bgcolor="<?php echo $THEME['altbg2'] ?>"><input type="text"
-                                                                                name="memcolornew"
-                                                                                value="<?php echo $themedata['memcolor'] ?>"/>
+                            <td bgcolor="<?php echo $THEME['altbg2'] ?>">
+                            <input type="text" name="memcolornew" value="<?php echo $themedata['memcolor'] ?>"/>
                             </td>
                             <td bgcolor="<?php echo $themedata['memcolor'] ?>">&nbsp;</td>
                         </tr>
                         <tr class="tablerow">
                             <td bgcolor="<?php echo $THEME['altbg1'] ?>"><?php echo $lang['textlink'] ?></td>
-                            <td bgcolor="<?php echo $THEME['altbg2'] ?>"><input type="text"
-                                                                                name="linknew"
-                                                                                value="<?php echo $themedata['link'] ?>"/>
+                            <td bgcolor="<?php echo $THEME['altbg2'] ?>">
+                            <input type="text" name="linknew" value="<?php echo $themedata['link'] ?>"/>
                             </td>
                             <td bgcolor="<?php echo $themedata['link'] ?>">&nbsp;</td>
                         </tr>
                         <tr class="tablerow">
                             <td bgcolor="<?php echo $THEME['altbg1'] ?>"><?php echo $lang['textborder'] ?></td>
-                            <td bgcolor="<?php echo $THEME['altbg2'] ?>"><input type="text"
-                                                                                name="bordercolornew"
-                                                                                value="<?php echo $themedata['bordercolor'] ?>"/>
+                            <td bgcolor="<?php echo $THEME['altbg2'] ?>">
+                            <input type="text" name="bordercolornew" value="<?php echo $themedata['bordercolor'] ?>"/>
                             </td>
                             <td bgcolor="<?php echo $themedata['bordercolor'] ?>">&nbsp;</td>
                         </tr>
                         <tr class="tablerow">
                             <td bgcolor="<?php echo $THEME['altbg1'] ?>"><?php echo $lang['outerbordercolor'] ?></td>
-                            <td bgcolor="<?php echo $THEME['altbg2'] ?>"><input type="text"
-                                                                                name="outerbordercolornew"
-                                                                                value="<?php echo $themedata['outerbordercolor'] ?>"/>
+                            <td bgcolor="<?php echo $THEME['altbg2'] ?>">
+                            <input type="text" name="outerbordercolornew" 
+                                value="<?php echo $themedata['outerbordercolor'] ?>"/>
                             </td>
                             <td bgcolor="<?php echo $themedata['outerbordercolor'] ?>">&nbsp;</td>
                         </tr>
                         <tr class="tablerow">
                             <td bgcolor="<?php echo $THEME['altbg1'] ?>"><?php echo $lang['textheader'] ?></td>
-                            <td bgcolor="<?php echo $THEME['altbg2'] ?>"><input type="text"
-                                                                                name="headernew"
-                                                                                value="<?php echo $themedata['header'] ?>"/>
+                            <td bgcolor="<?php echo $THEME['altbg2'] ?>">
+                            <input type="text" name="headernew" value="<?php echo $themedata['header'] ?>"/>
                             </td>
                             <td bgcolor="<?php echo $themedata['header'] ?>">&nbsp;</td>
                         </tr>
                         <tr class="tablerow">
                             <td bgcolor="<?php echo $THEME['altbg1'] ?>"><?php echo $lang['textheadertext'] ?></td>
-                            <td bgcolor="<?php echo $THEME['altbg2'] ?>"><input type="text"
-                                                                                name="headertextnew"
-                                                                                value="<?php echo $themedata['headertext'] ?>"/>
+                            <td bgcolor="<?php echo $THEME['altbg2'] ?>"> 
+                            <input type="text" name="headertextnew" value="<?php echo $themedata['headertext'] ?>"/>
                             </td>
                             <td bgcolor="<?php echo $themedata['headertext'] ?>">&nbsp;</td>
                         </tr>
                         <tr class="tablerow">
                             <td bgcolor="<?php echo $THEME['altbg1'] ?>"><?php echo $lang['texttop'] ?></td>
-                            <td bgcolor="<?php echo $THEME['altbg2'] ?>"><input type="text"
-                                                                                name="topnew"
-                                                                                value="<?php echo $themedata['top'] ?>"/>
+                            <td bgcolor="<?php echo $THEME['altbg2'] ?>">
+                            <input type="text" name="topnew" value="<?php echo $themedata['top'] ?>"/>
                             </td>
                             <td <?php echo $topcode ?>>&nbsp;</td>
                         </tr>
                         <tr class="tablerow">
                             <td bgcolor="<?php echo $THEME['altbg1'] ?>"><?php echo $lang['textcatcolor'] ?></td>
-                            <td bgcolor="<?php echo $THEME['altbg2'] ?>"><input type="text"
-                                                                                name="catcolornew"
-                                                                                value="<?php echo $themedata['catcolor'] ?>"/>
+                            <td bgcolor="<?php echo $THEME['altbg2'] ?>">
+                            <input type="text" name="catcolornew" value="<?php echo $themedata['catcolor'] ?>"/>
                             </td>
                             <td <?php echo $catcode ?>>&nbsp;</td>
                         </tr>
                         <tr class="tablerow">
                             <td bgcolor="<?php echo $THEME['altbg1'] ?>"><?php echo $lang['textcattextcolor'] ?></td>
-                            <td bgcolor="<?php echo $THEME['altbg2'] ?>"><input type="text"
-                                                                                name="cattextnew"
-                                                                                value="<?php echo $themedata['cattext'] ?>"/>
+                            <td bgcolor="<?php echo $THEME['altbg2'] ?>">
+                            <input type="text" name="cattextnew" value="<?php echo $themedata['cattext'] ?>"/>
                             </td>
                             <td bgcolor="<?php echo $themedata['cattext'] ?>">&nbsp;</td>
                         </tr>
                         <tr class="tablerow">
                             <td bgcolor="<?php echo $THEME['altbg1'] ?>"><?php echo $lang['texttabletext'] ?></td>
-                            <td bgcolor="<?php echo $THEME['altbg2'] ?>"><input type="text"
-                                                                                name="tabletextnew"
-                                                                                value="<?php echo $themedata['tabletext'] ?>"/>
+                            <td bgcolor="<?php echo $THEME['altbg2'] ?>">
+                            <input type="text" name="tabletextnew" value="<?php echo $themedata['tabletext'] ?>"/>
                             </td>
                             <td bgcolor="<?php echo $themedata['tabletext'] ?>">&nbsp;</td>
                         </tr>
                         <tr class="tablerow">
                             <td bgcolor="<?php echo $THEME['altbg1'] ?>"><?php echo $lang['texttext'] ?></td>
-                            <td bgcolor="<?php echo $THEME['altbg2'] ?>"><input type="text"
-                                                                                name="textnew"
-                                                                                value="<?php echo $themedata['text'] ?>"/>
+                            <td bgcolor="<?php echo $THEME['altbg2'] ?>">
+                            <input type="text" name="textnew" value="<?php echo $themedata['text'] ?>"/>
                             </td>
                             <td bgcolor="<?php echo $themedata['text'] ?>">&nbsp;</td>
                         </tr>
                         <tr class="tablerow">
                             <td bgcolor="<?php echo $THEME['altbg1'] ?>"><?php echo $lang['textborderwidth'] ?></td>
-                            <td bgcolor="<?php echo $THEME['altbg2'] ?>" colspan="2"><input
-                                        type="text" name="borderwidthnew"
-                                        value="<?php echo $themedata['borderwidth'] ?>" size="2"/></td>
+                            <td bgcolor="<?php echo $THEME['altbg2'] ?>" colspan="2">
+                            <input type="text" name="borderwidthnew" 
+                                value="<?php echo $themedata['borderwidth'] ?>" size="2"/>
+                        </td>
                         </tr>
                         <tr class="tablerow">
                             <td bgcolor="<?php echo $THEME['altbg1'] ?>"><?php echo $lang['outerborderwidth'] ?></td>
@@ -578,7 +573,7 @@ function doDisplayThemes()
 
 function doDisplayANewTheme($single)
 {
-    global $THEME, $oToken;
+    global $THEME, $oToken, $lang, $shadow2;
     ?>
     <form method="post"
           action="cp_themes.php?action=themes&amp;single=submit">
@@ -795,7 +790,7 @@ function doDisplayANewTheme($single)
 
 function doThemeUpdateSubmit()
 {
-    global $db;
+    global $db, $lang;
 
     $namenew = $db->escape(formVar('namenew'));
     $bgcolornew = $db->escape(formVar('bgcolornew'));
@@ -831,6 +826,7 @@ function doThemeUpdateSubmit()
     $memcolornew = $db->escape(formVar('memcolornew'));
     $ricondirnew = $db->escape(formVar('ricondirnew'));
     $highlightnew = $db->escape(formVar('highlightnew'));
+    $threadoptsnew = $db->escape(formVar('threadoptsnew'));
 
     $shadowfxnew = formOnOff('shadowfxnew');
     $themestatusnew = formOnOff('themestatusnew');
@@ -893,7 +889,7 @@ function doThemeUpdateSubmit()
 
 function doNewThemeSubmit()
 {
-    global $db;
+    global $db, $lang;
 
     $namenew = $db->escape(formVar('namenew'));
     $bgcolornew = $db->escape(formVar('bgcolornew'));
@@ -942,7 +938,7 @@ function doNewThemeSubmit()
 
 function doDisplayThemePanel()
 {
-    global $db, $lang, $THEME, $oToken;
+    global $db, $lang, $THEME, $oToken, $CONFIG, $cheHTML, $shadow2, $theme;
 
     ?>
     <form method="post" action="cp_themes.php?action=themes"
@@ -962,45 +958,52 @@ function doDisplayThemePanel()
                             <td class="title" align="center"><?php echo $lang['status'] ?></td>
                         </tr>
                         <?php
-// altered theme code to produce a 20x speed increase
-    $themeMem = array(
-        0 => 0,
-    );
-    $tq = $db->query("SELECT theme, COUNT(theme) as cnt FROM " . X_PREFIX . "members GROUP BY theme");
-    while (($t = $db->fetch_array($tq)) != false) {
-        $themeMem[((int) $t['theme'])] = $t['cnt'];
-    }
-    $db->free_result($tq);
+                        // altered theme code to produce a 20x speed increase
+                        $themeMem = array(0 => 0);
+                        $tq = $db->query("SELECT theme, COUNT(theme) as cnt FROM " .
+                            X_PREFIX . "members GROUP BY theme");
+                        while (($t = $db->fetchArray($tq)) != false) {
+                            $themeMem[((int) $t['theme'])] = $t['cnt'];
+                        }
+                        $db->freeResult($tq);
 
-    $query = $db->query("SELECT name, themestatus, themeid FROM " . X_PREFIX . "themes ORDER BY name ASC");
-    while (($themeinfo = $db->fetch_array($query)) != false) {
-        $themeid = $themeinfo['themeid'];
-        if (!isset($themeMem[$themeid])) {
-            $themeMem[$themeid] = 0;
-        }
+                        $query = $db->query("SELECT name, themestatus, themeid FROM " .
+                                    X_PREFIX . "themes ORDER BY name ASC");
+                        while (($themeinfo = $db->fetchArray($query)) != false) {
+                            $themeid = $themeinfo['themeid'];
+                            if (!isset($themeMem[$themeid])) {
+                                $themeMem[$themeid] = 0;
+                            }
 
-        if ($themeinfo['themeid'] == $CONFIG['theme']) {
-            $members = ($themeMem[$themeid] + $themeMem[0]);
-        } else {
-            $members = $themeMem[$themeid];
-        }
+                            if ($themeinfo['themeid'] == $CONFIG['theme']) {
+                                $members = ($themeMem[$themeid] + $themeMem[0]);
+                            } else {
+                                $members = $themeMem[$themeid];
+                            }
 
-        if ($themeinfo['themeid'] == $theme) {
-            $checked = $cheHTML;
-        } else {
-            $checked = 'checked="unchecked"';
-        }
-        ?>
+                            if ($themeinfo['themeid'] == $theme) {
+                                // XXX: figure out if $theme is from a parameter
+                                $checked = $cheHTML;
+                            } else {
+                                $checked = 'checked="unchecked"';
+                            }
+                            ?>
                             <tr>
                                 <td bgcolor="<?php echo $THEME['altbg1'] ?>" class="ctrtablerow"><input
                                             type="checkbox" name="theme_delete[]"
                                             value="<?php echo $themeinfo['themeid'] ?>"/></td>
-                                <td bgcolor="<?php echo $THEME['altbg2'] ?>" class="tablerow"><input
-                                            type="text" name="theme_name[<?php echo $themeinfo['themeid'] ?>]"
-                                            value="<?php echo $themeinfo['name'] ?>"/>&nbsp;[ <a
-                                            href="./cp_themes.php?action=themes&amp;single=<?php echo $themeinfo['themeid'] ?>"><?php echo $lang['textdetails'] ?></a>
-                                    ]&nbsp;-&nbsp;[ <a
-                                            href="./cp_themes.php?action=themes&amp;download=<?php echo $themeinfo['themeid'] ?>"><?php echo $lang['textdownload'] ?></a>
+                                <td bgcolor="<?php echo $THEME['altbg2'] ?>" class="tablerow">
+                                <input type="text" name="theme_name[<?php echo $themeinfo['themeid'] ?>]"
+                                            value="<?php echo $themeinfo['name'] ?>"/>
+                                    &nbsp; [ 
+                                <a href="./cp_themes.php?action=themes&amp;single=<?php echo $themeinfo['themeid'] ?>">
+                                        <?php echo $lang['textdetails'] ?>
+                                    </a>]
+                                    &nbsp;-&nbsp;
+                                    [ 
+                            <a href="./cp_themes.php?action=themes&amp;download=<?php echo $themeinfo['themeid'] ?>">
+                                        <?php echo $lang['textdownload'] ?>
+                                    </a>
                                     ]
                                 </td>
                                 <td bgcolor="<?php echo $THEME['altbg1'] ?>"
@@ -1009,18 +1012,28 @@ function doDisplayThemePanel()
                                     class="ctrtablerow"><?php echo $themeinfo['themestatus'] ?></td>
                             </tr>
                             <?php
-}
-    $db->free_result($query);
-    ?>
+                        }
+                            $db->freeResult($query);
+                        ?>
                         <tr bgcolor="<?php echo $THEME['altbg1'] ?>" class="tablerow">
-                            <td colspan="4"><a
-                                        href="./cp_themes.php?action=themes&amp;single=anewtheme1"><strong><?php echo $lang['textnewtheme'] ?></strong></a>
+                            <td colspan="4">
+                                <a href="./cp_themes.php?action=themes&amp;single=anewtheme1">
+                                    <strong>
+                                        <?php echo $lang['textnewtheme'] ?>
+                                    </strong>
+                                </a>
+                                - <a href="#" 
+                                    onclick="setCheckboxes('theme_main', 'theme_delete[]', true); return false;">
+                                        <?php echo $lang['checkall'] ?>
+                                  </a>
                                 - <a href="#"
-                                     onclick="setCheckboxes('theme_main', 'theme_delete[]', true); return false;"><?php echo $lang['checkall'] ?></a>
+                                     onclick="setCheckboxes('theme_main', 'theme_delete[]', false); return false;">
+                                         <?php echo $lang['uncheckall'] ?>
+                                    </a>
                                 - <a href="#"
-                                     onclick="setCheckboxes('theme_main', 'theme_delete[]', false); return false;"><?php echo $lang['uncheckall'] ?></a>
-                                - <a href="#"
-                                     onclick="invertSelection('theme_main', 'theme_delete[]'); return false;"><?php echo $lang['invertselection'] ?></a>
+                                     onclick="invertSelection('theme_main', 'theme_delete[]'); return false;">
+                                     <?php echo $lang['invertselection'] ?>
+                                </a>
                             </td>
                         </tr>
                         <tr class="ctrtablerow" bgcolor="<?php echo $THEME['altbg2'] ?>">

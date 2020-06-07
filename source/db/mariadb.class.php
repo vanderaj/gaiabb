@@ -34,12 +34,12 @@ if (!defined('IN_PROGRAM') && (defined('DEBUG') && DEBUG == false)) {
     exit('mysql - This file is not designed to be called directly');
 }
 
-define('X_DBCLASSNAME', 'mysql5Php5');
-define('X_FRIENDLYNAME', 'MariaDB 5.1 or later (also compatible with Oracle MySQL)');
-define('X_DALMINPHP', '5.2.6');
-define('X_DALMAXPHP', '5.9.9');
+define('X_DBCLASSNAME', 'MariaDB');
+define('X_FRIENDLYNAME', 'MariaDB (and MySQL)');
 
-class mysql5Php5
+namespace GaiaBB;
+
+class MariaDB
 {
 
     public $querynum = 0;
@@ -101,23 +101,23 @@ class mysql5Php5
             $this->force = $force_db;
 
             if ((version_compare(phpversion(), "5.4.0")) < 0) {
-                throw new Exception("Unsupported PHP version");
+                throw new \Exception("Unsupported PHP version");
             }
 
-            $this->conn = new mysqli($dbhost, $dbuser, $dbpw);
+            $this->conn = new \mysqli($dbhost, $dbuser, $dbpw);
 
             if ($this->conn->connect_error) {
-                throw new Exception("Could not connect to the database server:" . $this->conn->connect_error . "(" . $this->conn->connect_errno . ")");
+                throw new \Exception("Could not connect to the database server:" . $this->conn->connect_error . "(" . $this->conn->connect_errno . ")");
             }
 
             if ((version_compare($this->getVersion(), "5.1.0")) == -1) {
-                throw new Exception("Unsupported MySQL version");
+                throw new \Exception("Unsupported MySQL version");
             }
 
-            if ($this->select_db($dbname, $force_db) === false) {
-                throw new Exception("Could not select the database");
+            if ($this->selectDb($dbname, $force_db) === false) {
+                throw new \Exception("Could not select the database");
             }
-        } catch (Exception $error) {
+        } catch (\Exception $error) {
             $this->panic("Database connection error", $error);
             return false;
         }
@@ -146,7 +146,7 @@ class mysql5Php5
             mail($CONFIG['adminemail'], 'GaiaBB :: Database panic from ' . $CONFIG['bbname'], $msg->getMessage() . "\r\n" . $this->conn->error);
         }
 
-        $this->view_header($head);
+        $this->viewHeader($head);
         ?>
         <table cellspacing="0" cellpadding="0" border="0" width="97%"
                align="center" bgcolor="#5176B5">
@@ -175,7 +175,7 @@ if (DEBUG) {
             </tr>
         </table>
         <?php
-$this->view_shadow();
+$this->viewShadow();
 
         // DEBUG mode is a security issue, but with panic() we have no database context
         // => no X_SADMIN, so no error messages possible. So this code warns of bad things
@@ -232,33 +232,33 @@ $traces = explode('#', $msg->getTraceAsString());
                 </tr>
             </table>
             <?php
-$this->view_shadow();
+$this->viewShadow();
         } // end debug
         ?>
         <?php
-$this->view_footer();
+$this->viewFooter();
         exit();
     }
 
     /**
-     * select_db() - select the database
+     * selectDb() - select the database
      *
      * @param $database string
      *            - the database name to select
      * @return true if success, exits if not (this is a panic)
      */
-    public function select_db($database)
+    public function selectDb($database)
     {
         try {
             $this->db = $database;
-            if ($this->conn->select_db($this->db) === false) {
-                throw new Exception("Could not locate the database. Please check the configuration.");
+            if ($this->conn->selectDb($this->db) === false) {
+                throw new \Exception("Could not locate the database. Please check the configuration.");
             }
 
-            if ($this->force && $this->find_database($this->db) === false) {
-                throw new Exception('Could not find any database containing the needed tables. Please reconfigure config.php or install GaiaBB');
+            if ($this->force && $this->findDatabase($this->db) === false) {
+                throw new \Exception('Could not find any database containing the needed tables. Please reconfigure config.php or install GaiaBB');
             }
-        } catch (Exception $error) {
+        } catch (\Exception $error) {
             if ($this->force) {
                 $this->close();
             }
@@ -270,14 +270,14 @@ $this->view_footer();
     }
 
     /**
-     * find_database() - See if the nominated database has the tables we need
+     * findDatabase() - See if the nominated database has the tables we need
      *
      * As this is checked for every page, we only check for the settings
      * table. If the others aren't present, then we can't help that
      *
      * @return bool, true if success, false if fail
      */
-    public function find_database()
+    public function findDatabase()
     {
         $tables = $this->getTables();
         if ($tables === false) {
@@ -303,7 +303,7 @@ $this->view_footer();
     }
 
     /**
-     * free_result() - free query result
+     * freeResult() - free query result
      *
      * This frees up needed resources on intensive pages, like post.php
      * Call me often
@@ -312,7 +312,7 @@ $this->view_footer();
      *            result set requiring to be freed
      * @return bool, true = success, false = failure
      */
-    public function free_result($result = null)
+    public function freeResult($result = null)
     {
         if ($result) {
             @$result->free();
@@ -326,7 +326,7 @@ $this->view_footer();
     }
 
     /**
-     * fetch_array() - return an array of results from the query
+     * fetchArray() - return an array of results from the query
      *
      * Use this to gather results from previous queries
      *
@@ -334,20 +334,19 @@ $this->view_footer();
      *            set from a previously executed query
      * @return array of results, or null if no more results or false if no previous result set
      */
-    public function fetch_array($query, $type = MYSQLI_ASSOC)
+    public function fetchArray($query, $type = MYSQLI_ASSOC)
     {
         if ($query !== null || $query !== false) {
-            return $query->fetch_array($type);
-        } else
-        if ($this->result != null && $this->result !== true && $this->result !== false) {
-            return $this->result->fetch_array($type);
+            return $query->fetchArray($type);
+        } elseif ($this->result != null && $this->result !== true && $this->result !== false) {
+            return $this->result->fetchArray($type);
         }
 
         return false;
     }
 
     /**
-     * field_type() - return the field type from a previously executed query
+     * fieldType() - return the field type from a previously executed query
      *
      * This is primarily used by the dbinfo admin panel
      *
@@ -357,7 +356,7 @@ $this->view_footer();
      *            the field you'd like the type of
      * @return string, the field name, false fail
      */
-    public function field_type($result, $field)
+    public function fieldType($result, $field)
     {
         $result->field_seek($field);
         $fieldInfo = $result->fetch_field();
@@ -365,7 +364,7 @@ $this->view_footer();
     }
 
     /**
-     * field_name() - return the field name from a previously executed query
+     * fieldName() - return the field name from a previously executed query
      *
      * This is primarily used by the dbinfo admin panel
      *
@@ -375,7 +374,7 @@ $this->view_footer();
      *            the field you'd like the name of
      * @return string, the field name, false fail
      */
-    public function field_name($result, $field)
+    public function fieldName($result, $field)
     {
         $result->field_seek($field);
         $fieldInfo = $result->fetch_field();
@@ -383,7 +382,7 @@ $this->view_footer();
     }
 
     /**
-     * field_len() - return the field length from a previously executed query
+     * fieldLen() - return the field length from a previously executed query
      *
      * This is primarily used by the dbinfo admin panel
      *
@@ -393,7 +392,7 @@ $this->view_footer();
      *            the field you'd like the length of
      * @return string, the field name, false fail
      */
-    public function field_len($result, $field)
+    public function fieldLen($result, $field)
     {
         $result->field_seek($field);
         $fieldInfo = $result->fetch_field();
@@ -401,7 +400,7 @@ $this->view_footer();
     }
 
     /**
-     * field_flags() - return the field flags from a previously executed query
+     * fieldFlags() - return the field flags from a previously executed query
      *
      * This is primarily used by the dbinfo admin panel
      *
@@ -411,7 +410,7 @@ $this->view_footer();
      *            the field you'd like the flags of
      * @return string, the field name, false fail
      */
-    public function field_flags($result, $field)
+    public function fieldFlags($result, $field)
     {
         $result->field_seek($field);
         $fieldInfo = $result->fetch_field();
@@ -419,7 +418,7 @@ $this->view_footer();
     }
 
     /**
-     * field_table() - return the table name of a field
+     * fieldTable() - return the table name of a field
      *
      * This is primarily used by the dbinfo admin panel
      *
@@ -429,7 +428,7 @@ $this->view_footer();
      *            the field you'd like the tablename of
      * @return string, the field name, false fail
      */
-    public function field_table($result, $field)
+    public function fieldTable($result, $field)
     {
         $result->field_seek($field);
         $fieldInfo = $result->fetch_field();
@@ -455,25 +454,25 @@ $this->view_footer();
             $this->queryStr = $sql;
 
             if (!$this->conn) {
-                throw new Exception("The database server is not connected.");
+                throw new \Exception("The database server is not connected.");
             }
 
-            $this->start_timer();
+            $this->startTimer();
 
             $this->result = $this->conn->query($sql);
 
             if ($this->result === false || $this->conn->errno !== 0) {
-                throw new Exception("The database server has not processed the query. Please try again.");
+                throw new \Exception("The database server has not processed the query. Please try again.");
             }
 
             $this->querynum++;
             if (DEBUG) {
                 $this->querylist[] = $sql;
             }
-            $this->querytimes[] = $this->stop_timer();
+            $this->querytimes[] = $this->stopTimer();
 
             return $this->result;
-        } catch (Exception $error) {
+        } catch (\Exception $error) {
             $this->result = null;
             $this->panic("Query Failed", $error);
         }
@@ -501,7 +500,7 @@ $this->view_footer();
         if ($field == null) {
             $field = 0;
         }
-        $tmp = $result->fetch_array();
+        $tmp = $result->fetchArray();
 
         // In MySQL 4, result() returned false, so we do too.
         if ($tmp == null) {
@@ -513,50 +512,48 @@ $this->view_footer();
     }
 
     /**
-     * num_rows() - return the number of rows in a query
+     * numRows() - return the number of rows in a query
      *
      * @param $result result
      *            resource
      * @return int, number of rows, false if failed
      */
-    public function num_rows($result)
+    public function numRows($result)
     {
         if ($result) {
-            return $result->num_rows;
-        } else
-        if ($this->result) {
-            return $this->result->num_rows;
+            return $result->numRows;
+        } elseif ($this->result) {
+            return $this->result->numRows;
         }
         return false;
     }
 
     /**
-     * num_fields() - return the number of fields in a query
+     * numFields() - return the number of fields in a query
      *
      * @param $result the
      *            result from the previous successful query
      * @return int, number of fields, false if failed
      */
-    public function num_fields($result)
+    public function numFields($result)
     {
         if ($result !== null && $result !== false) {
             return $result->field_count;
-        } else
-        if ($this->result !== null && $this->result !== false) {
+        } elseif ($this->result !== null && $this->result !== false) {
             return $this->result->field_count;
         }
         return false;
     }
 
     /**
-     * insert_id() - find the row ID of the last query
+     * insertId() - find the row ID of the last query
      *
      * @return int if success, false if fail
      */
-    public function insert_id()
+    public function insertId()
     {
         if ($this->conn) {
-            return $this->conn->insert_id;
+            return $this->conn->insertId;
         }
         return false;
     }
@@ -571,7 +568,7 @@ $this->view_footer();
         if (!empty($table)) {
             $table = $this->tablepre . $table;
             $query = $this->query("SHOW TABLE STATUS FROM $this->db LIKE '$table'");
-            $column = $this->fetch_array($query);
+            $column = $this->fetchArray($query);
             $retval = (int) $column['Auto_increment'];
 
             return $retval;
@@ -580,19 +577,18 @@ $this->view_footer();
     }
 
     /**
-     * fetch_row() - fetch a row from the result set
+     * fetchRow() - fetch a row from the result set
      *
      * @param $result , result
      *            set from the user
      * @return array of strings, the row
      */
-    public function fetch_row($result)
+    public function fetchRow($result)
     {
         if ($result) {
-            return $result->fetch_row();
-        } else
-        if ($this->result) {
-            return $this->result->fetch_row();
+            return $result->fetchRow();
+        } elseif ($this->result) {
+            return $this->result->fetchRow();
         }
         return false;
     }
@@ -615,11 +611,11 @@ $this->view_footer();
     }
 
     /**
-     * stop_timer() - start the query timer
+     * stopTimer() - start the query timer
      *
      * @return always returns true
      */
-    public function start_timer()
+    public function startTimer()
     {
         $mtime = explode(' ', microtime());
         $this->timer = $mtime[1] + $mtime[0];
@@ -627,11 +623,11 @@ $this->view_footer();
     }
 
     /**
-     * stop_timer() - stop the query timer
+     * stopTimer() - stop the query timer
      *
      * @return double, the number of seconds taken for this set of queries
      */
-    public function stop_timer()
+    public function stopTimer()
     {
         $mtime = explode(' ', microtime());
         $endtime = $mtime[1] + $mtime[0];
@@ -658,25 +654,25 @@ $this->view_footer();
         $tables = array();
         try {
             if (!$this->conn) {
-                throw new Exception("Not connected to the database");
+                throw new \Exception("Not connected to the database");
             }
 
             if (empty($this->db)) {
-                throw new Exception("No database selected.");
+                throw new \Exception("No database selected.");
             }
 
             $result = $this->conn->query("SHOW TABLES FROM " . $this->db);
 
             if ($result == null) {
-                throw new Exception("No database tables can be found in the database.");
+                throw new \Exception("No database tables can be found in the database.");
             }
 
-            while (($table = $result->fetch_array()) != false) {
+            while (($table = $result->fetchArray()) != false) {
                 $tables[] = $table[0];
             }
 
-            $result->free_result();
-        } catch (Exception $error) {
+            $result->freeResult();
+        } catch (\Exception $error) {
             if ($this->force) {
                 $this->panic("List tables", $error);
             }
@@ -789,7 +785,7 @@ $this->view_footer();
      *            what it does
      * @return type, what the return does
      */
-    public function view_header($title = "Data Abstraction Layer")
+    public function viewHeader($title = "Data Abstraction Layer")
     {
         $logo = 'images/prored/logo.png';
         $navtext = "Data Abstraction Layer";
@@ -895,7 +891,7 @@ $this->view_footer();
      *            what it does
      * @return type, what the return does
      */
-    public function view_footer()
+    public function viewFooter()
     {
         ?>
         <table align="center">
@@ -924,7 +920,7 @@ $this->view_footer();
      *            what it does
      * @return type, what the return does
      */
-    public function view_shadow()
+    public function viewShadow()
     {
         ?>
         <table cellspacing="0" cellpadding="0" border="0" width="97%"

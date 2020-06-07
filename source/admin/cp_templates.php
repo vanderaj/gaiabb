@@ -47,7 +47,7 @@ if (X_SADMIN) {
     if ($action == 'templates' && isset($download)) {
         $code = '';
         $templates = $db->query("SELECT * FROM " . X_PREFIX . "templates");
-        while (($template = $db->fetch_array($templates)) != false) {
+        while (($template = $db->fetchArray($templates)) != false) {
             $template['template'] = trim($template['template']);
             $template['name'] = trim($template['name']);
             if ($template['name'] != '') {
@@ -95,14 +95,14 @@ if ($action == 'templates') {
         $templatelist[] = '<select name="tid">';
         $query = $db->query("SELECT * FROM " . X_PREFIX . "templates ORDER BY name");
         $templatelist[] = '<option value="default" selected="selected">' . $lang['selecttemplate'] . '</option>';
-        while (($template = $db->fetch_array($query)) != false) {
+        while (($template = $db->fetchArray($query)) != false) {
             if (!empty($template['name'])) {
                 $templatelist[] = '<option value="' . $template['id'] . '">' . $template['name'] . '</option>';
             }
         }
         $templatelist[] = '</select>';
         $templatelist = implode("\n", $templatelist);
-        $db->free_result($query);
+        $db->freeResult($query);
         ?>
         <form method="post" action="cp_templates.php?action=templates">
             <input type="hidden" name="token"
@@ -160,7 +160,7 @@ if ($action == 'templates') {
         </tr>
         </table>
         <?php
-}
+    }
 
     if (onSubmit('restore')) {
         ?>
@@ -193,7 +193,7 @@ if ($action == 'templates') {
         </tr>
         </table>
         <?php
-}
+    }
 
     if (onSubmit('restoresubmit')) {
         if (!file_exists('./templates.gbb')) {
@@ -205,7 +205,7 @@ if ($action == 'templates') {
         $templatesfile = fread($fp, $filesize);
         fclose($fp);
         $templates = explode("|#*GBB TEMPLATE FILE*#|", $templatesfile);
-        while ((list($key, $val) = each($templates)) != false) {
+        foreach ($templates as $key => $val) {
             $template = explode("|#*GBB TEMPLATE*#|", $val);
             if (isset($template[1])) {
                 $template[1] = addslashes($template[1]);
@@ -235,10 +235,10 @@ if ($action == 'templates') {
                                 <td class="title"><?php echo $lang['templates'] ?></td>
                             </tr>
                             <?php
-$query = $db->query("SELECT * FROM " . X_PREFIX . "templates WHERE id = '$tid' ORDER BY name");
-        $template = $db->fetch_array($query);
-        $template['template'] = stripslashes(htmlspecialchars($template['template']));
-        ?>
+                            $query = $db->query("SELECT * FROM " . X_PREFIX . "templates WHERE id = '$tid' ORDER BY name");
+                            $template = $db->fetchArray($query);
+                            $template['template'] = stripslashes(htmlspecialchars($template['template']));
+                            ?>
                             <tr class="ctrtablerow">
                                 <td bgcolor="<?php echo $THEME['altbg2'] ?>"><?php echo $lang['templatename'] ?>
                                     &nbsp;<strong><?php echo $template['name'] ?></strong></td>
@@ -264,7 +264,7 @@ $query = $db->query("SELECT * FROM " . X_PREFIX . "templates WHERE id = '$tid' O
         </tr>
         </table>
         <?php
-}
+    }
 
     if (onSubmit('editsubmit')) {
         $templatenew = $db->escape(formVar('templatenew'));
@@ -274,7 +274,7 @@ $query = $db->query("SELECT * FROM " . X_PREFIX . "templates WHERE id = '$tid' O
                 cp_error($lang['templateempty'], false, '', '</td></tr></table>');
             } else {
                 $check = $db->query("SELECT name FROM " . X_PREFIX . "templates WHERE name = '$namenew'");
-                if ($check && $db->num_rows($check) != 0) {
+                if ($check && $db->numRows($check) != 0) {
                     cp_error($lang['templateexists'], false, '', '</td></tr></table>');
                 } else {
                     $db->query("INSERT INTO " . X_PREFIX . "templates (name, template) VALUES ('$namenew', '$templatenew')");
@@ -324,7 +324,7 @@ $query = $db->query("SELECT * FROM " . X_PREFIX . "templates WHERE id = '$tid' O
         </tr>
         </table>
         <?php
-}
+    }
 
     if (onSubmit('deletesubmit')) {
         $db->query("DELETE FROM " . X_PREFIX . "templates WHERE id = '$tid'");
@@ -350,9 +350,9 @@ $query = $db->query("SELECT * FROM " . X_PREFIX . "templates WHERE id = '$tid' O
                                 <td class="title" colspan="2"><?php echo $lang['templates'] ?></td>
                             </tr>
                             <?php
-$query = $db->query("SELECT * FROM " . X_PREFIX . "templates WHERE id = '$tid' ORDER BY name");
-        $template_info = $db->fetch_array($query);
-        ?>
+                            $query = $db->query("SELECT * FROM " . X_PREFIX . "templates WHERE id = '$tid' ORDER BY name");
+                            $template_info = $db->fetchArray($query);
+                            ?>
                             <tr class="tablerow">
                                 <td bgcolor="<?php echo $THEME['altbg1'] ?>"><?php echo $lang['textfrom'] ?></td>
                                 <td bgcolor="<?php echo $THEME['altbg2'] ?>"><?php echo $template_info['name'] ?></td>
@@ -378,12 +378,12 @@ $query = $db->query("SELECT * FROM " . X_PREFIX . "templates WHERE id = '$tid' O
         </tr>
         </table>
         <?php
-}
+    }
 
     if (onSubmit('renamesubmit') && noSubmit('rename')) {
         $new_name = $db->escape(formVar('new_name'));
         $check_newname = $db->query("SELECT name FROM " . X_PREFIX . "templates WHERE name = '$new_name'");
-        if ($check_newname && $db->num_rows($check_newname) != 0) {
+        if ($check_newname && $db->numRows($check_newname) != 0) {
             cp_error($lang['templateexists'], false, '', '</td></tr></table>');
         } else {
             $db->query("UPDATE " . X_PREFIX . "templates SET name = '$new_name' WHERE id = '$tid'");
@@ -422,7 +422,7 @@ $query = $db->query("SELECT * FROM " . X_PREFIX . "templates WHERE id = '$tid' O
         </tr>
         </table>
         <?php
-}
+    }
 
     if (onSubmit('backup_curyes')) {
         if (!is_writable('./templates/')) {
@@ -430,7 +430,7 @@ $query = $db->query("SELECT * FROM " . X_PREFIX . "templates WHERE id = '$tid' O
         } else {
             $code = '';
             $templates = $db->query("SELECT * FROM " . X_PREFIX . "templates");
-            while (($template = $db->fetch_array($templates)) != false) {
+            while (($template = $db->fetchArray($templates)) != false) {
                 $template['name'] = trim($template['name']);
                 $template['template'] = trim(stripslashes($template['template']));
                 $code .= $template['name'] . "|#*GBB TEMPLATE*#|\r\n" . $template['template'] . "\r\n\r\n|#*GBB TEMPLATE FILE*#|";
@@ -473,7 +473,7 @@ $query = $db->query("SELECT * FROM " . X_PREFIX . "templates WHERE id = '$tid' O
         </tr>
         </table>
         <?php
-}
+    }
 
     if (onSubmit('restore_curyes')) {
         if (!file_exists('./templates/templates-current.gbb')) {
@@ -485,7 +485,7 @@ $query = $db->query("SELECT * FROM " . X_PREFIX . "templates WHERE id = '$tid' O
             $templatesfile = fread($fp, $filesize);
             fclose($fp);
             $templates = explode("|#*GBB TEMPLATE FILE*#|", $templatesfile);
-            while ((list($key, $val) = each($templates)) != false) {
+            foreach ($templates as $key => $val) {
                 $template = explode("|#*GBB TEMPLATE*#|", $val);
                 if (isset($template[1])) {
                     $template[1] = addslashes($template[1]);
@@ -496,7 +496,7 @@ $query = $db->query("SELECT * FROM " . X_PREFIX . "templates WHERE id = '$tid' O
             if (is_writable('./templates/')) {
                 $code = '';
                 $templates = $db->query("SELECT * FROM " . X_PREFIX . "templates");
-                while (($template = $db->fetch_array($templates)) != false) {
+                while (($template = $db->fetchArray($templates)) != false) {
                     $template['name'] = trim($template['name']);
                     $template['template'] = trim(stripslashes($template['template']));
                     $code .= $template['name'] . "|#*GBB TEMPLATE*#|\r\n" . $template['template'] . "\r\n\r\n|#*GBB TEMPLATE FILE*#|";
@@ -550,7 +550,7 @@ $query = $db->query("SELECT * FROM " . X_PREFIX . "templates WHERE id = '$tid' O
         </tr>
         </table>
         <?php
-}
+    }
 }
 
 loadtime();

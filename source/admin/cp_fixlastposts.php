@@ -104,10 +104,10 @@ function doPanel()
 
     $oToken->assertToken();
 
-    $threadObj = new thread();
+    $threadObj = new GaiaBB\Thread();
     $threadObj->fixLastPost();
 
-    $forumObj = new forum();
+    $forumObj = new GaiaBB\Forum();
     $forumObj->fixLastPost();
     cp_message($lang['tool_lastpost'], false, '', '</td></tr></table>', 'index.php', true, false, true);
 }

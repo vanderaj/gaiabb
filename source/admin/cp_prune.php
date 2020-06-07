@@ -29,6 +29,7 @@
  *
  **/
 
+// phpcs:disable PSR1.Files.SideEffects
 define('ROOT', '../');
 define('ROOTINC', '../include/');
 define('ROOTCLASS', '../class/');
@@ -275,11 +276,11 @@ function doPanel()
         $tids = array();
         $queryWhere = implode(' AND ', $queryWhere);
         $q = $db->query("SELECT t.tid FROM " . X_PREFIX . "threads t, " . X_PREFIX . "lastposts l WHERE " . $queryWhere);
-        if ($db->num_rows($q) > 0) {
-            while (($t = $db->fetch_array($q)) != false) {
+        if ($db->numRows($q) > 0) {
+            while (($t = $db->fetchArray($q)) != false) {
                 $tids[] = $t['tid'];
             }
-            $db->free_result($q);
+            $db->freeResult($q);
             $tids = implode(',', $tids);
             $db->query("DELETE FROM " . X_PREFIX . "threads WHERE tid IN (" . $tids . ")");
             $db->query("DELETE FROM " . X_PREFIX . "posts WHERE tid IN (" . $tids . ")");

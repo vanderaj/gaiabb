@@ -76,7 +76,7 @@ function view_repair_index($path)
     </tr>
     </table>
     <?php
-view_shadow();
+    viewShadow();
 }
 
 /**
@@ -113,7 +113,7 @@ function view_repair_action()
                                 </tr>
                                 <tr>
                                     <td>
-                                        <script type="text/javascript" language="javascript1.2"><!--
+                                        <script type="text/javascript">
                                             var repairBar = new progressBar(
                                                 1,         //border thickness
                                                 '#000000', //border colour
@@ -123,7 +123,7 @@ function view_repair_action()
                                                 16,        //height of bar (excluding border)
                                                 1          //direction of progress: 1 = right, 2 = down, 3 = left, 4 = up
                                             );
-                                            //--></script>
+                                        </script>
                                     </td>
                                 </tr>
                             </table>
@@ -141,7 +141,7 @@ function view_repair_action()
         </tr>
     </table>
     <?php
-return "repairBar";
+    return "repairBar";
 }
 
 /**
@@ -191,17 +191,17 @@ function view_admins($db, $tablepre)
     ?>
     <table border="0" cellspacing="1px" cellpadding="5px" width="100%">
         <?php
-if ($query !== false && $db->num_rows($query) > 0) {
-        while (($user = $db->fetch_array($query)) != false) {
-            echo "<tr><td class=\"tablerow\" bgcolor=\"#ffffff\" width=30%>$user[username]</td>";
-            echo "<td class=\"tablerow\" bgcolor=\"#ffffff\" width=70%>$user[status]</td></tr>";
+        if ($query !== false && $db->numRows($query) > 0) {
+            while (($user = $db->fetchArray($query)) != false) {
+                echo "<tr><td class=\"tablerow\" bgcolor=\"#ffffff\" width=30%>$user[username]</td>";
+                echo "<td class=\"tablerow\" bgcolor=\"#ffffff\" width=70%>$user[status]</td></tr>";
+            }
+        } else {
+            echo "<tr><td class=\"tablerow\" bgcolor=\"#ffffff\" width=30%>No users</td>";
+            echo "<td class=\"tablerow\" bgcolor=\"#ffffff\" width=70%>&nbsp;</td></tr>";
         }
-    } else {
-        echo "<tr><td class=\"tablerow\" bgcolor=\"#ffffff\" width=30%>No users</td>";
-        echo "<td class=\"tablerow\" bgcolor=\"#ffffff\" width=70%>&nbsp;</td></tr>";
-    }
-    $db->free_result($query);
-    ?>
+        $db->freeResult($query);
+        ?>
     </table>
     </td>
     </tr>

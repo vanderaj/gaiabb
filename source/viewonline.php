@@ -61,7 +61,7 @@ if (X_ADMIN) {
 }
 
 $onlineusers = '';
-while (($online = $db->fetch_array($q)) != false) {
+while (($online = $db->fetchArray($q)) != false) {
     $array = url_to_text($online['location']);
     $onlinetime = gmdate($self['timecode'], $online['time'] + ($self['timeoffset'] * 3600) + $self['daylightsavings']);
     $username = str_replace('xguest123', $lang['textguest1'], $online['username']);
@@ -152,8 +152,7 @@ while (($online = $db->fetch_array($q)) != false) {
                 }
                 break;
         }
-    } else
-    if ($online['username'] == 'xrobot123') {
+    } elseif ($online['username'] == 'xrobot123') {
         if ($THEME['riconstatus'] == 'on') {
             $icon = '<img src="' . $THEME['ricondir'] . '/online_robot.gif" alt="' . $lang['textrobot1'] . '" title="' . $lang['textrobot1'] . '" border="0px" />';
             $online['username'] = $icon . '' . $username;
@@ -177,7 +176,7 @@ while (($online = $db->fetch_array($q)) != false) {
         eval('$onlineusers .= "' . template('online_row') . '";');
     }
 }
-$db->free_result($q);
+$db->freeResult($q);
 
 if (X_ADMIN) {
     eval('echo "' . template('online_admin') . '";');

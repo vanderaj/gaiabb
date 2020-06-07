@@ -29,6 +29,7 @@
  *
  **/
 
+// phpcs:disable PSR1.Files.SideEffects
 define('ROOT', '../');
 define('ROOTINC', '../include/');
 define('ROOTCLASS', '../class/');
@@ -36,7 +37,7 @@ define('ROOTHELPER', '../helper/');
 
 require_once '../header.php';
 require_once '../include/admincp.inc.php';
-require_once '../helper/formHelper.php';
+require_once '../helper/FormHelper.php';
 
 loadtpl('cp_header', 'cp_footer', 'cp_message', 'cp_error');
 
@@ -75,7 +76,7 @@ function viewPanel()
     global $CONFIG, $lang, $THEME, $shadow2, $oToken;
 
     $captcha_on = $captcha_off = '';
-    formHelper::getSettingOnOffHtml('captcha_status', $captcha_on, $captcha_off);
+    GaiaBB\FormHelper::getSettingOnOffHtml('captcha_status', $captcha_on, $captcha_off);
 
     $colmanage[0] = $colmanage[1] = false;
     switch ($CONFIG['captcha_colortype']) {
@@ -102,19 +103,19 @@ function viewPanel()
                             <td colspan="2" class="title"><?php echo $lang['captcha_settings'] ?></td>
                         </tr>
                         <?php
-formHelper::formSelectOnOff($lang['text_captcha_status'], 'new_status', $captcha_on, $captcha_off);
-    formHelper::formTextBox($lang['text_captcha_attempts_max'], 'new_maxattempts', $CONFIG['captcha_maxattempts'], 2);
-    formHelper::formTextBox($lang['text_captcha_chars_min'], "new_minchars", $CONFIG['captcha_minchars'], 2);
-    formHelper::formTextBox($lang['text_captcha_chars_max'], "new_maxchars", $CONFIG['captcha_maxchars'], 2);
-    formHelper::formSelectList($lang['text_captcha_color_type'], 'new_colortype', array(
-        $lang['text_captcha_color_type_single'],
-        $lang['text_captcha_color_type_multiple'],
-    ), array(
-        'single',
-        'multiple',
-    ), $colmanage, false);
-    formHelper::formTextBox($lang['text_captcha_font_path'], 'new_fontpath', $CONFIG['captcha_fontpath'], 40);
-    ?>
+                        GaiaBB\FormHelper::formSelectOnOff($lang['text_captcha_status'], 'new_status', $captcha_on, $captcha_off);
+                        GaiaBB\FormHelper::formTextBox($lang['text_captcha_attempts_max'], 'new_maxattempts', $CONFIG['captcha_maxattempts'], 2);
+                        GaiaBB\FormHelper::formTextBox($lang['text_captcha_chars_min'], "new_minchars", $CONFIG['captcha_minchars'], 2);
+                        GaiaBB\FormHelper::formTextBox($lang['text_captcha_chars_max'], "new_maxchars", $CONFIG['captcha_maxchars'], 2);
+                        GaiaBB\FormHelper::formSelectList($lang['text_captcha_color_type'], 'new_colortype', array(
+                        $lang['text_captcha_color_type_single'],
+                        $lang['text_captcha_color_type_multiple'],
+                        ), array(
+                        'single',
+                        'multiple',
+                        ), $colmanage, false);
+                        GaiaBB\FormHelper::formTextBox($lang['text_captcha_font_path'], 'new_fontpath', $CONFIG['captcha_fontpath'], 40);
+                        ?>
                         <tr class="ctrtablerow" bgcolor="<?php echo $THEME['altbg2'] ?>">
                             <td colspan="2"><input class="submit" type="submit"
                                                    name="captchasubmit"

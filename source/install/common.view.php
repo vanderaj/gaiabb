@@ -24,6 +24,8 @@
  *    along with GaiaBB.  If not, see <http://www.gnu.org/licenses/>.
  *
  **/
+
+// phpcs:disable PSR1.Files.SideEffects
 if (!defined('IN_PROGRAM') && (defined('DEBUG') && DEBUG == false)) {
     exit('This file is not designed to be called directly');
 }
@@ -55,9 +57,9 @@ function print_error($head, $msg, $die = true)
         </tr>
     </table>
     <?php
-view_shadow();
+    viewShadow();
     if ($die) {
-        view_footer();
+        viewFooter();
         exit();
     }
 }
@@ -139,7 +141,7 @@ function view_config($path)
     </table>
     </table>
     <?php
-view_shadow();
+    viewShadow();
 }
 
 /**
@@ -233,14 +235,14 @@ function view_eula($path)
                                                                  style="font-family: Courier, New Courier; font-size: 8pt"
                                                                  readonly="readonly">
     <?php
-$license = @file_get_contents(ROOT . "install/COPYING");
+    $license = @file_get_contents(ROOT . "install/COPYING");
     if ($license == '') {
         ?>
                             License not found! Please upload COPYING to the installation area.
         </textarea><br/>
                         <br/>
                         <?php
-} else {
+    } else {
         echo $license;
         ?>
                             </textarea><br/>
@@ -251,7 +253,7 @@ $license = @file_get_contents(ROOT . "install/COPYING");
                                         type="submit" value="I Agree To These Terms &gt;"/>
                             </form>
                             <?php
-}
+    }
     ?>
                     </td>
                 </tr>
@@ -262,7 +264,7 @@ $license = @file_get_contents(ROOT . "install/COPYING");
     </tr>
     </table>
     <?php
-view_shadow();
+    viewShadow();
 }
 
 /**
@@ -298,7 +300,7 @@ function view_backup($path, $boardType = "GaiaBB")
     </tr>
     </table>
     <?php
-view_shadow();
+    viewShadow();
 }
 
 /**
@@ -331,23 +333,23 @@ function view_admin($path)
         <td class="tablerow" bgcolor="#ffffff">
             <p>Please enter the username, password
                 <?php
-if ($path == "install") {
-        ?>
+                if ($path == "install") {
+                    ?>
                     , and e-mail address
                     <?php
-}
-    ?>
+                }
+                ?>
                 &nbsp;for the Super Administrator.</p>
-            <?php
-if ($path == "convert") {
-        ?>
-            <br/>
-            <p class="subTitle">Conversion Note:</p>
-            <p>
-                The admin credentials <b>must</b> be the same for both the original board and the fresh GaiaBB install.
                 <?php
-}
-    ?>
+                if ($path == "convert") {
+                    ?>
+                <br/>
+                <p class="subTitle">Conversion Note:</p>
+                <p>
+                The admin credentials <b>must</b> be the same for both the original board and the fresh GaiaBB install.
+                    <?php
+                }
+                ?>
                 <br/>
 
             <form action="index.php" method="post" autocomplete="off">
@@ -362,8 +364,8 @@ if ($path == "convert") {
                         <td><input type="password" name="frmPassword" size="32"/></td>
                     </tr>
                     <?php
-if ($action == "Create") {
-        ?>
+                    if ($action == "Create") {
+                        ?>
                         <tr>
                             <td>Confirm Password:</td>
                             <td><input type="password" name="frmPasswordCfm" size="32"></td>
@@ -373,8 +375,8 @@ if ($action == "Create") {
                             <td><input type="text" name="frmEmail" size="32"></td>
                         </tr>
                         <?php
-}
-    ?>
+                    }
+                    ?>
                     <tr>
                         <td><br/> <br/> <input type="hidden" name="path"
                                                value="<?php echo $path ?>"> <input type="hidden" name="step"
@@ -393,7 +395,7 @@ if ($action == "Create") {
     </tr>
     </table>
     <?php
-view_shadow();
+    viewShadow();
 }
 
 /**
@@ -457,7 +459,7 @@ function view_default_index()
     </tr>
     </table>
     <?php
-view_shadow();
+    viewShadow();
 }
 
 /**
@@ -470,8 +472,11 @@ view_shadow();
  * @return type, what the return does
  *
  */
-function view_header($title = "GaiaBB Installer", $path)
+function viewHeader($title, $path)
 {
+    if (empty($title)) {
+        $title = "GaiaBB Installer";
+    }
     $logo = 'images/logo.png';
     $installnavimg = $upgradenavimg = $repairnavimg = $convertnavimg = ROOT . "images/problue/home.gif";
     $navtext = '';
@@ -605,7 +610,7 @@ function view_header($title = "GaiaBB Installer", $path)
  * @return type, what the return does
  *
  */
-function view_footer()
+function viewFooter()
 {
     ?>
     <table align="center">
@@ -621,7 +626,7 @@ function view_footer()
     </table>
     <a id="bottom" name="bottom"></a>
     <?php
-if (DEBUG) {
+    if (DEBUG) {
         ?>
         <hr/>
         Session Object:
@@ -638,7 +643,7 @@ if (DEBUG) {
         print_r($debug_log);?>
         </pre>
         <?php
-}
+    }
     ?>
     </body>
     </html>
@@ -743,7 +748,7 @@ function view_database($path)
     </tr>
     </table>
     <?php
-view_shadow();
+    viewShadow();
 }
 
 /**
@@ -756,7 +761,7 @@ view_shadow();
  * @return type, what the return does
  *
  */
-function view_shadow()
+function viewShadow()
 {
     ?>
     <table cellspacing="0" cellpadding="0" border="0" width="97%"

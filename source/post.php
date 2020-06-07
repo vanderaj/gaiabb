@@ -42,7 +42,7 @@ eval('$css = "' . template('css') . '";');
 
 smcwcache();
 
-$forumController = new Forum();
+$forumController = new GaiaBB\Forum();
 
 $captcha = '';
 $pid = getRequestInt('pid');
@@ -102,19 +102,19 @@ isAuthorized();
 
 if ($tid !== 0) {
     $query = $db->query("SELECT fid, subject FROM " . X_PREFIX . "threads WHERE tid = '$tid' LIMIT 1");
-    if ($db->num_rows($query) == 1) {
-        $thread = $db->fetch_array($query);
+    if ($db->numRows($query) == 1) {
+        $thread = $db->fetchArray($query);
         $thread['subject'] = censor(stripslashes($thread['subject']));
         $fid = (int) $thread['fid'];
-        $db->free_result($query);
+        $db->freeResult($query);
     } else {
         error($lang['textnothread'], true, '', '', false, true, false, true);
     }
 }
 
 $query = $db->query("SELECT * FROM " . X_PREFIX . "forums WHERE fid = '$fid' AND status = 'on'");
-$forums = $db->fetch_array($query);
-$db->free_result($query);
+$forums = $db->fetchArray($query);
+$db->freeResult($query);
 $forums['name'] = stripslashes($forums['name']);
 
 if (($fid == 0 && $tid == 0) || isset($forums['type']) && $forums['type'] != 'forum' && $forums['type'] != 'sub' && $forums['fid'] != $fid) {
@@ -132,7 +132,7 @@ if (isset($forums['type']) && $forums['type'] == 'forum') {
 } else {
     if (isset($forums['fup'])) {
         $query = $db->query("SELECT name, fid FROM " . X_PREFIX . "forums WHERE fid = '$forums[fup]'");
-        $fup = $db->fetch_array($query);
+        $fup = $db->fetchArray($query);
         nav('<a href="' . 'viewforum.php?fid=' . $fup['fid'] . '">' . stripslashes($fup['name']) . '</a>');
         nav('<a href="' . 'viewforum.php?fid=' . $fid . '">' . stripslashes($forums['name']) . '</a>');
         btitle(stripslashes($fup['name']));
@@ -160,7 +160,7 @@ $listed_icons = 0;
 $icons = '<input type="radio" name="posticon" value="" />&nbsp;' . $lang['textnone'];
 if ($action != 'edit') {
     $qsmilie = $db->query("SELECT url, code FROM " . X_PREFIX . "smilies WHERE type = 'picon'");
-    while (($smilie = $db->fetch_array($qsmilie)) != false) {
+    while (($smilie = $db->fetchArray($qsmilie)) != false) {
         $icons .= '&nbsp;<input type="radio" name="posticon" value="' . $smilie['url'] . '" />&nbsp;<img src="' . $THEME['smdir'] . '/' . $smilie['url'] . '" alt="' . $smilie['url'] . '" title="' . $smilie['url'] . '" border="0px" />';
         $listed_icons += 1;
         if ($listed_icons == 10) {
@@ -168,7 +168,7 @@ if ($action != 'edit') {
             $listed_icons = 0;
         }
     }
-    $db->free_result($qsmilie);
+    $db->freeResult($qsmilie);
 }
 
 // evaluate which bbcode javascript file to use
@@ -202,7 +202,27 @@ if (isset($forums['subjectprefixes']) && !empty($forums['subjectprefixes'])) {
 $allowimgcode = (isset($forums['allowimgcode']) && $forums['allowimgcode'] == 'yes') ? $lang['texton'] : $lang['textoff'];
 $allowsmilies = (isset($forums['allowsmilies']) && $forums['allowsmilies'] == 'yes') ? $lang['texton'] : $lang['textoff'];
 $allowbbcode = (isset($forums['allowbbcode']) && $forums['allowbbcode'] == 'yes') ? $lang['texton'] : $lang['textoff'];
-$pperm['type'] = (isset($action) && $action == 'newthread') ? 'thread' : (isset($action) && $action == 'reply') ? 'reply' : ((isset($action) && $action == 'delete') ? 'delete' : 'edit');
+
+$pperm['type'] = '';
+if (isset($action)) {
+    switch ($action) {
+        case 'newthread':
+            $pperm['type'] = 'thread';
+            break;
+
+        case 'reply':
+            $pperm['type'] = 'reply';
+            break;
+
+        case 'delete':
+            $pperm['type'] = 'delete';
+            break;
+
+        default:
+            $pperm['type'] = 'edit';
+            break;
+    }
+}
 
 if (!postperm($forums, $pperm['type'])) {
     error($lang['privforummsg'], true, '', '', false, true, false, true);
@@ -267,8 +287,8 @@ $config_cache->expire('whosonline');
 $config_cache->expire('forumjump');
 
 $query = $db->query("SELECT * FROM " . X_PREFIX . "forums WHERE fid = '$fid' AND status = 'on'");
-$forum = $db->fetch_array($query);
-$db->free_result($query);
+$forum = $db->fetchArray($query);
+$db->freeResult($query);
 $authorization = privfcheck($forum['private'], $forum['userlist']);
 if (!$authorization) {
     error($lang['privforummsg'], true, '', '', false, true, false, true);
@@ -374,8 +394,8 @@ switch ($action) {
 
             if (!X_ADMIN) {
                 $query = $db->query("SELECT l.username, l.dateline, f.type, f.fup FROM " . X_PREFIX . "forums f LEFT JOIN " . X_PREFIX . "lastposts l ON f.lastpost = l.tid WHERE fid = '$fid' LIMIT 1");
-                $for = $db->fetch_array($query);
-                $db->free_result($query);
+                $for = $db->fetchArray($query);
+                $db->freeResult($query);
 
                 $rightnow = $onlinetime - $CONFIG['floodctrl'];
                 if ($rightnow <= $for['dateline'] && $username == $for['username']) {
@@ -389,7 +409,7 @@ switch ($action) {
                 if (!$db->result($query, 0)) {
                     exit();
                 }
-                $db->free_result($query);
+                $db->freeResult($query);
             } else {
                 $posticon = '';
             }
@@ -425,10 +445,10 @@ switch ($action) {
             $forums['subjectprefixes'] = $db->escape(checkInput($forums['subjectprefixes']));
 
             $db->query("INSERT INTO " . X_PREFIX . "threads (fid, subject, icon, views, replies, author, closed, topped) VALUES ($fid, '" . $db->escape($subjectprefix) . " $subject', '$posticon', 0, 0, '$username', '', 0)");
-            $tid = $db->insert_id();
+            $tid = $db->insertId();
 
             $db->query("INSERT INTO " . X_PREFIX . "posts (fid, tid, author, message, subject, dateline, icon, usesig, useip, bbcodeoff, smileyoff) VALUES ($fid, $tid, '$username', '$message', '" . $db->escape($subjectprefix) . " $subject', " . $db->time($onlinetime) . ", '$posticon', '$usesig', '$onlineip', '$bbcodeoff', '$smileyoff')");
-            $pid = $db->insert_id();
+            $pid = $db->insertId();
 
             $db->query("INSERT INTO " . X_PREFIX . "lastposts (tid, uid, username, dateline, pid) VALUES ($tid, " . $self['uid'] . ", '$username', '$onlinetime', $pid)");
 
@@ -448,7 +468,7 @@ switch ($action) {
 
                 $query = $db->query("SELECT vote_id, vote_id FROM " . X_PREFIX . "vote_desc WHERE topic_id = '$tid'");
                 if ($query) {
-                    $vote_id = $db->fetch_array($query);
+                    $vote_id = $db->fetchArray($query);
                     $vote_id = intval($vote_id['vote_id']);
                     if ($vote_id > 0) {
                         $db->query("DELETE FROM " . X_PREFIX . "vote_results WHERE vote_id = '$vote_id'");
@@ -456,10 +476,10 @@ switch ($action) {
                         $db->query("DELETE FROM " . X_PREFIX . "vote_desc WHERE vote_id = '$vote_id'");
                     }
                 }
-                $db->free_result($query);
+                $db->freeResult($query);
 
                 $db->query("INSERT INTO " . X_PREFIX . "vote_desc (topic_id, vote_text) VALUES ($tid, '$subject')");
-                $vote_id = $db->insert_id();
+                $vote_id = $db->insertId();
 
                 $i = 1;
                 foreach ($pollopts as $p) {
@@ -472,8 +492,8 @@ switch ($action) {
 
             if ($emailnotify == 'yes') {
                 $query = $db->query("SELECT tid FROM " . X_PREFIX . "subscriptions WHERE tid = '$tid' AND username = '" . $self['username'] . "' AND type = 'subscription'");
-                $thread = $db->fetch_array($query);
-                $db->free_result($query);
+                $thread = $db->fetchArray($query);
+                $db->freeResult($query);
                 if (!$thread) {
                     $db->query("INSERT INTO " . X_PREFIX . "subscriptions (tid, username, type) VALUES ($tid, '$username', 'subscription')");
                 }
@@ -527,7 +547,7 @@ switch ($action) {
 
             $query = $db->query("SELECT count(tid) FROM " . X_PREFIX . "posts WHERE tid = '$tid'");
             $posts = $db->result($query, 0);
-            $db->free_result($query);
+            $db->freeResult($query);
 
             $topicpages = quickpage($posts, $self['ppp']);
 
@@ -562,8 +582,8 @@ switch ($action) {
 
             if ($repquote > 0) {
                 $query = $db->query("SELECT p.message, p.fid, p.author, f.private AS fprivate, f.userlist AS fuserlist, f.password AS fpassword FROM " . X_PREFIX . "posts p, " . X_PREFIX . "forums f WHERE pid = '$repquote' AND f.fid = p.fid");
-                $thaquote = $db->fetch_array($query);
-                $db->free_result($query);
+                $thaquote = $db->fetchArray($query);
+                $db->freeResult($query);
                 $quotefid = $thaquote['fid'];
                 $pass = trim($thaquote['fpassword']);
 
@@ -582,7 +602,7 @@ switch ($action) {
 
             $querytop = $db->query("SELECT COUNT(tid) FROM " . X_PREFIX . "posts WHERE tid = '$tid'");
             $replynum = $db->result($querytop, 0);
-            $db->free_result($querytop);
+            $db->freeResult($querytop);
 
             if ($replynum >= $self['ppp']) {
                 $threadlink = 'viewtopic.php?fid=' . $fid . '&amp;tid=' . $tid;
@@ -591,7 +611,7 @@ switch ($action) {
             } else {
                 $thisbg = $THEME['altbg1'];
                 $query = $db->query("SELECT * FROM " . X_PREFIX . "posts WHERE tid = '$tid' ORDER BY dateline DESC");
-                while (($post = $db->fetch_array($query)) != false) {
+                while (($post = $db->fetchArray($query)) != false) {
                     $date = gmdate($self['dateformat'], $post['dateline'] + ($self['timeoffset'] * 3600) + $self['daylightsavings']);
                     $time = gmdate($self['timecode'], $post['dateline'] + ($self['timeoffset'] * 3600) + $self['daylightsavings']);
                     $poston = $lang['textposton'] . ' ' . $date . ' ' . $lang['textat'] . ' ' . $time;
@@ -612,7 +632,7 @@ switch ($action) {
                         $thisbg = $THEME['altbg2'];
                     }
                 }
-                $db->free_result($query);
+                $db->freeResult($query);
             }
 
             if (isset($forums['attachstatus']) && $forums['attachstatus'] == 'on') {
@@ -644,15 +664,15 @@ switch ($action) {
                 if (!$db->result($query, 0)) {
                     exit();
                 }
-                $db->free_result($query);
+                $db->freeResult($query);
             } else {
                 $posticon = '';
             }
 
             if (!X_ADMIN) {
                 $query = $db->query("SELECT l.username, l.dateline, f.type, f.fup FROM " . X_PREFIX . "forums f LEFT JOIN " . X_PREFIX . "lastposts l ON f.lastpost = l.tid WHERE fid = '$fid' LIMIT 1");
-                $for = $db->fetch_array($query);
-                $db->free_result($query);
+                $for = $db->fetchArray($query);
+                $db->freeResult($query);
 
                 $rightnow = $onlinetime - $CONFIG['floodctrl'];
                 if ($rightnow <= $for['dateline'] && $username == $for['username']) {
@@ -693,8 +713,8 @@ switch ($action) {
             $forums['subjectprefixes'] = $db->escape(trim($forums['subjectprefixes']));
 
             $query = $db->query("SELECT closed, topped FROM " . X_PREFIX . "threads WHERE fid = '$fid' AND tid = '$tid'");
-            $closed1 = $db->fetch_array($query);
-            $db->free_result($query);
+            $closed1 = $db->fetchArray($query);
+            $db->freeResult($query);
             $closed = $closed1['closed'];
             if ($closed == 'yes' && !X_STAFF) {
                 error($lang['closedmsg'], true, '', '', false, true, false, true);
@@ -702,7 +722,7 @@ switch ($action) {
                 $subject = checkInput($subject);
                 $message = checkInput($message);
                 $db->query("INSERT INTO " . X_PREFIX . "posts (fid, tid, author, message, subject, dateline, icon, usesig, useip, bbcodeoff, smileyoff) VALUES ($fid, $tid, '$username', '$message', '" . $db->escape($subjectprefix) . " $subject', " . $db->time($onlinetime) . ", '$posticon', '$usesig', '$onlineip', '$bbcodeoff', '$smileyoff')");
-                $pid = $db->insert_id();
+                $pid = $db->insertId();
 
                 if ((X_STAFF) && $toptopic == 'yes') {
                     if (X_MOD && !isset($modCheck)) {
@@ -757,7 +777,7 @@ switch ($action) {
 
                 $query = $db->query("SELECT COUNT(pid) FROM " . X_PREFIX . "posts WHERE pid <= $pid AND tid = '$tid'");
                 $posts = $db->result($query, 0);
-                $db->free_result($query);
+                $db->freeResult($query);
 
                 if (isset($self['psorting']) && $self['psorting'] == 'ASC' && ($posts > $self['ppp'])) {
                     $topicpages = quickpage($posts, $self['ppp']);
@@ -767,7 +787,7 @@ switch ($action) {
 
                 $date = $db->result($db->query("SELECT dateline FROM " . X_PREFIX . "posts WHERE tid = '$tid' AND pid < '$pid' ORDER BY pid ASC LIMIT 1"), 0);
                 $subquery = $db->query("SELECT m.username, m.email, m.lastvisit, m.status FROM " . X_PREFIX . "subscriptions f LEFT JOIN " . X_PREFIX . "members m ON (m.username = f.username) WHERE f.type = 'subscription' AND f.tid = '$tid' AND f.username != '$username'");
-                while (($subs = $db->fetch_array($subquery)) != false) {
+                while (($subs = $db->fetchArray($subquery)) != false) {
                     if ($subs['status'] == 'Banned' || $subs['lastvisit'] < $date) {
                         continue;
                     }
@@ -778,16 +798,16 @@ switch ($action) {
                     $mailsys->setFrom($CONFIG['adminemail'], $CONFIG['bbname']);
                     $mailsys->setSubject($lang['textsubsubject'] . ' ' . $thread['subject']);
                     $mailsys->setMessage($username . ' ' . $lang['textsubbody'] . " \n" . $threadurl);
-                    $mailsys->Send();
+                    $mailsys->sendMail(); // XXX
                 }
-                $db->free_result($subquery);
+                $db->freeResult($subquery);
 
                 if ($emailnotify == 'yes') {
                     $query = $db->query("SELECT tid FROM " . X_PREFIX . "subscriptions WHERE tid = '$tid' AND username = '" . $self['username'] . "' AND type = 'subscription'");
-                    if ($db->num_rows($query) < 1) {
+                    if ($db->numRows($query) < 1) {
                         $db->query("INSERT INTO " . X_PREFIX . "subscriptions (tid, username, type) VALUES ($tid, '$username', 'subscription')");
                     }
-                    $db->free_result($query);
+                    $db->freeResult($query);
                 }
 
                 eval('echo "' . template('header') . '";');
@@ -816,16 +836,16 @@ switch ($action) {
 
         if (onSubmit('deletepostsubmit')) {
             $query = $db->query("SELECT pid FROM " . X_PREFIX . "posts WHERE tid = '$tid' ORDER BY dateline LIMIT 1");
-            $isfirstpost = $db->fetch_array($query);
-            $db->free_result($query);
+            $isfirstpost = $db->fetchArray($query);
+            $db->freeResult($query);
 
             $query = $db->query("SELECT p.author as author, m.status as status, p.subject as subject FROM " . X_PREFIX . "posts p LEFT JOIN " . X_PREFIX . "members m ON p.author = m.username WHERE pid = '$pid' AND tid = '$tid' AND fid = '$fid'");
-            $orig = $db->fetch_array($query);
-            $db->free_result($query);
+            $orig = $db->fetchArray($query);
+            $db->freeResult($query);
 
             $query = $db->query("SELECT COUNT(pid) FROM " . X_PREFIX . "posts WHERE pid <= $pid AND tid = '$tid'");
             $ppages = $db->result($query, 0);
-            $db->free_result($query);
+            $db->freeResult($query);
 
             if (isset($self['psorting']) && $self['psorting'] == 'ASC' && ($ppages > $self['ppp'])) {
                 $topicpages = quickpage($ppages, $self['ppp']);
@@ -880,8 +900,8 @@ switch ($action) {
                     message($lang['deletepostmsg'], false, '', '', 'viewtopic.php?tid=' . $tid . '&page=' . $topicpages, true, false, true);
                 } elseif ($isfirstpost['pid'] == $pid) {
                     $query = $db->query("SELECT pid FROM " . X_PREFIX . "posts WHERE tid = '$tid'");
-                    $numrows = $db->num_rows($query);
-                    $db->free_result($query);
+                    $numrows = $db->numRows($query);
+                    $db->freeResult($query);
 
                     if ($numrows == 1) {
                         if (isset($forums['postcount']) && $forums['postcount'] == 'on') {
@@ -952,8 +972,8 @@ switch ($action) {
             eval('$postdelete = "' . template('post_edit_delete') . '";');
 
             $queryextra = $db->query("SELECT f.* FROM " . X_PREFIX . "posts p LEFT JOIN " . X_PREFIX . "forums f ON (f.fid = p.fid) WHERE p.tid = '$tid' AND p.pid = '$pid'");
-            $forum = $db->fetch_array($queryextra);
-            $db->free_result($queryextra);
+            $forum = $db->fetchArray($queryextra);
+            $db->freeResult($queryextra);
 
             $authorization = privfcheck($forum['private'], $forum['userlist']);
             if (!$authorization) {
@@ -970,14 +990,14 @@ switch ($action) {
                     'icon' => $posticon,
                 );
                 $query = $db->query("SELECT filename, filesize, downloads FROM " . X_PREFIX . "attachments WHERE pid = '$pid' AND tid = '$tid'");
-                if ($db->num_rows($query) > 0) {
-                    $postinfo = array_merge($postinfo, $db->fetch_array($query));
+                if ($db->numRows($query) > 0) {
+                    $postinfo = array_merge($postinfo, $db->fetchArray($query));
                 }
-                $db->free_result($query);
+                $db->freeResult($query);
             } else {
                 $query = $db->query("SELECT p.* FROM " . X_PREFIX . "posts p WHERE p.pid = '$pid' AND p.tid = '$tid' AND p.fid = '$forum[fid]'");
-                $postinfo = $db->fetch_array($query);
-                $db->free_result($query);
+                $postinfo = $db->fetchArray($query);
+                $db->freeResult($query);
             }
 
             if (isset($postinfo['filesize'])) {
@@ -1002,7 +1022,7 @@ switch ($action) {
             }
 
             $querysmilie = $db->query("SELECT * FROM " . X_PREFIX . "smilies WHERE type = 'picon' ORDER BY id ASC");
-            while (($smilie = $db->fetch_array($querysmilie)) != false) {
+            while (($smilie = $db->fetchArray($querysmilie)) != false) {
                 if ($postinfo['icon'] == $smilie['url']) {
                     $icons .= '&nbsp;<input type="radio" name="posticon" value="' . $smilie['url'] . '" ' . $cheHTML . ' />&nbsp;<img src="' . $THEME['smdir'] . '/' . $smilie['url'] . '" alt="' . $smilie['code'] . '" title="' . $smilie['code'] . '" border="0px" />';
                 } else {
@@ -1015,7 +1035,7 @@ switch ($action) {
                     $listed_icons = 0;
                 }
             }
-            $db->free_result($querysmilie);
+            $db->freeResult($querysmilie);
 
             $postinfo['subject'] = stripslashes(censor($postinfo['subject']));
             $postinfo['subject'] = str_replace('"', "&quot;", $postinfo['subject']);
@@ -1029,13 +1049,13 @@ switch ($action) {
 
             $q = $db->query("SELECT * FROM " . X_PREFIX . "attachments WHERE pid = '$pid'");
             $i = 0;
-            if ($db->num_rows($q) > 0) {
-                while (($attach = $db->fetch_array($q)) != false) {
+            if ($db->numRows($q) > 0) {
+                while (($attach = $db->fetchArray($q)) != false) {
                     eval('$attachment[] = "' . template('post_edit_attachment') . '";');
                     $i++;
                 }
                 $attachment = implode("\n", $attachment);
-                $db->free_result($q);
+                $db->freeResult($q);
             } else {
                 $attachment = '';
             }
@@ -1064,14 +1084,14 @@ switch ($action) {
                 if (!$db->result($query, 0)) {
                     exit();
                 }
-                $db->free_result($query);
+                $db->freeResult($query);
             } else {
                 $posticon = '';
             }
 
             $query = $db->query("SELECT pid FROM " . X_PREFIX . "posts WHERE tid = '$tid' ORDER BY dateline LIMIT 1");
-            $isfirstpost = $db->fetch_array($query);
-            $db->free_result($query);
+            $isfirstpost = $db->fetchArray($query);
+            $db->freeResult($query);
 
             if (empty($subject) && $pid == $isfirstpost['pid']) {
                 error($lang['textnosubject']);
@@ -1089,8 +1109,8 @@ switch ($action) {
             }
 
             $query = $db->query("SELECT p.author as author, m.status as status, p.subject as subject FROM " . X_PREFIX . "posts p LEFT JOIN " . X_PREFIX . "members m ON p.author = m.username WHERE pid = '$pid' AND tid = '$tid' AND fid = '$fid'");
-            $orig = $db->fetch_array($query);
-            $db->free_result($query);
+            $orig = $db->fetchArray($query);
+            $db->freeResult($query);
 
             if ((X_STAFF && $status1 == 'Moderator') || $username == $orig['author']) {
                 if ($CONFIG['allowrankedit'] == 'on') {
@@ -1260,7 +1280,7 @@ switch ($action) {
 
                 $query = $db->query("SELECT author FROM " . X_PREFIX . "posts WHERE pid = '$pid'");
                 $postUser = $db->result($query, 0);
-                $db->free_result($query);
+                $db->freeResult($query);
 
                 $delete = formVar('delete');
                 if (isset($delete) && $delete == 'yes' && !($isfirstpost['pid'] == $pid)) {
@@ -1279,16 +1299,16 @@ switch ($action) {
                     }
                 } elseif (isset($delete) && $delete == 'yes' && $isfirstpost['pid'] == $pid) {
                     $query = $db->query("SELECT pid FROM " . X_PREFIX . "posts WHERE tid = '$tid'");
-                    $numrows = $db->num_rows($query);
-                    $db->free_result($query);
+                    $numrows = $db->numRows($query);
+                    $db->freeResult($query);
 
                     if ($numrows == 1) {
                         if (isset($forums['postcount']) && $forums['postcount'] == 'on') {
                             $query = $db->query("SELECT author FROM " . X_PREFIX . "posts WHERE tid = '$tid'");
-                            while (($result = $db->fetch_array($query)) != false) {
+                            while (($result = $db->fetchArray($query)) != false) {
                                 $db->query("UPDATE " . X_PREFIX . "members SET postnum = postnum-1 WHERE username = '" . $db->escape($result['author']) . "'");
                             }
-                            $db->free_result($query);
+                            $db->freeResult($query);
                         }
                         $db->query("DELETE FROM " . X_PREFIX . "threads WHERE tid = '$tid'");
                         $db->query("DELETE FROM " . X_PREFIX . "attachments WHERE tid = '$tid'");
@@ -1321,7 +1341,7 @@ switch ($action) {
             if ($threaddelete != 'yes') {
                 $query = $db->query("SELECT COUNT(pid) FROM " . X_PREFIX . "posts WHERE pid <= $pid AND tid = '$tid' AND fid = '$fid'");
                 $posts = $db->result($query, 0);
-                $db->free_result($query);
+                $db->freeResult($query);
                 if (isset($self['psorting']) && $self['psorting'] == 'ASC') {
                     $topicpages = quickpage($posts, $self['ppp']);
                 } else {
@@ -1335,7 +1355,7 @@ switch ($action) {
         break;
     case 'captcha':
         require_once 'captcha.class.php';
-        $captcha = new captcha();
+        $captcha = new GaiaBB\Captcha();
         break;
     default:
         error($lang['textnoaction'], true, '', '', false, true, false, true);

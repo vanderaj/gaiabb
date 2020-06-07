@@ -28,9 +28,13 @@
  *    along with GaiaBB.  If not, see <http://www.gnu.org/licenses/>.
  *
  **/
+
+// phpcs:disable PSR1.Files.SideEffects
 if (!defined('IN_PROGRAM') && (defined('DEBUG') && DEBUG == false)) {
     exit('This file is not designed to be called directly');
 }
+
+namespace GaiaBB;
 
 class Address
 {
@@ -97,8 +101,7 @@ class Address
         foreach ($addresses as $key => $address) {
             if ($address == $self['username']) {
                 $this->blistmsg($lang['addresswarnaddself']);
-            } else
-            if (empty($address) || (strlen(trim($address)) == 0)) {
+            } elseif (empty($address) || (strlen(trim($address)) == 0)) {
                 $this->blistmsg($lang['noaddressselected'], '', true);
             } else {
                 $address = addslashes($address);
@@ -115,7 +118,7 @@ class Address
                         $this->blistmsg($address . ' ' . $lang['addressaddedmsg'], 'address.php');
                     }
                 }
-                $db->free_result($q);
+                $db->freeResult($q);
             }
         }
     }
@@ -127,7 +130,7 @@ class Address
 
         $addresses = array();
         $q = $db->query("SELECT addressname FROM " . X_PREFIX . "addresses WHERE username = '" . $self['username'] . "' ORDER BY addressname");
-        while (($address = $db->fetch_array($q)) != false) {
+        while (($address = $db->fetchArray($q)) != false) {
             eval('$addresses[] = "' . template('addresslist_edit_address') . '";');
         }
         if (count($addresses) > 0) {
@@ -136,7 +139,7 @@ class Address
             unset($addresses);
             $addresses = '';
         }
-        $db->free_result($q);
+        $db->freeResult($q);
         eval('echo stripslashes("' . template('addresslist_edit') . '");');
     }
 
@@ -168,15 +171,14 @@ class Address
         $addresses['offline'] = $addresses['online'] = '';
 
         $q = $db->query("SELECT a.addressname, w.invisible, w.username FROM " . X_PREFIX . "addresses a LEFT JOIN " . X_PREFIX . "whosonline w ON(a.addressname = w.username) WHERE a.username = '" . $self['username'] . "' ORDER BY a.addressname");
-        while (($address = $db->fetch_array($q)) != false) {
+        while (($address = $db->fetchArray($q)) != false) {
             if ($address['invisible'] == 1) {
                 if (!X_ADMIN) {
                     eval("\$addresses['offline'] .= \"" . template('address_pm_off') . "\";");
                 } else {
                     eval("\$addresses['online'] .= \"" . template('address_pm_inv') . "\";");
                 }
-            } else
-            if ($address['username'] != '') {
+            } elseif ($address['username'] != '') {
                 eval("\$addresses['online'] .= \"" . template('address_pm_on') . "\";");
             } else {
                 eval("\$addresses['offline']   .= \"" . template('address_pm_off') . "\";");
@@ -188,7 +190,7 @@ class Address
         } else {
             eval('echo stripslashes("' . template('address_pm') . '");');
         }
-        $db->free_result($q);
+        $db->freeResult($q);
     }
 
     public function display()
@@ -199,7 +201,7 @@ class Address
         $q = $db->query("SELECT a.addressname, w.invisible, w.username FROM " . X_PREFIX . "addresses a LEFT JOIN " . X_PREFIX . "whosonline w ON(a.addressname = w.username) WHERE a.username = '" . $self['username'] . "' ORDER BY a.addressname");
         $addresses = array();
         $addresses['offline'] = $addresses['online'] = '';
-        while (($address = $db->fetch_array($q)) != false) {
+        while (($address = $db->fetchArray($q)) != false) {
             if (!empty($address['username'])) {
                 if ($address['invisible'] == 1) {
                     if (!X_ADMIN) {
@@ -216,7 +218,7 @@ class Address
                 eval("\$addresses['offline'] .= \"" . template('addresslist_address_offline') . "\";");
             }
         }
-        $db->free_result($q);
+        $db->freeResult($q);
         eval('echo stripslashes("' . template('addresslist') . '");');
     }
 
@@ -228,7 +230,7 @@ class Address
             return false;
         }
 
-        $owner = $db->escape(member::findUsernameByUid($uid));
+        $owner = $db->escape(Member::findUsernameByUid($uid));
         $db->query("DELETE FROM " . X_PREFIX . "addresses WHERE username = '$owner'");
     }
 }

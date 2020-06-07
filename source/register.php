@@ -179,12 +179,12 @@ function viewRegister()
         $themelist[] = '<select name="thememem">';
         $themelist[] = '<option value="0">' . $lang['textusedefault'] . '</option>';
         $query = $db->query("SELECT themeid, name FROM " . X_PREFIX . "themes WHERE themestatus = 'on' ORDER BY name ASC");
-        while (($themeinfo = $db->fetch_array($query)) != false) {
+        while (($themeinfo = $db->fetchArray($query)) != false) {
             $themelist[] = '<option value="' . intval($themeinfo['themeid']) . '">' . stripslashes($themeinfo['name']) . '</option>';
         }
         $themelist[] = '</select>';
         $themelist = implode("\n", $themelist);
-        $db->free_result($query);
+        $db->freeResult($query);
 
         if ($CONFIG['predformat'] == 'on') {
             $df = "<tr>\n\t<td bgcolor=\"$THEME[altbg1]\" class=\"tablerow\" width=\"22%\">$lang[dateformat1]</td>\n";
@@ -194,7 +194,7 @@ function viewRegister()
 
         $df = $df . "\t<td bgcolor=\"$THEME[altbg2]\" class=\"tablerow\"><select name=\"dateformat1\">\n";
         $querydf = $db->query("SELECT * FROM " . X_PREFIX . "dateformats");
-        while (($dformats = $db->fetch_array($querydf)) != false) {
+        while (($dformats = $db->fetchArray($querydf)) != false) {
             if ($CONFIG['predformat'] == 'on') {
                 $example = gmdate(formatDate($dformats['dateformat']), $gbblva + ($self['timeoffset'] * 3600) + $self['daylightsavings']);
             } else {
@@ -208,7 +208,7 @@ function viewRegister()
             }
         }
         $df = $df . "\t</select>\n\t</td>\n</tr>";
-        $db->free_result($querydf);
+        $db->freeResult($querydf);
 
         $timeformatlist = array();
         $timeformatlist[] = '<select name="timeformat1">';
@@ -262,7 +262,7 @@ function doRegister()
     $dateformat1 = formVar('dateformat1');
     $timeoffset1 = formInt('timeoffset1');
 
-    $member = new member();
+    $member = new GaiaBB\Member();
 
     if (preg_match('/[\]\[.,!@#~$%\^&*()+=\/\\\\:;?|.<>{}]/', $username)) {
         error($lang['badusername'], false, '', '', 'register.php?action=reg', true, false, true);
@@ -275,8 +275,8 @@ function doRegister()
     if ($CONFIG['ipreg'] == 'on') {
         $time = $onlinetime - 86400;
         $query = $db->query("SELECT uid FROM " . X_PREFIX . "members WHERE regip = '$onlineip' AND regdate >= '$time'");
-        if ($db->num_rows($query) >= 1) {
-            $db->free_result($query);
+        if ($db->numRows($query) >= 1) {
+            $db->freeResult($query);
             error($lang['reg_today'], false, '', '', 'register.php?action=reg', true, false, true);
         }
     }
@@ -394,12 +394,10 @@ function doRegister()
     }
 
     if ($CONFIG['emailcheck'] == 'on') {
-        if (empty($CONFIG['adminemail'])) // The mail class can handle this error, but it'll describe it vaguely
-        {
+        if (empty($CONFIG['adminemail'])) {
             error($lang['noadminemail'], false, '', '', 'cp_board.php', true, false, true);
         }
-        if (empty($CONFIG['bbname'])) // The mail class can handle this error, but it'll describe it vaguely
-        {
+        if (empty($CONFIG['bbname'])) {
             error($lang['nobbname'], false, '', '', 'cp_board.php', true, false, true);
         }
 
@@ -409,7 +407,7 @@ function doRegister()
         $mailsys->setFrom($CONFIG['adminemail'], $CONFIG['bbname']);
         $mailsys->setSubject($lang['textyourpw']);
         $mailsys->setMessage($messagebody);
-        $mailsys->Send();
+        $mailsys->sendMail();   // XXX
     } else {
         $uid = $member->findUidByUsername($username);
 
@@ -444,10 +442,10 @@ function notifyViaPM($username)
         for ($i = 0; $i < count($member); $i++) {
             $member[$i] = trim($member[$i]);
             $mailquery = $db->query("SELECT * FROM " . X_PREFIX . "members WHERE username = '$member[$i]'");
-            while (($admin = $db->fetch_array($mailquery)) != false) {
+            while (($admin = $db->fetchArray($mailquery)) != false) {
                 $db->query("INSERT INTO " . X_PREFIX . "pm (pmid, msgto, msgfrom, type, owner, folder, subject, message, dateline, readstatus, sentstatus, usesig) VALUES ('', '$admin[username]', '$admin[username]', 'incoming', '$admin[username]', 'Inbox', '$lang[newmember] " . $db->escape($CONFIG['bbname']) . "', '$lang[newmember3]\n\n$username', '$onlinetime', 'no', 'yes', 'no')");
             }
-            $db->free_result($mailquery);
+            $db->freeResult($mailquery);
         }
     }
 }
@@ -466,19 +464,18 @@ function notifyViaEmail($username)
     global $db, $mailsys, $CONFIG, $lang, $charset;
 
     if (!empty($CONFIG['usernamenotify'])) {
-
         $member = explode(',', $CONFIG['usernamenotify']);
         for ($i = 0; $i < count($member); $i++) {
             $member[$i] = trim($member[$i]);
             $mailquery = $db->query("SELECT * FROM " . X_PREFIX . "members WHERE username = '$member[$i]'");
-            while (($notify = $db->fetch_array($mailquery)) != false) {
+            while (($notify = $db->fetchArray($mailquery)) != false) {
                 $mailsys->setTo($notify['email']);
                 $mailsys->setFrom($CONFIG['adminemail'], $CONFIG['bbname']);
                 $mailsys->setSubject($lang['textnewmember']);
                 $mailsys->setMessage($lang['textnewmember2']);
-                $mailsys->Send();
+                $mailsys->sendMail(); // XXX
             }
-            $db->free_result($mailquery);
+            $db->freeResult($mailquery);
         }
     }
 }
@@ -507,7 +504,7 @@ if ($CONFIG['regstatus'] == 'off') {
 $time = $onlinetime - 86400;
 $query = $db->query("SELECT COUNT(uid) FROM " . X_PREFIX . "members WHERE regdate > '$time'");
 if ($db->result($query, 0) > $CONFIG['max_reg_day']) {
-    $db->free_result($query);
+    $db->freeResult($query);
     nav($lang['textregister']);
     btitle($lang['textregister']);
     eval('echo "' . template('header') . '";');
@@ -517,12 +514,11 @@ if ($db->result($query, 0) > $CONFIG['max_reg_day']) {
 switch ($action) {
     case 'captcha':
         require_once 'class/captcha.class.php';
-        $captcha = new captcha();
+        $captcha = new GaiaBB\Captcha();
         nav($lang['textregister']);
         btitle($lang['textregister']);
         break;
     case 'coppa':
-
         if ($CONFIG['coppa'] == 'off') {
             redirect('register.php?action=reg', 0);
         }

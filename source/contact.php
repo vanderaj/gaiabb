@@ -30,7 +30,6 @@
  **/
 
 require_once 'header.php';
-require_once 'include/validate.inc.php';
 
 loadtpl('contactus');
 
@@ -96,11 +95,11 @@ if (onSubmit('contactsubmit')) {
         $mailsys->setFrom($email, $name);
         $mailsys->setSubject('[' . $CONFIG['bbname'] . '] ' . $subject);
         $mailsys->setMessage($message);
-        $mailsys->Send();
+        $mailsys->sendMail();
 
         message($lang['contactsubmitted'], false, '', '', 'index.php', true, false, true);
     }
 }
 
 loadtime();
-eval('echo "' . template('footer') . '";');
+eval('echo "' . template('footer') . '";'); // XXX

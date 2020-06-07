@@ -61,7 +61,7 @@ function view_convert_backup($path, $boardType = "XMB")
     </tr>
     </table>
     <?php
-view_shadow();
+    viewShadow();
 }
 
 /**
@@ -95,7 +95,7 @@ function view_convert_index($path)
     </tr>
     </table>
     <?php
-view_shadow();
+    viewShadow();
 }
 
 /**
@@ -231,8 +231,7 @@ function view_convert_action($boardtype = 'XMB')
 {
     output_buffering(false);
     ?>
-    <script src="../js/progressbar.js" type="text/javascript"
-            language="javascript1.2"></script>
+    <script src="../js/progressbar.js" type="text/javascript" language="javascript1.2"></script>
     <table cellspacing="0" cellpadding="0" border="0" width="97%"
            align="center" bgcolor="#5176B5">
         <tr>
@@ -252,8 +251,7 @@ function view_convert_action($boardtype = 'XMB')
                                 </tr>
                                 <tr>
                                     <td>
-                                        <script type="text/javascript" language="javascript1.2">
-                                            <!--
+                                        <script type="text/javascript">
                                             var convertBar = new progressBar(
                                                 1,         //border thickness
                                                 '#000000', //border colour
@@ -263,7 +261,6 @@ function view_convert_action($boardtype = 'XMB')
                                                 16,        //height of bar (excluding border)
                                                 1          //direction of progress: 1 = right, 2 = down, 3 = left, 4 = up
                                             );
-                                            //-->
                                         </script>
                                     </td>
                                 </tr>
@@ -282,7 +279,7 @@ function view_convert_action($boardtype = 'XMB')
         </tr>
     </table>
     <?php
-return "convertBar";
+    return "convertBar";
 }
 
 /**

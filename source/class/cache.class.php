@@ -32,6 +32,8 @@ if (!defined('IN_PROGRAM') && (defined('DEBUG') && DEBUG == false)) {
     exit('This file is not designed to be called directly');
 }
 
+namespace GaiaBB;
+
 class Cacheable
 {
 

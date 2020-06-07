@@ -29,6 +29,7 @@
  *
  **/
 
+// phpcs:disable PSR1.Files.SideEffects
 define('ROOT', '../');
 define('ROOTINC', '../include/');
 define('ROOTCLASS', '../class/');
@@ -36,7 +37,7 @@ define('ROOTHELPER', '../helper/');
 
 require_once '../header.php';
 require_once '../include/admincp.inc.php';
-require_once '../helper/formHelper.php';
+require_once '../helper/FormHelper.php';
 
 loadtpl('cp_header', 'cp_footer', 'cp_message', 'cp_error');
 
@@ -75,25 +76,25 @@ function viewPanel()
     global $oToken, $CONFIG, $THEME, $lang, $shadow2;
 
     $onselect = $offselect = '';
-    formHelper::getSettingOnOffHtml('bbstatus', $onselect, $offselect);
+    GaiaBB\FormHelper::getSettingOnOffHtml('bbstatus', $onselect, $offselect);
     $metatag_statuson = $metatag_statusoff = '';
-    formHelper::getSettingOnOffHtml('metatag_status', $metatag_statuson, $metatag_statusoff);
+    GaiaBB\FormHelper::getSettingOnOffHtml('metatag_status', $metatag_statuson, $metatag_statusoff);
     $pmwelcomestatuson = $pmwelcomestatusoff = '';
-    formHelper::getSettingOnOffHtml('pmwelcomestatus', $pmwelcomestatuson, $pmwelcomestatusoff);
+    GaiaBB\FormHelper::getSettingOnOffHtml('pmwelcomestatus', $pmwelcomestatuson, $pmwelcomestatusoff);
     $show_full_on = $show_full_off = '';
-    formHelper::getSettingOnOffHtml('show_full_info', $show_full_on, $show_full_off);
+    GaiaBB\FormHelper::getSettingOnOffHtml('show_full_info', $show_full_on, $show_full_off);
     $comment_on = $comment_off = '';
-    formHelper::getSettingOnOffHtml('comment', $comment_on, $comment_off);
+    GaiaBB\FormHelper::getSettingOnOffHtml('comment', $comment_on, $comment_off);
     $ipreg_on = $ipreg_off = '';
-    formHelper::getSettingOnOffHtml('ipreg', $ipreg_on, $ipreg_off);
+    GaiaBB\FormHelper::getSettingOnOffHtml('ipreg', $ipreg_on, $ipreg_off);
     $ipcheck_on = $ipcheck_off = '';
-    formHelper::getSettingOnOffHtml('ipcheck', $ipcheck_on, $ipcheck_off);
+    GaiaBB\FormHelper::getSettingOnOffHtml('ipcheck', $ipcheck_on, $ipcheck_off);
     $specq_on = $specq_off = '';
-    formHelper::getSettingOnOffHtml('specq', $specq_on, $specq_off);
+    GaiaBB\FormHelper::getSettingOnOffHtml('specq', $specq_on, $specq_off);
     $predf_on = $predf_off = '';
-    formHelper::getSettingOnOffHtml('predformat', $predf_on, $predf_off);
+    GaiaBB\FormHelper::getSettingOnOffHtml('predformat', $predf_on, $predf_off);
     $whosoptomized_on = $whosoptomized_off = '';
-    formHelper::getSettingOnOffHtml('whosoptomized', $whosoptomized_on, $whosoptomized_off);
+    GaiaBB\FormHelper::getSettingOnOffHtml('whosoptomized', $whosoptomized_on, $whosoptomized_off);
 
     $max_attach_sizenew = intval($CONFIG['max_attach_size']) / 1024;
     if ($max_attach_sizenew < 10 || $max_attach_sizenew > 1024) {
@@ -126,33 +127,30 @@ function viewPanel()
                             <td class="title" colspan="2"><?php echo $lang['admin_main_settings1'] ?></td>
                         </tr>
                         <?php
-
-    // $setname, $setrows, $setvarname, $setcols, $setvalue
-
-    formHelper::formTextBox($lang['textsitename'], 'sitenamenew', $CONFIG['sitename'], 50);
-    formHelper::formTextBox($lang['bbname'], 'bbnamenew', $CONFIG['bbname'], 50);
-    formHelper::formTextBox($lang['textsiteurl'], 'siteurlnew', $CONFIG['siteurl'], 50);
-    formHelper::formTextBox($lang['textboardurl'], 'boardurlnew', $CONFIG['boardurl'], 50);
-    formHelper::formTextBox($lang['adminemail'], 'adminemailnew', $CONFIG['adminemail'], 50);
-    formHelper::formTextBox($lang['copyrightnotice'], 'copyrightnew', $CONFIG['copyright'], 50);
-    formHelper::formSelectOnOff($lang['metatag_status'], 'metatag_statusnew', $metatag_statuson, $metatag_statusoff);
-    formHelper::formTextBox($lang['metatag_keywords'], 'metatag_keywordsnew', $CONFIG['metatag_keywords'], 50);
-    formHelper::formTextBox($lang['metatag_description'], 'metatag_descriptionnew', $CONFIG['metatag_description'], 50);
-    formHelper::formSelectOnOff($lang['textbstatus'], 'bbstatusnew', $onselect, $offselect);
-    formHelper::formTextBox2($lang['textbboffreason'], 5, 'bboffreasonnew', 50, $CONFIG['bboffreason']);
-    formHelper::formSelectOnOff($lang['set_show_full_info'], 'show_full_infonew', $show_full_on, $show_full_off);
-    formHelper::formSelectOnOff($lang['set_comment'], 'commentnew', $comment_on, $comment_off);
-    formHelper::formSelectOnOff($lang['set_ipreg'], 'ipregnew', $ipreg_on, $ipreg_off);
-    formHelper::formSelectOnOff($lang['set_ipcheck'], 'ipchecknew', $ipcheck_on, $ipcheck_off);
-    formHelper::formSelectOnOff($lang['set_specq'], 'specqnew', $specq_on, $specq_off);
-    formHelper::formSelectOnOff($lang['set_predformat'], 'predformatnew', $predf_on, $predf_off);
-    formHelper::formSelectOnOff($lang['whosoptomized'], 'whosoptomizednew', $whosoptomized_on, $whosoptomized_off);
-    formHelper::formTextBox($lang['set_max_attach_size'], 'max_attach_sizenew', $max_attach_sizenew, 10);
-    formHelper::formSelectOnOff($lang['pmwelcomestatus'], 'pmwelcomestatusnew', $pmwelcomestatuson, $pmwelcomestatusoff);
-    formHelper::formTextBox($lang['pmwelcomefrom'], 'pmwelcomefromnew', $CONFIG['pmwelcomefrom'], 32);
-    formHelper::formTextBox($lang['pmwelcomesubject'], 'pmwelcomesubjectnew', $CONFIG['pmwelcomesubject'], 32);
-    formHelper::formTextBox2($lang['pmwelcomemessage'], 5, 'pmwelcomemessagenew', 50, $CONFIG['pmwelcomemessage']);
-    ?>
+                        GaiaBB\FormHelper::formTextBox($lang['textsitename'], 'sitenamenew', $CONFIG['sitename'], 50);
+                        GaiaBB\FormHelper::formTextBox($lang['bbname'], 'bbnamenew', $CONFIG['bbname'], 50);
+                        GaiaBB\FormHelper::formTextBox($lang['textsiteurl'], 'siteurlnew', $CONFIG['siteurl'], 50);
+                        GaiaBB\FormHelper::formTextBox($lang['textboardurl'], 'boardurlnew', $CONFIG['boardurl'], 50);
+                        GaiaBB\FormHelper::formTextBox($lang['adminemail'], 'adminemailnew', $CONFIG['adminemail'], 50);
+                        GaiaBB\FormHelper::formTextBox($lang['copyrightnotice'], 'copyrightnew', $CONFIG['copyright'], 50);
+                        GaiaBB\FormHelper::formSelectOnOff($lang['metatag_status'], 'metatag_statusnew', $metatag_statuson, $metatag_statusoff);
+                        GaiaBB\FormHelper::formTextBox($lang['metatag_keywords'], 'metatag_keywordsnew', $CONFIG['metatag_keywords'], 50);
+                        GaiaBB\FormHelper::formTextBox($lang['metatag_description'], 'metatag_descriptionnew', $CONFIG['metatag_description'], 50);
+                        GaiaBB\FormHelper::formSelectOnOff($lang['textbstatus'], 'bbstatusnew', $onselect, $offselect);
+                        GaiaBB\FormHelper::formTextBox2($lang['textbboffreason'], 5, 'bboffreasonnew', 50, $CONFIG['bboffreason']);
+                        GaiaBB\FormHelper::formSelectOnOff($lang['set_show_full_info'], 'show_full_infonew', $show_full_on, $show_full_off);
+                        GaiaBB\FormHelper::formSelectOnOff($lang['set_comment'], 'commentnew', $comment_on, $comment_off);
+                        GaiaBB\FormHelper::formSelectOnOff($lang['set_ipreg'], 'ipregnew', $ipreg_on, $ipreg_off);
+                        GaiaBB\FormHelper::formSelectOnOff($lang['set_ipcheck'], 'ipchecknew', $ipcheck_on, $ipcheck_off);
+                        GaiaBB\FormHelper::formSelectOnOff($lang['set_specq'], 'specqnew', $specq_on, $specq_off);
+                        GaiaBB\FormHelper::formSelectOnOff($lang['set_predformat'], 'predformatnew', $predf_on, $predf_off);
+                        GaiaBB\FormHelper::formSelectOnOff($lang['whosoptomized'], 'whosoptomizednew', $whosoptomized_on, $whosoptomized_off);
+                        GaiaBB\FormHelper::formTextBox($lang['set_max_attach_size'], 'max_attach_sizenew', $max_attach_sizenew, 10);
+                        GaiaBB\FormHelper::formSelectOnOff($lang['pmwelcomestatus'], 'pmwelcomestatusnew', $pmwelcomestatuson, $pmwelcomestatusoff);
+                        GaiaBB\FormHelper::formTextBox($lang['pmwelcomefrom'], 'pmwelcomefromnew', $CONFIG['pmwelcomefrom'], 32);
+                        GaiaBB\FormHelper::formTextBox($lang['pmwelcomesubject'], 'pmwelcomesubjectnew', $CONFIG['pmwelcomesubject'], 32);
+                        GaiaBB\FormHelper::formTextBox2($lang['pmwelcomemessage'], 5, 'pmwelcomemessagenew', 50, $CONFIG['pmwelcomemessage']);
+                        ?>
                         <tr class="ctrtablerow" bgcolor="<?php echo $THEME['altbg2'] ?>">
                             <td colspan="2"><input class="submit" type="submit"
                                                    name="boardsubmit"

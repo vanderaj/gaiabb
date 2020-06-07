@@ -36,14 +36,16 @@ if (!defined('IN_PROGRAM') && (defined('DEBUG') && DEBUG == false)) {
 
 require_once 'mimetypes.inc.php';
 
-class pmDAO
+namespace GaiaBB;
+
+class PmDAO
 {
 
     public function pmDAO()
     {
     }
 
-    public function insert_pm($to, $from, $to_uid, $from_uid, $type, $owner, $folder, $subject, $message, $isRead, $isSent, $usepmsig)
+    public function insertPm($to, $from, $to_uid, $from_uid, $type, $owner, $folder, $subject, $message, $isRead, $isSent, $usepmsig)
     {
         global $db, $onlinetime;
 
@@ -64,11 +66,11 @@ class pmDAO
         if ($result == false) {
             return false;
         }
-        return $db->insert_id();
+        return $db->insertId();
     }
 }
 
-class pmModel
+class PmModel
 {
 
     public function pmModel()
@@ -97,8 +99,7 @@ class pmModel
         if ($usesig == 'yes') {
             $usesigcheck = $cheHTML;
             $pmcheckhtml = '<br /><input type="checkbox" name="usesig" value="yes" ' . $usesigcheck . ' /> ' . $lang['textusesig'];
-        } else
-        if (isset($self['sig']) && !empty($self['sig'])) {
+        } elseif (isset($self['sig']) && !empty($self['sig'])) {
             $usesigcheck = $cheHTML;
             $pmcheckhtml = '<br /><input type="checkbox" name="usesig" value="yes" ' . $usesigcheck . ' /> ' . $lang['textusesig'];
         } else {
@@ -110,7 +111,7 @@ class pmModel
                 error($lang['pmempty'], false, '', '', 'pm.php', true, false, true);
             }
             $pm_dao = new pmDAO();
-            $pm_dao->insert_pm('', '', '', '', 'draft', $self['username'], 'Drafts', $subject, $message, 'yes', 'no', $usesig);
+            $pm_dao->insertPm('', '', '', '', 'draft', $self['username'], 'Drafts', $subject, $message, 'yes', 'no', $usesig);
             message($lang['imsavedmsg'], false, '', '', 'pm.php?folder=Drafts', true, false, true);
         }
 
@@ -126,7 +127,7 @@ class pmModel
             }
 
             if (strstr($msgto, ',') && X_STAFF) {
-                $errors = $this->send_multi_recp($msgto, $subject, $message, $usesig);
+                $errors = $this->sendMultiRecp($msgto, $subject, $message, $usesig);
             } else {
                 $errors = $this->send_recp($msgto, $subject, $message, $usesig);
             }
@@ -140,7 +141,7 @@ class pmModel
             // create address book drop down
             $addresses = array();
             $query = $db->query("SELECT * FROM " . X_PREFIX . "addresses WHERE username = '$self[username]' ORDER BY addressname ASC");
-            while (($address = $db->fetch_array($query)) != false) {
+            while (($address = $db->fetchArray($query)) != false) {
                 $addresses[] = '<option value="' . $address['addressname'] . '">' . stripslashes($address['addressname']) . '</option>';
             }
             $addresses = implode("\n", $addresses);
@@ -154,7 +155,7 @@ class pmModel
 
         if ($pmid > 0 && noSubmit('previewsubmit')) {
             $query = $db->query("SELECT subject, msgfrom, message FROM " . X_PREFIX . "pm WHERE pmid = '$pmid' AND owner = '$self[username]'");
-            $quote = $db->fetch_array($query);
+            $quote = $db->fetchArray($query);
 
             $reply = getVar('reply');
             $forward = getVar('forward');
@@ -169,16 +170,14 @@ class pmModel
                 if ($forward == 'yes') {
                     $subject = $lang['textfwd'] . ' ' . $subject;
                     $message = '[quote][i]' . $lang['origpostedby'] . ' ' . $quote['msgfrom'] . "[/i]\n" . $message . '[/quote]';
-                } else
-                if ($reply == 'yes') {
+                } elseif ($reply == 'yes') {
                     $subject = $lang['textre'] . ' ' . $subject;
                     $message = '[quote]' . $message . '[/quote]';
                     $username = $quote['msgfrom'];
                 }
             }
-            $db->free_result($query);
-        } else
-        if (onSubmit('previewsubmit')) {
+            $db->freeResult($query);
+        } elseif (onSubmit('previewsubmit')) {
             if (empty($message)) {
                 error($lang['pmempty'], false, '', '', false, true, false, true);
             }
@@ -198,7 +197,7 @@ class pmModel
         return $leftpane;
     }
 
-    public function send_multi_recp($msgto, $subject, $message, $usepmsig)
+    public function sendMultiRecp($msgto, $subject, $message, $usepmsig)
     {
         $errors = '';
         $recipients = array_unique(array_map('trim', explode(',', $msgto)));
@@ -220,7 +219,7 @@ class pmModel
 
         $msgto = $db->escape(checkInput($msgto), -1, true);
         $query = $db->query("SELECT username, uid, email, ignorepm, emailonpm, langfile, status FROM " . X_PREFIX . "members WHERE username = '$msgto'");
-        if (($rcpt = $db->fetch_array($query)) != false) {
+        if (($rcpt = $db->fetchArray($query)) != false) {
             $ilist = array_map('trim', explode(',', $rcpt['ignorepm']));
             if (!in_array($self['username'], $ilist) || X_ADMIN) {
                 $username = $rcpt['username'];
@@ -234,15 +233,15 @@ class pmModel
                     }
 
                     if (isset($_FILES['attach']) && ($attachedfile = $this->getAttachment($_FILES['attach'], $CONFIG['pmattachstatus'], $CONFIG['max_attach_size'])) !== false) {
-                        $next_pmid = $db->result($db->query("SELECT last_insert_id(pmid+1) FROM " . X_PREFIX . "pm ORDER BY pmid DESC LIMIT 0,1"), 0);
+                        $next_pmid = $db->result($db->query("SELECT last_insertId(pmid+1) FROM " . X_PREFIX . "pm ORDER BY pmid DESC LIMIT 0,1"), 0);
                         $db->query("INSERT INTO " . X_PREFIX . "pm_attachments (aid, pmid, filename, filetype, filesize, fileheight, filewidth, attachment, owner) VALUES " . "('', '" . $next_pmid . "', " . "'" . $db->escape($filename) . "', " . "'" . $db->escape($filetype) . "', " . "'" . intval($filesize) . "', " . "'" . intval($fileheight) . "', " . "'" . intval($filewidth) . "', " . "'" . $db->escape($attachedfile) . "', " . "'" . $db->escape($username) . "')");
                     }
                 }
 
-                $pm_dao->insert_pm($username, $self['username'], $usr_uid, $self['uid'], 'incoming', $username, 'Inbox', $subject, $message, 'no', 'yes', $usepmsig);
+                $pm_dao->insertPm($username, $self['username'], $usr_uid, $self['uid'], 'incoming', $username, 'Inbox', $subject, $message, 'no', 'yes', $usepmsig);
 
                 if (isset($self['saveogpm']) && $self['saveogpm'] == 'yes') {
-                    $pm1 = $pm_dao->insert_pm($username, $self['username'], $usr_uid, $self['uid'], 'outgoing', $self['username'], 'Outbox', $subject, $message, 'no', 'yes', $usepmsig);
+                    $pm1 = $pm_dao->insertPm($username, $self['username'], $usr_uid, $self['uid'], 'outgoing', $self['username'], 'Outbox', $subject, $message, 'no', 'yes', $usepmsig);
                     if (isset($_FILES['attach']) && ($attachedfile = $this->getAttachment($_FILES['attach'], $CONFIG['pmattachstatus'], $CONFIG['max_attach_size'])) !== false) {
                         $db->query("INSERT INTO " . X_PREFIX . "pm_attachments (aid, pmid, filename, filetype, filesize, fileheight, filewidth, attachment, owner) VALUES " . "(''," . "'" . $pm1 . "'", "'" . $db->escape($filename) . "', " . "'" . $db->escape($filetype) . "', " . "'" . intval($filesize) . "', " . "'" . intval($fileheight) . "', " . "'" . intval($filewidth) . "', " . "'" . $db->escape($attachedfile) . "', " . "'" . $db->escape($self[username]) . "')");
                     }
@@ -271,7 +270,7 @@ class pmModel
                     $mailsys->setFrom($CONFIG['adminemail'], $CONFIG['bbname']);
                     $mailsys->setSubject('[' . $CONFIG['bbname'] . '] ' . $lang['textnewpmemail']);
                     $mailsys->setMessage($msgbody);
-                    $mailsys->Send();
+                    $mailsys->sendMail();
 
                     // Force a revert langswitch (1)
                     $langfile = langswitch('yes', '');
@@ -283,7 +282,7 @@ class pmModel
         } else {
             $errors = '<br />' . $lang['badrcpt'];
         }
-        $db->free_result($query);
+        $db->freeResult($query);
         return $errors;
     }
 
@@ -335,18 +334,17 @@ class pmModel
         }
 
         $query = $db->query("SELECT * FROM " . X_PREFIX . "pm WHERE pmid = '$pmid' AND owner = '$self[username]'");
-        $pm = $db->fetch_array($query);
+        $pm = $db->fetchArray($query);
 
         if ($pm) {
             $query = $db->query("SELECT * FROM " . X_PREFIX . "pm_attachments WHERE pmid = '$pmid' AND owner = '$self[username]'");
-            if ($db->num_rows($query) > 0) {
-                $pm = array_merge($pm, $db->fetch_array($query));
+            if ($db->numRows($query) > 0) {
+                $pm = array_merge($pm, $db->fetchArray($query));
             }
 
             if ($pm['type'] == 'incoming') {
                 $db->query("UPDATE " . X_PREFIX . "pm SET readstatus = 'yes' WHERE pmid = $pm[pmid] OR (pmid = $pm[pmid]+1 AND type = 'outgoing' AND msgto = '$self[username]')");
-            } else
-            if ($pm['type'] == 'draft') {
+            } elseif ($pm['type'] == 'draft') {
                 $db->query("UPDATE " . X_PREFIX . "pm SET readstatus = 'yes' WHERE pmid = $pm[pmid]");
             }
 
@@ -367,8 +365,7 @@ class pmModel
             if ($pm['type'] == 'draft') {
                 $sendoptions = '<input type="radio" name="mod" value="send" /> ' . $lang['textpm'] . '<br />';
                 $delchecked = $cheHTML;
-            } else
-            if ($pm['msgfrom'] != $self['username']) {
+            } elseif ($pm['msgfrom'] != $self['username']) {
                 $sendoptions = '<input type="radio" name="mod" value="reply" ' . $cheHTML . ' /> ' . $lang['textreply'] . '<br /><input type="radio" name="mod" value="forward" /> ' . $lang['textforward'] . '<br />';
             } else {
                 $delchecked = $cheHTML;
@@ -379,11 +376,9 @@ class pmModel
                 $attachsize = $pm['filesize'];
                 if ($attachsize >= 1073741824) {
                     $attachsize = round($attachsize / 1073741824 * 100) / 100 . 'gb';
-                } else
-                if ($attachsize >= 1048576) {
+                } elseif ($attachsize >= 1048576) {
                     $attachsize = round($attachsize / 1048576 * 100) / 100 . 'mb';
-                } else
-                if ($attachsize >= 1024) {
+                } elseif ($attachsize >= 1024) {
                     $attachsize = round($attachsize / 1024 * 100) / 100 . 'kb';
                 } else {
                     $attachsize = $attachsize . 'b';
@@ -400,8 +395,7 @@ class pmModel
                         if (($pm['fileheight'] <= $CONFIG['max_attheight']) && ($pm['filewidth'] <= $CONFIG['max_attwidth'])) {
                             $n_height = $pm['fileheight'];
                             $n_width = $pm['filewidth'];
-                        } else
-                        if (($w_ratio * $pm['fileheight']) < $CONFIG['max_attheight']) {
+                        } elseif (($w_ratio * $pm['fileheight']) < $CONFIG['max_attheight']) {
                             $n_height = ceil($w_ratio * $pm['fileheight']);
                             $n_width = $CONFIG['max_attwidth'];
                         } else {
@@ -429,8 +423,8 @@ class pmModel
             // project signature or pms
             if ($pm['usesig'] == 'yes') {
                 $tquery = $db->query("SELECT sig FROM " . X_PREFIX . "members WHERE username = '$pm[msgfrom]'");
-                $pmsig = $db->fetch_array($tquery);
-                $db->free_result($tquery);
+                $pmsig = $db->fetchArray($tquery);
+                $db->freeResult($tquery);
                 $pmsig['sig'] = censor($pmsig['sig']);
                 $pmsig['sig'] = stripslashes($pmsig['sig']);
                 $pmsig['sig'] = postify($pmsig['sig'], 'no', 'no', 'yes', $CONFIG['sigbbcode']);
@@ -450,7 +444,7 @@ class pmModel
         } else {
             error($lang['pmadmin_noperm'], false, '', '', false, true, false, true);
         }
-        $db->free_result($query);
+        $db->freeResult($query);
 
         $leftpane = '';
         eval('$leftpane = "' . template('pm_view') . '";');
@@ -466,8 +460,8 @@ class pmModel
         }
 
         $query = $db->query("SELECT * FROM " . X_PREFIX . "pm WHERE pmid = '$pmid' AND owner = '$self[username]'");
-        $pm = $db->fetch_array($query);
-        $db->free_result($query);
+        $pm = $db->fetchArray($query);
+        $db->freeResult($query);
         if ($pm) {
             $adjTime = ($self['timeoffset'] * 3600) + $self['daylightsavings'];
             $pmdate = gmdate($self['dateformat'], $pm['dateline'] + $adjTime);
@@ -504,7 +498,7 @@ class pmModel
                 $mailsys->setFrom($CONFIG['adminemail'], $CONFIG['bbname']);
                 $mailsys->setSubject($lang['textpmtoemail'] . ' ' . $pmsubject);
                 $mailsys->setMessage($msgbody);
-                $mailsys->Send();
+                $mailsys->sendMail();
 
                 message($lang['contactsubmitted'], false, '', '', 'index.php', true, false, true);
             } else {
@@ -737,7 +731,7 @@ class pmModel
 
         $start_limit = ($page > 1) ? (($page - 1) * $self['tpp']) : 0;
         $query = $db->query("SELECT u.*, w.username, w.invisible FROM " . X_PREFIX . "pm u LEFT JOIN " . X_PREFIX . "whosonline w ON (u.msgto = w.username OR u.msgfrom = w.username) AND w.username != '$self[username]' WHERE u.folder = '$folder' AND u.owner = '$self[username]' ORDER BY dateline DESC LIMIT $start_limit, " . $self['tpp']);
-        while (($pm = $db->fetch_array($query)) != false) {
+        while (($pm = $db->fetchArray($query)) != false) {
             if ($pm['readstatus'] == 'yes') {
                 $pmreadstatus = $lang['textread'];
             } else {
@@ -765,8 +759,7 @@ class pmModel
                     $online = $lang['textoffline'];
                 }
                 $pmsent = '<a href="viewprofile.php?memberid=' . rawurlencode($pm['msgfrom_uid']) . '" target="_blank">' . $pm['msgfrom'] . '</a> (' . $online . ')';
-            } else
-            if ($pm['type'] == 'outgoing') {
+            } elseif ($pm['type'] == 'outgoing') {
                 if ($pm['msgto'] == $pm['username'] || $pm['msgto'] == $self['username']) {
                     if ($pm['invisible'] == 1) {
                         if (X_ADMIN) {
@@ -781,8 +774,7 @@ class pmModel
                     $online = $lang['textoffline'];
                 }
                 $pmsent = '<a href="viewprofile.php?memberid=' . rawurlencode($pm['msgto_uid']) . '" target="_blank">' . $pm['msgto'] . '</a> (' . $online . ')';
-            } else
-            if ($pm['type'] == 'draft') {
+            } elseif ($pm['type'] == 'draft') {
                 $pmsent = $lang['textpmnotsent'];
             }
 
@@ -808,7 +800,7 @@ class pmModel
 
             eval('$$pms .= "' . template('pm_row') . '";');
         }
-        $db->free_result($query);
+        $db->freeResult($query);
 
         $pmtrash = '';
         if ($pmsin == '') {
@@ -912,11 +904,11 @@ class pmModel
 
         $query = $db->query("SELECT folder, count(pmid) as count FROM " . X_PREFIX . "pm WHERE owner = '$self[username]' GROUP BY folder ORDER BY folder ASC");
         $farray = array();
-        while (($flist = $db->fetch_array($query)) != false) {
+        while (($flist = $db->fetchArray($query)) != false) {
             $farray[$flist['folder']] = $flist['count'];
             $pmcount += $flist['count'];
         }
-        $db->free_result($query);
+        $db->freeResult($query);
 
         $emptytrash = $folderlist = '';
 
@@ -927,7 +919,7 @@ class pmModel
             if (empty($folder) && isset($pmid)) {
                 $query = $db->query("SELECT folder FROM " . X_PREFIX . "pm WHERE owner = '$self[username]' AND pmid = '$pmid'");
                 $viewfolder = $db->result($query);
-                $db->free_result($query);
+                $db->freeResult($query);
 
                 if ($link == $viewfolder) {
                     $value = '<strong>' . $value . '</strong>';

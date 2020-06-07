@@ -28,11 +28,15 @@
  *    along with GaiaBB.  If not, see <http://www.gnu.org/licenses/>.
  *
  **/
+// phpcs:disable
 if (!defined('IN_PROGRAM') && (defined('DEBUG') && DEBUG == false)) {
     exit('This file is not designed to be called directly');
 }
+// phpcs:enable
 
-class subscription
+namespace GaiaBB;
+
+class Subscription
 {
 
     public $tid;
@@ -69,12 +73,12 @@ class subscription
         $retval = false;
 
         $query = $db->query("SELECT tid FROM " . X_PREFIX . "subscriptions WHERE tid = '$tid' AND username = '" . $self['username'] . "' AND type = 'subscription'");
-        if ($query && $db->num_rows($query) == 1) {
+        if ($query && $db->numRows($query) == 1) {
             $this->tid = $tid;
             $retval = true;
         }
 
-        $db->free_result($query);
+        $db->freeResult($query);
         return $retval;
     }
 
@@ -118,13 +122,13 @@ class subscription
         $toDelete = array();
 
         $query = $db->query("SELECT tid FROM " . X_PREFIX . "subscriptions WHERE username = '" . $self['username'] . "' AND type='subscription'");
-        while (($sub = $db->fetch_array($query)) != false) {
+        while (($sub = $db->fetchArray($query)) != false) {
             $delete = formInt("delete" . $sub['tid'] . "");
             if (is_numeric($delete)) {
                 $toDelete[] = $delete;
             }
         }
-        $db->free_result($query);
+        $db->freeResult($query);
 
         if (!empty($toDelete)) {
             $in = implode(' ,', $toDelete);

@@ -103,7 +103,7 @@ function doPanel()
 
     $oToken->assertToken();
 
-    $memObj = new member();
+    $memObj = new GaiaBB\Member();
     $memObj->fixThreadTotals();
     cp_message($lang['tool_memthread'], false, '', '</td></tr></table>', 'index.php', true, false, true);
 }

@@ -57,10 +57,11 @@ if (noSubmit('lostpwsubmit')) {
     $username = $db->escape(formVar('username'));
     $email = formVar('email');
 
-    $query = $db->query("SELECT username, email, pwdate FROM " . X_PREFIX . "members WHERE (username = '$username' and status != 'Banned')");
-    $member = $db->fetch_array($query);
-    $rows = $db->num_rows($query);
-    $db->free_result($query);
+    $query = $db->query("SELECT username, email, pwdate FROM " . X_PREFIX .
+        "members WHERE (username = '$username' and status != 'Banned')");
+    $member = $db->fetchArray($query);
+    $rows = $db->numRows($query);
+    $db->freeResult($query);
 
     if ($rows == 1 && strtolower($email) === strtolower(stripslashes($member['email']))) {
         $time = $onlinetime - 86400;
@@ -93,13 +94,11 @@ if (noSubmit('lostpwsubmit')) {
 
     $messagebody = $lang['textyourpwis'] . "\n\n" . $member['username'] . "\n" . $newpass;
 
-    if (empty($CONFIG['adminemail'])) // The mail class can handle this error, but it'll describe it vaguely
-    {
+    if (empty($CONFIG['adminemail'])) {
         error($lang['noadminemail'], false, '', '', 'admin/cp_board.php', true, false, true);
     }
 
-    if (empty($CONFIG['bbname'])) // The mail class can handle this error, but it'll describe it vaguely
-    {
+    if (empty($CONFIG['bbname'])) {
         error($lang['nobbname'], false, '', '', 'admin/cp_board.php', true, false, true);
     }
 
@@ -107,7 +106,7 @@ if (noSubmit('lostpwsubmit')) {
     $mailsys->setFrom($CONFIG['adminemail'], $CONFIG['bbname']);
     $mailsys->setSubject($lang['textyourpw']);
     $mailsys->setMessage($messagebody);
-    $mailsys->Send();
+    $mailsys->sendMail(); // XXX
 
     message($lang['emailpw'], false, '', '', 'index.php', true, false, true);
 }

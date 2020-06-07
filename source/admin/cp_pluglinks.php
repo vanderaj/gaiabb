@@ -83,19 +83,19 @@ function viewPanel()
                             <td class="title" align="center"><?php echo $lang['pluglinkstatus'] ?></td>
                         </tr>
                         <?php
-$plugs = $db->query("SELECT * FROM " . X_PREFIX . "pluglinks ORDER BY displayorder ASC");
-    $rowsFound = $db->num_rows($plugs);
-    while (($pluginfo = $db->fetch_array($plugs)) != false) {
-        $on = $off = '';
-        switch ($pluginfo['status']) {
-            case 'on':
-                $on = $selHTML;
-                break;
-            default:
-                $off = $selHTML;
-                break;
-        }
-        ?>
+                        $plugs = $db->query("SELECT * FROM " . X_PREFIX . "pluglinks ORDER BY displayorder ASC");
+                        $rowsFound = $db->numRows($plugs);
+                        while (($pluginfo = $db->fetchArray($plugs)) != false) {
+                            $on = $off = '';
+                            switch ($pluginfo['status']) {
+                                case 'on':
+                                    $on = $selHTML;
+                                    break;
+                                default:
+                                    $off = $selHTML;
+                                    break;
+                            }
+                            ?>
                             <tr class="ctrtablerow" bgcolor="<?php echo $THEME['altbg2'] ?>">
                                 <td><input type="checkbox"
                                            name="delete<?php echo $pluginfo['id'] ?>"
@@ -115,17 +115,17 @@ $plugs = $db->query("SELECT * FROM " . X_PREFIX . "pluglinks ORDER BY displayord
                                     </select></td>
                             </tr>
                             <?php
-}
-    $db->free_result($plugs);
-    if ($rowsFound < 1) {
-        ?>
+                        }
+                        $db->freeResult($plugs);
+                        if ($rowsFound < 1) {
+                            ?>
                             <tr>
                                 <td bgcolor="<?php echo $THEME['altbg1'] ?>" class="ctrtablerow"
                                     colspan="6"><?php echo $lang['pluglinknone'] ?></td>
                             </tr>
                             <?php
-}
-    ?>
+                        }
+                        ?>
                         <tr class="category">
                             <td class="title" colspan="6"><?php echo $lang['pluglinkcreate'] ?></td>
                         </tr>
@@ -163,7 +163,7 @@ function doPanel()
     $oToken->assertToken();
 
     $plugs = $db->query("SELECT * FROM " . X_PREFIX . "pluglinks");
-    while (($pluginfo = $db->fetch_array($plugs)) != false) {
+    while (($pluginfo = $db->fetchArray($plugs)) != false) {
         $name = "name" . $pluginfo['id'];
         $name = $db->escape(formVar($name));
         $url = "url" . $pluginfo['id'];
@@ -190,7 +190,7 @@ function doPanel()
             WHERE id = '$pluginfo[id]'
         ");
     }
-    $db->free_result($plugs);
+    $db->freeResult($plugs);
 
     $namenew = $db->escape(formVar('namenew'));
 

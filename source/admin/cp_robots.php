@@ -117,13 +117,13 @@ function viewSearchPanel()
                             <td class="title"><?php echo $lang['textrobotagent'] ?></td>
                         </tr>
                         <?php
-$srchbot = $db->escape(formVar('srchbot'));
-    if (!empty($srchbot)) {
-        $srchbot = "WHERE robot_fullname LIKE '%" . $srchbot . "%' ";
-    }
-    $query = $db->query("SELECT * FROM " . X_PREFIX . "robots $srchbot ORDER BY robot_fullname");
-    while (($robot = $db->fetch_array($query)) != false) {
-        ?>
+                        $srchbot = $db->escape(formVar('srchbot'));
+                        if (!empty($srchbot)) {
+                            $srchbot = "WHERE robot_fullname LIKE '%" . $srchbot . "%' ";
+                        }
+                        $query = $db->query("SELECT * FROM " . X_PREFIX . "robots $srchbot ORDER BY robot_fullname");
+                        while (($robot = $db->fetchArray($query)) != false) {
+                            ?>
                             <tr bgcolor="<?php echo $THEME['altbg2'] ?>" class="tablerow">
                                 <td align="center"><input type="checkbox"
                                                           name="delete<?php echo $robot['robot_id'] ?>"
@@ -136,8 +136,8 @@ $srchbot = $db->escape(formVar('srchbot'));
                                            value="<?php echo $robot['robot_string'] ?>"/></td>
                             </tr>
                             <?php
-}
-    ?>
+                        }
+                        ?>
                         <tr>
                             <td bgcolor="<?php echo $THEME['altbg2'] ?>" colspan="4">&nbsp;</td>
                         </tr>
@@ -175,7 +175,7 @@ function doPanel()
     }
 
     $query = $db->query("SELECT * FROM " . X_PREFIX . "robots $srchbot");
-    while (($bot = $db->fetch_array($query)) != false) {
+    while (($bot = $db->fetchArray($query)) != false) {
         $delete = formInt("delete" . $bot['robot_id']);
         if ($delete > 0) {
             $db->query("DELETE FROM " . X_PREFIX . "robots WHERE robot_id = '$delete'");
@@ -187,7 +187,7 @@ function doPanel()
             $db->query("UPDATE " . X_PREFIX . "robots SET robot_fullname = '$robotname', robot_string = '$robotagent' WHERE robot_id = '$bot[robot_id]'");
         }
     }
-    $db->free_result($query);
+    $db->freeResult($query);
 
     $newrobotagent = $db->escape(formVar('newrobotagent'));
     $newrobotname = $db->escape(formVar('newrobotname'));

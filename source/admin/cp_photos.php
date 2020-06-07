@@ -36,7 +36,7 @@ define('ROOTHELPER', '../helper/');
 
 require_once '../header.php';
 require_once '../include/admincp.inc.php';
-require_once '../helper/formHelper.php';
+require_once '../helper/FormHelper.php';
 
 loadtpl('cp_header', 'cp_footer', 'cp_message', 'cp_error');
 
@@ -65,7 +65,7 @@ function viewPanel()
     global $shadow2, $lang, $db, $THEME, $oToken, $CONFIG, $cheHTML, $selHTML;
 
     $photoon = $photooff = '';
-    formHelper::getSettingOnOffHtml('photostatus', $photoon, $photooff);
+    GaiaBB\FormHelper::getSettingOnOffHtml('photostatus', $photoon, $photooff);
 
     $avuchecked[0] = $avuchecked[1] = $avuchecked[2] = false;
     switch ($CONFIG['photo_whocanupload']) {
@@ -96,8 +96,8 @@ function viewPanel()
                             <td colspan="2" class="title"><?php echo $lang['photo_main_settings'] ?></td>
                         </tr>
                         <?php
-formHelper::formSelectOnOff($lang['photostatus'], 'photostatusnew', $photoon, $photooff);
-    formHelper::formSelectList($lang['photo_Whoupload'], 'photo_whocanuploadnew', array(
+GaiaBB\FormHelper::formSelectOnOff($lang['photostatus'], 'photostatusnew', $photoon, $photooff);
+GaiaBB\FormHelper::formSelectList($lang['photo_Whoupload'], 'photo_whocanuploadnew', array(
         $lang['textoff'],
         $lang['photo_Upall'],
         $lang['photo_Upstaff'],
@@ -106,14 +106,14 @@ formHelper::formSelectOnOff($lang['photostatus'], 'photostatusnew', $photoon, $p
         'all',
         'staff',
     ), $avuchecked, false);
-    formHelper::formTextBox($lang['photo_Filesize'], 'photo_filesizenew', $CONFIG['photo_filesize'], 5);
-    formHelper::formTextBox($lang['photo_Wdimensions'], 'photo_max_widthnew', $CONFIG['photo_max_width'], 4);
-    formHelper::formTextBox($lang['photo_Hdimensions'], 'photo_max_heightnew', $CONFIG['photo_max_height'], 4);
-    formHelper::formTextBox($lang['photo_Newwresize'], 'photo_new_widthnew', $CONFIG['photo_new_width'], 4);
-    formHelper::formTextBox($lang['photo_Newhresize'], 'photo_new_heightnew', $CONFIG['photo_new_height'], 4);
-    formHelper::formTextBox($lang['photo_Path'], 'photo_pathnew', $CONFIG['photo_path'], 20);
-    formHelper::formTextBox($lang['max_photo_size_w'], 'max_photo_size_w_new', $max_photo_sizes[0], 4);
-    formHelper::formTextBox($lang['max_photo_size_h'], 'max_photo_size_h_new', $max_photo_sizes[1], 4);
+    GaiaBB\FormHelper::formTextBox($lang['photo_Filesize'], 'photo_filesizenew', $CONFIG['photo_filesize'], 5);
+    GaiaBB\FormHelper::formTextBox($lang['photo_Wdimensions'], 'photo_max_widthnew', $CONFIG['photo_max_width'], 4);
+    GaiaBB\FormHelper::formTextBox($lang['photo_Hdimensions'], 'photo_max_heightnew', $CONFIG['photo_max_height'], 4);
+    GaiaBB\FormHelper::formTextBox($lang['photo_Newwresize'], 'photo_new_widthnew', $CONFIG['photo_new_width'], 4);
+    GaiaBB\FormHelper::formTextBox($lang['photo_Newhresize'], 'photo_new_heightnew', $CONFIG['photo_new_height'], 4);
+    GaiaBB\FormHelper::formTextBox($lang['photo_Path'], 'photo_pathnew', $CONFIG['photo_path'], 20);
+    GaiaBB\FormHelper::formTextBox($lang['max_photo_size_w'], 'max_photo_size_w_new', $max_photo_sizes[0], 4);
+    GaiaBB\FormHelper::formTextBox($lang['max_photo_size_h'], 'max_photo_size_h_new', $max_photo_sizes[1], 4);
     ?>
                         <tr class="ctrtablerow" bgcolor="<?php echo $THEME['altbg2'] ?>">
                             <td colspan="2"><input class="submit" type="submit"

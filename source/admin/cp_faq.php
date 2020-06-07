@@ -75,7 +75,7 @@ function viewPanel()
     $itemlist = array();
     $i = 0;
     $query = $db->query("SELECT fid, type, name, displayorder, status, fup, code, view FROM " . X_PREFIX . "faq ORDER BY fup ASC, displayorder ASC");
-    while (($selItems = $db->fetch_array($query)) != false) {
+    while (($selItems = $db->fetchArray($query)) != false) {
         if ($selItems['type'] == 'group') {
             $groups[$i]['fid'] = $selItems['fid'];
             $groups[$i]['name'] = $selItems['name'];
@@ -83,8 +83,7 @@ function viewPanel()
             $groups[$i]['status'] = $selItems['status'];
             $groups[$i]['fup'] = $selItems['fup'];
             $groups[$i]['code'] = $selItems['code'];
-        } else
-        if ($selItems['type'] == 'item') {
+        } elseif ($selItems['type'] == 'item') {
             $id = (empty($selItems['fup'])) ? 0 : $selItems['fup'];
             $items[$id][$i]['fid'] = $selItems['fid'];
             $items[$id][$i]['name'] = $selItems['name'];
@@ -97,7 +96,7 @@ function viewPanel()
         }
         $i++;
     }
-    $db->free_result($query);
+    $db->freeResult($query);
     ?>
     <form method="post" action="cp_faq.php">
         <input type="hidden" name="token"
@@ -130,14 +129,14 @@ function viewPanel()
                             <td class="title"><?php echo $lang['faq_I'] ?></td>
                         </tr>
                         <?php
-foreach ($items['0'] as $item) {
-        $on = $off = '';
-        if ($item['status'] == 'on') {
-            $on = $selHTML;
-        } else {
-            $off = $selHTML;
-        }
-        ?>
+                        foreach ($items['0'] as $item) {
+                            $on = $off = '';
+                            if ($item['status'] == 'on') {
+                                $on = $selHTML;
+                            } else {
+                                $off = $selHTML;
+                            }
+                            ?>
                             <tr bgcolor="<?php echo $THEME['altbg2'] ?>" class="tablerow">
                                 <td class="smalltxt"><input type="checkbox"
                                                             name="delete<?php echo $item['fid'] ?>"
@@ -158,25 +157,25 @@ foreach ($items['0'] as $item) {
                                                 value="" selected="selected">-<?php echo $lang['textnone'] ?>-
                                         </option>
                                         <?php
-foreach ($groups as $moveforum) {
-            echo '<option value="' . $moveforum['fid'] . '">' . stripslashes($moveforum['name']) . '</option>';
-        }
-        ?>
+                                        foreach ($groups as $moveforum) {
+                                            echo '<option value="' . $moveforum['fid'] . '">' . stripslashes($moveforum['name']) . '</option>';
+                                        }
+                                        ?>
                                     </select> <a title="<?php echo stripslashes($item['name']) ?>"
                                                  href="cp_faq.php?fdetails=<?php echo $item['fid'] ?>"><?php echo $lang['faq_F'] ?></a>
                                 </td>
                             </tr>
                             <?php
-}
+                        }
 
-    foreach ($groups as $group) {
-        $on = $off = '';
-        if ($group['status'] == 'on') {
-            $on = $selHTML;
-        } else {
-            $off = $selHTML;
-        }
-        ?>
+                        foreach ($groups as $group) {
+                            $on = $off = '';
+                            if ($group['status'] == 'on') {
+                                $on = $selHTML;
+                            } else {
+                                $off = $selHTML;
+                            }
+                            ?>
                             <tr bgcolor="<?php echo $THEME['altbg2'] ?>" class="tablerow">
                                 <td>&nbsp;</td>
                             </tr>
@@ -199,15 +198,15 @@ foreach ($groups as $moveforum) {
                                 </td>
                             </tr>
                             <?php
-if (array_key_exists($group['fid'], $items)) {
-            foreach ($items[$group['fid']] as $item) {
-                $on = $off = '';
-                if ($item['status'] == 'on') {
-                    $on = $selHTML;
-                } else {
-                    $off = $selHTML;
-                }
-                ?>
+                            if (array_key_exists($group['fid'], $items)) {
+                                foreach ($items[$group['fid']] as $item) {
+                                    $on = $off = '';
+                                    if ($item['status'] == 'on') {
+                                        $on = $selHTML;
+                                    } else {
+                                        $off = $selHTML;
+                                    }
+                                    ?>
                                     <tr bgcolor="<?php echo $THEME['altbg2'] ?>"
                                         class="tablerow">
                                         <td class="smalltxt">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <input
@@ -226,25 +225,25 @@ if (array_key_exists($group['fid'], $items)) {
                                                         value="">-<?php echo $lang['textnone'] ?>-
                                                 </option>
                                                 <?php
-foreach ($groups as $moveforum) {
-                    if ($moveforum['fid'] == $item['fup']) {
-                        $curgroup = $selHTML;
-                    } else {
-                        $curgroup = '';
-                    }
-                    echo '<option value="' . $moveforum['fid'] . '" ' . $curgroup . '>' . stripslashes($moveforum['name']) . '</option>';
-                }
-                ?>
+                                                foreach ($groups as $moveforum) {
+                                                    if ($moveforum['fid'] == $item['fup']) {
+                                                        $curgroup = $selHTML;
+                                                    } else {
+                                                        $curgroup = '';
+                                                    }
+                                                    echo '<option value="' . $moveforum['fid'] . '" ' . $curgroup . '>' . stripslashes($moveforum['name']) . '</option>';
+                                                }
+                                                ?>
                                             </select> <a
                                                     title="<?php echo stripslashes($item['name']) ?>"
                                                     href="cp_faq.php?fdetails=<?php echo $item['fid'] ?>"><?php echo $lang['faq_F'] ?></a>
                                         </td>
                                     </tr>
                                     <?php
-}
-        }
-    }
-    ?>
+                                }
+                            }
+                        }
+                        ?>
                         <tr>
                             <td bgcolor="<?php echo $THEME['altbg2'] ?>" class="ctrtablerow"><input
                                         class="submit" type="submit" name="faqsubmit"
@@ -290,10 +289,10 @@ foreach ($groups as $moveforum) {
                                             selected="selected">-<?php echo $lang['textnone'] ?>-
                                     </option>
                                     <?php
-foreach ($groups as $group) {
-        echo '<option value="' . $group['fid'] . '">' . stripslashes($group['name']) . '</option>';
-    }
-    ?>
+                                    foreach ($groups as $group) {
+                                        echo '<option value="' . $group['fid'] . '">' . stripslashes($group['name']) . '</option>';
+                                    }
+                                    ?>
                                 </select></td>
                         </tr>
                         <tr>
@@ -331,35 +330,32 @@ function dogDetailsPanel($gdetails)
                             <td class="title" colspan="2"><?php echo $lang['faq_E'] ?></td>
                         </tr>
                         <?php
-$queryg = $db->query("SELECT fid, name, status, displayorder, code FROM " . X_PREFIX . "faq WHERE fid = '$gdetails'");
-    $group = $db->fetch_array($queryg);
-    $db->free_result($queryg);
+                        $queryg = $db->query("SELECT fid, name, status, displayorder, code FROM " . X_PREFIX . "faq WHERE fid = '$gdetails'");
+                        $group = $db->fetchArray($queryg);
+                        $db->freeResult($queryg);
 
-    $group['name'] = stripslashes($group['name']);
+                        $group['name'] = stripslashes($group['name']);
 
-    $ic00 = $ic01 = $ic02 = $ic03 = $ic04 = '';
-    if ($group['code'] == 'usermaint') {
-        $ic01 = $selHTML;
-    } else
-    if ($group['code'] == 'using') {
-        $ic02 = $selHTML;
-    } else
-    if ($group['code'] == 'messages') {
-        $ic03 = $selHTML;
-    } else
-    if ($group['code'] == 'misc') {
-        $ic04 = $selHTML;
-    } else {
-        $ic00 = $selHTML;
-    }
+                        $ic00 = $ic01 = $ic02 = $ic03 = $ic04 = '';
+                        if ($group['code'] == 'usermaint') {
+                            $ic01 = $selHTML;
+                        } elseif ($group['code'] == 'using') {
+                            $ic02 = $selHTML;
+                        } elseif ($group['code'] == 'messages') {
+                            $ic03 = $selHTML;
+                        } elseif ($group['code'] == 'misc') {
+                            $ic04 = $selHTML;
+                        } else {
+                            $ic00 = $selHTML;
+                        }
 
-    $on = $off = '';
-    if ($group['status'] == 'on') {
-        $on = $selHTML;
-    } else {
-        $off = $selHTML;
-    }
-    ?>
+                        $on = $off = '';
+                        if ($group['status'] == 'on') {
+                            $on = $selHTML;
+                        } else {
+                            $off = $selHTML;
+                        }
+                        ?>
                         <tr class="tablerow">
                             <td bgcolor="<?php echo $THEME['altbg1'] ?>"><?php echo $lang['faq_P'] ?></td>
                             <td bgcolor="<?php echo $THEME['altbg2'] ?>"><input type="text"
@@ -427,7 +423,7 @@ function dogDetails($gdetails)
 
     $querygd = $db->query("SELECT fid FROM " . X_PREFIX . "faq WHERE (type = 'group' AND fid = '$gdetails')");
     $theid = $db->result($querygd, 0);
-    $db->free_result($querygd);
+    $db->freeResult($querygd);
 
     $db->query("UPDATE " . X_PREFIX . "faq SET name = '$name', code = '$code', displayorder = '$displayordernew', status = '$groupstatusnew' WHERE fid = '$theid'");
 
@@ -452,44 +448,42 @@ function dofDetailsPanel($fdetails)
                             <td class="title" colspan="2"><?php echo $lang['faq_E'] ?></td>
                         </tr>
                         <?php
-$queryg = $db->query("SELECT * FROM " . X_PREFIX . "faq WHERE fid = '$fdetails'");
-    $item = $db->fetch_array($queryg);
-    $db->free_result($queryg);
+                        $queryg = $db->query("SELECT * FROM " . X_PREFIX . "faq WHERE fid = '$fdetails'");
+                        $item = $db->fetchArray($queryg);
+                        $db->freeResult($queryg);
 
-    if ($item['allowsmilies'] == 'yes') {
-        $checked3 = $cheHTML;
-    } else {
-        $checked3 = '';
-    }
+                        if ($item['allowsmilies'] == 'yes') {
+                            $checked3 = $cheHTML;
+                        } else {
+                            $checked3 = '';
+                        }
 
-    if ($item['allowbbcode'] == 'yes') {
-        $checked4 = $cheHTML;
-    } else {
-        $checked4 = '';
-    }
+                        if ($item['allowbbcode'] == 'yes') {
+                            $checked4 = $cheHTML;
+                        } else {
+                            $checked4 = '';
+                        }
 
-    if ($item['allowimgcode'] == 'yes') {
-        $checked5 = $cheHTML;
-    } else {
-        $checked5 = '';
-    }
+                        if ($item['allowimgcode'] == 'yes') {
+                            $checked5 = $cheHTML;
+                        } else {
+                            $checked5 = '';
+                        }
 
-    $ic00 = $ic01 = $ic02 = $ic03 = '';
-    if ($item['view'] == 1) {
-        $ic01 = $selHTML;
-    } else
-    if ($item['view'] == 2) {
-        $ic02 = $selHTML;
-    } else
-    if ($item['view'] == 3) {
-        $ic03 = $selHTML;
-    } else {
-        $ic00 = $selHTML;
-    }
+                        $ic00 = $ic01 = $ic02 = $ic03 = '';
+                        if ($item['view'] == 1) {
+                            $ic01 = $selHTML;
+                        } elseif ($item['view'] == 2) {
+                            $ic02 = $selHTML;
+                        } elseif ($item['view'] == 3) {
+                            $ic03 = $selHTML;
+                        } else {
+                            $ic00 = $selHTML;
+                        }
 
-    $item['name'] = stripslashes($item['name']);
-    $item['description'] = stripslashes($item['description']);
-    ?>
+                        $item['name'] = stripslashes($item['name']);
+                        $item['description'] = stripslashes($item['description']);
+                        ?>
                         <tr class="tablerow">
                             <td bgcolor="<?php echo $THEME['altbg1'] ?>"><?php echo $lang['faq_C'] ?></td>
                             <td bgcolor="<?php echo $THEME['altbg2'] ?>"><input type="text"
@@ -564,7 +558,7 @@ function faqSubmit($fdetails)
         $db->query("DELETE FROM " . X_PREFIX . "faq WHERE name = ''");
 
         $queryforum = $db->query("SELECT fid, type FROM " . X_PREFIX . "faq WHERE type = 'item'");
-        while (($item = $db->fetch_array($queryforum)) != false) {
+        while (($item = $db->fetchArray($queryforum)) != false) {
             $displayorder = "displayorder$item[fid]";
             $displayorder = formInt($displayorder);
             $name = "name$item[fid]";
@@ -582,15 +576,15 @@ function faqSubmit($fdetails)
 
             $db->query("UPDATE " . X_PREFIX . "faq SET name='$name', displayorder='$displayorder', status='$self[status]', fup='$moveto' WHERE fid='$item[fid]'");
         }
-        $db->free_result($queryforum);
+        $db->freeResult($queryforum);
 
         $querygroup = $db->query("SELECT fid FROM " . X_PREFIX . "faq WHERE type='group'");
-        while (($group = $db->fetch_array($querygroup)) != false) {
+        while (($group = $db->fetchArray($querygroup)) != false) {
             $delete = "delete$group[fid]";
             $delete = formInt($delete);
             if ($delete > 0) {
                 $query = $db->query("SELECT fid FROM " . X_PREFIX . "faq WHERE type = 'item' AND fup = '$delete'");
-                while (($item = $db->fetch_array($query)) != false) {
+                while (($item = $db->fetchArray($query)) != false) {
                     $db->query("UPDATE " . X_PREFIX . "faq SET fup = '' WHERE type = 'item' AND fup = '$delete'");
                 }
 
@@ -606,7 +600,7 @@ function faqSubmit($fdetails)
 
             $db->query("UPDATE " . X_PREFIX . "faq SET name='$name', displayorder='$displayorder', status='$self[status]' WHERE fid = '$group[fid]'");
         }
-        $db->free_result($querygroup);
+        $db->freeResult($querygroup);
 
         $newgname = $db->escape(formVar('newgname'));
         $newgstatus = $db->escape(formVar('newgstatus'));
@@ -661,15 +655,14 @@ $gdetails = getRequestInt('gdetails');
 if ($fdetails > 0) {
     if (noSubmit('faqsubmit')) {
         dofDetailsPanel($fdetails);
-    } else
-    if (onSubmit('faqsubmit')) {
+    } elseif (onSubmit('faqsubmit')) {
         $oToken->assertToken();
         faqSubmit($fdetails);
     }
-} else if ($gdetails > 0) {
+} elseif ($gdetails > 0) {
     if (noSubmit('faqsubmit')) {
         dogDetailsPanel($gdetails);
-    } else if (onSubmit('faqsubmit')) {
+    } elseif (onSubmit('faqsubmit')) {
         $oToken->assertToken();
         dogDetails($gdetails);
     }

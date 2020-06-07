@@ -82,7 +82,10 @@ $versioncompany = 'The GaiaBB Group';
 $versionshort = 'GaiaBB';
 $versiongeneral = 'GaiaBB 1.0-M1';
 $versioncopyright = 'GaiaBB 1.0-M1, &copy; 2009-2020 The GaiaBB Group';
-$versionbuild = '2020.01.1';
+$versionbuild = '2020.06.05';
+
+// Sendgrid alpha support
+$sendgridAPIkey = '';
 
 // No user serviceable items below
 define('X_CACHE_GET', 1);

@@ -36,7 +36,7 @@ define('ROOTHELPER', '../helper/');
 
 require_once '../header.php';
 require_once '../include/admincp.inc.php';
-require_once '../helper/formHelper.php';
+require_once '../helper/FormHelper.php';
 
 loadtpl('cp_header', 'cp_footer', 'cp_message', 'cp_error');
 
@@ -75,7 +75,7 @@ function viewPanel()
     global $CONFIG, $lang, $THEME, $shadow2, $oToken;
 
     $avataron = $avataroff = '';
-    formHelper::getSettingOnOffHtml('avastatus', $avataron, $avataroff);
+    GaiaBB\FormHelper::getSettingOnOffHtml('avastatus', $avataron, $avataroff);
 
     $avuchecked[0] = $avuchecked[1] = $avuchecked[2] = false;
     switch ($CONFIG['avatar_whocanupload']) {
@@ -91,7 +91,7 @@ function viewPanel()
     }
 
     $avatars_status_on = $avatars_status_off = '';
-    formHelper::getSettingOnOffHtml('avatars_status', $avatars_status_on, $avatars_status_off);
+    GaiaBB\FormHelper::getSettingOnOffHtml('avatars_status', $avatars_status_on, $avatars_status_off);
 
     $max_avatar_sizes = explode('x', $CONFIG['max_avatar_size']);
     $CONFIG['avatar_path'] = stripslashes($CONFIG['avatar_path']);
@@ -110,29 +110,29 @@ function viewPanel()
                             <td colspan="2" class="title"><?php echo $lang['Avatar_Settings'] ?></td>
                         </tr>
                         <?php
-formHelper::formSelectOnOff($lang['textavastatus'], 'avastatusnew', $avataron, $avataroff);
-    formHelper::formSelectOnOff($lang['avatars_status'], 'avatars_statusnew', $avatars_status_on, $avatars_status_off);
-    formHelper::formTextBox($lang['avatarsperpage'], 'avatars_perpagenew', $CONFIG['avatars_perpage'], 2);
-    formHelper::formTextBox($lang['avatarsperrow'], "avatars_perrownew", $CONFIG['avatars_perrow'], 2);
-    formHelper::formSelectList($lang['Avatar_Whoupload'], 'avatar_whocanuploadnew', array(
-        $lang['textoff'],
-        $lang['Avatar_Upall'],
-        $lang['Avatar_Upstaff'],
-    ), array(
-        'off',
-        'all',
-        'staff',
-    ), $avuchecked, false);
-    formHelper::formTextBox($lang['Avatar_Filesize'], 'avatar_filesizenew', $CONFIG['avatar_filesize'], 5);
-    formHelper::formTextBox($lang['Avatar_Wdimensions'], 'avatar_max_widthnew', $CONFIG['avatar_max_width'], 4);
-    formHelper::formTextBox($lang['Avatar_Hdimensions'], 'avatar_max_heightnew', $CONFIG['avatar_max_height'], 4);
-    formHelper::formTextBox($lang['Avatar_Newwresize'], 'avatar_new_widthnew', $CONFIG['avatar_new_width'], 4);
-    formHelper::formTextBox($lang['Avatar_Newhresize'], 'avatar_new_heightnew', $CONFIG['avatar_new_height'], 4);
-    formHelper::formTextBox($lang['Avatar_Path'], 'avatar_pathnew', $CONFIG['avatar_path'], 20);
-    formHelper::formTextBox($lang['avgalpath'], 'avgalpathnew', $CONFIG['avgalpath'], 20);
-    formHelper::formTextBox($lang['max_avatar_size_w'], 'max_avatar_size_w_new', $max_avatar_sizes[0], 4);
-    formHelper::formTextBox($lang['max_avatar_size_h'], 'max_avatar_size_h_new', $max_avatar_sizes[1], 4);
-    ?>
+                        GaiaBB\FormHelper::formSelectOnOff($lang['textavastatus'], 'avastatusnew', $avataron, $avataroff);
+                        GaiaBB\FormHelper::formSelectOnOff($lang['avatars_status'], 'avatars_statusnew', $avatars_status_on, $avatars_status_off);
+                        GaiaBB\FormHelper::formTextBox($lang['avatarsperpage'], 'avatars_perpagenew', $CONFIG['avatars_perpage'], 2);
+                        GaiaBB\FormHelper::formTextBox($lang['avatarsperrow'], "avatars_perrownew", $CONFIG['avatars_perrow'], 2);
+                        GaiaBB\FormHelper::formSelectList($lang['Avatar_Whoupload'], 'avatar_whocanuploadnew', array(
+                            $lang['textoff'],
+                            $lang['Avatar_Upall'],
+                            $lang['Avatar_Upstaff'],
+                        ), array(
+                            'off',
+                            'all',
+                            'staff',
+                        ), $avuchecked, false);
+                        GaiaBB\FormHelper::formTextBox($lang['Avatar_Filesize'], 'avatar_filesizenew', $CONFIG['avatar_filesize'], 5);
+                        GaiaBB\FormHelper::formTextBox($lang['Avatar_Wdimensions'], 'avatar_max_widthnew', $CONFIG['avatar_max_width'], 4);
+                        GaiaBB\FormHelper::formTextBox($lang['Avatar_Hdimensions'], 'avatar_max_heightnew', $CONFIG['avatar_max_height'], 4);
+                        GaiaBB\FormHelper::formTextBox($lang['Avatar_Newwresize'], 'avatar_new_widthnew', $CONFIG['avatar_new_width'], 4);
+                        GaiaBB\FormHelper::formTextBox($lang['Avatar_Newhresize'], 'avatar_new_heightnew', $CONFIG['avatar_new_height'], 4);
+                        GaiaBB\FormHelper::formTextBox($lang['Avatar_Path'], 'avatar_pathnew', $CONFIG['avatar_path'], 20);
+                        GaiaBB\FormHelper::formTextBox($lang['avgalpath'], 'avgalpathnew', $CONFIG['avgalpath'], 20);
+                        GaiaBB\FormHelper::formTextBox($lang['max_avatar_size_w'], 'max_avatar_size_w_new', $max_avatar_sizes[0], 4);
+                        GaiaBB\FormHelper::formTextBox($lang['max_avatar_size_h'], 'max_avatar_size_h_new', $max_avatar_sizes[1], 4);
+                        ?>
                         <tr class="ctrtablerow" bgcolor="<?php echo $THEME['altbg2'] ?>">
                             <td colspan="2"><input class="submit" type="submit"
                                                    name="avatarsubmit"
@@ -172,13 +172,14 @@ function doPanel()
     $avatar_whocanuploadnew = formVar('avatar_whocanuploadnew');
     switch ($avatar_whocanuploadnew) {
         case 'all':
+            // no break
         case 'off':
+            // no break
         case 'staff':
-
             // positive validation = no action needs to be taken
             break;
-        default:
 
+        default:
             // all other choices, make a safe choice
             $avatar_whocanuploadnew = 'off';
     }

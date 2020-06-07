@@ -29,6 +29,7 @@
  *
  **/
 
+// phpcs:disable PSR1.Files.SideEffects
 define('ROOT', '../');
 define('ROOTINC', '../include/');
 define('ROOTCLASS', '../class/');
@@ -69,7 +70,13 @@ function viewPanel()
     $count = 1;
     $showtables = '';
     foreach ($tables as $tablename) {
-        $showtables .= '<tr><td class="ctrtablerow" bgcolor="' . $THEME['altbg1'] . '" width="10%"><strong>' . $count . '</strong></td><td class="tablerow" bgcolor="' . $THEME['altbg2'] . '"><a href="cp_dbinfo.php?list=fields&amp;tablename=' . $tablename . '&amp;token=' . $oToken->createToken() . '">' . $tablename . '</a></td></tr>';
+        $showtables .= '<tr><td class="ctrtablerow" bgcolor="' . $THEME['altbg1'] .
+        '" width="10%"><strong>' .
+        $count . '</strong></td><td class="tablerow" bgcolor="' .
+        $THEME['altbg2'] . '"><a href="cp_dbinfo.php?list=fields&amp;tablename=' .
+        $tablename . '&amp;token=' .
+        $oToken->createToken() . '">' .
+            $tablename . '</a></td></tr>';
         $showtables .= "\n";
         $count++;
     }
@@ -113,9 +120,9 @@ function listFields()
     $tablename = stripslashes(getRequestVar('tablename'));
 
     $result = $db->query("SELECT * FROM $tablename");
-    $columns = $db->num_fields($result);
-    $records = $db->num_rows($result);
-    $table = $db->field_table($result, 0);
+    $columns = $db->numFields($result);
+    $records = $db->numRows($result);
+    $table = $db->fieldTable($result, 0);
     $count = 1;
     $comma = '';
     if (!$table) {
@@ -123,17 +130,26 @@ function listFields()
     }
     $showfields = '';
     for ($i = 0; $i < $columns; $i++) {
-        $type = $db->field_type($result, $i);
-        $name = $db->field_name($result, $i);
-        $length = $db->field_len($result, $i);
-        $flags = $db->field_flags($result, $i);
+        $type = $db->fieldType($result, $i);
+        $name = $db->fieldName($result, $i);
+        $length = $db->fieldLen($result, $i);
+        $flags = $db->fieldFlags($result, $i);
         $comma = ', ';
 
-        $showfields .= '<tr><td class="ctrtablerow" bgcolor="' . $THEME['altbg1'] . '" width="10%"><strong>' . $count . '</strong></td><td class="tablerow" bgcolor="' . $THEME['altbg2'] . '">' . $name . '</td><td class="tablerow" bgcolor="' . $THEME['altbg1'] . '">' . $type . '</td><td class="tablerow" bgcolor="' . $THEME['altbg2'] . '">' . $length . '</td><td class="tablerow" bgcolor="' . $THEME['altbg1'] . '">' . $flags . '</td></tr>';
+        $showfields .= '<tr><td class="ctrtablerow" bgcolor="' .
+            $THEME['altbg1'] . '" width="10%"><strong>' .
+            $count . '</strong></td><td class="tablerow" bgcolor="' .
+            $THEME['altbg2'] . '">' .
+            $name . '</td><td class="tablerow" bgcolor="' .
+            $THEME['altbg1'] . '">' .
+            $type . '</td><td class="tablerow" bgcolor="' .
+            $THEME['altbg2'] . '">' .
+            $length . '</td><td class="tablerow" bgcolor="' . $THEME['altbg1'] . '">' .
+            $flags . '</td></tr>';
         $showfields .= "\n";
         $count++;
     }
-    $db->free_result($result);
+    $db->freeResult($result);
     ?>
     <table cellspacing="0px" cellpadding="0px" border="0px" width="100%"
            align="center">

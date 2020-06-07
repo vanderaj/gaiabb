@@ -80,10 +80,11 @@ function viewPanel()
                             <td colspan="2"><?php echo $lang['fixmoods_confirm'] ?></td>
                         </tr>
                         <tr class="ctrtablerow" bgcolor="<?php echo $THEME['altbg2'] ?>">
-                            <td colspan="2"><input class="submit" type="submit"
-                                                   name="yessubmit" value="<?php echo $lang['textyes'] ?>"/>&nbsp;-&nbsp;<input
-                                        class="submit" type="submit" name="nosubmit"
-                                        value="<?php echo $lang['textno'] ?>"/></td>
+                            <td colspan="2">
+                                <input class="submit" type="submit" name="yessubmit"
+                                value="<?php echo $lang['textyes'] ?>"/>&nbsp;-&nbsp;
+                                <input class="submit" type="submit" name="nosubmit"
+                                value="<?php echo $lang['textno'] ?>"/></td>
                         </tr>
                     </table>
                 </td>

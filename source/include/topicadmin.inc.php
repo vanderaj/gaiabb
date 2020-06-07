@@ -32,7 +32,9 @@ if (!defined('IN_PROGRAM') && (defined('DEBUG') && DEBUG == false)) {
     exit('This file is not designed to be called directly');
 }
 
-class mod
+namespace GaiaBB;
+
+class Mod
 {
 
     public function mod()
@@ -50,18 +52,18 @@ class mod
 
         $query = $db->query("SELECT author FROM " . X_PREFIX . "posts WHERE tid = '$tid'");
 
-        if ($query === false || $db->num_rows($query) == 0) {
+        if ($query === false || $db->numRows($query) == 0) {
             error($lang['textnothread'], false);
         }
 
-        while (($result = $db->fetch_array($query)) != false) {
+        while (($result = $db->fetchArray($query)) != false) {
             $db->query("UPDATE " . X_PREFIX . "members SET postnum = postnum-1 WHERE username = '$result[author]'");
         }
-        $db->free_result($query);
+        $db->freeResult($query);
 
         $query = $db->query("SELECT subject FROM " . X_PREFIX . "threads WHERE tid = '$tid'");
         $subject = $db->result($query, 0);
-        $db->free_result($query);
+        $db->freeResult($query);
 
         $db->query("DELETE FROM " . X_PREFIX . "threads WHERE tid = '$tid'");
         $db->query("DELETE FROM " . X_PREFIX . "lastposts WHERE tid = '$tid'");
@@ -73,8 +75,8 @@ class mod
         $db->query("DELETE FROM " . X_PREFIX . "threads WHERE closed = 'moved|$tid'");
 
         $query = $db->query("SELECT * FROM " . X_PREFIX . "forums WHERE fid = '$fid'");
-        $forums = $db->fetch_array($query);
-        $db->free_result($query);
+        $forums = $db->fetchArray($query);
+        $db->freeResult($query);
 
         if (isset($forums['type']) && isset($forums['type']) == 'sub') {
             updateforumcount($forums['fup']);
@@ -85,7 +87,7 @@ class mod
         message($lang['deletethreadmsg'], false, '', '', 'viewforum.php?fid=' . $fid, true, false, true);
     }
 
-    public function log($user = '', $action, $fid, $tid)
+    public function log($user, $action, $fid, $tid)
     {
         global $self, $db;
 
@@ -117,7 +119,7 @@ class mod
 
         $query = $db->query("SELECT subject FROM " . X_PREFIX . "threads WHERE tid = '$tid'");
         $subject = $db->result($query, 0);
-        $db->free_result($query);
+        $db->freeResult($query);
 
         $act = ($closed != '') ? 'open' : 'close' . ": " . $subject;
         $this->log($self['username'], $act, $fid, $tid);
@@ -149,12 +151,12 @@ class mod
 
             $query = $db->query("SELECT t.tid, t.fid, t.author, t.subject, t.topped, l.uid as lp_uid, l.username as lp_user, l.dateline as lp_dateline, l.pid as lp_pid FROM " . X_PREFIX . "threads t, " . X_PREFIX . "lastposts l WHERE t.tid = '$tid' AND t.tid = l.tid");
 
-            if ($db->num_rows($query) == 0) {
+            if ($db->numRows($query) == 0) {
                 error($lang['textnothread'], false);
             }
 
-            $info = $db->fetch_array($query);
-            $db->free_result($query);
+            $info = $db->fetchArray($query);
+            $db->freeResult($query);
 
             // Move the thread
             $db->query("UPDATE " . X_PREFIX . "threads SET fid = '$moveto' WHERE tid = '$tid' AND fid = '$fid'");
@@ -164,7 +166,7 @@ class mod
             if ($type == 'redirect') {
                 // Create a new thread for the redirect in the OLD forum
                 $db->query("INSERT INTO " . X_PREFIX . "threads (tid, fid, subject, icon, views, replies, author, closed, topped) VALUES('', '$info[fid]', '$info[subject]', '', '-', '-', '$info[author]', 'moved|$info[tid]', '$info[topped]')");
-                $ntid = $db->insert_id();
+                $ntid = $db->insertId();
                 $db->query("INSERT INTO " . X_PREFIX . "posts (fid, tid, author, message, subject) VALUES ('$info[fid]', '$ntid', '$info[author]', '$info[tid]', '$info[subject]')");
                 $db->query("INSERT INTO " . X_PREFIX . "lastposts (tid, uid, username, dateline, pid) SELECT '$ntid', uid, username, dateline, pid FROM " . X_PREFIX . "lastposts WHERE tid = '$info[tid]'");
             }
@@ -184,7 +186,7 @@ class mod
 
         $query = $db->query("SELECT subject FROM " . X_PREFIX . "threads WHERE tid = '$tid'");
         $subject = $db->result($query, 0);
-        $db->free_result($query);
+        $db->freeResult($query);
 
         $this->log($self['username'], $action . ': ' . $subject, $f, $tid);
         message($lang['movethreadmsg'], false, '', '', 'viewforum.php?fid=' . $fid, true, false, true);
@@ -203,8 +205,7 @@ class mod
 
         if ($topped == 1) {
             $db->query("UPDATE " . X_PREFIX . "threads SET topped = '0' WHERE tid = '$tid' AND fid = '$fid'");
-        } else
-        if ($topped == 0) {
+        } elseif ($topped == 0) {
             $db->query("UPDATE " . X_PREFIX . "threads SET topped = '1' WHERE tid = '$tid' AND fid = '$fid'");
         }
         $act = ($topped ? 'untop' : 'top');
@@ -247,12 +248,12 @@ class mod
 
         $query = $db->query("SELECT pid FROM " . X_PREFIX . "posts WHERE tid = '$tid' ORDER BY pid ASC LIMIT 1");
 
-        if ($db->num_rows($query) == 0) {
+        if ($db->numRows($query) == 0) {
             error($lang['textnothread'], false);
         }
 
         $pid = $db->result($query, 0);
-        $db->free_result($query);
+        $db->freeResult($query);
         $db->query("DELETE FROM " . X_PREFIX . "posts WHERE tid = '$tid' AND pid != '$pid'");
         updatethreadcount($tid);
         updateforumcount($fid);
@@ -279,17 +280,17 @@ class mod
 
         $subject = addslashes($subject);
         $q1 = $db->query("SELECT author, subject FROM " . X_PREFIX . "posts WHERE tid = '$tid' ORDER BY dateline LIMIT 0,1");
-        if ($db->num_rows($q1) == 0) {
+        if ($db->numRows($q1) == 0) {
             error($lang['textnothread'], false);
         }
-        $db->free_result($q1);
+        $db->freeResult($q1);
 
         $oldmove = getFormArrayInt('move', false);
         $newmove = implode(',', $oldmove);
 
         if (!empty($subject)) {
             $db->query("INSERT INTO " . X_PREFIX . "threads (tid, fid, subject, icon, views, replies, author, closed, topped) VALUES ('', '$fid', '$subject', '', '0', '0', '" . $self['username'] . "', '', '')");
-            $newtid = $db->insert_id();
+            $newtid = $db->insertId();
             $db->query("INSERT INTO " . X_PREFIX . "lastposts (tid, uid, username, dateline, pid) VALUES ('$newtid', '-', '-', '-', '-')");
         }
 
@@ -302,11 +303,11 @@ class mod
 
         $q3 = $db->query("SELECT author FROM " . X_PREFIX . "posts WHERE tid = '$newtid' ORDER BY dateline ASC LIMIT 0,1");
         $firstauthor = $db->result($q3, 0);
-        $db->free_result($q3);
+        $db->freeResult($q3);
 
         $q4 = $db->query("SELECT author, dateline, pid FROM " . X_PREFIX . "posts WHERE tid = '$newtid' ORDER BY dateline DESC LIMIT 0,1");
-        $lastpost = $db->fetch_array($q4);
-        $db->free_result($q4);
+        $lastpost = $db->fetchArray($q4);
+        $db->freeResult($q4);
 
         $db->query("UPDATE " . X_PREFIX . "threads SET author = '$firstauthor', replies = replies-1 WHERE tid = '$newtid'");
         $lastpost_uid = $db->result($db->query("SELECT DISTINCT uid FROM " . X_PREFIX . "members WHERE username = '$lastpost[author]'"), 0);
@@ -314,11 +315,11 @@ class mod
 
         $q5 = $db->query("SELECT author FROM " . X_PREFIX . "posts WHERE tid = '$tid' ORDER BY dateline ASC LIMIT 0,1");
         $firstauthor = $db->result($q5, 0);
-        $db->free_result($q5);
+        $db->freeResult($q5);
 
         $q6 = $db->query("SELECT author, dateline, pid FROM " . X_PREFIX . "posts WHERE tid = '$tid' ORDER BY dateline DESC LIMIT 0,1");
-        $lastpost = $db->fetch_array($q6);
-        $db->free_result($q6);
+        $lastpost = $db->fetchArray($q6);
+        $db->freeResult($q6);
 
         $db->query("UPDATE " . X_PREFIX . "threads SET author = '$firstauthor' WHERE tid = '$tid'");
         $lastpost_uid = $db->result($db->query("SELECT DISTINCT uid FROM " . X_PREFIX . "members WHERE username = '$lastpost[author]'"), 0);
@@ -333,11 +334,11 @@ class mod
         global $db, $lang, $fid, $tid, $self, $THEME, $oToken, $shadow;
 
         $qr = $db->query("SELECT replies FROM " . X_PREFIX . "threads WHERE tid = '$tid'");
-        if ($db->num_rows($qr) == 0) {
+        if ($db->numRows($qr) == 0) {
             error($lang['textnothread'], false);
         }
         $replies = $db->result($qr, 0);
-        $db->free_result($qr);
+        $db->freeResult($qr);
 
         if ($replies == 0) {
             error($lang['cantsplit'], false);
@@ -345,14 +346,14 @@ class mod
 
         $posts = '';
         $qp = $db->query("SELECT * FROM " . X_PREFIX . "posts WHERE tid = '$tid' ORDER BY dateline");
-        while (($post = $db->fetch_array($qp)) != false) {
+        while (($post = $db->fetchArray($qp)) != false) {
             $bbcodeoff = $post['bbcodeoff'];
             $smileyoff = $post['smileyoff'];
             $post['message'] = addslashes($post['message']);
             $post['message'] = postify($post['message'], $smileyoff, $bbcodeoff);
             eval('$posts .= "' . template('topicadmin_split_row') . '";');
         }
-        $db->free_result($qp);
+        $db->freeResult($qp);
         eval('echo stripslashes("' . template('topicadmin_split') . '");');
     }
 
@@ -373,7 +374,7 @@ class mod
         $queryadd1 = $db->query("SELECT replies, fid FROM " . X_PREFIX . "threads WHERE tid = '$othertid'");
         $queryadd2 = $db->query("SELECT replies, fid FROM " . X_PREFIX . "threads WHERE tid = '$tid'");
 
-        if ($db->num_rows($queryadd1) == 0 || $db->num_rows($queryadd2) == 0) {
+        if ($db->numRows($queryadd1) == 0 || $db->numRows($queryadd2) == 0) {
             error($lang['mergenothread']);
         }
 
@@ -389,28 +390,28 @@ class mod
         $db->query("UPDATE " . X_PREFIX . "forums SET threads = threads-1 WHERE fid='$otherfid'");
 
         $query = $db->query("SELECT * FROM " . X_PREFIX . "favorites WHERE tid = '$othertid' OR tid = '$tid'");
-        if ($db->num_rows($query) == 2) {
-            $db->free_result($query);
+        if ($db->numRows($query) == 2) {
+            $db->freeResult($query);
             $db->query("DELETE FROM " . X_PREFIX . "favorites WHERE tid = '$othertid'");
         } else {
             $db->query("UPDATE " . X_PREFIX . "favorites SET tid = '$tid' WHERE tid = '$othertid'");
         }
 
         $query = $db->query("SELECT * FROM " . X_PREFIX . "subscriptions WHERE tid = '$othertid' OR tid = '$tid'");
-        if ($db->num_rows($query) == 2) {
-            $db->free_result($query);
+        if ($db->numRows($query) == 2) {
+            $db->freeResult($query);
             $db->query("DELETE FROM " . X_PREFIX . "subscriptions WHERE tid = '$othertid'");
         } else {
             $db->query("UPDATE " . X_PREFIX . "subscriptions SET tid = '$tid' WHERE tid = '$othertid'");
         }
 
         $query = $db->query("SELECT subject, author, icon FROM " . X_PREFIX . "posts WHERE tid = '$tid' OR tid = '$othertid' ORDER BY pid ASC LIMIT 1");
-        $thread = $db->fetch_array($query);
-        $db->free_result($query);
+        $thread = $db->fetchArray($query);
+        $db->freeResult($query);
 
         $query = $db->query("SELECT author, dateline, pid FROM " . X_PREFIX . "posts WHERE tid = '$tid' ORDER BY dateline DESC LIMIT 0,1");
-        $lastpost = $db->fetch_array($query);
-        $db->free_result($query);
+        $lastpost = $db->fetchArray($query);
+        $db->freeResult($query);
 
         $db->query("UPDATE " . X_PREFIX . "threads SET replies = '$replyadd', subject = '$thread[subject]', icon = '$thread[icon]', author = '$thread[author]' WHERE tid = '$tid'");
         $lastpost_uid = $db->result($db->query("SELECT DISTINCT uid FROM " . X_PREFIX . "members WHERE username = '$lastpost[author]'"), 0);
@@ -431,7 +432,7 @@ class mod
         global $db, $lang, $tid, $self, $action, $fid, $forums, $fup;
 
         $query = $db->query("SELECT author, pid, message FROM " . X_PREFIX . "posts WHERE tid = '$tid'");
-        while (($post = $db->fetch_array($query)) != false) {
+        while (($post = $db->fetchArray($query)) != false) {
             $move = "move$post[pid]";
             $move = getRequestInt($move);
             if (!empty($move)) {
@@ -441,15 +442,15 @@ class mod
                 $db->query("UPDATE " . X_PREFIX . "threads SET replies = replies-1 WHERE tid = '$tid'");
             }
         }
-        $db->free_result($query);
+        $db->freeResult($query);
 
         $query = $db->query("SELECT author FROM " . X_PREFIX . "posts WHERE tid = '$tid' ORDER BY dateline ASC LIMIT 0,1");
         $firstauthor = $db->result($query, 0);
-        $db->free_result($query);
+        $db->freeResult($query);
 
         $query = $db->query("SELECT pid, author, dateline FROM " . X_PREFIX . "posts WHERE tid = '$tid' ORDER BY dateline DESC LIMIT 0,1");
-        $lastpost = $db->fetch_array($query);
-        $db->free_result($query);
+        $lastpost = $db->fetchArray($query);
+        $db->freeResult($query);
 
         $db->query("UPDATE " . X_PREFIX . "threads SET author = '$firstauthor' WHERE tid = '$tid'");
         $lastpost_uid = $db->result($db->query("SELECT DISTINCT uid FROM " . X_PREFIX . "members WHERE username = '$lastpost[author]'"), 0);
@@ -457,8 +458,8 @@ class mod
 
         if (isset($forums['type']) && isset($forums['type']) == 'sub') {
             $query = $db->query("SELECT fup FROM " . X_PREFIX . "forums WHERE fid = '$fid' LIMIT 1");
-            $fup = $db->fetch_array($query);
-            $db->free_result($query);
+            $fup = $db->fetchArray($query);
+            $db->freeResult($query);
             updateforumcount($fup['fup']);
         }
         updateforumcount($fid);
@@ -472,13 +473,13 @@ class mod
         global $db, $lang, $fid, $tid, $self, $THEME, $oToken, $shadow;
 
         $query = $db->query("SELECT replies FROM " . X_PREFIX . "threads WHERE tid = '$tid'");
-        if ($db->num_rows($query) == 0) {
-            $db->free_result($query);
+        if ($db->numRows($query) == 0) {
+            $db->freeResult($query);
             error($lang['textnothread'], false);
         }
 
         $replies = $db->result($query, 0);
-        $db->free_result($query);
+        $db->freeResult($query);
 
         if ($replies == 0) {
             error($lang['cantthreadprune'], false);
@@ -486,14 +487,14 @@ class mod
 
         $posts = '';
         $query = $db->query("SELECT * FROM " . X_PREFIX . "posts WHERE tid = '$tid' ORDER BY dateline");
-        while (($post = $db->fetch_array($query)) != false) {
+        while (($post = $db->fetchArray($query)) != false) {
             $bbcodeoff = $post['bbcodeoff'];
             $smileyoff = $post['smileyoff'];
             $post['message'] = addslashes($post['message']);
             $post['message'] = postify($post['message'], $smileyoff, $bbcodeoff);
             eval('$posts .= "' . template('topicadmin_threadprune_row') . '";');
         }
-        $db->free_result($query);
+        $db->freeResult($query);
         eval('echo stripslashes("' . template('topicadmin_threadprune') . '");');
     }
 
@@ -509,11 +510,11 @@ class mod
         $this->statuscheck($newfid);
 
         $query = $db->query("SELECT * FROM " . X_PREFIX . "threads WHERE tid = '$tid'");
-        if ($db->num_rows($query) == 0) {
+        if ($db->numRows($query) == 0) {
             error($lang['textnothread'], false);
         }
 
-        $thread = $db->fetch_array($query);
+        $thread = $db->fetchArray($query);
         foreach ($thread as $key => $val) {
             switch ($key) {
                 case 'tid':
@@ -550,14 +551,14 @@ class mod
         $values = "'" . implode("', '", $vals) . "'";
 
         $db->query("INSERT INTO " . X_PREFIX . "threads ($columns) VALUES($values)");
-        $newtid = $db->insert_id();
+        $newtid = $db->insertId();
         $db->query("INSERT INTO " . X_PREFIX . "lastposts (tid, uid, username, dateline, pid) SELECT '$newtid', uid, username, dateline, pid FROM " . X_PREFIX . "lastposts WHERE tid = '$tid'");
 
         $cols = array();
         $vals = array();
 
         $query = $db->query("SELECT * FROM " . X_PREFIX . "posts WHERE tid = '$tid' ORDER BY pid ASC");
-        while (($post = $db->fetch_array($query)) != false) {
+        while (($post = $db->fetchArray($query)) != false) {
             $post['fid'] = $newfid;
             $post['tid'] = $newtid;
 
@@ -579,11 +580,11 @@ class mod
             $vals = array();
 
             $db->query("INSERT INTO " . X_PREFIX . "posts ($columns) VALUES ($values)");
-            $newpid = $db->insert_id();
+            $newpid = $db->insertId();
 
             $db->query("INSERT INTO " . X_PREFIX . "attachments(`tid`,`pid`,`filename`,`filetype`,`filesize`,`attachment`,`downloads`) SELECT '$newtid','$newpid',`filename`,`filetype`,`filesize`,`attachment`,`downloads` FROM " . X_PREFIX . "attachments WHERE pid = '$oldPid'");
         }
-        $db->free_result($query);
+        $db->freeResult($query);
 
         $this->log($self['username'], $action, $fid, $tid);
         message($lang['copythreadmsg'], false, '', '', 'viewforum.php?fid=' . $fid, true, false, true);
@@ -600,7 +601,7 @@ class mod
 
         $query = $db->query("SELECT moderator FROM " . X_PREFIX . "forums WHERE fid = '$fid'");
         $mods = $db->result($query, 0);
-        $db->free_result($query);
+        $db->freeResult($query);
         $status1 = modcheck($mods);
 
         if (X_SMOD || X_ADMIN) {
@@ -629,7 +630,7 @@ class mod
 
         $query = $db->query("SELECT count(pid) FROM " . X_PREFIX . "posts WHERE tid = '$tid'");
         $postcount = $db->result($query, 0);
-        $db->free_result($query);
+        $db->freeResult($query);
 
         if ($postcount == 0) {
             error($lang['textnothread'], false);
@@ -638,14 +639,14 @@ class mod
         $mods = array();
 
         $query = $db->query("SELECT username FROM " . X_PREFIX . "members WHERE status = 'Super Administrator' OR status = 'Administrator'");
-        while (($usr = $db->fetch_array($query)) != false) {
+        while (($usr = $db->fetchArray($query)) != false) {
             $mods[] = $usr['username'];
         }
-        $db->free_result($query);
+        $db->freeResult($query);
 
         $query = $db->query("SELECT moderator FROM " . X_PREFIX . "forums WHERE fid = '$fid'");
         $reports = explode(", ", $db->result($query, 0));
-        $db->free_result($query);
+        $db->freeResult($query);
 
         $mods = array_unique(array_merge($mods, $reports));
 
@@ -654,7 +655,7 @@ class mod
         foreach ($mods as $key => $mod) {
             $mod = trim($mod);
             $q = $db->query("SELECT ppp FROM " . X_PREFIX . "members WHERE username = '$mod'");
-            if ($db->num_rows($q) == 0) {
+            if ($db->numRows($q) == 0) {
                 continue;
             }
             $page = quickpage($postcount, $db->result($q, 0));
@@ -695,9 +696,9 @@ class mod
             error($lang['pollvotenotselected'], false);
         }
 
-        $vote_id = $db->fetch_array($query);
+        $vote_id = $db->fetchArray($query);
         $vote_id = (int) $vote_id['vote_id'];
-        $db->free_result($query);
+        $db->freeResult($query);
 
         $vote_result = $db->result($db->query("SELECT COUNT(vote_option_id) FROM " . X_PREFIX . "vote_results WHERE vote_id = '$vote_id' AND vote_option_id = '$postopnum'"), 0);
         if ($vote_result != 1) {
@@ -730,33 +731,33 @@ class mod
             $query = $db->query("SELECT * FROM " . X_PREFIX . "threads WHERE tid = '$tid'");
         }
 
-        if ($db->num_rows($query) == 0) {
+        if ($db->numRows($query) == 0) {
             error($lang['textnothread'], false);
         }
 
-        $ipinfo = $db->fetch_array($query);
-        $db->free_result($query);
+        $ipinfo = $db->fetchArray($query);
+        $db->freeResult($query);
         ?>
 <form method="post" action="./admin/cp_ipban.php">
-	<input type="hidden" name="token"
-		value="<?php echo $oToken->createToken() ?>" />
-	<table cellspacing="0" cellpadding="0" border="0" width="60%"
-		align="center">
-		<tr>
-			<td bgcolor="<?php echo $THEME['bordercolor'] ?>">
-				<table border="0" cellspacing="<?php echo $THEME['borderwidth'] ?>"
-					cellpadding="<?php echo $THEME['tablespace'] ?>" width="100%">
-					<tr>
-						<td class="header" colspan="3"><?php echo $lang['textgetip'] ?></td>
-					</tr>
-					<tr bgcolor="<?php echo $THEME['altbg2'] ?>">
-						<td class="tablerow"><?php echo $lang['textyesip'] ?> <strong><?php echo $ipinfo['useip'] ?></strong> - <?php echo gethostbyaddr($ipinfo['useip']) ?>
+    <input type="hidden" name="token"
+        value="<?php echo $oToken->createToken() ?>" />
+    <table cellspacing="0" cellpadding="0" border="0" width="60%"
+        align="center">
+        <tr>
+            <td bgcolor="<?php echo $THEME['bordercolor'] ?>">
+                <table border="0" cellspacing="<?php echo $THEME['borderwidth'] ?>"
+                    cellpadding="<?php echo $THEME['tablespace'] ?>" width="100%">
+                    <tr>
+                        <td class="header" colspan="3"><?php echo $lang['textgetip'] ?></td>
+                    </tr>
+                    <tr bgcolor="<?php echo $THEME['altbg2'] ?>">
+                        <td class="tablerow"><?php echo $lang['textyesip'] ?> <strong><?php echo $ipinfo['useip'] ?></strong> - <?php echo gethostbyaddr($ipinfo['useip']) ?>
         <?php
-if (X_ADMIN) {
+        if (X_ADMIN) {
             $ip = explode('.', $ipinfo['useip']);
             $query = $db->query("SELECT * FROM " . X_PREFIX . "banned WHERE(ip1 = '$ip[0]' OR ip1 = '-1') AND(ip2 = '$ip[1]' OR ip2 = '-1') AND(ip3 = '$ip[2]' OR ip3 = '-1') AND(ip4 = '$ip[3]' OR ip4 = '-1')");
-            $result = $db->fetch_array($query);
-            $db->free_result($query);
+            $result = $db->fetchArray($query);
+            $db->freeResult($query);
 
             if ($result) {
                 $buttontext = $lang['textunbanip'];
@@ -787,15 +788,15 @@ if (X_ADMIN) {
             }
             ?>
             </td>
-					</tr>
-					<tr bgcolor="<?php echo $THEME['altbg1'] ?>">
-						<td class="tablerow">
-							<div align="center">
-								<input type="submit" class="submit" name="ipbansubmit"
-									value="<?php echo $buttontext ?>" />
-							</div>
+                    </tr>
+                    <tr bgcolor="<?php echo $THEME['altbg1'] ?>">
+                        <td class="tablerow">
+                            <div align="center">
+                                <input type="submit" class="submit" name="ipbansubmit"
+                                    value="<?php echo $buttontext ?>" />
+                            </div>
             <?php
-}
+        }
         echo '</td></tr></table></td></tr></table></form>';
     }
 
@@ -806,8 +807,8 @@ if (X_ADMIN) {
         $newmarkthread = formVar('newmarkthread');
 
         $query = $db->query("SELECT p.*, t.tid FROM " . X_PREFIX . "posts p LEFT JOIN " . X_PREFIX . "threads t ON p.tid = t.tid WHERE p.tid = '$tid' ORDER BY dateline LIMIT 0, 1");
-        $post = $db->fetch_array($query);
-        $db->free_result($query);
+        $post = $db->fetchArray($query);
+        $db->freeResult($query);
 
         $openprefixes = explode(',', $forums['mt_open']);
         for ($i = 0; $i < count($openprefixes); $i++) {

@@ -104,7 +104,7 @@ function doPanel()
     $oToken->assertToken();
 
     $count = $count2 = $percent = 0;
-    $attachObj = new attachment();
+    $attachObj = new GaiaBB\Attachment();
     $attachObj->fixOrphans($count, $count2);
     if ($count == 0) {
         $percent = 0;

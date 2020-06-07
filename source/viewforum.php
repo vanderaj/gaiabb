@@ -44,9 +44,9 @@ if ($fid === 0) {
 }
 
 $query = $db->query("SELECT * FROM " . X_PREFIX . "forums WHERE fid = '$fid' AND status = 'on'");
-$rows = $db->num_rows($query);
-$forum = $db->fetch_array($query);
-$db->free_result($query);
+$rows = $db->numRows($query);
+$forum = $db->fetchArray($query);
+$db->freeResult($query);
 
 if ($rows === 0 || isset($forum['type']) && $forum['type'] != 'forum' && $forum['type'] != 'sub') {
     error($lang['textnoforum']);
@@ -56,13 +56,12 @@ $fup = array();
 if (isset($forum['type']) && $forum['type'] == 'sub') {
     $forum['fup'] = intval($forum['fup']);
     $query = $db->query("SELECT private, userlist, name, fid FROM " . X_PREFIX . "forums WHERE fid = '$forum[fup]'");
-    $fup = $db->fetch_array($query);
-    $db->free_result($query);
+    $fup = $db->fetchArray($query);
+    $db->freeResult($query);
     if (!privfcheck($fup['private'], $fup['userlist'])) {
         error($lang['privforummsg']);
     }
-} else
-if (isset($forum['type']) && $forum['type'] != 'forum') {
+} elseif (isset($forum['type']) && $forum['type'] != 'forum') {
     error($lang['textnoforum']);
 }
 
@@ -76,8 +75,7 @@ pwverify($forum['password'], 'viewforum.php?fid=' . $fid, $fid, true);
 if (isset($forum['type']) && $forum['type'] == 'forum') {
     nav(stripslashes($forum['name']));
     btitle(stripslashes($forum['name']));
-} else
-if (isset($forum['type']) && $forum['type'] == 'sub') {
+} elseif (isset($forum['type']) && $forum['type'] == 'sub') {
     nav('<a href="viewforum.php?fid=' . intval($fup['fid']) . '">' . stripslashes($fup['name']) . '</a>');
     nav(stripslashes($forum['name']));
     btitle(stripslashes($fup['name']));
@@ -104,14 +102,14 @@ $subforums = $forumlist = '';
 if (count($fup) == 0) {
     $query = $db->query("SELECT f.*, l.uid AS lp_uid, l.username AS lp_user, l.dateline AS lp_dateline, l.pid AS lp_pid FROM " . X_PREFIX . "forums f LEFT  JOIN " . X_PREFIX . "lastposts l ON l.tid = f.lastpost WHERE f.type =  'sub' AND f.fup =  '$fid' AND f.status =  'on' ORDER  BY f.displayorder");
 
-    if ($db->num_rows($query) != 0) {
+    if ($db->numRows($query) != 0) {
         $fulist = $forum['userlist'];
-        while (($sub = $db->fetch_array($query)) != false) {
+        while (($sub = $db->fetchArray($query)) != false) {
             $forumlist .= forum($sub, 'viewforum_subforum');
         }
         $forum['userlist'] = $fulist;
         eval('$subforums = "' . template('viewforum_subforums') . '";');
-        $db->free_result($query);
+        $db->freeResult($query);
     }
 }
 
@@ -268,8 +266,7 @@ $viewforum_thread = 'viewforum_thread';
 $status1 = '';
 if (X_STAFF && isset($self['status']) && $self['status'] != 'Moderator') {
     $status1 = 'Moderator';
-} else
-if (isset($self['status']) && $self['status'] == 'Moderator') {
+} elseif (isset($self['status']) && $self['status'] == 'Moderator') {
     $status1 = modcheck($forum['moderator']);
 }
 
@@ -281,7 +278,7 @@ if ($status1 == 'Moderator') {
 $topicsnum = 0;
 $threadlist = '';
 $querytop = $db->query("SELECT $dotadd1 t.*, m.uid, l.uid as lp_uid, l.username as lp_user, l.dateline as lp_dateline, l.pid as lp_pid FROM " . X_PREFIX . "threads t $dotadd2 LEFT JOIN " . X_PREFIX . "members m ON (m.username = t.author) LEFT JOIN " . X_PREFIX . "lastposts l ON l.tid = t.tid WHERE t.fid = '$fid' $srchfrom $srchtype ORDER BY topped $srchorder, $srchsort $srchorder LIMIT $start_limit, " . $self['tpp']);
-while (($thread = $db->fetch_array($querytop)) != false) {
+while (($thread = $db->fetchArray($querytop)) != false) {
     $thread['subject'] = shortenString(censor($thread['subject']), 80, X_SHORTEN_SOFT | X_SHORTEN_HARD, '...');
     $tmOffset = ($self['timeoffset'] * 3600) + $self['daylightsavings'];
 
@@ -320,8 +317,7 @@ while (($thread = $db->fetch_array($querytop)) != false) {
 
     if ($thread['replies'] >= $CONFIG['hottopic']) {
         $folder = 'hot_folder.gif';
-    } else
-    if ($thread['pollopts'] == 1) {
+    } elseif ($thread['pollopts'] == 1) {
         $folder = 'folder_poll.gif';
     } else {
         $folder = 'folder.gif';
@@ -331,11 +327,9 @@ while (($thread = $db->fetch_array($querytop)) != false) {
 
     if (($oT = strpos($oldtopics, '|' . $lastPid . '|')) === false && $thread['replies'] >= $CONFIG['hottopic'] && $lastvisit < $dalast) {
         $folder = 'hot_red_folder.gif';
-    } else
-    if ($lastvisit < $dalast && $oT === false && $thread['pollopts'] == 1) {
+    } elseif ($lastvisit < $dalast && $oT === false && $thread['pollopts'] == 1) {
         $folder = 'folder_new_poll.gif';
-    } else
-    if ($lastvisit < $dalast && $oT === false) {
+    } elseif ($lastvisit < $dalast && $oT === false) {
         $folder = 'red_folder.gif';
     }
 
@@ -390,7 +384,7 @@ while (($thread = $db->fetch_array($querytop)) != false) {
     $prefix = '';
     $topicsnum++;
 }
-$db->free_result($querytop);
+$db->freeResult($querytop);
 
 if ($topicsnum == 0) {
     if (X_ADMIN || X_SMOD || (X_STAFF && $status1 == 'Moderator')) {
@@ -492,8 +486,8 @@ switch ($days) {
 }
 
 $totalquery = $db->query("SELECT $dotadd1 t.* FROM " . X_PREFIX . "threads t LEFT JOIN " . X_PREFIX . "lastposts l ON l.tid = t.tid $dotadd2 WHERE t.fid = '$fid' $srchfrom $srchtype");
-$total = $db->num_rows($totalquery);
-$db->free_result($totalquery);
+$total = $db->numRows($totalquery);
+$db->freeResult($totalquery);
 
 $mpurl = 'viewforum.php?fid=' . $fid . '&amp;type=' . $type . '&amp;days=' . $days . '&amp;sort=' . $sort . '&amp;order=' . $order;
 if (($multipage = multi($total, $self['tpp'], $page, $mpurl)) === false) {

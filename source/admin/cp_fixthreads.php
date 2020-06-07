@@ -28,7 +28,7 @@
  *    along with GaiaBB.  If not, see <http://www.gnu.org/licenses/>.
  *
  **/
-
+// phpcs:disable PSR1.Files.SideEffects
 define('ROOT', '../');
 define('ROOTINC', '../include/');
 define('ROOTCLASS', '../class/');
@@ -104,16 +104,16 @@ function doPanel()
 
     $query = $db->query("SELECT fid, tid FROM " . X_PREFIX . "threads WHERE 1 ORDER BY tid ASC");
     $count = $count2 = 0;
-    while (($threads = $db->fetch_array($query)) != false) {
+    while (($threads = $db->fetchArray($query)) != false) {
         $count2++;
         $query2 = $db->query("SELECT fid, name FROM " . X_PREFIX . "forums WHERE fid = $threads[fid]");
-        $forum = $db->fetch_array($query2);
+        $forum = $db->fetchArray($query2);
         if (empty($forum['fid'])) {
             $count++;
             $db->query("DELETE FROM " . X_PREFIX . "threads WHERE tid = $threads[tid]");
         }
     }
-    $db->free_result($query);
+    $db->freeResult($query);
     if ($count == 0) {
         $percent = 0;
     } else {

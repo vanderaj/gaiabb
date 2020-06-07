@@ -45,8 +45,8 @@ class MailSys
     {
         $this->email = new \SendGrid\Mail\Mail();
 
-        $this->email->setReplyTo("admin@aussieveedubbers.com");
-        $this->email->setFrom("admin@aussieveedubbers.com", "Aussieveedubbers");
+        $this->email->setReplyTo("");
+        $this->email->setFrom("", "");
     }
 
     // Required calls

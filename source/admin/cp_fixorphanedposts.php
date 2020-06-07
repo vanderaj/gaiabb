@@ -29,6 +29,7 @@
  *
  **/
 
+// phpcs:disable PSR1.Files.SideEffects
 define('ROOT', '../');
 define('ROOTINC', '../include/');
 define('ROOTCLASS', '../class/');
@@ -105,16 +106,16 @@ function doPanel()
 
     $query = $db->query("SELECT tid, pid FROM " . X_PREFIX . "posts WHERE 1 ORDER BY pid ASC");
     $count = $count2 = 0;
-    while (($posts = $db->fetch_array($query)) != false) {
+    while (($posts = $db->fetchArray($query)) != false) {
         $count2++;
         $query2 = $db->query("SELECT tid, subject FROM " . X_PREFIX . "threads WHERE tid = $posts[tid]");
-        $thread = $db->fetch_array($query2);
+        $thread = $db->fetchArray($query2);
         if (empty($thread['tid'])) {
             $count++;
             $db->query("DELETE FROM " . X_PREFIX . "posts WHERE pid = $posts[pid]");
         }
     }
-    $db->free_result($query);
+    $db->freeResult($query);
     if ($count == 0) {
         $percent = 0;
     } else {

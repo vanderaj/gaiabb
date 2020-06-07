@@ -36,7 +36,7 @@ define('ROOTHELPER', '../helper/');
 
 require_once '../header.php';
 require_once '../include/admincp.inc.php';
-require_once '../helper/formHelper.php';
+require_once '../helper/FormHelper.php';
 
 loadtpl('cp_header', 'cp_footer', 'cp_message', 'cp_error');
 
@@ -79,51 +79,50 @@ function viewPanel()
                             <td class="title" align="center"><?php echo $lang['restrictpartialmatch'] ?></td>
                         </tr>
                         <?php
-$query = $db->query("SELECT * FROM " . X_PREFIX . "restricted ORDER BY id");
-    $rowsFound = $db->num_rows($query);
-    while (($restricted = $db->fetch_array($query)) != false) {
+                        $query = $db->query("SELECT * FROM " . X_PREFIX . "restricted ORDER BY id");
+                        $rowsFound = $db->numRows($query);
+                        while (($restricted = $db->fetchArray($query)) != false) {
+                            $case_check = $partial_check = '';
+                            if ($restricted['case_sensitivity'] == 1) {
+                                $case_check = $cheHTML;
+                            }
 
-        $case_check = $partial_check = '';
-        if ($restricted['case_sensitivity'] == 1) {
-            $case_check = $cheHTML;
-        }
-
-        if ($restricted['partial'] == 1) {
-            $partial_check = $cheHTML;
-        }
-        $restricted['name'] = htmlspecialchars($restricted['name']);
-        ?>
+                            if ($restricted['partial'] == 1) {
+                                $partial_check = $cheHTML;
+                            }
+                            $restricted['name'] = htmlspecialchars($restricted['name']);
+                            ?>
                             <tr class="ctrtablerow" bgcolor="<?php echo $THEME['altbg2'] ?>">
                                 <td>
-                                    <?php
-formHelper::formCheckBox("delete" . $restricted['id'], $restricted['id'], '', '');
-        ?>
+                                <?php
+                                GaiaBB\FormHelper::formCheckBox("delete" . $restricted['id'], $restricted['id'], '', '');
+                                ?>
                                 </td>
                                 <td><input type="text" size="30"
                                            name="name<?php echo $restricted['id'] ?>"
                                            value="<?php echo $restricted['name'] ?>"/></td>
                                 <td>
-                                    <?php
-formHelper::formCheckBox("case" . $restricted['id'], 'on', $case_check, '');
-        ?>
+                                <?php
+                                GaiaBB\FormHelper::formCheckBox("case" . $restricted['id'], 'on', $case_check, '');
+                                ?>
                                 </td>
                                 <td>
-                                    <?php
-formHelper::formCheckBox("partial" . $restricted['id'], 'on', $partial_check, '');
-        ?>
+                                <?php
+                                GaiaBB\FormHelper::formCheckBox("partial" . $restricted['id'], 'on', $partial_check, '');
+                                ?>
                                 </td>
                             </tr>
                             <?php
-}
-    $db->free_result($query);
-    if ($rowsFound < 1) {
-        ?>
+                        }
+                        $db->freeResult($query);
+                        if ($rowsFound < 1) {
+                            ?>
                             <tr bgcolor="<?php echo $THEME['altbg1'] ?>" class="ctrtablerow">
                                 <td colspan="4"><?php echo $lang['pluglinknone'] ?></td>
                             </tr>
                             <?php
-}
-    ?>
+                        }
+                        ?>
                         <tr>
                             <td bgcolor="<?php echo $THEME['altbg2'] ?>" colspan="4"><span
                                         class="smalltxt"><?php echo $lang['newrestrictionwhy'] ?>
@@ -137,13 +136,13 @@ formHelper::formCheckBox("partial" . $restricted['id'], 'on', $partial_check, ''
                             <td><input type="text" size="30" name="newname" value=""/></td>
                             <td>
                                 <?php
-formHelper::formCheckBox('newcase', 'on', $cheHTML, '');
-    ?>
+                                GaiaBB\FormHelper::formCheckBox('newcase', 'on', $cheHTML, '');
+                                ?>
                             </td>
                             <td>
                                 <?php
-formHelper::formCheckBox('newpartial', 'on', $cheHTML, '');
-    ?>
+                                GaiaBB\FormHelper::formCheckBox('newpartial', 'on', $cheHTML, '');
+                                ?>
                             </td>
                         </tr>
                         <tr class="ctrtablerow" bgcolor="<?php echo $THEME['altbg2'] ?>">
@@ -170,7 +169,7 @@ function doPanel()
     $oToken->assertToken();
 
     $queryrestricted = $db->query("SELECT id FROM " . X_PREFIX . "restricted");
-    while (($restricted = $db->fetch_array($queryrestricted)) != false) {
+    while (($restricted = $db->fetchArray($queryrestricted)) != false) {
         $name = $delete = $case = $partial = '';
 
         $name = $db->escape(formVar('name' . $restricted['id']));
@@ -188,7 +187,7 @@ function doPanel()
         }
         $db->query("UPDATE `" . X_PREFIX . "restricted` SET `name` = '$name', `case_sensitivity` = '$case', `partial` = '$partial' WHERE `id` = '$restricted[id]'");
     }
-    $db->free_result($queryrestricted);
+    $db->freeResult($queryrestricted);
 
     $newname = $db->escape(formVar('newname'));
     if (!empty($newname)) {
