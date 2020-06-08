@@ -29,13 +29,10 @@
  *
  **/
 // phpcs:disable PSR1.Files.SideEffects
-if (!defined('IN_PROGRAM') && (defined('DEBUG') && DEBUG == false)) {
-    exit('This file is not designed to be called directly');
-}
-
-require_once 'mimetypes.inc.php';
 
 namespace GaiaBB;
+
+require_once 'mimetypes.inc.php';
 
 class Attachment
 {

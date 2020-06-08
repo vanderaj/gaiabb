@@ -29,12 +29,6 @@
  *
  **/
 // phpcs:disable PSR1.Files.SideEffects
-if (!defined('IN_PROGRAM') && (defined('DEBUG') && DEBUG == false)) {
-    exit('database - This file is not designed to be called directly');
-}
-
-define('X_DBCLASSNAME', 'MariaDB');
-define('X_FRIENDLYNAME', 'MariaDB (and MySQL)');
 
 namespace GaiaBB;
 

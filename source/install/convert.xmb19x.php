@@ -25,13 +25,10 @@
  *
  **/
 // phpcs:disable PSR1.Files.SideEffects
-if (!defined('IN_PROGRAM') && (defined('DEBUG') && DEBUG == false)) {
-    exit('This file is not designed to be called directly');
-}
-
-define('X_CONVERT', 'xmb19x');
 
 namespace GaiaBB;
+
+define('X_CONVERT', 'xmb19x');
 
 class Xmb19x extends Convert
 {

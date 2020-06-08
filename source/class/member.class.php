@@ -29,9 +29,8 @@
  *
  **/
 // phpcs:disable PSR1.Files.SideEffects
-if (!defined('IN_PROGRAM') && (defined('DEBUG') && DEBUG == false)) {
-    exit('This file is not designed to be called directly');
-}
+
+namespace GaiaBB;
 
 require_once 'attachments.class.php';
 require_once 'forum.class.php';
@@ -84,8 +83,6 @@ require_once 'pm.class.php';
  * @package GaiaBB
  *
  */
-
-namespace GaiaBB;
 
 class Member
 {
