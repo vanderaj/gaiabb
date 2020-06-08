@@ -28,6 +28,7 @@
  *    along with GaiaBB.  If not, see <http://www.gnu.org/licenses/>.
  *
  **/
+// phpcs:disable PSR1.Files.SideEffects
 if (!defined('IN_PROGRAM') && (defined('DEBUG') && DEBUG == false)) {
     exit('This file is not designed to be called directly');
 }
@@ -61,7 +62,7 @@ class Attachment
     {
     }
 
-    public function get_attachments($tid)
+    public function getAttachments($tid)
     {
         global $db, $start_limit, $self;
 
@@ -98,7 +99,7 @@ class Attachment
         return true;
     }
 
-    public function get_post_attachments($pid)
+    public function getPostAttachments($pid)
     {
         global $CONFIG, $THEME, $lang, $post, $forum, $tid;
         global $n_height, $n_width, $attachicon, $postauthor;
@@ -110,14 +111,14 @@ class Attachment
         $attachicon = '';
         foreach ($attachments as $attach) {
             if ((intval($attach['fileheight']) == 0 || intval($attach['filewidth']) == 0) && strpos($attach['filetype'], 'image') !== false) {
-                $this->upgrade_attachment($attach);
+                $this->upgradeAttachment($attach);
             }
 
             if ($attach['pid'] == $pid) {
                 $post['filename'] = htmlspecialchars($attach['filename']);
                 if (!empty($attach['filename']) && isset($forum['attachstatus']) && $forum['attachstatus'] != 'off') {
                     $extension = strtolower(substr(strrchr($post['filename'], '.'), 1));
-                    $attachsize = $this->format_attach($attach['filesize']);
+                    $attachsize = $this->formatAttach($attach['filesize']);
                     $downloadcount = $attach['downloads'];
                     if ($downloadcount == '') {
                         $downloadcount = 0;
@@ -172,7 +173,7 @@ class Attachment
         }
     }
 
-    public function upgrade_attachment(&$attach)
+    public function upgradeAttachment(&$attach)
     {
         global $db;
 
@@ -194,7 +195,7 @@ class Attachment
         $db->query("UPDATE " . X_PREFIX . "attachments SET fileheight = " . $attach['fileheight'] . ", filewidth = " . $attach['filewidth'] . " WHERE aid = " . $aid);
     }
 
-    public function format_attach($bytes)
+    public function formatAttach($bytes)
     {
         if ($bytes >= 1073741824) {
             $bytes = round($bytes / 1073741824 * 100) / 100 . "gb";

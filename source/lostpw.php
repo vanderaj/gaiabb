@@ -28,7 +28,7 @@
  *    along with GaiaBB.  If not, see <http://www.gnu.org/licenses/>.
  *
  **/
-
+// phpcs:disable PSR1.Files.SideEffects
 define('CACHECONTROL', 'nocache');
 
 require_once 'header.php';
@@ -102,11 +102,11 @@ if (noSubmit('lostpwsubmit')) {
         error($lang['nobbname'], false, '', '', 'admin/cp_board.php', true, false, true);
     }
 
-    $mailsys->setTo($email);
-    $mailsys->setFrom($CONFIG['adminemail'], $CONFIG['bbname']);
-    $mailsys->setSubject($lang['textyourpw']);
-    $mailsys->setMessage($messagebody);
-    $mailsys->sendMail(); // XXX
+    $mailSystem->setTo($email);
+    $mailSystem->setFrom($CONFIG['adminemail'], $CONFIG['bbname']);
+    $mailSystem->setSubject($lang['textyourpw']);
+    $mailSystem->setMessage($messagebody);
+    $mailSystem->sendMail();
 
     message($lang['emailpw'], false, '', '', 'index.php', true, false, true);
 }

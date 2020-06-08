@@ -28,8 +28,7 @@
  *    along with GaiaBB.  If not, see <http://www.gnu.org/licenses/>.
  *
  **/
-
-// check to ensure no direct viewing of page
+// phpcs:disable PSR1.Files.SideEffects
 if (!defined('IN_PROGRAM') && (defined('DEBUG') && DEBUG == false)) {
     exit('This file is not designed to be called directly');
 }
@@ -358,7 +357,7 @@ function setupLanguage()
     $lang['movethreadmsg'] = "Thank you, the topic has been moved. You are now being forwarded back to the thread list.";
     $lang['multipnote'] = "Note: To ban multiple IP addresses at once, replace any of the 4 parts of the IP with a * (ex: 220.194.45.*)";
     $lang['multmodnote'] = "Note: To make multiple moderators, separate moderators with a comma (including a space) (ex: Moderator 1, Moderator 2)";
-    $lang['mysql_tools'] = "Database Tools";
+    $lang['database_tools'] = "Database Tools";
     $lang['navstats'] = "Stats";
     $lang['newposts'] = "New posts in this forum since last active";
     $lang['newrestriction'] = "To restrict the use of a username or e-mail address, enter the details below";
@@ -459,7 +458,7 @@ function setupLanguage()
     $lang['quickreply'] = "Quick Reply";
     $lang['rankinfo'] = "Based on the number of posts you have, you are assigned to a rank. Each rank has its own status and its own amount of stars. Below are the user rank settings for this board:";
     $lang['rankingsupdate'] = "User rankings updated successfully.";
-    $lang['raw_mysql'] = "Insert Raw SQL";
+    $lang['raw_database'] = "Insert Raw SQL";
     $lang['reason'] = "Reason:";
     $lang['refreshaddresslist'] = "Refresh Address Book";
     $lang['reg_on'] = "Allow User Registration";
@@ -1269,7 +1268,7 @@ function setupLanguage()
     $lang['finfo_supadmins'] = "Total Super Administrators:";
     $lang['finfo_supmods'] = "Total Super Moderators:";
     $lang['finfo_totattach'] = "Total Attachments:";
-    $lang['finfo_mysql'] = "MySQL Version:";
+    $lang['finfo_database'] = "Database Version:";
     $lang['finfo_phpver'] = "PHP Version:";
     $lang['finfo_zend'] = "Zend Version:";
     $lang['pmattachstatus'] = "PM Attachments Status:";

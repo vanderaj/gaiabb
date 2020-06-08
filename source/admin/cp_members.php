@@ -28,7 +28,7 @@
  *    along with GaiaBB.  If not, see <http://www.gnu.org/licenses/>.
  *
  **/
-
+// phpcs:disable PSR1.Files.SideEffects
 define('ROOT', '../');
 define('ROOTINC', '../include/');
 define('ROOTCLASS', '../class/');
@@ -208,78 +208,78 @@ function viewMembers()
                             <td colspan="9"><?php echo $multipage ?></td>
                         </tr>
                         <?php
-while (($member = $db->fetchArray($q1)) != false) {
-        $readrulesyes = $readrulesno = '';
-        switch ($member['readrules']) {
-            case 'yes':
-                $readrulesyes = $selHTML;
-                break;
-            default:
-                $readrulesno = $selHTML;
-                break;
-        }
+                        while (($member = $db->fetchArray($q1)) != false) {
+                            $readrulesyes = $readrulesno = '';
+                            switch ($member['readrules']) {
+                                case 'yes':
+                                    $readrulesyes = $selHTML;
+                                    break;
+                                default:
+                                    $readrulesno = $selHTML;
+                                    break;
+                            }
 
-        $staff_disable = '';
-        switch ($member['status']) {
-            case 'Super Administrator':
-                $staff_disable = 'disabled="disabled"';
-                break;
-            case 'Administrator':
-                $staff_disable = 'disabled="disabled"';
-                break;
-            case 'Super Moderator':
-                $staff_disable = 'disabled="disabled"';
-                break;
-            case 'Moderator':
-                $staff_disable = 'disabled="disabled"';
-                break;
-            default:
-                $staff_disable = '';
-                break;
-        }
+                            $staff_disable = '';
+                            switch ($member['status']) {
+                                case 'Super Administrator':
+                                    $staff_disable = 'disabled="disabled"';
+                                    break;
+                                case 'Administrator':
+                                    $staff_disable = 'disabled="disabled"';
+                                    break;
+                                case 'Super Moderator':
+                                    $staff_disable = 'disabled="disabled"';
+                                    break;
+                                case 'Moderator':
+                                    $staff_disable = 'disabled="disabled"';
+                                    break;
+                                default:
+                                    $staff_disable = '';
+                                    break;
+                            }
 
-        $sadminselect = $adminselect = $smodselect = '';
-        $modselect = $memselect = $banselect = '';
-        switch ($member['status']) {
-            case 'Super Administrator':
-                $sadminselect = $selHTML;
-                break;
-            case 'Administrator':
-                $adminselect = $selHTML;
-                break;
-            case 'Super Moderator':
-                $smodselect = $selHTML;
-                break;
-            case 'Moderator':
-                $modselect = $selHTML;
-                break;
-            case 'Member':
-                $memselect = $selHTML;
-                break;
-            case 'Banned':
-                $banselect = $selHTML;
-                break;
-            default:
-                $memselect = $selHTML;
-                break;
-        }
+                            $sadminselect = $adminselect = $smodselect = '';
+                            $modselect = $memselect = $banselect = '';
+                            switch ($member['status']) {
+                                case 'Super Administrator':
+                                    $sadminselect = $selHTML;
+                                    break;
+                                case 'Administrator':
+                                    $adminselect = $selHTML;
+                                    break;
+                                case 'Super Moderator':
+                                    $smodselect = $selHTML;
+                                    break;
+                                case 'Moderator':
+                                    $modselect = $selHTML;
+                                    break;
+                                case 'Member':
+                                    $memselect = $selHTML;
+                                    break;
+                                case 'Banned':
+                                    $banselect = $selHTML;
+                                    break;
+                                default:
+                                    $memselect = $selHTML;
+                                    break;
+                            }
 
-        $pmban = $postban = $bothban = $noban = '';
-        switch ($member['ban']) {
-            case 'pm':
-                $pmban = $selHTML;
-                break;
-            case 'posts':
-                $postban = $selHTML;
-                break;
-            case 'both':
-                $bothban = $selHTML;
-                break;
-            default:
-                $noban = $selHTML;
-                break;
-        }
-        ?>
+                            $pmban = $postban = $bothban = $noban = '';
+                            switch ($member['ban']) {
+                                case 'pm':
+                                    $pmban = $selHTML;
+                                    break;
+                                case 'posts':
+                                    $postban = $selHTML;
+                                    break;
+                                case 'both':
+                                    $bothban = $selHTML;
+                                    break;
+                                default:
+                                    $noban = $selHTML;
+                                    break;
+                            }
+                            ?>
                             <tr bgcolor="<?php echo $THEME['altbg2'] ?>" class="tablerow">
                                 <td align="center"><input type="checkbox"
                                                           name="delete<?php echo $member['uid'] ?>"
@@ -328,20 +328,20 @@ while (($member = $db->fetchArray($q1)) != false) {
                                     </select></td>
                             </tr>
                             <?php
-$readrulesyes = $readrulesno = $staff_disable = '';
-        $sadminselect = $adminselect = $smodselect = '';
-        $modselect = $memselect = $banselect = '';
-        $pmban = $postban = $bothban = $noban = '';
-    }
-    $db->freeResult($q1);
-    if ($rowsFound < 1) {
-        ?>
+                            $readrulesyes = $readrulesno = $staff_disable = '';
+                            $sadminselect = $adminselect = $smodselect = '';
+                            $modselect = $memselect = $banselect = '';
+                            $pmban = $postban = $bothban = $noban = '';
+                        }
+                        $db->freeResult($q1);
+                        if ($rowsFound < 1) {
+                            ?>
                             <tr bgcolor="<?php echo $THEME['altbg1'] ?>" class="ctrtablerow">
                                 <td colspan="9"><?php echo $lang['nouserfound'] ?></td>
                             </tr>
                             <?php
-}
-    ?>
+                        }
+                        ?>
                         <tr bgcolor="<?php echo $THEME['altbg2'] ?>" class="ctrtablerow">
                             <td colspan="9"><?php echo $multipage ?></td>
                         </tr>

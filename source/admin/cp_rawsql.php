@@ -28,7 +28,7 @@
  *    along with GaiaBB.  If not, see <http://www.gnu.org/licenses/>.
  *
  **/
-
+// phpcs:disable PSR1.Files.SideEffects
 define('ROOT', '../');
 define('ROOTINC', '../include/');
 define('ROOTCLASS', '../class/');
@@ -43,9 +43,9 @@ $shadow2 = shadowfx2();
 $meta = metaTags();
 
 nav('<a href="index.php">' . $lang['textcp'] . '</a>');
-nav($lang['raw_mysql']);
+nav($lang['raw_database']);
 btitle($lang['textcp']);
-btitle($lang['raw_mysql']);
+btitle($lang['raw_database']);
 
 eval('$css = "' . template('css') . '";');
 eval('echo "' . template('cp_header') . '";');

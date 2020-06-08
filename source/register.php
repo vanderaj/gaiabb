@@ -28,7 +28,7 @@
  *    along with GaiaBB.  If not, see <http://www.gnu.org/licenses/>.
  *
  **/
-
+// phpcs:disable PSR1.Files.SideEffects
 define('CACHECONTROL', 'nocache');
 
 require_once 'header.php';
@@ -235,7 +235,7 @@ function viewRegister()
 function doRegister()
 {
     global $CONFIG, $lang, $self, $THEME, $gbblva;
-    global $selHTML, $db, $onlinetime, $dformatorig, $mailsys, $authState;
+    global $selHTML, $db, $onlinetime, $dformatorig, $mailSystem, $authState;
     global $oToken, $shadow, $onlineip, $config_cache, $moderators_cache;
 
     // Validation of user supplied data
@@ -403,11 +403,11 @@ function doRegister()
 
         $messagebody = $lang['Thanks_You_Register'] . " \n$username\n$password3\n$CONFIG[boardurl]";
 
-        $mailsys->setTo($email);
-        $mailsys->setFrom($CONFIG['adminemail'], $CONFIG['bbname']);
-        $mailsys->setSubject($lang['textyourpw']);
-        $mailsys->setMessage($messagebody);
-        $mailsys->sendMail();   // XXX
+        $mailSystem->setTo($email);
+        $mailSystem->setFrom($CONFIG['adminemail'], $CONFIG['bbname']);
+        $mailSystem->setSubject($lang['textyourpw']);
+        $mailSystem->setMessage($messagebody);
+        $mailSystem->sendMail();   // XXX
     } else {
         $uid = $member->findUidByUsername($username);
 
@@ -461,7 +461,7 @@ function notifyViaPM($username)
  */
 function notifyViaEmail($username)
 {
-    global $db, $mailsys, $CONFIG, $lang, $charset;
+    global $db, $mailSystem, $CONFIG, $lang, $charset;
 
     if (!empty($CONFIG['usernamenotify'])) {
         $member = explode(',', $CONFIG['usernamenotify']);
@@ -469,11 +469,11 @@ function notifyViaEmail($username)
             $member[$i] = trim($member[$i]);
             $mailquery = $db->query("SELECT * FROM " . X_PREFIX . "members WHERE username = '$member[$i]'");
             while (($notify = $db->fetchArray($mailquery)) != false) {
-                $mailsys->setTo($notify['email']);
-                $mailsys->setFrom($CONFIG['adminemail'], $CONFIG['bbname']);
-                $mailsys->setSubject($lang['textnewmember']);
-                $mailsys->setMessage($lang['textnewmember2']);
-                $mailsys->sendMail(); // XXX
+                $mailSystem->setTo($notify['email']);
+                $mailSystem->setFrom($CONFIG['adminemail'], $CONFIG['bbname']);
+                $mailSystem->setSubject($lang['textnewmember']);
+                $mailSystem->setMessage($lang['textnewmember2']);
+                $mailSystem->sendMail(); // XXX
             }
             $db->freeResult($mailquery);
         }

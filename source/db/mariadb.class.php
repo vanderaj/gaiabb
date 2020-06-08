@@ -28,10 +28,9 @@
  *    along with GaiaBB.  If not, see <http://www.gnu.org/licenses/>.
  *
  **/
-
-// check to ensure no direct viewing of page
+// phpcs:disable PSR1.Files.SideEffects
 if (!defined('IN_PROGRAM') && (defined('DEBUG') && DEBUG == false)) {
-    exit('mysql - This file is not designed to be called directly');
+    exit('database - This file is not designed to be called directly');
 }
 
 define('X_DBCLASSNAME', 'MariaDB');
@@ -73,7 +72,7 @@ class MariaDB
      *            what it does
      * @return type, what the return does
      */
-    public function mysql5Php5()
+    public function database5Php5()
     {
         $this->db = '';
         $this->conn = null;
@@ -89,7 +88,7 @@ class MariaDB
      *            what it does
      * @return type, what the return does
      */
-    public function connect($dbhost = "localhost", $dbuser, $dbpw, $dbname, $pconnect = 0, $force_db = false, $new_link = false, $tablepre = '')
+    public function connect($dbhost, $dbuser, $dbpw, $dbname, $pconnect = 0, $force_db = false, $new_link = false, $tablepre = '')
     {
         try {
             if (!empty($tablepre)) {
@@ -104,7 +103,7 @@ class MariaDB
                 throw new \Exception("Unsupported PHP version");
             }
 
-            $this->conn = new \mysqli($dbhost, $dbuser, $dbpw);
+            $this->conn = new \databasei($dbhost, $dbuser, $dbpw);
 
             if ($this->conn->connect_error) {
                 throw new \Exception("Could not connect to the database server:" . $this->conn->connect_error . "(" . $this->conn->connect_errno . ")");
@@ -158,13 +157,13 @@ class MariaDB
                         </tr>
                         <tr>
                             <?php
-if (DEBUG) {
-            ?>
+                            if (DEBUG) {
+                                ?>
                                 <td class="tablerow" bgcolor="#ffffff"
                                     align="left"><?php echo $msg->getMessage() ?></td>
                                 <?php
-} else {
-            ?>
+                            } else {
+                                ?>
                                 <td class="tablerow" bgcolor="#ffffff" align="left">A suffusion
                                     of yellow. Please wait a few minutes and try again
                                 </td>
@@ -175,14 +174,14 @@ if (DEBUG) {
             </tr>
         </table>
         <?php
-$this->viewShadow();
+        $this->viewShadow();
 
         // DEBUG mode is a security issue, but with panic() we have no database context
         // => no X_SADMIN, so no error messages possible. So this code warns of bad things
         // with DEBUG
         if (defined('DEBUG') && DEBUG) {
-            $errnum = mysqli_connect_errno();
-            $errmsg = mysqli_connect_error();
+            $errnum = databasei_connect_errno();
+            $errmsg = databasei_connect_error();
             if (empty($errmsg)) {
                 $errmsg = "No MySQL error";
             }
@@ -220,11 +219,11 @@ $this->viewShadow();
                             <tr>
                                 <td class="tablerow" bgcolor="#ffffff" align="left">Stack trace:<br/>
                                     <?php
-$traces = explode('#', $msg->getTraceAsString());
-            foreach ($traces as $trace) {
-                echo $trace . '<br />';
-            }
-            ?>
+                                    $traces = explode('#', $msg->getTraceAsString());
+                                    foreach ($traces as $trace) {
+                                        echo $trace . '<br />';
+                                    }
+                                    ?>
                                 </td>
                             </tr>
                         </table>
@@ -232,11 +231,11 @@ $traces = explode('#', $msg->getTraceAsString());
                 </tr>
             </table>
             <?php
-$this->viewShadow();
+            $this->viewShadow();
         } // end debug
         ?>
         <?php
-$this->viewFooter();
+        $this->viewFooter();
         exit();
     }
 
@@ -299,7 +298,7 @@ $this->viewFooter();
         if ($this->conn) {
             return $this->conn->error;
         }
-        return mysqli_connect_error();
+        return databasei_connect_error();
     }
 
     /**
@@ -640,7 +639,7 @@ $this->viewFooter();
     /**
      * Get a list of tables
      *
-     * The ye olde mysql4 way is no longer supported, so this way
+     * The ye olde database4 way is no longer supported, so this way
      * returns an array just like in the olden days. This obviously
      * is not as fast as you'd like. Avoid using this function in
      * high performance situations
@@ -729,11 +728,6 @@ $this->viewFooter();
             $str = substr($str, 0, $length);
         }
 
-        // Purposely slow down crap configurations to ensure consistency
-        if (get_magic_quotes_gpc() == 1) {
-            stripslashes($str);
-        }
-
         // Get rid of two more suspects only used in LIKE clauses.
         if ($like == false) {
             $str = str_replace('%', '\%', $str);
@@ -755,21 +749,21 @@ $this->viewFooter();
 
             $statement = $this->conn->prepare($insert_sql);
             if ($statement === false) {
-                throw new Exception("Cannot prepare attachment for insertion");
+                throw new \Exception("Cannot prepare attachment for insertion");
             }
 
             $retval = $statement->bind_param("iiissiiibi", $aid, $tid, $pid, $filename, $filetype, $filesize, $fileheight, $filewidth, $attachment, $downloads);
             if ($retval === false) {
-                throw new Exception("Cannot bind attachment for insertion");
+                throw new \Exception("Cannot bind attachment for insertion");
             }
 
             $retval = $statement->execute();
             if ($retval === false) {
-                throw new Exception("Failed to execute attachment insertion");
+                throw new \Exception("Failed to execute attachment insertion");
             }
 
             $statement->reset();
-        } catch (Exception $error) {
+        } catch (\Exception $error) {
             $this->panic("Failed to insert attachment: " . $statement->error, $error);
         }
 
@@ -822,7 +816,7 @@ $this->viewFooter();
                            cellpadding="6" width="100%">
                         <tr>
                             <td width="74%"
-                                style="background-image: url(<?php echo $imgpath ?>topbg.gif); text-align: left">
+                                style="background-image: url('<?php echo $imgpath ?>topbg.gif'); text-align: left">
                                 <table
                                         border="0" width="100%" cellpadding="0" cellspacing="0">
                                     <tr>
@@ -880,7 +874,7 @@ $this->viewFooter();
             </tr>
         </table> <br/>
         <?php
-}
+    }
 
     /**
      * function() - short description of function
@@ -909,7 +903,7 @@ $this->viewFooter();
         </body>
         </html>
         <?php
-}
+    }
 
     /**
      * function() - short description of function
@@ -932,7 +926,7 @@ $this->viewFooter();
             </tr>
         </table>
         <?php
-}
+    }
 }
 
 /**

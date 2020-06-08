@@ -28,6 +28,7 @@
  *    along with GaiaBB.  If not, see <http://www.gnu.org/licenses/>.
  *
  **/
+// phpcs:disable PSR1.Files.SideEffects
 define('CACHECONTROL', 'private');
 
 require_once 'header.php';
@@ -794,11 +795,11 @@ switch ($action) {
 
                     $threadurl = $CONFIG['boardurl'] . 'viewtopic.php?tid=' . $tid . '&page=' . $topicpages . '#pid' . $pid;
 
-                    $mailsys->setTo($subs['email']);
-                    $mailsys->setFrom($CONFIG['adminemail'], $CONFIG['bbname']);
-                    $mailsys->setSubject($lang['textsubsubject'] . ' ' . $thread['subject']);
-                    $mailsys->setMessage($username . ' ' . $lang['textsubbody'] . " \n" . $threadurl);
-                    $mailsys->sendMail(); // XXX
+                    $mailSystem->setTo($subs['email']);
+                    $mailSystem->setFrom($CONFIG['adminemail'], $CONFIG['bbname']);
+                    $mailSystem->setSubject($lang['textsubsubject'] . ' ' . $thread['subject']);
+                    $mailSystem->setMessage($username . ' ' . $lang['textsubbody'] . " \n" . $threadurl);
+                    $mailSystem->sendMail(); // XXX
                 }
                 $db->freeResult($subquery);
 

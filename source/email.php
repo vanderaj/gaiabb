@@ -28,7 +28,7 @@
  *    along with GaiaBB.  If not, see <http://www.gnu.org/licenses/>.
  *
  **/
-
+// phpcs:disable PSR1.Files.SideEffects
 require_once 'header.php';
 
 loadtpl('email_member');
@@ -120,11 +120,11 @@ if (onSubmit('emailsubmit')) {
     );
     $msgbody = str_replace($tpl_keys, $tpl_values, $lang['emailmemmsg']);
 
-    $mailsys->setTo($sendto['email']);
-    $mailsys->setFrom($email, $name);
-    $mailsys->setSubject('[' . $CONFIG['bbname'] . '] ' . $subject);
-    $mailsys->setMessage($msgbody);
-    $mailsys->sendMail();
+    $mailSystem->setTo($sendto['email']);
+    $mailSystem->setFrom($email, $name);
+    $mailSystem->setSubject('[' . $CONFIG['bbname'] . '] ' . $subject);
+    $mailSystem->setMessage($msgbody);
+    $mailSystem->sendMail();
 
     message(
         $lang['emailmemsubmitted'],

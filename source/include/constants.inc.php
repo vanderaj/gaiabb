@@ -28,8 +28,7 @@
  *    along with GaiaBB.  If not, see <http://www.gnu.org/licenses/>.
  *
  **/
-
-// check to ensure no direct viewing of page
+// phpcs:disable PSR1.Files.SideEffects
 if (!defined('IN_PROGRAM') && (defined('DEBUG') && DEBUG == false)) {
     exit('This file is not designed to be called directly');
 }
@@ -41,36 +40,23 @@ if (!defined('IN_PROGRAM') && (defined('DEBUG') && DEBUG == false)) {
  *
  * Debug mode has several effects:
  *
- * - Enables SQL queries for Super Administrators at the bottom of the screen
+ * - Displays SQL queries for Super Administrators at the bottom of the screen
  * - Detailed error messages in SQL classes and other areas for super admins
  * - Any warning or error messages which are normally suppressed by PHP for all users
- * - Performs a few more checks(not unit tests) for all users
+ * - Performs a few more checks (not unit tests) for all users
  * - Slows performance by about 5% for all users
  *
- * Turn DEBUG on by changing define('DEBUG', false); to define('DEBUG', true);
+ * Turn DEBUG on by changing define('DEBUG', false); to define('DEBUG', true) in config.php
  */
 
-// Development
-define('DEBUG', true);
-
-// Production
+// Debug mode
 if (!defined('DEBUG')) {
     define('DEBUG', false);
 }
-
-// 0 = completely off
-// 1 = normal, debug is enabled for X_SADMIN and above
-// 2 = more, debug is enabled for X_MEMBER and above (so no banned or guest debug messages)
-// 3 = all, debug is enabled for everyone (including banned and guests)
-define('DEBUGLEVEL', 1);
-
-// Production
+// Debug log level - 0 - 3, where 0 is off for all users, 3 displays it for everyone
 if (!defined('DEBUGLEVEL')) {
     define('DEBUGLEVEL', 0);
 }
-
-// Change this if you want additional security in your installation
-define('GAIABB_MASTERKEY', 'sq^%L4Ld/<*C~WG)');
 
 /*
  * Product name and version
@@ -84,10 +70,6 @@ $versiongeneral = 'GaiaBB 1.0-M1';
 $versioncopyright = 'GaiaBB 1.0-M1, &copy; 2009-2020 The GaiaBB Group';
 $versionbuild = '2020.06.05';
 
-// Sendgrid alpha support
-$sendgridAPIkey = '';
-
-// No user serviceable items below
 define('X_CACHE_GET', 1);
 define('X_CACHE_PUT', 2);
 define('X_SET_HEADER', 1);

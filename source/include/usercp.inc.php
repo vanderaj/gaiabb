@@ -28,8 +28,7 @@
  *    along with GaiaBB.  If not, see <http://www.gnu.org/licenses/>.
  *
  **/
-
-// check to ensure no direct viewing of page
+// phpcs:disable PSR1.Files.SideEffects
 if (!defined('IN_PROGRAM') && (defined('DEBUG') && DEBUG == false)) {
     exit('This file is not designed to be called directly');
 }
@@ -341,9 +340,11 @@ class UserObj
 
     public function submitEmail()
     {
-        global $db, $oToken, $lang, $THEME, $title, $CONFIG, $mailsys;
+        global $db, $oToken, $lang, $THEME, $title, $CONFIG, $mailSystem;
         global $selHTML, $self, $onlinetime, $shadow2, $menu, $authC;
-        global $currtime, $cookiepath, $cookiedomain, $onlineip;
+        global $cookiepath, $cookiedomain, $onlineip;
+
+        $currtime = $onlinetime;
 
         reset($self);
 
@@ -429,11 +430,11 @@ class UserObj
 
             $messagebody = $lang['emailvalidpwis'] . "\n\n" . $self['username'] . "\n" . $newpass;
 
-            $mailsys->setTo($email);
-            $mailsys->setFrom($CONFIG['adminemail'], $CONFIG['bbname']);
-            $mailsys->setSubject($lang['textyourpw']);
-            $mailsys->setMessage($messagebody);
-            $mailsys->sendMail();
+            $mailSystem->setTo($email);
+            $mailSystem->setFrom($CONFIG['adminemail'], $CONFIG['bbname']);
+            $mailSystem->setSubject($lang['textyourpw']);
+            $mailSystem->setMessage($messagebody);
+            $mailSystem->sendMail();
 
             $authC->logout();
         }
@@ -916,7 +917,6 @@ class UserObj
 
         $avatar = '';
         if (!isset($_FILES['avatarfile']['name']) || !$_FILES['avatarfile']['tmp_name'] || empty($_FILES['avatarfile']['name'])) {
-
             $avatar = $db->escape(formVar('newavatar'), -1, true);
 
             $max_size = explode('x', $CONFIG['max_avatar_size']);

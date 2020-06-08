@@ -28,293 +28,187 @@
  *    along with GaiaBB.  If not, see <http://www.gnu.org/licenses/>.
  *
  **/
+// phpcs:disable PSR1.Files.SideEffects
 if (!defined('IN_PROGRAM') && (defined('DEBUG') && DEBUG == false)) {
     exit('This file is not designed to be called directly');
 }
 
-require __DIR__ . "/sendgrid-php/sendgrid-php.php";
-
 namespace GaiaBB;
 
-class MailSys
+abstract class BaseMail
 {
-    public $from;
-    public $to;
-    public $subject;
-    public $message;
-    public $headers;
-    public $bcc;
-    public $cc;
-    public $smtp_conn;
-
-    private $sendgrid;
-    private $email;
+    private $from;
+    private $name;
+    private $to;
+    private $cc;
+    private $bcc;
+    private $subject;
+    private $message;
+    private $headers;
 
     // Instantiate the class
     public function __construct()
     {
-        $OS = substr(PHP_OS, 0, 3);
-        define('GAIABB_OS', $OS);
-
-        $this->email = new \SendGrid\Mail\Mail();
     }
 
-    // Required calls
-    public function setFrom($email, $name = '')
+    /**
+     * setFrom() - set the from mail header
+     *
+     * Set the "From" mail header, with an optional name
+     *
+     * @param string $from The email address of the sender
+     * @param string $name Optional: the sender's name
+     * @return boolean true if set, false if empty $from
+     **/
+    public function setFrom($from, $name = '')
     {
-        $email = trim($email);
-        if (empty($email)) {
+        $from = trim($from);
+        if (empty($from)) {
             return false;
         }
 
         $name = trim($name);
         if (!empty($name)) {
-            $this->from = $name . ' <' . $email . '>';
+            $this->from = $name . ' <' . $from . '>';
+            $this->name = $name;
         } else {
-            $this->from = $email;
+            $this->from = $from;
         }
 
-        $this->addHeader('From', $this->from);
-        $this->addHeader('Reply-To', $email);
         return true;
     }
 
-    public function setTo($email)
+    /**
+     * setTo - sets the recipient in the To: header
+     *
+     * Sets the recipient in the To: header
+     *
+     * @param string $recipient the recipient of the email
+     * @return boolean true if set, false if recipient is blank or empty
+     **/
+    public function setTo($recipient)
     {
-        $email = trim($email);
-        if (empty($email)) {
+        $recipient = trim($recipient);
+        if (empty($recipient)) {
             return false;
-        } else {
-            $this->to = $email;
-            $this->addHeader('To', $this->to);
-            return true;
         }
+        $this->to = $recipient;
+        return true;
     }
 
-    public function setSubject($subject = '', $allowempty = 'no')
+    /**
+     * setSubject - set's subject for the email
+     *
+     * Sets the subject for the email, should always be something interesting to prevent spam blocking
+     *
+     * @param string $subject       the subject of the email
+     * @param (yes,no) $allowempty  can the subject be empty?
+     * @return boolean              true if set, false if not set
+     **/
+    public function setSubject($subject, $allowempty = 'no')
     {
         $subject = trim($subject);
-        if (!empty($subject)) {
-            $subject = str_replace("\n", "", $subject);
-            $this->subject = $subject;
+
+        if (empty($subject) && $allowempty == 'yes') {
+            $this->subject = 'None';
             return true;
         } else {
-            if ($allowempty == 'yes') {
-                $this->subject = 'None';
-                return true;
-            } else {
-                return false;
-            }
+            return false;
         }
+
+        $subject = str_replace("\n", "", $subject);
+        $this->subject = $subject;
+        return true;
     }
 
-    public function setMessage($message = '')
+    /**
+     * setMessage - sets the email body
+     *
+     * Set the email body
+     *
+     * @param string $message       The email body, should be plain text
+     * @return boolean              true if set, false if message was empty
+     **/
+    public function setMessage($message)
     {
         $message = trim($message);
-        if (!empty($message)) {
-            $this->message = wordwrap($message, 70, "\n");
-            return true;
+        if (empty($message)) {
+            return false;
         }
-        return false;
+
+        $this->message = wordwrap($message, 70, "\n");
+        return true;
     }
 
-    // Optional calls
-    public function addBCC($email)
+    /**
+     * addBCC() - Add a blind carbon copy recipient
+     *
+     * Used by admin mail out functions. Adds the email address to the
+     * internal array, which is used to send newsletters, etc.
+     *
+     * @param string $recipient     blind carbon copy recipient to be added
+     * @return boolean          true if set, false if empty or not set
+     **/
+    public function addBCC($recipient)
     {
-        $email = trim($email);
-        if (empty($email)) {
+        $recipient = trim($recipient);
+        if (empty($recipient)) {
+            return false;
+        }
+
+        $this->bcc[] = $recipient;
+        return true;
+    }
+
+   /**
+     * addCC() - Add a carbon copy recipient
+     *
+     * Adds the email address to the internal array, which is used to send
+     * emails to multiple recipients
+     *
+     * @param string $recipient     carbon copy recipient to be added
+     * @return boolean          true if set, false if empty or not set
+     **/
+    public function addCC($recipient)
+    {
+        $recipient = trim($recipient);
+        if (empty($recipient)) {
             return false;
         } else {
-            $this->bcc[] = $email;
+            $this->cc[] = $recipient;
             return true;
         }
     }
 
-    public function addCC($email)
+    /**
+     * addHeader() - adds a SMTP header
+     *
+     * For various anti-spam reasons, we need to make our mails a bit
+     * more "normal" to be accepted by many mail systems. This adds a
+     * header to an internal array, which is then sent as part of the mail
+     *
+     * @param string $name      header name
+     * @param string $value     header value
+     * @return boolean          true if header added, false if empty
+     **/
+    public function addHeader($name, $value)
     {
-        $email = trim($email);
-        if (empty($email)) {
-            return false;
-        } else {
-            $this->cc[] = $email;
-            return true;
-        }
-    }
-
-    public function addHeader($name = '', $value = '')
-    {
-        if (!empty($name) && !empty($value)) {
-            $break = "\n";
-
-            $this->headers .= $name . ': ' . $value . $break;
-            return true;
-        }
-        return false;
-    }
-
-    // Committing calls
-    public function sendPHP()
-    {
-        if (!empty($this->cc)) {
-            $this->cc = trim(implode(', ', $this->cc), ', ');
-            $this->addHeader('Cc', $this->cc);
-        }
-
-        if (!empty($this->bcc)) {
-            $this->bcc = trim(implode(', ', $this->bcc), ', ');
-            $this->addHeader('Bcc', $this->bcc);
-        }
-
-        if (mail($this->to, $this->subject, $this->message, $this->headers)) {
-            return true;
-        }
-        return false;
-    }
-
-    public function sendSMTP()
-    {
-        if (GAIABB_OS == 'WIN') {
-            $this->message = str_replace("\n.", "\n..", $this->message);
-        }
-
-        if ($this->connectSMTP()) {
-            $this->dataSMTP();
-            $this->disconnectSMTP();
-            return true;
-        }
-        return false;
-    }
-
-    public function connectSMTP()
-    {
-        global $CONFIG;
-
-        if (empty($this->smtp_conn)) {
-            $this->smtp_conn = fsockopen(
-                $CONFIG['smtphost'],
-                $CONFIG['smtpport'],
-                $errno,
-                $errstr,
-                $CONFIG['smtptimeout']
-            );
-            if ($this->smtp_conn) {
-                socket_set_blocking($this->smtp_conn, 0);
-                return true;
-            }
+        if (empty($name) || empty($value)) {
             return false;
         }
-        return false;
+
+        $this->headers .= $name . ': ' . $value . "\n";
+        return true;
     }
 
-    public function disconnectSMTP()
-    {
-        if (!empty($this->smtp_conn)) {
-            fclose($this->smtp_conn);
-            $this->smtp_conn = null;
-            return true;
-        }
-        return false;
-    }
-
-    public function smtpReceive($cmd = '')
-    {
-        global $lang;
-
-        if (!empty($this->smtp_conn)) {
-            $return = '';
-            $line = '';
-            while (strpos($return, "\r\n") === false || substr($line, 3, 1) !== ' ') {
-                $line = fgets($this->smtp_conn, 512);
-                $return .= $line;
-            }
-
-            if (DEBUG && X_SADMIN) {
-                echo "\n<!--\n$lang[Smtp_Csays]" . $cmd . "\n";
-                if (!empty($return)) {
-                    echo "$lang[Smtp_Ssays]" . $return . "\n";
-                }
-                echo "--!>";
-            }
-        }
-    }
-
-    public function smtpSend($cmd = '', $lb = "\r\n")
-    {
-        global $lang;
-
-        if (!empty($this->smtp_conn)) {
-            fputs($this->smtp_conn, $cmd . $lb);
-        }
-    }
-
-    public function dataSMTP()
-    {
-        global $CONFIG;
-
-        if (!empty($this->smtp_conn)) {
-            $this->smtpReceive('CONNECT');
-            $this->smtpSend('EHLO ' . $CONFIG['smtpServer']);
-            $this->smtpReceive('EHLO');
-
-            if (!empty($CONFIG['smtpusername'])) {
-                $this->smtpSend('AUTH LOGIN');
-                $this->smtpReceive('AUTH LOGIN');
-                $this->smtpSend(base64_encode($CONFIG['smtpusername']));
-                $this->smtpReceive('USERNAME SENT');
-                $this->smtpSend(base64_encode($CONFIG['smtppassword']));
-                $this->smtpReceive('PASSWORD SENT');
-            }
-
-            $this->smtpSend('MAIL FROM:' . $this->from);
-            $this->smtpReceive('MAIL FROM');
-            $this->smtpSend('RCPT TO:' . $this->to);
-
-            $this->bcc = array_unique(array_merge($this->bcc, $this->cc));
-
-            if (!empty($this->bcc)) {
-                foreach ($this->bcc as $rcpt_to) {
-                    $this->smtpSend('RCPT TO:' . $rcpt_to);
-                }
-            }
-
-            $this->smtpReceive('RCPT TO (RECIPIENT)');
-            $this->smtpSend('DATA');
-            $this->smtpReceive('DATA');
-            $this->smtpSend(
-                "To: $this->to\r\nFrom: $this->from\r\nSubject: $this->subject\r\n$this->headers\r\n$this->message",
-                "\r\n.\r\n"
-            );
-            $this->smtpReceive('Data');
-            $this->smtpSend('QUIT');
-            $this->smtpReceive('QUIT');
-            return true;
-        }
-        return false;
-    }
-
-    public function sendMail()
-    {
-        global $charset, $CONFIG;
-
-        $this->addHeader('Content-Type', 'text/plain; charset="' . $charset . '"');
-        $this->addHeader('X-Mailer', 'GaiaBB Forum Software');
-        $this->addHeader('X-AntiAbuse', 'Originating Site - ' . $_SERVER['HTTP_HOST']);
-        $this->addHeader('X-AntiAbuse', 'Request URI - ' . $_SERVER['PHP_SELF']);
-        $this->addHeader('X-AntiAbuse', 'Originating IP - ' . $_SERVER['REMOTE_ADDR']);
-
-        switch ($CONFIG['smtp_status']) {
-            case 'on':
-                $this->addHeader('X-AntiAbuse', 'Mail Method - SMTP');
-                if ($this->sendSMTP()) {
-                    return true;
-                }
-                break;
-            default:
-                $this->addHeader('X-AntiAbuse', 'Mail Method - MAIL');
-                if ($this->sendPHP()) {
-                    return true;
-                }
-        }
-        return false;
-    }
+    /**
+     * sendMail() - actually sends the mail
+     *
+     * Each mail delivery agent has its own way of sending mail. This
+     * abstract function sends the mail using the MDA's API or raw
+     * socket connectivity.
+     *
+     * @return boolean          true if header added, false if empty
+     **/
+    abstract public function sendMail();
 }

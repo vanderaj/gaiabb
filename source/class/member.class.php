@@ -28,6 +28,7 @@
  *    along with GaiaBB.  If not, see <http://www.gnu.org/licenses/>.
  *
  **/
+// phpcs:disable PSR1.Files.SideEffects
 if (!defined('IN_PROGRAM') && (defined('DEBUG') && DEBUG == false)) {
     exit('This file is not designed to be called directly');
 }
@@ -49,7 +50,7 @@ require_once 'pm.class.php';
  * $member->record['username'] = "fred";
  * $member->update();
  *
- * In the above example, if "fred" already exists, the query will fail as MySQL
+ * In the above example, if "fred" already exists, the query will fail as database
  * will fail it. You must know this sort of stuff as the class is not very smart
  *
  * Finding an existing member, and work with their user record:

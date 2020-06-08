@@ -28,7 +28,6 @@
  *    along with GaiaBB.  If not, see <http://www.gnu.org/licenses/>.
  *
  **/
-
 // phpcs:disable PSR1.Files.SideEffects
 define('ROOT', '../');
 define('ROOTINC', '../include/');
@@ -309,7 +308,12 @@ function doSearch()
                             $orderby = ' ORDER BY a.downloads DESC ';
                         }
 
-                        $query = $db->query("SELECT a.*, m.uid as author_uid, p.*, t.tid, t.subject AS tsubject, f.name AS fname FROM " . X_PREFIX . "attachments a, " . X_PREFIX . "members m, " . X_PREFIX . "posts p, " . X_PREFIX . "threads t, " . X_PREFIX . "forums f WHERE a.pid = p.pid AND p.author = m.username AND t.tid = a.tid AND f.fid = p.fid $restriction $orderby");
+                        $query = $db->query("SELECT a.*, m.uid as author_uid, p.*, t.tid, t.subject AS tsubject, f.name AS fname FROM " .
+                                    X_PREFIX . "attachments a, " .
+                                    X_PREFIX . "members m, " .
+                                    X_PREFIX . "posts p, " .
+                                    X_PREFIX . "threads t, " .
+                                    X_PREFIX . "forums f WHERE a.pid = p.pid AND p.author = m.username AND t.tid = a.tid AND f.fid = p.fid $restriction $orderby");
                         while (($attachment = $db->fetchArray($query)) != false) {
                             $attachsize = strlen($attachment['attachment']);
                             if ($attachsize >= 1073741824) {

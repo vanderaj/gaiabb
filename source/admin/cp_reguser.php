@@ -28,7 +28,7 @@
  *    along with GaiaBB.  If not, see <http://www.gnu.org/licenses/>.
  *
  **/
-
+// phpcs:disable PSR1.Files.SideEffects
 define('ROOT', '../');
 define('ROOTINC', '../include/');
 define('ROOTCLASS', '../class/');
@@ -108,7 +108,7 @@ function viewPanel()
 
 function doPanel()
 {
-    global $THEME, $mailsys, $lang, $shadow2, $oToken, $db, $CONFIG, $onlinetime;
+    global $THEME, $mailSystem, $lang, $shadow2, $oToken, $db, $CONFIG, $onlinetime;
 
     $oToken->assertToken();
 
@@ -214,12 +214,12 @@ function doPanel()
 
     $db->query("INSERT INTO " . X_PREFIX . "members (username, password, regdate, email, status, showemail, theme, langfile, timeformat, dateformat, mood, pwdate, tpp, ppp, saveogpm, emailonpm) VALUES ('$regusername', '$newmd5pass', $regdate, '$regemail', 'Member', 'no', '0', 'English', 24, 'dd-mm-yyyy', '', $regdate, 30, 30, 'yes', 'no');");
 
-    $mailsys->setTo($regemail);
-    $mailsys->setFrom($CONFIG['adminemail'], $CONFIG['bbname']);
-    $mailsys->setSubject('[' . $CONFIG['bbname'] . '] ' . $lang['textyourpw']);
-    $mailsys->setMessage($lang['textyourpwis'] . "\n\n" . $regusername . "\n" . $regpassword);
+    $mailSystem->setTo($regemail);
+    $mailSystem->setFrom($CONFIG['adminemail'], $CONFIG['bbname']);
+    $mailSystem->setSubject('[' . $CONFIG['bbname'] . '] ' . $lang['textyourpw']);
+    $mailSystem->setMessage($lang['textyourpwis'] . "\n\n" . $regusername . "\n" . $regpassword);
 
-    if (!$mailsys->sendMail()) {
+    if (!$mailSystem->sendMail()) {
         $uid = $db->insertId();
         if ($uid > 0) {
             $db->query("DELETE FROM " . X_PREFIX . "members WHERE uid = " . $uid);

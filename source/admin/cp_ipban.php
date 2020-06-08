@@ -28,7 +28,7 @@
  *    along with GaiaBB.  If not, see <http://www.gnu.org/licenses/>.
  *
  **/
-
+// phpcs:disable PSR1.Files.SideEffects
 define('ROOT', '../');
 define('ROOTINC', '../include/');
 define('ROOTCLASS', '../class/');
@@ -79,18 +79,18 @@ function viewPanel()
                             <td class="title" align="center"><?php echo $lang['textadded'] ?></td>
                         </tr>
                         <?php
-$query = $db->query("SELECT * FROM " . X_PREFIX . "banned ORDER BY dateline");
-    $rowsFound = $db->numRows($query);
-    while (($ipaddress = $db->fetchArray($query)) != false) {
-        for ($i = 1; $i <= 4; ++$i) {
-            $j = "ip" . $i;
-            if ($ipaddress[$j] == -1) {
-                $ipaddress[$j] = "*";
-            }
-        }
-        $ipdate = gmdate($self['dateformat'], $ipaddress['dateline'] + ($self['timeoffset'] * 3600) + $self['daylightsavings']) . ' ' . $lang['textat'] . ' ' . gmdate($self['timecode'], $ipaddress['dateline'] + ($self['timeoffset'] * 3600) + $self['daylightsavings']);
-        $theip = "$ipaddress[ip1].$ipaddress[ip2].$ipaddress[ip3].$ipaddress[ip4]";
-        ?>
+                        $query = $db->query("SELECT * FROM " . X_PREFIX . "banned ORDER BY dateline");
+                        $rowsFound = $db->numRows($query);
+                        while (($ipaddress = $db->fetchArray($query)) != false) {
+                            for ($i = 1; $i <= 4; ++$i) {
+                                $j = "ip" . $i;
+                                if ($ipaddress[$j] == -1) {
+                                    $ipaddress[$j] = "*";
+                                }
+                            }
+                            $ipdate = gmdate($self['dateformat'], $ipaddress['dateline'] + ($self['timeoffset'] * 3600) + $self['daylightsavings']) . ' ' . $lang['textat'] . ' ' . gmdate($self['timecode'], $ipaddress['dateline'] + ($self['timeoffset'] * 3600) + $self['daylightsavings']);
+                            $theip = "$ipaddress[ip1].$ipaddress[ip2].$ipaddress[ip3].$ipaddress[ip4]";
+                            ?>
                             <tr class="tablerow" bgcolor="<?php echo $THEME['altbg2'] ?>">
                                 <td><input type="checkbox"
                                            name="delete<?php echo $ipaddress['id'] ?>" value="on"/></td>
@@ -99,26 +99,26 @@ $query = $db->query("SELECT * FROM " . X_PREFIX . "banned ORDER BY dateline");
                                 <td><?php echo $ipdate ?></td>
                             </tr>
                             <?php
-}
-    $db->freeResult($query);
+                        }
+                            $db->freeResult($query);
 
-    $query = $db->query("SELECT id FROM " . X_PREFIX . "banned WHERE (ip1 = '$ips[0]' OR ip1 = '-1') AND (ip2 = '$ips[1]' OR ip2 = '-1') AND (ip3 = '$ips[2]' OR ip3 = '-1') AND (ip4 = '$ips[3]' OR ip4 = '-1')");
-    $result = $db->fetchArray($query);
+                            $query = $db->query("SELECT id FROM " . X_PREFIX . "banned WHERE (ip1 = '$ips[0]' OR ip1 = '-1') AND (ip2 = '$ips[1]' OR ip2 = '-1') AND (ip3 = '$ips[2]' OR ip3 = '-1') AND (ip4 = '$ips[3]' OR ip4 = '-1')");
+                            $result = $db->fetchArray($query);
 
-    if ($result) {
-        $warning = $lang['ipwarning'];
-    } else {
-        $warning = '';
-    }
+                        if ($result) {
+                            $warning = $lang['ipwarning'];
+                        } else {
+                            $warning = '';
+                        }
 
-    if ($rowsFound < 1) {
-        ?>
+                        if ($rowsFound < 1) {
+                            ?>
                             <tr bgcolor="<?php echo $THEME['altbg2'] ?>" class="ctrtablerow">
                                 <td colspan="4"><?php echo $lang['textnone'] ?></td>
                             </tr>
                             <?php
-}
-    ?>
+                        }
+                        ?>
                         <tr class="tablerow">
                             <td bgcolor="<?php echo $THEME['altbg1'] ?>" colspan="4"><span
                                         class="smalltxt"><?php echo $lang['currentip'] ?>

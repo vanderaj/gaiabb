@@ -28,8 +28,7 @@
  *    along with GaiaBB.  If not, see <http://www.gnu.org/licenses/>.
  *
  **/
-
-// check to ensure no direct viewing of page
+// phpcs:disable PSR1.Files.SideEffects
 if (!defined('IN_PROGRAM') && (defined('DEBUG') && DEBUG == false)) {
     exit('This file is not designed to be called directly');
 }
@@ -209,7 +208,7 @@ class PmModel
 
     public function send_recp($msgto, $subject, $message, $usepmsig)
     {
-        global $db, $mailsys, $self, $CONFIG, $lang, $onlinetime, $username;
+        global $db, $mailSystem, $self, $CONFIG, $lang, $onlinetime, $username;
         global $attachedfile, $filetype, $filesize, $filename;
         global $usesig, $usesigcheck, $fileheight, $filewidth;
 
@@ -266,11 +265,11 @@ class PmModel
                     );
                     $msgbody = str_replace($tpl_keys, $tpl_values, $lang['textnewpmbody']);
 
-                    $mailsys->setTo($rcpt['email']);
-                    $mailsys->setFrom($CONFIG['adminemail'], $CONFIG['bbname']);
-                    $mailsys->setSubject('[' . $CONFIG['bbname'] . '] ' . $lang['textnewpmemail']);
-                    $mailsys->setMessage($msgbody);
-                    $mailsys->sendMail();
+                    $mailSystem->setTo($rcpt['email']);
+                    $mailSystem->setFrom($CONFIG['adminemail'], $CONFIG['bbname']);
+                    $mailSystem->setSubject('[' . $CONFIG['bbname'] . '] ' . $lang['textnewpmemail']);
+                    $mailSystem->setMessage($msgbody);
+                    $mailSystem->sendMail();
 
                     // Force a revert langswitch (1)
                     $langfile = langswitch('yes', '');
@@ -453,7 +452,7 @@ class PmModel
 
     public function pm_print($pmid, $eMail = false)
     {
-        global $mailsys, $db, $self, $lang_code, $lang_dir, $versionpowered, $lang, $charset, $THEME, $CONFIG, $logo;
+        global $mailSystem, $db, $self, $lang_code, $lang_dir, $versionpowered, $lang, $charset, $THEME, $CONFIG, $logo;
 
         if (!($pmid > 0)) {
             error($lang['textnonechosen'], false, '', '', 'pm.php', true, false, true);
@@ -494,11 +493,11 @@ class PmModel
                 );
                 $msgbody = str_replace($tpl_keys, $tpl_values, $lang['textpmtoemailmsg']);
 
-                $mailsys->setTo($self['email']);
-                $mailsys->setFrom($CONFIG['adminemail'], $CONFIG['bbname']);
-                $mailsys->setSubject($lang['textpmtoemail'] . ' ' . $pmsubject);
-                $mailsys->setMessage($msgbody);
-                $mailsys->sendMail();
+                $mailSystem->setTo($self['email']);
+                $mailSystem->setFrom($CONFIG['adminemail'], $CONFIG['bbname']);
+                $mailSystem->setSubject($lang['textpmtoemail'] . ' ' . $pmsubject);
+                $mailSystem->setMessage($msgbody);
+                $mailSystem->sendMail();
 
                 message($lang['contactsubmitted'], false, '', '', 'index.php', true, false, true);
             } else {

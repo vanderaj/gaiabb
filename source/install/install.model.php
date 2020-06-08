@@ -24,6 +24,7 @@
  *    along with GaiaBB.  If not, see <http://www.gnu.org/licenses/>.
  *
  **/
+// phpcs:disable PSR1.Files.SideEffects
 if (!defined('IN_PROGRAM') && (defined('DEBUG') && DEBUG == false)) {
     exit('This file is not designed to be called directly');
 }
@@ -127,7 +128,7 @@ function install_forum($prgbar)
 
         print_error('Database connection', 'The database file ' . 'db/' . $database . '.php does not exist. Please try again');
     }
-    require_once '../db/mysql5php5.class.php';
+    require_once '../db/mariadb.class.php';
 
     setBar($prgbar, 0.3);
 

@@ -28,7 +28,7 @@
  *    along with GaiaBB.  If not, see <http://www.gnu.org/licenses/>.
  *
  **/
-
+// phpcs:disable PSR1.Files.SideEffects
 define('ROOT', '../');
 define('ROOTINC', '../include/');
 define('ROOTCLASS', '../class/');
@@ -113,7 +113,7 @@ function doPanel()
     $frmUserForm = formVar('frmUserFrom');
     $frmUserTo = formVar('frmUserTo');
 
-    $adm = new member();
+    $adm = new GaiaBB\Member();
     $myErr = $adm->rename($frmUserForm, $frmUserTo);
     cp_message($myErr, false, '', '</td></tr></table>', 'cp_rename.php', true, false, true);
 }

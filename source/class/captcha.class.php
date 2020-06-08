@@ -28,6 +28,7 @@
  *    along with GaiaBB.  If not, see <http://www.gnu.org/licenses/>.
  *
  **/
+// phpcs:disable PSR1.Files.SideEffects
 if (!defined('IN_PROGRAM') && (defined('DEBUG') && DEBUG == false)) {
     exit('This file is not designed to be called directly');
 }
@@ -109,14 +110,14 @@ class Captcha
             );
         }
 
-        mt_srand($this->make_seed());
+        mt_srand($this->createSeed());
 
         $this->bg_fade_pct = 40;
 
         if ($this->color_management == 'single') {
-            $this->global_col_r = $this->rand_color();
-            $this->global_col_b = $this->rand_color();
-            $this->global_col_g = $this->rand_color();
+            $this->global_col_r = $this->randColor();
+            $this->global_col_b = $this->randColor();
+            $this->global_col_g = $this->randColor();
         }
 
         $this->bg_fade_pct += mt_rand(-2, 2);
@@ -124,7 +125,7 @@ class Captcha
         for ($i = 0; $i < sizeof($this->font_locations); $i++) {
             $handle = fopen($this->font_locations[$i], "r");
             $c_wid = fread($handle, 11);
-            $this->font_widths[$i] = ord($c_wid{8}) + ord($c_wid{9}) + ord($c_wid{10});
+            $this->font_widths[$i] = ord($c_wid[8]) + ord($c_wid[9]) + ord($c_wid[10]);
             fclose($handle);
         }
 
@@ -135,30 +136,30 @@ class Captcha
         $this->im2 = ImageCreate($this->width, $this->height);
 
         if ($CONFIG['captcha_maxattempts'] != '0') {
-            $this->CheckBruteForce();
+            $this->checkBruteForce();
         }
 
-        $this->GenerateWord();
-        $this->FillBGColor();
-        $this->WriteWord();
-        $this->MorphImage();
-        $this->AddSiteTags();
-        $this->MergeBG();
-        $this->SendImage();
+        $this->generateWord();
+        $this->fillBGColor();
+        $this->writeWord();
+        $this->morphImage();
+        $this->addSiteTags();
+        $this->mergeBG();
+        $this->sendImage();
     }
 
-    public function make_seed()
+    public function createSeed()
     {
         list($usec, $sec) = explode(' ', microtime());
         return (float) $sec + ((float) $usec * 100000);
     }
 
-    public function rand_color()
+    public function randColor()
     {
         return mt_rand(60, 170);
     }
 
-    public function CheckBruteForce()
+    public function checkBruteForce()
     {
         if (empty($_SESSION['captcha_attempts'])) {
             $_SESSION['captcha_attempts'] = 1;
@@ -174,12 +175,12 @@ class Captcha
                 $red = ImageColorAllocate($this->im, 255, 0, 0);
                 ImageString($this->im, 5, 15, 20, "service no longer available", $red);
 
-                $this->SendImage();
+                $this->sendImage();
             }
         }
     }
 
-    public function SendImage()
+    public function sendImage()
     {
         header("Content-Type: image/png");
         ImagePNG($this->im);
@@ -192,7 +193,7 @@ class Captcha
         exit();
     }
 
-    public function GenerateWord()
+    public function generateWord()
     {
         $consonants = 'bcdfghjkmnprstvwxyz';
         $mixed = 'aeu23456789';
@@ -201,15 +202,15 @@ class Captcha
 
         for ($i = 0; $i < $wordlen; $i++) {
             if (mt_rand(0, 4) >= 2) {
-                $this->word .= $consonants{mt_rand(0, strlen($consonants) - 1)};
+                $this->word .= $consonants[mt_rand(0, strlen($consonants) - 1)];
             } else {
-                $this->word .= $mixed{mt_rand(0, strlen($mixed) - 1)};
+                $this->word .= $mixed[mt_rand(0, strlen($mixed) - 1)];
             }
         }
         $_SESSION['word_hash'] = md5(strtolower($this->word));
     }
 
-    public function FillBGColor()
+    public function fillBGColor()
     {
         $tag_col = ImageColorAllocate($this->im, 10, 10, 10);
 
@@ -277,7 +278,7 @@ class Captcha
         ImageDestroy($temp_bg);
     }
 
-    public function WriteWord()
+    public function writeWord()
     {
         $this->word_start_x = 20;
         $this->word_start_y = 25;
@@ -290,21 +291,21 @@ class Captcha
 
         for ($i = 0; $i < strlen($this->word); $i++) {
             if ($this->color_management != 'single') {
-                $text_r = $this->rand_color();
-                $text_g = $this->rand_color();
-                $text_b = $this->rand_color();
+                $text_r = $this->randColor();
+                $text_g = $this->randColor();
+                $text_b = $this->randColor();
             }
 
             $text_colour2 = ImageColorAllocate($this->im2, $text_r, $text_b, $text_g);
 
             $j = mt_rand(0, sizeof($this->font_locations) - 1);
             $font = ImageLoadFont($this->font_locations[$j]);
-            ImageString($this->im2, $font, $this->word_start_x + (25 * $i), $this->word_start_y, $this->word{$i}, $text_colour2);
+            ImageString($this->im2, $font, $this->word_start_x + (25 * $i), $this->word_start_y, $this->word[$i], $text_colour2);
         }
         $this->font_pixelwidth = $this->font_widths[$j];
     }
 
-    public function MorphImage()
+    public function morphImage()
     {
         $word_pix_size = $this->word_start_x + (strlen($this->word) * $this->font_pixelwidth);
 
@@ -354,7 +355,7 @@ class Captcha
         return $this->im;
     }
 
-    public function AddSiteTags()
+    public function addSiteTags()
     {
         $site_tag_col2 = ImageColorAllocate($this->im2, 0, 0, 0);
         ImageFilledRectangle($this->im2, 0, 0, $this->width, $this->height, $this->bg2);
@@ -370,7 +371,7 @@ class Captcha
         ImageCopy($this->im, $this->im2, 0, 0, 0, 0, $this->width, $this->height);
     }
 
-    public function MergeBG()
+    public function mergeBG()
     {
         $temp_im = ImageCreate($this->width, $this->height);
         $white = ImageColorAllocate($temp_im, 255, 255, 255);

@@ -29,9 +29,11 @@
  *    along with GaiaBB.  If not, see <http://www.gnu.org/licenses/>.
  *
  **/
-
 // phpcs:disable PSR1.Files.SideEffects
 use GaiaBB\MariaDB;
+use GaiaBB\PhpMail;
+use GaiaBB\SendGridMail;
+use GaiaBB\SmtpMail;
 
 // Production PHP error level, suppresses all warnings
 error_reporting(0);
@@ -236,7 +238,7 @@ foreach ($tables as $name) {
 // create secure table prefix by John
 define('X_PREFIX', $tablepre);
 
-$db = new MariaDB();
+$db = new GaiaBB\MariaDB();
 $db->connect($dbhost, $dbuser, $dbpw, $dbname, $pconnect, true);
 
 // Make all settings global, and put them in the $CONFIG[] array
@@ -283,6 +285,19 @@ if ($CONFIG === false) {
     }
 
     $config_cache->setData('settings', $CONFIG);
+}
+
+require_once __DIR__ . './classes/mail.class.php';
+
+if ($CONFIG['smtp_status']) {
+    require_once __DIR__ . './classes/mail.smtp.class.php';
+    $mailSystem = new SmtpMail();
+} elseif ($sendgridAPIkey) {
+    require_once __DIR__ . './classes/mail.sendgrid.class.php';
+    $mailSystem = new SendGridMail();
+} else {
+    require_once __DIR__ . './classes/mail.php.class.php';
+    $mailSystem = new PhpMail();
 }
 
 // Get the moderators and cache them for later use
@@ -433,11 +448,6 @@ $charset = 'ISO-8859-1';
 include 'lang/' . $self['langfile'] . '.lang.php';
 header('Content-Type: text/html; charset=' . $charset);
 header('Content-Language: ' . $lang_code);
-
-// Prepare the mail system for use throughout the boards
-#include('class/mail.class.php');
-include 'class/sendgrid.class.php';
-$mailsys = new MailSys();
 
 // Checks for the possibility to register
 $reglink = '';

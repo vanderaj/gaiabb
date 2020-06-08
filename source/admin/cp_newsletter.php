@@ -28,7 +28,7 @@
  *    along with GaiaBB.  If not, see <http://www.gnu.org/licenses/>.
  *
  **/
-
+// phpcs:disable PSR1.Files.SideEffects
 define('ROOT', '../');
 define('ROOTINC', '../include/');
 define('ROOTCLASS', '../class/');
@@ -140,7 +140,7 @@ function viewPanel()
 
 function doPanel()
 {
-    global $lang, $db, $config_cache, $mailsys;
+    global $lang, $db, $config_cache, $mailSystem;
     global $oToken, $CONFIG, $self;
 
     if (!((bool) ini_get('safe_mode'))) {
@@ -198,17 +198,17 @@ function doPanel()
             error($lang['nobbname'], false, '', '', 'cp_board.php', true, false, true);
         }
 
-        $mailsys->setTo($CONFIG['adminemail']);
-        $mailsys->setFrom($CONFIG['adminemail'], $CONFIG['bbname']);
-        $mailsys->setSubject('[' . $CONFIG['bbname'] . '] ' . stripslashes($newssubject));
-        $mailsys->setMessage(stripslashes($newsmessage));
+        $mailSystem->setTo($CONFIG['adminemail']);
+        $mailSystem->setFrom($CONFIG['adminemail'], $CONFIG['bbname']);
+        $mailSystem->setSubject('[' . $CONFIG['bbname'] . '] ' . stripslashes($newssubject));
+        $mailSystem->setMessage(stripslashes($newsmessage));
 
         while (($memnews = $db->fetchArray($query)) != false) {
-            $mailsys->addBCC($memnews['email']);
+            $mailSystem->addBCC($memnews['email']);
             $i++;
 
             if ($i === 250 || $i === $memcount) {
-                $mailsys->sendMail();
+                $mailSystem->sendMail();
                 if ($i === 250) {
                     sleep(3);
                 }

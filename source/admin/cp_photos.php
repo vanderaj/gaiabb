@@ -28,7 +28,7 @@
  *    along with GaiaBB.  If not, see <http://www.gnu.org/licenses/>.
  *
  **/
-
+// phpcs:disable PSR1.Files.SideEffects
 define('ROOT', '../');
 define('ROOTINC', '../include/');
 define('ROOTCLASS', '../class/');
@@ -96,25 +96,25 @@ function viewPanel()
                             <td colspan="2" class="title"><?php echo $lang['photo_main_settings'] ?></td>
                         </tr>
                         <?php
-GaiaBB\FormHelper::formSelectOnOff($lang['photostatus'], 'photostatusnew', $photoon, $photooff);
-GaiaBB\FormHelper::formSelectList($lang['photo_Whoupload'], 'photo_whocanuploadnew', array(
-        $lang['textoff'],
-        $lang['photo_Upall'],
-        $lang['photo_Upstaff'],
-    ), array(
-        'off',
-        'all',
-        'staff',
-    ), $avuchecked, false);
-    GaiaBB\FormHelper::formTextBox($lang['photo_Filesize'], 'photo_filesizenew', $CONFIG['photo_filesize'], 5);
-    GaiaBB\FormHelper::formTextBox($lang['photo_Wdimensions'], 'photo_max_widthnew', $CONFIG['photo_max_width'], 4);
-    GaiaBB\FormHelper::formTextBox($lang['photo_Hdimensions'], 'photo_max_heightnew', $CONFIG['photo_max_height'], 4);
-    GaiaBB\FormHelper::formTextBox($lang['photo_Newwresize'], 'photo_new_widthnew', $CONFIG['photo_new_width'], 4);
-    GaiaBB\FormHelper::formTextBox($lang['photo_Newhresize'], 'photo_new_heightnew', $CONFIG['photo_new_height'], 4);
-    GaiaBB\FormHelper::formTextBox($lang['photo_Path'], 'photo_pathnew', $CONFIG['photo_path'], 20);
-    GaiaBB\FormHelper::formTextBox($lang['max_photo_size_w'], 'max_photo_size_w_new', $max_photo_sizes[0], 4);
-    GaiaBB\FormHelper::formTextBox($lang['max_photo_size_h'], 'max_photo_size_h_new', $max_photo_sizes[1], 4);
-    ?>
+                        GaiaBB\FormHelper::formSelectOnOff($lang['photostatus'], 'photostatusnew', $photoon, $photooff);
+                        GaiaBB\FormHelper::formSelectList($lang['photo_Whoupload'], 'photo_whocanuploadnew', array(
+                                $lang['textoff'],
+                                $lang['photo_Upall'],
+                                $lang['photo_Upstaff'],
+                            ), array(
+                                'off',
+                                'all',
+                                'staff',
+                            ), $avuchecked, false);
+                            GaiaBB\FormHelper::formTextBox($lang['photo_Filesize'], 'photo_filesizenew', $CONFIG['photo_filesize'], 5);
+                            GaiaBB\FormHelper::formTextBox($lang['photo_Wdimensions'], 'photo_max_widthnew', $CONFIG['photo_max_width'], 4);
+                            GaiaBB\FormHelper::formTextBox($lang['photo_Hdimensions'], 'photo_max_heightnew', $CONFIG['photo_max_height'], 4);
+                            GaiaBB\FormHelper::formTextBox($lang['photo_Newwresize'], 'photo_new_widthnew', $CONFIG['photo_new_width'], 4);
+                            GaiaBB\FormHelper::formTextBox($lang['photo_Newhresize'], 'photo_new_heightnew', $CONFIG['photo_new_height'], 4);
+                            GaiaBB\FormHelper::formTextBox($lang['photo_Path'], 'photo_pathnew', $CONFIG['photo_path'], 20);
+                            GaiaBB\FormHelper::formTextBox($lang['max_photo_size_w'], 'max_photo_size_w_new', $max_photo_sizes[0], 4);
+                            GaiaBB\FormHelper::formTextBox($lang['max_photo_size_h'], 'max_photo_size_h_new', $max_photo_sizes[1], 4);
+                        ?>
                         <tr class="ctrtablerow" bgcolor="<?php echo $THEME['altbg2'] ?>">
                             <td colspan="2"><input class="submit" type="submit"
                                                    name="photosubmit"

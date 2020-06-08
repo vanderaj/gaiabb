@@ -29,7 +29,7 @@
  * @license     GNU GPL v3 or later
  * @link        https://github.com/vanderaj/gaiabb
  **/
-
+// phpcs:disable PSR1.Files.SideEffects
 if (!defined('IN_PROGRAM') && (defined('DEBUG') && DEBUG == false)) {
     exit('This file is not designed to be called directly');
 }
@@ -1759,8 +1759,8 @@ function check_db_api($database)
     $retval = true;
 
     switch ($database) {
-        case 'mysql':
-        case 'mysql5php5.class':
+        case 'database':
+        case 'mariadb.class':
             if (!defined('SQL_NUM')) {
                 $retval = false;
             }

@@ -28,6 +28,7 @@
  *    along with GaiaBB.  If not, see <http://www.gnu.org/licenses/>.
  *
  **/
+// phpcs:disable PSR1.Files.SideEffects
 if (!defined('IN_PROGRAM') && (defined('DEBUG') && DEBUG == false)) {
     exit('This file is not designed to be called directly');
 }
@@ -268,15 +269,15 @@ function displayAdminPanel()
                                 </tr>
                                 <tr class="category">
                                     <td style="text-align: center;"><a
-                                                href="javascript:viewset('<?php echo $lang['mysql_tools'] ?>')"><strong><font
-                                                        color="<?php echo $THEME['cattext'] ?>"><?php echo $lang['mysql_tools'] ?></font></strong></a>
+                                                href="javascript:viewset('<?php echo $lang['database_tools'] ?>')"><strong><font
+                                                        color="<?php echo $THEME['cattext'] ?>"><?php echo $lang['database_tools'] ?></font></strong></a>
                                     </td>
                                 </tr>
-                                <tr class="hidden" id="<?php echo $lang['mysql_tools'] ?>">
+                                <tr class="hidden" id="<?php echo $lang['database_tools'] ?>">
                                     <td>
                                         <ul>
                                             <li><a href="cp_rawsql.php"><?php echo $THEME['navsymbol'] ?>
-                                                    &nbsp;<?php echo $lang['raw_mysql'] ?></a></li>
+                                                    &nbsp;<?php echo $lang['raw_database'] ?></a></li>
                                             <li><a href="cp_analyzetables.php"><?php echo $THEME['navsymbol'] ?>
                                                     &nbsp;<?php echo $lang['analyze'] ?></a></li>
                                             <li><a href="cp_checktables.php"><?php echo $THEME['navsymbol'] ?>

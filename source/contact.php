@@ -28,7 +28,7 @@
  *    along with GaiaBB.  If not, see <http://www.gnu.org/licenses/>.
  *
  **/
-
+// phpcs:disable PSR1.Files.SideEffects
 require_once 'header.php';
 
 loadtpl('contactus');
@@ -91,11 +91,11 @@ if (onSubmit('contactsubmit')) {
     }
 
     if (!empty($name) && !empty($email) && !empty($CONFIG['adminemail']) && !empty($CONFIG['bbname'])) {
-        $mailsys->setTo($CONFIG['adminemail']);
-        $mailsys->setFrom($email, $name);
-        $mailsys->setSubject('[' . $CONFIG['bbname'] . '] ' . $subject);
-        $mailsys->setMessage($message);
-        $mailsys->sendMail();
+        $mailSystem->setTo($CONFIG['adminemail']);
+        $mailSystem->setFrom($email, $name);
+        $mailSystem->setSubject('[' . $CONFIG['bbname'] . '] ' . $subject);
+        $mailSystem->setMessage($message);
+        $mailSystem->sendMail();
 
         message($lang['contactsubmitted'], false, '', '', 'index.php', true, false, true);
     }

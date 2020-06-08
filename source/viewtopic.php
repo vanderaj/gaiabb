@@ -28,7 +28,6 @@
  *    along with GaiaBB.  If not, see <http://www.gnu.org/licenses/>.
  *
  **/
-
 // phpcs:disable PSR1.Files.SideEffects
 if (isset($GET['action']) && $_GET['action'] == 'attachment') {
     define('CACHECONTROL', 'IMAGE');
@@ -510,7 +509,7 @@ if (empty($action)) {
     }
 
     $attachments = new GaiaBB\Attachment();
-    $attachments->get_attachments($tid);
+    $attachments->getAttachments($tid);
 
     $thisbg = $THEME['altbg2'];
     $querypost = $db->query("SELECT p.*, m.*,w.time FROM " . X_PREFIX . "posts p LEFT JOIN " . X_PREFIX . "members m ON m.username = p.author LEFT JOIN " . X_PREFIX . "whosonline w ON p.author = w.username WHERE p.fid = '$fid' AND p.tid = '$tid' ORDER BY p.pid $self[psorting] LIMIT $start_limit, " . $self['ppp']);
@@ -873,7 +872,7 @@ if (empty($action)) {
         $smileyoff = $post['smileyoff'];
         $post['message'] = postify($post['message'], $smileyoff, $bbcodeoff, $forum['allowsmilies'], $forum['allowbbcode'], $forum['allowimgcode']);
 
-        $attachment = $attachments->get_post_attachments($post['pid']);
+        $attachment = $attachments->getPostAttachments($post['pid']);
 
         if (isset($self['viewsigs']) && $self['viewsigs'] == 'yes' && ($post['postnum'] > $CONFIG['viewsigminposts'])) {
             if ($post['usesig'] == 'yes' && !empty($post['sig'])) {

@@ -24,6 +24,7 @@
  *    along with GaiaBB.  If not, see <http://www.gnu.org/licenses/>.
  *
  **/
+// phpcs:disable PSR1.Files.SideEffects
 if (!defined('IN_PROGRAM') && (defined('DEBUG') && DEBUG == false)) {
     exit('This file is not designed to be called directly');
 }
@@ -110,7 +111,7 @@ function upgrade_forum($path, $prgbar)
         setCol($prgbar, '#ff0000');
         print_error('Database connection', 'Please ensure that config.php has been successfully written prior to running this install.');
     }
-    require_once "../db/mysql5php5.php";
+    require_once "../db/mariadb.class.php";
 
     setBar($prgbar, 0.05);
 
@@ -131,7 +132,7 @@ function upgrade_forum($path, $prgbar)
     $version = $db->getVersion();
     if (version_compare($version, "5.1.0", "<")) {
         setCol($prgbar, '#ffff00');
-        print_error('Database warning', 'GaiaBB requires MariaDB 5.1 or later and prefers the latest version.', false);
+        print_error('Database warning', 'GaiaBB requires MariaDB 10.1 (or MySQL 5.7) or later. In all cases, GaiaBB prefers the latest version.', false);
         $warn = true;
     }
 

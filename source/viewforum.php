@@ -28,7 +28,7 @@
  *    along with GaiaBB.  If not, see <http://www.gnu.org/licenses/>.
  *
  **/
-
+// phpcs:disable PSR1.Files.SideEffects
 require_once 'header.php';
 
 loadtpl('massmod_openclose', 'massmod_topuntop', 'massmod_bump', 'massmod_copy', 'massmod_merge', 'massmod_delete', 'massmod_empty', 'massmod_move', 'massmod_markthread', 'viewforum_newtopic', 'viewforum_newpoll', 'viewforum_password', 'viewforum_thread', 'viewforum_invalidforum', 'viewforum_nothreads', 'viewforum', 'viewforum_subforum_lastpost', 'viewforum_thread_lastpost', 'viewforum_admin', 'viewforum_thread_admin', 'viewforum_subforum', 'viewforum_subforums', 'viewforum_multipage_admin', 'viewforum_multipage', 'viewforum_subforum_nolastpost', 'viewforum_dotfolders', 'viewforum_search', 'viewforum_rules', 'viewforum_mpn_info', 'viewforum_nothreads_admin');

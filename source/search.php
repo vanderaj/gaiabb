@@ -28,7 +28,7 @@
  *    along with GaiaBB.  If not, see <http://www.gnu.org/licenses/>.
  *
  **/
-
+// phpcs:disable PSR1.Files.SideEffects
 require_once 'header.php';
 
 loadtpl('search', 'search_results_row', 'search_results_none', 'search_results', 'search_nextlink');

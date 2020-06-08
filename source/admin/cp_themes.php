@@ -28,6 +28,7 @@
  *    along with GaiaBB.  If not, see <http://www.gnu.org/licenses/>.
  *
  **/
+// phpcs:disable PSR1.Files.SideEffects
 define('ROOT', '../');
 define('ROOTINC', '../include/');
 define('ROOTCLASS', '../class/');
@@ -107,7 +108,7 @@ function doImportTheme()
     foreach ($themebits as $key => $val) {
         if ($key == 'themeid') {
             $val = '';
-            continue; // Jump over the identity row for MySQL 5.0
+            continue; // Jump over the identity row 
         } elseif ($key == 'name') {
             $name = $val;
         }

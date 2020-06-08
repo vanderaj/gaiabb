@@ -24,9 +24,7 @@
  *    along with GaiaBB.  If not, see <http://www.gnu.org/licenses/>.
  *
  **/
-
 // phpcs:disable PSR1.Files.SideEffects
-
 use GaiaBB\MariaDB;
 
 if (!defined('IN_PROGRAM') && (defined('DEBUG') && DEBUG == false)) {
@@ -136,8 +134,8 @@ function get_db_array()
 {
     $dbs[] = array(
         'name' => "MariaDB 5.1 or later (also compatible with Oracle MySQL)",
-        'classname' => "mysql5Php5",
-        'file' => 'mysql5php5.class',
+        'classname' => "MariaDB",
+        'file' => 'mariadb.class',
     );
     return $dbs;
 }
@@ -347,7 +345,7 @@ function check_files()
         'class/post.class.php',
         'class/subscription.class.php',
         'class/thread.class.php',
-        'db/mysql5php5.class.php',
+        'db/mariadb.class.php',
         'js/address.js',
         'js/addresslistedit.js',
         'js/admin.js',
@@ -412,10 +410,10 @@ function isInstalled($db = false)
         $pconnect = false;
         include_once '../config.php';
 
-        if ($dbname !== "DBNAME" && file_exists("../db/mysql5php5.php")) {
+        if ($dbname !== "DBNAME" && file_exists("../db/mariadb.class.php")) {
             // Okay, it's safe to check the database as per config.php
             define('X_PREFIX', $tablepre);
-            include_once "../db/mysql5php5.php";
+            include_once "../db/mariadb.class.php";
 
             $db = new GaiaBB\MariaDB();
             $db->connect($dbhost, $dbuser, $dbpw, $dbname, $pconnect, false);

@@ -28,7 +28,7 @@
  *    along with GaiaBB.  If not, see <http://www.gnu.org/licenses/>.
  *
  **/
-
+// phpcs:disable PSR1.Files.SideEffects
 define('ROOT', '../');
 define('ROOTINC', '../include/');
 define('ROOTCLASS', '../class/');
@@ -205,77 +205,77 @@ function viewPanel()
                             <td class="title" colspan="2"><?php echo $lang['admin_main_settings3'] ?></td>
                         </tr>
                         <?php
-GaiaBB\FormHelper::formSelectOnOff($lang['textsearchstatus'], 'searchstatusnew', $searchon, $searchoff);
-    GaiaBB\FormHelper::formSelectOnOff($lang['textfaqstatus'], 'faqstatusnew', $faqon, $faqoff);
-    GaiaBB\FormHelper::formSelectOnOff($lang['topicactivitystatus'], 'topicactivity_statusnew', $topicon, $topicoff);
-    GaiaBB\FormHelper::formSelectOnOff($lang['textstatsstatus'], 'statsnew', $statson, $statsoff);
-    GaiaBB\FormHelper::formSelectOnOff($lang['textmemliststatus'], 'memliststatusnew', $memliston, $memlistoff);
-    GaiaBB\FormHelper::formSelectOnOff($lang['contactusstatus'], 'contactusnew', $contactus_on, $contactus_off);
-    GaiaBB\FormHelper::formSelectOnOff($lang['coppastatus'], 'coppanew', $coppaon, $coppaoff);
-    GaiaBB\FormHelper::formSelectOnOff($lang['reportpoststatus'], 'reportpostnew', $reportposton, $reportpostoff);
-    GaiaBB\FormHelper::formSelectOnOff($lang['allowrankedit'], 'allowrankeditnew', $allowrankediton, $allowrankeditoff);
-    GaiaBB\FormHelper::formSelectOnOff($lang['whosrobotstatus'], 'whosrobot_statusnew', $whosrobot_on, $whosrobot_off);
-    GaiaBB\FormHelper::formSelectOnOff($lang['whosrobotnamestatus'], 'whosrobotname_statusnew', $whosrobotname_on, $whosrobotname_off);
-    GaiaBB\FormHelper::formSelectOnOff($lang['whosgueststatus'], 'whosguest_statusnew', $whosguest_on, $whosguest_off);
-    GaiaBB\FormHelper::formSelectOnOff($lang['pmattachstatus'], 'pmattachstatusnew', $pmattachstatuson, $pmattachstatusoff);
-    GaiaBB\FormHelper::formSelectOnOff($lang['pmstatus'], 'pmstatusnew', $pmstatuson, $pmstatusoff);
-    GaiaBB\FormHelper::formSelectOnOff($lang['indexstats'], 'indexstatsnew', $indexstatson, $indexstatsoff);
-    GaiaBB\FormHelper::formSelectOnOff($lang['notepadstatus'], 'notepadstatusnew', $notepadon, $notepadoff);
-    ?>
+                        GaiaBB\FormHelper::formSelectOnOff($lang['textsearchstatus'], 'searchstatusnew', $searchon, $searchoff);
+                        GaiaBB\FormHelper::formSelectOnOff($lang['textfaqstatus'], 'faqstatusnew', $faqon, $faqoff);
+                        GaiaBB\FormHelper::formSelectOnOff($lang['topicactivitystatus'], 'topicactivity_statusnew', $topicon, $topicoff);
+                        GaiaBB\FormHelper::formSelectOnOff($lang['textstatsstatus'], 'statsnew', $statson, $statsoff);
+                        GaiaBB\FormHelper::formSelectOnOff($lang['textmemliststatus'], 'memliststatusnew', $memliston, $memlistoff);
+                        GaiaBB\FormHelper::formSelectOnOff($lang['contactusstatus'], 'contactusnew', $contactus_on, $contactus_off);
+                        GaiaBB\FormHelper::formSelectOnOff($lang['coppastatus'], 'coppanew', $coppaon, $coppaoff);
+                        GaiaBB\FormHelper::formSelectOnOff($lang['reportpoststatus'], 'reportpostnew', $reportposton, $reportpostoff);
+                        GaiaBB\FormHelper::formSelectOnOff($lang['allowrankedit'], 'allowrankeditnew', $allowrankediton, $allowrankeditoff);
+                        GaiaBB\FormHelper::formSelectOnOff($lang['whosrobotstatus'], 'whosrobot_statusnew', $whosrobot_on, $whosrobot_off);
+                        GaiaBB\FormHelper::formSelectOnOff($lang['whosrobotnamestatus'], 'whosrobotname_statusnew', $whosrobotname_on, $whosrobotname_off);
+                        GaiaBB\FormHelper::formSelectOnOff($lang['whosgueststatus'], 'whosguest_statusnew', $whosguest_on, $whosguest_off);
+                        GaiaBB\FormHelper::formSelectOnOff($lang['pmattachstatus'], 'pmattachstatusnew', $pmattachstatuson, $pmattachstatusoff);
+                        GaiaBB\FormHelper::formSelectOnOff($lang['pmstatus'], 'pmstatusnew', $pmstatuson, $pmstatusoff);
+                        GaiaBB\FormHelper::formSelectOnOff($lang['indexstats'], 'indexstatsnew', $indexstatson, $indexstatsoff);
+                        GaiaBB\FormHelper::formSelectOnOff($lang['notepadstatus'], 'notepadstatusnew', $notepadon, $notepadoff);
+                        ?>
                         <tr class="category">
                             <td class="title" colspan="2"><?php echo $lang['admin_main_settings4'] ?></td>
                         </tr>
                         <?php
-GaiaBB\FormHelper::formSelectOnOff($lang['whosonline_on'], 'whosonlinestatusnew', $whosonlineon, $whosonlineoff);
-    GaiaBB\FormHelper::formSelectOnOff($lang['whosonlinetoday'], 'whosonlinetodaynew', $whosonlinetodayon, $whosonlinetodayoff);
-    GaiaBB\FormHelper::formTextBox($lang['smtotal'], 'smtotalnew', $CONFIG['smtotal'], 5);
-    GaiaBB\FormHelper::formTextBox($lang['smcols'], 'smcolsnew', $CONFIG['smcols'], 5);
-    GaiaBB\FormHelper::formSelectOnOff($lang['dotfolders'], "dotfoldersnew", $dotfolderson, $dotfoldersoff);
-    GaiaBB\FormHelper::formSelectOnOff($lang['editedby'], 'editedbynew', $editedbyon, $editedbyoff);
-    GaiaBB\FormHelper::formSelectOnOff($lang['attachimginpost'], 'attachimgpostnew', $attachimgposton, $attachimgpostoff);
-    GaiaBB\FormHelper::formSelectOnOff($lang['attachborder'], 'attachbordernew', $attachborderon, $attachborderoff);
-    GaiaBB\FormHelper::formSelectOnOff($lang['Attachicon_Status'], 'attachicon_statusnew', $attachiconon, $attachiconoff);
-    GaiaBB\FormHelper::formSelectYesNo($lang['Viewattach_Status'], 'viewattachnew', $viewattachyes, $viewattachno);
-    GaiaBB\FormHelper::formSelectYesNo($lang['rpg_status'], 'rpg_statusnew', $rpgyes, $rpgno);
-    GaiaBB\FormHelper::formSelectOnOff($lang['viewlocation'], 'viewlocationnew', $viewlocationon, $viewlocationoff);
-    GaiaBB\FormHelper::formSelectOnOff($lang['resetsig'], 'resetsignew', $resetsigon, $resetsigoff);
-    GaiaBB\FormHelper::formSelectOnOff($lang['forumjump'], 'forumjumpnew', $forumjumpon, $forumjumpoff);
-    GaiaBB\FormHelper::formSelectOnOff($lang['showsubs'], 'showsubsnew', $showsubson, $showsubsoff);
-    ?>
+                        GaiaBB\FormHelper::formSelectOnOff($lang['whosonline_on'], 'whosonlinestatusnew', $whosonlineon, $whosonlineoff);
+                        GaiaBB\FormHelper::formSelectOnOff($lang['whosonlinetoday'], 'whosonlinetodaynew', $whosonlinetodayon, $whosonlinetodayoff);
+                        GaiaBB\FormHelper::formTextBox($lang['smtotal'], 'smtotalnew', $CONFIG['smtotal'], 5);
+                        GaiaBB\FormHelper::formTextBox($lang['smcols'], 'smcolsnew', $CONFIG['smcols'], 5);
+                        GaiaBB\FormHelper::formSelectOnOff($lang['dotfolders'], "dotfoldersnew", $dotfolderson, $dotfoldersoff);
+                        GaiaBB\FormHelper::formSelectOnOff($lang['editedby'], 'editedbynew', $editedbyon, $editedbyoff);
+                        GaiaBB\FormHelper::formSelectOnOff($lang['attachimginpost'], 'attachimgpostnew', $attachimgposton, $attachimgpostoff);
+                        GaiaBB\FormHelper::formSelectOnOff($lang['attachborder'], 'attachbordernew', $attachborderon, $attachborderoff);
+                        GaiaBB\FormHelper::formSelectOnOff($lang['Attachicon_Status'], 'attachicon_statusnew', $attachiconon, $attachiconoff);
+                        GaiaBB\FormHelper::formSelectYesNo($lang['Viewattach_Status'], 'viewattachnew', $viewattachyes, $viewattachno);
+                        GaiaBB\FormHelper::formSelectYesNo($lang['rpg_status'], 'rpg_statusnew', $rpgyes, $rpgno);
+                        GaiaBB\FormHelper::formSelectOnOff($lang['viewlocation'], 'viewlocationnew', $viewlocationon, $viewlocationoff);
+                        GaiaBB\FormHelper::formSelectOnOff($lang['resetsig'], 'resetsignew', $resetsigon, $resetsigoff);
+                        GaiaBB\FormHelper::formSelectOnOff($lang['forumjump'], 'forumjumpnew', $forumjumpon, $forumjumpoff);
+                        GaiaBB\FormHelper::formSelectOnOff($lang['showsubs'], 'showsubsnew', $showsubson, $showsubsoff);
+                        ?>
                         <tr class="category">
                             <td class="title" colspan="2"><?php echo $lang['admin_main_settings5'] ?></td>
                         </tr>
                         <?php
-GaiaBB\FormHelper::formSelectOnOff($lang['reg_on'], 'regstatusnew', $regon, $regoff);
-    GaiaBB\FormHelper::formSelectList($lang['notifyonreg'], 'notifyonregnew', array(
-        $lang['textoff'],
-        $lang['viapm'],
-        $lang['viaemail'],
-    ), array(
-        'off',
-        'pm',
-        'email',
-    ), $notifycheck, false);
-    GaiaBB\FormHelper::formTextBox2($lang['notify'], 5, 'usernamenotifynew', 50, $CONFIG['usernamenotify']);
-    GaiaBB\FormHelper::formSelectOnOff($lang['textreggedonly'], 'regviewonlynew', $regonlyon, $regonlyoff);
-    GaiaBB\FormHelper::formSelectOnOff($lang['texthidepriv'], 'hideprivatenew', $hideon, $hideoff);
-    GaiaBB\FormHelper::formSelectOnOff($lang['emailverify'], 'emailchecknew', $echeckon, $echeckoff);
-    GaiaBB\FormHelper::formTextBox($lang['textflood'], 'floodctrlnew', $CONFIG['floodctrl'], 3);
-    GaiaBB\FormHelper::formTextBox($lang['pmquota'], 'pmquotanew', $CONFIG['pmquota'], 3);
-    GaiaBB\FormHelper::formTextBox($lang['login_max_setting'], 'loginattemptsnew', $CONFIG['login_max_attempts'], 2);
-    GaiaBB\FormHelper::formTextBox($lang['inactiveusers'], 'inactiveusersnew', $CONFIG['inactiveusers'], 3);
-    GaiaBB\FormHelper::formSelectOnOff($lang['doublee'], 'doubleenew', $doubleeon, $doubleeoff);
-    ?>
+                        GaiaBB\FormHelper::formSelectOnOff($lang['reg_on'], 'regstatusnew', $regon, $regoff);
+                        GaiaBB\FormHelper::formSelectList($lang['notifyonreg'], 'notifyonregnew', array(
+                            $lang['textoff'],
+                            $lang['viapm'],
+                            $lang['viaemail'],
+                        ), array(
+                            'off',
+                            'pm',
+                            'email',
+                        ), $notifycheck, false);
+                        GaiaBB\FormHelper::formTextBox2($lang['notify'], 5, 'usernamenotifynew', 50, $CONFIG['usernamenotify']);
+                        GaiaBB\FormHelper::formSelectOnOff($lang['textreggedonly'], 'regviewonlynew', $regonlyon, $regonlyoff);
+                        GaiaBB\FormHelper::formSelectOnOff($lang['texthidepriv'], 'hideprivatenew', $hideon, $hideoff);
+                        GaiaBB\FormHelper::formSelectOnOff($lang['emailverify'], 'emailchecknew', $echeckon, $echeckoff);
+                        GaiaBB\FormHelper::formTextBox($lang['textflood'], 'floodctrlnew', $CONFIG['floodctrl'], 3);
+                        GaiaBB\FormHelper::formTextBox($lang['pmquota'], 'pmquotanew', $CONFIG['pmquota'], 3);
+                        GaiaBB\FormHelper::formTextBox($lang['login_max_setting'], 'loginattemptsnew', $CONFIG['login_max_attempts'], 2);
+                        GaiaBB\FormHelper::formTextBox($lang['inactiveusers'], 'inactiveusersnew', $CONFIG['inactiveusers'], 3);
+                        GaiaBB\FormHelper::formSelectOnOff($lang['doublee'], 'doubleenew', $doubleeon, $doubleeoff);
+                        ?>
                         <tr class="category">
                             <td class="title" colspan="2"><?php echo $lang['admin_main_settings6'] ?></td>
                         </tr>
                         <?php
-GaiaBB\FormHelper::formTextBox($lang['texthottopic'], 'hottopicnew', $CONFIG['hottopic'], 3);
-    GaiaBB\FormHelper::formSelectOnOff($lang['bbinsert'], 'bbinsertnew', $bbinserton, $bbinsertoff);
-    GaiaBB\FormHelper::formSelectOnOff($lang['smileyinsert'], 'smileyinsertnew', $smileyinserton, $smileyinsertoff);
-    GaiaBB\FormHelper::formSelectList($lang['footer_options'], 'new_footer_options', $names, $values, $checked);
-    GaiaBB\FormHelper::formSelectOnOff($lang['sigbbcode'], 'sigbbcodenew', $sigbbcodeon, $sigbbcodeoff);
-    ?>
+                        GaiaBB\FormHelper::formTextBox($lang['texthottopic'], 'hottopicnew', $CONFIG['hottopic'], 3);
+                        GaiaBB\FormHelper::formSelectOnOff($lang['bbinsert'], 'bbinsertnew', $bbinserton, $bbinsertoff);
+                        GaiaBB\FormHelper::formSelectOnOff($lang['smileyinsert'], 'smileyinsertnew', $smileyinserton, $smileyinsertoff);
+                        GaiaBB\FormHelper::formSelectList($lang['footer_options'], 'new_footer_options', $names, $values, $checked);
+                        GaiaBB\FormHelper::formSelectOnOff($lang['sigbbcode'], 'sigbbcodenew', $sigbbcodeon, $sigbbcodeoff);
+                        ?>
                         <tr class="ctrtablerow" bgcolor="<?php echo $THEME['altbg2'] ?>">
                             <td colspan="2"><input class="submit" type="submit"
                                                    name="generalsubmit"

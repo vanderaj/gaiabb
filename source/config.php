@@ -28,8 +28,7 @@
  *    along with GaiaBB.  If not, see <http://www.gnu.org/licenses/>.
  *
  **/
-
-// check to ensure no direct viewing of page
+// phpcs:disable PSR1.Files.SideEffects
 if (!defined('IN_PROGRAM') && (defined('DEBUG') && DEBUG == false)) {
     exit('This file is not designed to be called directly');
 }
@@ -42,3 +41,20 @@ $dbhost = 'localhost'; // Database host, usually 'localhost'
 $database = 'mariadb.class'; // Database type. mariadb.class is the only one supported
 $pconnect = 0; // Persistent connection, 1 = on, 0 = off, use if 'too many connections'-errors appear
 $tablepre = 'gaiabb_'; // Used in case you want to host multiple forums in the one database
+
+// If you want to use SendGrid to send your mails, add an API key
+$sendgridAPIkey = '';
+
+// Change this if you want additional security in your installation
+// Each installation should choose a random password of at least 8 characters
+// If you change it, autologin will fail
+define('GAIABB_MASTERKEY', '');
+
+// set to true for debugging or development, false in production
+define('DEBUG', true);
+
+// 0 = completely off
+// 1 = normal, debug is enabled for X_SADMIN and above
+// 2 = more, debug is enabled for X_MEMBER and above (so no banned or guest debug messages)
+// 3 = all, debug is enabled for everyone (including banned and guests)
+define('DEBUGLEVEL', 1);

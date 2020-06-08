@@ -28,7 +28,7 @@
  *    along with GaiaBB.  If not, see <http://www.gnu.org/licenses/>.
  *
  **/
-
+// phpcs:disable PSR1.Files.SideEffects
 require_once 'header.php';
 
 loadtpl('memberlist_row', 'memberlist', 'memberlist_admin', 'memberlist_multipage', 'memberlist_separator', 'memberlist_results_none');

@@ -28,7 +28,7 @@
  *    along with GaiaBB.  If not, see <http://www.gnu.org/licenses/>.
  *
  **/
-
+// phpcs:disable PSR1.Files.SideEffects
 define('ROOT', '../');
 define('ROOTINC', '../include/');
 define('ROOTCLASS', '../class/');
@@ -130,23 +130,23 @@ function doPanel()
                 <table border="0px" cellspacing="<?php echo $THEME['borderwidth'] ?>"
                        cellpadding="<?php echo $THEME['tablespace'] ?>" width="100%">
                     <?php
-if (!((bool) ini_get('safe_mode'))) {
-        set_time_limit(180);
-    }
+                    if (!((bool) ini_get('safe_mode'))) {
+                        set_time_limit(180);
+                    }
 
-    $tables = $db->getTables();
+                    $tables = $db->getTables();
 
-    $q = array();
-    $start = true;
-    foreach ($tables as $key => $val) {
-        if ($start) {
-            dump_query($db->query('CHECK TABLE `' . $val . '`'));
-            $start = false;
-        } else {
-            dump_query($db->query('CHECK TABLE `' . $val . '`'), false);
-        }
-    }
-    ?>
+                    $q = array();
+                    $start = true;
+                    foreach ($tables as $key => $val) {
+                        if ($start) {
+                            dump_query($db->query('CHECK TABLE `' . $val . '`'));
+                            $start = false;
+                        } else {
+                            dump_query($db->query('CHECK TABLE `' . $val . '`'), false);
+                        }
+                    }
+                    ?>
                 </table>
             </td>
         </tr>

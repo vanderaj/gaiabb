@@ -28,7 +28,6 @@
  *    along with GaiaBB.  If not, see <http://www.gnu.org/licenses/>.
  *
  **/
-
 // phpcs:disable PSR1.Files.SideEffects
 define('ROOT', '../');
 define('ROOTINC', '../include/');
@@ -144,7 +143,7 @@ $query = $db->query("SELECT COUNT(type) FROM " . X_PREFIX . "subscriptions WHERE
 $subt = $db->result($query, 0);
 $db->freeResult($query);
 
-$mysqlver = $db->getVersion();
+$databasever = $db->getVersion();
 $phpver = phpversion();
 $zendver = zend_version();
 ?>
@@ -226,8 +225,8 @@ $zendver = zend_version();
                             <strong><?php echo $lang['finfo_totattach'] ?></strong></td>
                         <td class="ctrtablerow" bgcolor="<?php echo $THEME['altbg2'] ?>"><?php echo $attacht ?></td>
                         <td class="tablerow" bgcolor="<?php echo $THEME['altbg1'] ?>">
-                            <strong><?php echo $lang['finfo_mysql'] ?></strong></td>
-                        <td class="ctrtablerow" bgcolor="<?php echo $THEME['altbg2'] ?>"><?php echo $mysqlver ?></td>
+                            <strong><?php echo $lang['finfo_database'] ?></strong></td>
+                        <td class="ctrtablerow" bgcolor="<?php echo $THEME['altbg2'] ?>"><?php echo $databasever ?></td>
                         <td class="tablerow" bgcolor="<?php echo $THEME['altbg1'] ?>">
                             <strong><?php echo $lang['finfo_phpver'] ?></strong></td>
                         <td class="ctrtablerow" bgcolor="<?php echo $THEME['altbg2'] ?>"><?php echo $phpver ?></td>
