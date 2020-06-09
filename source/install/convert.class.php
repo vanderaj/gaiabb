@@ -20,7 +20,7 @@ class Convert
      *            what it does
      * @return type, what the return does
      */
-    public function convert(&$prgbar, $fromDb, $toDb)
+    public function __construct(&$prgbar, $fromDb, $toDb)
     {
         $this->prgbar = $prgbar;
         $this->toDbHost = $toDb;

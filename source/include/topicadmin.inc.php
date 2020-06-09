@@ -35,7 +35,7 @@ namespace GaiaBB;
 class Mod
 {
 
-    public function mod()
+    public function __construct()
     {
         global $lang, $action;
 

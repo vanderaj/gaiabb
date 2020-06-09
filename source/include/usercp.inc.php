@@ -35,6 +35,9 @@ namespace GaiaBB;
 require_once 'member.class.php';
 class UserObj
 {
+    public function __construct()
+    {
+    }
 
     public function viewProfile()
     {

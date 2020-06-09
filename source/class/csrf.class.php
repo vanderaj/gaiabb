@@ -74,6 +74,10 @@ class CsrfToken
      */
     public $newToken;
 
+    public function __construct()
+    {
+    }
+
     /**
      * Initialization of the class
      *

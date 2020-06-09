@@ -33,6 +33,10 @@ define('X_CONVERT', 'xmb19x');
 class Xmb19x extends Convert
 {
 
+    public function __construct()
+    {
+    }
+
     /**
      * function() - short description of function
      *

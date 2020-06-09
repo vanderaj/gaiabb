@@ -36,7 +36,7 @@ require_once 'mimetypes.inc.php';
 class PmDAO
 {
 
-    public function pmDAO()
+    public function __construct()
     {
     }
 
@@ -68,8 +68,9 @@ class PmDAO
 class PmModel
 {
 
-    public function pmModel()
+    public function __construct()
     {
+        
     }
 
     public function send($pmid, $msgto, $subject, $message, $pmpreview)

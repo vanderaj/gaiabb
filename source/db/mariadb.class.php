@@ -66,7 +66,7 @@ class MariaDB
      *            what it does
      * @return type, what the return does
      */
-    public function database5Php5()
+    public function __construct()
     {
         $this->db = '';
         $this->conn = null;
@@ -93,18 +93,10 @@ class MariaDB
 
             $this->force = $force_db;
 
-            if ((version_compare(phpversion(), "5.4.0")) < 0) {
-                throw new \Exception("Unsupported PHP version");
-            }
-
-            $this->conn = new \databasei($dbhost, $dbuser, $dbpw);
+            $this->conn = new \mysqli($dbhost, $dbuser, $dbpw);
 
             if ($this->conn->connect_error) {
                 throw new \Exception("Could not connect to the database server:" . $this->conn->connect_error . "(" . $this->conn->connect_errno . ")");
-            }
-
-            if ((version_compare($this->getVersion(), "5.1.0")) == -1) {
-                throw new \Exception("Unsupported MySQL version");
             }
 
             if ($this->selectDb($dbname, $force_db) === false) {
@@ -151,7 +143,7 @@ class MariaDB
                         </tr>
                         <tr>
                             <?php
-                            if (DEBUG) {
+                            if (true) {
                                 ?>
                                 <td class="tablerow" bgcolor="#ffffff"
                                     align="left"><?php echo $msg->getMessage() ?></td>
@@ -174,8 +166,8 @@ class MariaDB
         // => no X_SADMIN, so no error messages possible. So this code warns of bad things
         // with DEBUG
         if (defined('DEBUG') && DEBUG) {
-            $errnum = databasei_connect_errno();
-            $errmsg = databasei_connect_error();
+            $errnum = mysqli_connect_errno();
+            $errmsg = mysqli_connect_error();
             if (empty($errmsg)) {
                 $errmsg = "No MySQL error";
             }
@@ -292,7 +284,7 @@ class MariaDB
         if ($this->conn) {
             return $this->conn->error;
         }
-        return databasei_connect_error();
+        return mysqli_connect_error();
     }
 
     /**
@@ -693,16 +685,48 @@ class MariaDB
     }
 
     /**
-     * version() - Find the version of the MySQL Server
+     * version() - Find the version of the database server
      *
-     * @return string, the version in "5.x.x" format
+     * @return string, the version in "x.x.x" format, or false if it is not possible to determine the version
      */
     public function getVersion()
     {
-        if ($this->conn) {
-            return $this->conn->get_server_info();
+        if ($this->conn == null) {
+            return false;
         }
-        return false;
+        
+        // We want to retrieve the bits we need from this string
+        $version = $this->conn->get_server_info();
+
+        // Now to decode the first bit of a MySQL version string
+        // usually in the format X.Y.Z-....
+
+        $pos = strpos($version, "-");
+
+        // If the - sign is not found, it's most likely a simple version number
+        if ($pos === false) {
+            return $version;
+        }
+
+        // break the string into an array of elements
+        $versionbits = explode("-", $version);
+        if (empty($versionbits)) {
+            return false;
+        }
+
+        // All versions of MariaDB are fine
+        if (strpos($version, "MariaDB")) {
+            // we need to find the bit that is likely to be the MariaDB actual version
+            // In some cases, there will be two version numbers:
+            // 5.5.5-10.3.22-MariaDB-0+deb10u1
+            
+            if (version_compare($versionbits[1], "10.0.0", ">=")) {
+                return $versionbits[1];
+            }
+        }
+
+        // We want the bit to the left of the "-" sign
+        return $version[0];
     }
 
     /**

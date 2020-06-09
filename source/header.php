@@ -1,5 +1,4 @@
 <?php
-
 /**
  * GaiaBB
  * Copyright (c) 2009-2020 The GaiaBB Project
@@ -40,10 +39,6 @@ error_reporting(0);
 ini_set('display_errors', false);
 
 session_start();
-
-if ((version_compare(phpversion(), "5.4.0")) < 0) {
-    die("Unsupported PHP version");
-}
 
 define('IN_PROGRAM', true);
 
@@ -193,9 +188,16 @@ if ($action != 'attachment' && !($action == 'templates' &&
 
 // Get visitors IP address (which is usually their transparent proxy)
 // DO NOT USE HTTP_CLIENT_IP or HTTP_X_FORWARDED_FOR as these can (and are) forged by attackers. ajv
+// TODO: Fix IPv6 support with issues #66 #67 #68 #69
 $onlineip = '';
 if (isset($_SERVER['REMOTE_ADDR'])) {
     $onlineip = $_SERVER['REMOTE_ADDR'];
+
+    // hack for IpV6
+    if (strpos($onlineip, ':') == true) {
+        // IPv6 found
+        $onlineip = '127.0.0.1'; // any local addresses are IPv6 sourced
+    }
 }
 
 // Load Objects, and such

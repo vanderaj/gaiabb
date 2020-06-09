@@ -46,12 +46,12 @@ function install_forum($prgbar)
     setBar($prgbar, 0.05);
 
     $version = phpversion();
-    if (version_compare($version, "5.6.0") < 0) {
+    if (version_compare($version, "5.6.0", "<")) {
         setCol($prgbar, '#ff0000');
         print_error('Version warning', 'GaiaBB requires PHP 5.6.0 or later and prefers the latest version.');
     }
 
-    if (version_compare($version, "7.2.31") < 0) {
+    if (version_compare($version, "7.2.31", "<")) {
         setCol($prgbar, '#ffff00');
         print_error('Version warning', 'GaiaBB prefers recent PHP releases. Strongly consider upgrading the version of PHP you are using.', false);
         $warn = true;
@@ -149,9 +149,9 @@ function install_forum($prgbar)
     setBar($prgbar, 0.4);
 
     $version = $db->getVersion();
-    if (version_compare($version, "5.1.0") < 0) {
+    if (version_compare($version, "5.7.0", "<")) {
         setCol($prgbar, '#ffff00');
-        print_error('Database warning', 'GaiaBB requires MariaDB 5.1 or later and prefers the latest version.', false);
+        print_error('Database warning', 'GaiaBB requires MariaDB 10.1 or later and prefers the latest version.', false);
         $warn = true;
     }
 
