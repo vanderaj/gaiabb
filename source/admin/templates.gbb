@@ -1098,7 +1098,7 @@ $catrow1
 </tr>
 
 |#*GBB TEMPLATE FILE*#|viewforum|#*GBB TEMPLATE*#|
-$subforum
+$subforums
 $forumrules
 $minimal_posts_needed
 <form method="post" action="viewforum.php?fid=$fid">

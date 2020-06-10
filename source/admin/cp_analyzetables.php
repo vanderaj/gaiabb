@@ -4,11 +4,11 @@
  * Copyright (c) 2009-2020 The GaiaBB Project
  * https://github.com/vanderaj/gaiabb
  *
- * Based off UltimaBB
+ * Forked from UltimaBB
  * Copyright (c) 2004 - 2007 The UltimaBB Group
  * (defunct)
  *
- * Based off XMB
+ * Forked from XMB
  * Copyright (c) 2001 - 2004 The XMB Development Team
  * https://forums.xmbforum2.com/
  *
@@ -29,8 +29,13 @@
  *
  **/
 // phpcs:disable PSR1.Files.SideEffects
-require_once '../header.php';
-require_once '../class/admincp.inc.php';
+
+if (!defined('ROOT')) {
+    define('ROOT', '../');
+}
+
+require_once ROOT . 'header.php';
+require_once ROOT . 'include/admincp.inc.php';
 
 loadtpl('cp_header', 'cp_footer', 'cp_message', 'cp_error');
 
@@ -71,7 +76,7 @@ function viewPanel()
     global $oToken;
     ?>
     <form method="post" action="cp_analyzetables.php">
-        <input type="hidden" name="token"
+        <input type="hidden" name="csrf_token"
                value="<?php echo $oToken->createToken() ?>"/>
         <table cellspacing="0px" cellpadding="0px" border="0px" width="100%"
                align="center">

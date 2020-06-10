@@ -1,16 +1,16 @@
 <?php
 /**
  * GaiaBB
- * Copyright (c) 2011 The GaiaBB Group
- * http://www.GaiaBB.com
+ * Copyright (c) 2009-2020 The GaiaBB Project
+ * https://github.com/vanderaj/gaiabb
  *
- * Based off UltimaBB
+ * Forked from UltimaBB
  * Copyright (c) 2004 - 2007 The UltimaBB Group
  * (defunct)
  *
- * Based off XMB
+ * Forked from XMB
  * Copyright (c) 2001 - 2004 The XMB Development Team
- * http://www.xmbforum.com
+ * https://forums.xmbforum2.com/
  *
  * This file is part of GaiaBB
  *
@@ -32,7 +32,7 @@
 
 namespace GaiaBB;
 
-require_once __DIR__ . "../lib/sendgrid-php/sendgrid-php.php";
+require_once ROOT . "lib/sendgrid-php/sendgrid-php.php";
 
 class SendGridMail extends BaseMail
 {

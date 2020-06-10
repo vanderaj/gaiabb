@@ -4,11 +4,11 @@
  * Copyright (c) 2009-2020 The GaiaBB Project
  * https://github.com/vanderaj/gaiabb
  *
- * Based off UltimaBB
+ * Forked from UltimaBB
  * Copyright (c) 2004 - 2007 The UltimaBB Group
  * (defunct)
  *
- * Based off XMB
+ * Forked from XMB
  * Copyright (c) 2001 - 2004 The XMB Development Team
  * https://forums.xmbforum2.com/
  *
@@ -737,7 +737,7 @@ class Mod
         $db->freeResult($query);
         ?>
 <form method="post" action="./admin/cp_ipban.php">
-    <input type="hidden" name="token"
+    <input type="hidden" name="csrf_token"
         value="<?php echo $oToken->createToken() ?>" />
     <table cellspacing="0" cellpadding="0" border="0" width="60%"
         align="center">

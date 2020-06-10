@@ -4,11 +4,11 @@
  * Copyright (c) 2009-2020 The GaiaBB Project
  * https://github.com/vanderaj/gaiabb
  *
- * Based off UltimaBB
+ * Forked from UltimaBB
  * Copyright (c) 2004 - 2007 The UltimaBB Group
  * (defunct)
  *
- * Based off XMB
+ * Forked from XMB
  * Copyright (c) 2001 - 2004 The XMB Development Team
  * https://forums.xmbforum2.com/
  *
@@ -29,12 +29,12 @@
  *
  **/
 // phpcs:disable PSR1.Files.SideEffects
-define('ROOT', '../');
-define('ROOTINC', '../include/');
-define('ROOTCLASS', '../class/');
+if (!defined('ROOT')) {
+    define('ROOT', '../');
+}
 
-require_once '../header.php';
-require_once '../include/admincp.inc.php';
+require_once ROOT . 'header.php';
+require_once ROOT . 'include/admincp.inc.php';
 
 loadtpl('cp_header', 'cp_footer', 'cp_message', 'cp_error');
 
@@ -106,7 +106,7 @@ if ($action == 'templates') {
         $db->freeResult($query);
         ?>
         <form method="post" action="cp_templates.php?action=templates">
-            <input type="hidden" name="token"
+            <input type="hidden" name="csrf_token"
                    value="<?php echo $oToken->createToken() ?>"/>
             <table cellspacing="0px" cellpadding="0px" border="0px" width="100%"
                    align="center">
@@ -166,7 +166,7 @@ if ($action == 'templates') {
     if (onSubmit('restore')) {
         ?>
         <form method="post" action="cp_templates.php?action=templates">
-            <input type="hidden" name="token"
+            <input type="hidden" name="csrf_token"
                    value="<?php echo $oToken->createToken() ?>"/>
             <table cellspacing="0px" cellpadding="0px" border="0px" width="100%"
                    align="center">
@@ -197,12 +197,12 @@ if ($action == 'templates') {
     }
 
     if (onSubmit('restoresubmit')) {
-        if (!file_exists('./templates.gbb')) {
+        if (!file_exists(ROOT . 'admin/templates.gbb')) {
             cp_error($lang['no_templates'], false, '', '</td></tr></table>');
         }
         $db->query("TRUNCATE " . X_PREFIX . "templates");
-        $filesize = filesize('./templates.gbb');
-        $fp = fopen('./templates.gbb', 'r');
+        $filesize = filesize(ROOT . 'admin/templates.gbb');
+        $fp = fopen(ROOT . 'admin/templates.gbb', 'r');
         $templatesfile = fread($fp, $filesize);
         fclose($fp);
         $templates = explode("|#*GBB TEMPLATE FILE*#|", $templatesfile);
@@ -224,7 +224,7 @@ if ($action == 'templates') {
         ?>
         <form method="post"
               action="cp_templates.php?action=templates&amp;tid=<?php echo $tid ?>">
-            <input type="hidden" name="token"
+            <input type="hidden" name="csrf_token"
                    value="<?php echo $oToken->createToken() ?>"/>
             <table cellspacing="0px" cellpadding="0px" border="0px" width="100%"
                    align="center">
@@ -295,7 +295,7 @@ if ($action == 'templates') {
         ?>
         <form method="post"
               action="cp_templates.php?action=templates&amp;tid=<?php echo $tid ?>">
-            <input type="hidden" name="token"
+            <input type="hidden" name="csrf_token"
                    value="<?php echo $oToken->createToken() ?>"/>
             <table cellspacing="0px" cellpadding="0px" border="0px" width="100%"
                    align="center">
@@ -339,7 +339,7 @@ if ($action == 'templates') {
         ?>
         <form method="post"
               action="cp_templates.php?action=templates&amp;tid=<?php echo $tid ?>">
-            <input type="hidden" name="token"
+            <input type="hidden" name="csrf_token"
                    value="<?php echo $oToken->createToken() ?>"/>
             <table cellspacing="0px" cellpadding="0px" border="0px" width="100%"
                    align="center">
@@ -395,7 +395,7 @@ if ($action == 'templates') {
     if (onSubmit('backup_cur')) {
         ?>
         <form method="post" action="cp_templates.php?action=templates">
-            <input type="hidden" name="token"
+            <input type="hidden" name="csrf_token"
                    value="<?php echo $oToken->createToken() ?>"/>
             <table cellspacing="0px" cellpadding="0px" border="0px" width="100%"
                    align="center">
@@ -446,7 +446,7 @@ if ($action == 'templates') {
     if (onSubmit('restore_cur')) {
         ?>
         <form method="post" action="cp_templates.php?action=templates">
-            <input type="hidden" name="token"
+            <input type="hidden" name="csrf_token"
                    value="<?php echo $oToken->createToken() ?>"/>
             <table cellspacing="0px" cellpadding="0px" border="0px" width="100%"
                    align="center">
@@ -477,12 +477,12 @@ if ($action == 'templates') {
     }
 
     if (onSubmit('restore_curyes')) {
-        if (!file_exists('./templates/templates-current.gbb')) {
+        if (!file_exists(ROOT . 'admin/templates/templates-current.gbb')) {
             cp_error($lang['template_current_no'], false, '', '</td></tr></table>');
         } else {
             $db->query("TRUNCATE " . X_PREFIX . "templates");
-            $filesize = filesize('./templates/templates-current.gbb');
-            $fp = fopen('./templates/templates-current.gbb', 'r');
+            $filesize = filesize(ROOT . 'admin/templates/templates-current.gbb');
+            $fp = fopen(ROOT . 'admin/templates/templates-current.gbb', 'r');
             $templatesfile = fread($fp, $filesize);
             fclose($fp);
             $templates = explode("|#*GBB TEMPLATE FILE*#|", $templatesfile);
@@ -494,7 +494,7 @@ if ($action == 'templates') {
                 }
             }
 
-            if (is_writable('./templates/')) {
+            if (is_writable(ROOT . 'admin/templates/')) {
                 $code = '';
                 $templates = $db->query("SELECT * FROM " . X_PREFIX . "templates");
                 while (($template = $db->fetchArray($templates)) != false) {
@@ -516,7 +516,7 @@ if ($action == 'templates') {
         ?>
         <form method="post"
               action="cp_templates.php?action=templates&amp;tid=new">
-            <input type="hidden" name="token"
+            <input type="hidden" name="csrf_token"
                    value="<?php echo $oToken->createToken() ?>"/>
             <table cellspacing="0px" cellpadding="0px" border="0px" width="100%"
                    align="center">

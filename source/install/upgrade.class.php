@@ -59,6 +59,22 @@ class Upgrade
     }
 
     /**
+     * indexExists() - test for index existence
+     *
+     * Test if a named database index is present
+     *
+     * @param string $table         Table name to test
+     * @param string $indexname     Index name to test
+     * @return boolean              true if the index exists, false if not
+     **/
+    public function indexExists($table, $indexname)
+    {
+        $query = $this->db->query("SELECT COUNT(1) IndexPresent FROM INFORMATION_SCHEMA.STATISTICS WHERE table_schema=DATABASE() AND table_name='" . X_PREFIX . $table . "' AND index_name='" . X_PREFIX . $indexname . "'");
+        $indexPresent = $this->db->result($query, 0);
+        return ($indexPresent > 0) ? true : false;
+    }
+
+    /**
      * function() - short description of function
      *
      * TODO: Long description of function

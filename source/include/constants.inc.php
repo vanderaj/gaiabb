@@ -4,11 +4,11 @@
  * Copyright (c) 2009-2020 The GaiaBB Project
  * https://github.com/vanderaj/gaiabb
  *
- * Based off UltimaBB
+ * Forked from UltimaBB
  * Copyright (c) 2004 - 2007 The UltimaBB Group
  * (defunct)
  *
- * Based off XMB
+ * Forked from XMB
  * Copyright (c) 2001 - 2004 The XMB Development Team
  * https://forums.xmbforum2.com/
  *
@@ -49,6 +49,16 @@ if (!defined('IN_PROGRAM') && (defined('DEBUG') && DEBUG == false)) {
  * Turn DEBUG on by changing define('DEBUG', false); to define('DEBUG', true) in config.php
  */
 
+
+// set to true for debugging or development, false in production
+define('DEBUG', true);
+
+// 0 = completely off
+// 1 = normal, debug is enabled for X_SADMIN and above
+// 2 = more, debug is enabled for X_MEMBER and above (so no banned or guest debug messages)
+// 3 = all, debug is enabled for everyone (including banned and guests)
+define('DEBUGLEVEL', 1);
+
 // Debug mode
 if (!defined('DEBUG')) {
     define('DEBUG', false);
@@ -68,7 +78,7 @@ $versioncompany = 'The GaiaBB Group';
 $versionshort = 'GaiaBB';
 $versiongeneral = 'GaiaBB 1.0-M1';
 $versioncopyright = 'GaiaBB 1.0-M1, &copy; 2009-2020 The GaiaBB Group';
-$versionbuild = '2020.06.05';
+$versionbuild = '2020.06.09';
 
 define('X_CACHE_GET', 1);
 define('X_CACHE_PUT', 2);

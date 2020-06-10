@@ -4,11 +4,11 @@
  * Copyright (c) 2009-2020 The GaiaBB Project
  * https://github.com/vanderaj/gaiabb
  *
- * Based off UltimaBB
+ * Forked from UltimaBB
  * Copyright (c) 2004 - 2007 The UltimaBB Group
  * (defunct)
  *
- * Based off XMB and XMB Forum 2 (BBCode)
+ * Forked from XMB and XMB Forum 2 (BBCode)
  * Copyright (c) 2001 - 2012 The XMB Development Team
  * https://forums.xmbforum2.com/
  *
@@ -76,15 +76,6 @@ class CsrfToken
 
     public function __construct()
     {
-    }
-
-    /**
-     * Initialization of the class
-     *
-     * Sets all the class variables to their needed values
-     */
-    public function init()
-    {
         $this->csrfToken = $this->getCsrfToken();
         $this->sessionToken = $this->getSessionToken();
         $this->newToken = md5(sha1(uniqid(rand(), true)));
@@ -92,7 +83,7 @@ class CsrfToken
     }
 
     /**
-     * Retrieves the 'token' REQUEST variable
+     * Retrieves the "csrf_token" REQUEST variable
      *
      * @return string the token that was retrieved
      */
@@ -105,7 +96,7 @@ class CsrfToken
     }
 
     /**
-     * Retrieves the 'token' SESSION variable
+     * Retrieves the "csrf_token" SESSION variable
      *
      * @return mixed the token that was retrieved if it's set, false otherwise
      */
@@ -115,10 +106,10 @@ class CsrfToken
     }
 
     /**
-     * Sets the 'token' SESSION variable
+     * Sets the "csrf_token" SESSION variable
      *
      * @param string $token
-     *            the token to set the 'token' variable as
+     *            the token to set the "csrf_token" variable as
      * @return string the token that was retrieved
      */
     public function setSessionToken($token)
@@ -150,7 +141,7 @@ class CsrfToken
         global $lang;
 
         if ($this->sessionToken === false || $this->csrfToken === false || $this->sessionToken !== $this->csrfToken) {
-            error($lang['textnoaction'], false);
+            error("CSRF: " . $lang['textnoaction'], false);
         }
         // This old token has been used - prevent reuse
         $this->sessionToken = false;

@@ -1,69 +1,6 @@
 <?php
-/**
- * GaiaBB
- * Copyright (c) 2009-2020 The GaiaBB Project
- * https://github.com/vanderaj/gaiabb
- *
- * Based off UltimaBB
- * Copyright (c) 2004 - 2007 The UltimaBB Group
- * (defunct)
- *
- * Based off XMB
- * Copyright (c) 2001 - 2004 The XMB Development Team
- * https://forums.xmbforum2.com/
- *
- * This file is part of GaiaBB
- *
- *    GaiaBB is free software: you can redistribute it and/or modify
- *    it under the terms of the GNU General Public License as published by
- *    the Free Software Foundation, either version 3 of the License, or
- *    (at your option) any later version.
- *
- *    GaiaBB is distributed in the hope that it will be useful,
- *    but WITHOUT ANY WARRANTY; without even the implied warranty of
- *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *    GNU General Public License for more details.
- *
- *    You should have received a copy of the GNU General Public License
- *    along with GaiaBB.  If not, see <http://www.gnu.org/licenses/>.
- *
- **/
-// phpcs:disable PSR1.Files.SideEffects
+
 namespace GaiaBB;
-
-require_once 'mimetypes.inc.php';
-
-class PmDAO
-{
-
-    public function __construct()
-    {
-    }
-
-    public function insertPm($to, $from, $to_uid, $from_uid, $type, $owner, $folder, $subject, $message, $isRead, $isSent, $usepmsig)
-    {
-        global $db, $onlinetime;
-
-        $to = $db->escape($to, -1, true);
-        $from = $db->escape($from, -1, true);
-        $to_uid = $db->escape($to_uid);
-        $from_uid = $db->escape($from_uid);
-        $type = $db->escape($type);
-        $owner = $db->escape($owner, -1, true);
-        $folder = $db->escape($folder);
-        $subject = $db->escape($subject);
-        $message = $db->escape($message);
-        $isRead = $db->escape($isRead);
-        $isSent = $db->escape($isSent);
-        $usepmsig = $db->escape($usepmsig);
-
-        $result = $db->query("INSERT INTO " . X_PREFIX . "pm (pmid, msgto, msgfrom, msgto_uid, msgfrom_uid, type, owner, folder, subject, message, dateline, readstatus, sentstatus, usesig) VALUES ('', '$to', '$from', '$to_uid', '$from_uid', '$type', '$owner', '$folder', '$subject', '$message', '$onlinetime', '$isRead', '$isSent', '$usepmsig')");
-        if ($result == false) {
-            return false;
-        }
-        return $db->insertId();
-    }
-}
 
 class PmModel
 {
@@ -106,7 +43,7 @@ class PmModel
             if (empty($message) || empty($subject)) {
                 error($lang['pmempty'], false, '', '', 'pm.php', true, false, true);
             }
-            $pm_dao = new pmDAO();
+            $pm_dao = new GaiaBB\PmDao();
             $pm_dao->insertPm('', '', '', '', 'draft', $self['username'], 'Drafts', $subject, $message, 'yes', 'no', $usesig);
             message($lang['imsavedmsg'], false, '', '', 'pm.php?folder=Drafts', true, false, true);
         }
@@ -211,7 +148,7 @@ class PmModel
 
         $errors = '';
 
-        $pm_dao = new pmDao();
+        $pm_dao = new GaiaBB\PmDao();
 
         $msgto = $db->escape(checkInput($msgto), -1, true);
         $query = $db->query("SELECT username, uid, email, ignorepm, emailonpm, langfile, status FROM " . X_PREFIX . "members WHERE username = '$msgto'");
@@ -246,7 +183,7 @@ class PmModel
                 if ($rcpt['emailonpm'] == 'yes' && $rcpt['status'] != 'Banned') {
                     // Force a langswitch (1)
                     $langfile = langswitch('no', $thislangfile);
-                    include 'lang/' . $langfile . '.lang.php';
+                    require_once ROOT . 'lang/' . $langfile . '.lang.php';
 
                     $pmurl = $CONFIG['boardurl'] . 'pm.php';
 
@@ -270,7 +207,7 @@ class PmModel
 
                     // Force a revert langswitch (1)
                     $langfile = langswitch('yes', '');
-                    include 'lang/' . $langfile . '.lang.php';
+                    require_once ROOT . 'lang/' . $langfile . '.lang.php';
                 }
             } else {
                 $errors = '<br />' . $lang['pmblocked'];

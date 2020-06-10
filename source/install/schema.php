@@ -4,7 +4,7 @@
  * Copyright (c) 2009-2020 The GaiaBB Project
  * https://github.com/vanderaj/gaiabb
  *
- * Based off UltimaBB's installer (ajv)
+ * Forked from UltimaBB's installer (ajv)
  * Copyright (c) 2004 - 2007 The UltimaBB Group
  * (defunct)
  *
@@ -69,7 +69,7 @@ function schema_create_adminlogs($db, $tablepre)
     $db->query("CREATE TABLE `" . $tablepre . "adminlogs` (
     	`uid` int(7) NOT NULL DEFAULT '0',
     	`username` varchar(32) NOT NULL DEFAULT '',
-        `action` varchar(64) NOT NULL DEFAULT '',
+        `action` TEXT NOT NULL DEFAULT '',
         `fid` smallint(6) NOT NULL DEFAULT '0',
         `tid` int(10) NOT NULL DEFAULT '0',
         `date` int(10) NOT NULL DEFAULT '0',
@@ -938,7 +938,7 @@ function schema_insert_settings($db, $tablepre)
     $db->query("INSERT INTO `" . $tablepre . "settings` (`config_name`,`config_value`) VALUES ('reportpost','on')");
     $db->query("INSERT INTO `" . $tablepre . "settings` (`config_name`,`config_value`) VALUES ('resetsig','on')");
     $db->query("INSERT INTO `" . $tablepre . "settings` (`config_name`,`config_value`) VALUES ('rpg_status','yes')");
-    $db->query("INSERT INTO `" . $tablepre . "settings` (`config_name`,`config_value`) VALUES ('schemaver','41')");
+    $db->query("INSERT INTO `" . $tablepre . "settings` (`config_name`,`config_value`) VALUES ('schemaver','50')");
     $db->query("INSERT INTO `" . $tablepre . "settings` (`config_name`,`config_value`) VALUES ('searchstatus','on')");
     $db->query("INSERT INTO `" . $tablepre . "settings` (`config_name`,`config_value`) VALUES ('showsubs','on')");
     $db->query("INSERT INTO `" . $tablepre . "settings` (`config_name`,`config_value`) VALUES ('show_full_info','off')");
@@ -1664,7 +1664,10 @@ function insert_data($db, $tablepre, $prgbar, $start, $incr)
 
     $start += $incr;
     setBar($prgbar, $start);
-    $db->query("INSERT INTO `" . $tablepre . "forums` (`type`, `name`, `status`, `displayorder`, `private`, `description`, `fup`, `postperm`) VALUES ('group','DEFAULT Category','on',1,'' ,'',0,''), ('forum','DEFAULT Forum','on',1,'1','You can change this text in Admin CP -> Forums -> More Options.',1,'1|1|1')");
+    // Create default category
+    $db->query("INSERT INTO `" . $tablepre . "forums` (`type`, `name`, `status`, `displayorder`, `private`, `description`, `fup`, `postperm`) VALUES ('group','General','on',1,'' ,'',0,'')");
+    $db->query("INSERT INTO `" . $tablepre . "forums` (`type`, `name`, `status`, `displayorder`, `private`, `description`, `fup`, `postperm`) VALUES ('forum','General Chit Chat','on',1,'1','You can change this text in Admin CP -> Forums -> More Options.',1,'1|1|1')");
+    // Create default forum
 
     $start += $incr;
     setBar($prgbar, $start);

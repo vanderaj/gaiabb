@@ -4,11 +4,11 @@
  * Copyright (c) 2009-2020 The GaiaBB Project
  * https://github.com/vanderaj/gaiabb
  *
- * Based off UltimaBB
+ * Forked from UltimaBB
  * Copyright (c) 2004 - 2007 The UltimaBB Group
  * (defunct)
  *
- * Based off XMB
+ * Forked from XMB
  * Copyright (c) 2001 - 2004 The XMB Development Team
  * https://forums.xmbforum2.com/
  *
@@ -1001,7 +1001,7 @@ function setupLanguage()
     $lang['whosoneval2'] = '$lang["whosonmsg2"] = "There are currently $guestn, $robotn, $membern browsing $CONFIG[bbname]";';
     $lang['whosonline'] = "Who's Online";
     $lang['whosonline_on'] = "Display Who's Online On Index Status:";
-    $lang['whoview'] = "Who Can View This Forum?";
+    $lang['whoview'] = "Who can view this forum?";
     $lang['viewfavorites'] = "View All Favorites";
     $lang['textlatestsubs'] = "Latest five subscriptions with new replies";
     $lang['viewsubs'] = "View All Subscriptions";
@@ -1688,6 +1688,7 @@ function setupLanguage()
     $lang['nobbname'] = 'Please set a valid Forum Name before proceeding!';
     $lang['inactiveusers'] = 'Maximum number of days after which a new user has registered but has never logged in, will be deleted.<br /><span class="smalltxt">Set to 0 to disable.</span>';
     $lang['passwordsuccess'] = 'You have successfully updated your password. You will be logged out. Please login with your new password';
+    $lang['nosuchthemeid'] = 'No such theme.';
 }
 
 setupLanguage();

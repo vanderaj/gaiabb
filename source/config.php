@@ -4,11 +4,11 @@
  * Copyright (c) 2009-2020 The GaiaBB Project
  * https://github.com/vanderaj/gaiabb
  *
- * Based off UltimaBB
+ * Forked from UltimaBB
  * Copyright (c) 2004 - 2007 The UltimaBB Group
  * (defunct)
  *
- * Based off XMB
+ * Forked from XMB
  * Copyright (c) 2001 - 2004 The XMB Development Team
  * https://forums.xmbforum2.com/
  *
@@ -49,12 +49,3 @@ $sendgridAPIkey = '';
 // Each installation should choose a random password of at least 8 characters
 // If you change it, autologin will fail
 define('GAIABB_MASTERKEY', '');
-
-// set to true for debugging or development, false in production
-define('DEBUG', true);
-
-// 0 = completely off
-// 1 = normal, debug is enabled for X_SADMIN and above
-// 2 = more, debug is enabled for X_MEMBER and above (so no banned or guest debug messages)
-// 3 = all, debug is enabled for everyone (including banned and guests)
-define('DEBUGLEVEL', 1);

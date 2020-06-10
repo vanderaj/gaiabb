@@ -4,11 +4,11 @@
  * Copyright (c) 2009-2020 The GaiaBB Project
  * https://github.com/vanderaj/gaiabb
  *
- * Based off UltimaBB
+ * Forked from UltimaBB
  * Copyright (c) 2004 - 2007 The UltimaBB Group
  * (defunct)
  *
- * Based off XMB
+ * Forked from XMB
  * Copyright (c) 2001 - 2004 The XMB Development Team
  * https://forums.xmbforum2.com/
  *
@@ -32,7 +32,7 @@
 define('CACHECONTROL', 'private');
 
 require_once 'header.php';
-require_once 'class/forum.class.php';
+require_once ROOT . 'class/forum.class.php';
 
 loadtpl('functions_smilieinsert', 'functions_smilieinsert_smilie', 'functions_bbcodeinsert', 'functions_bbcode', 'post_attachmentbox', 'post_edit', 'post_captcha', 'register_captchajs', 'post_edit_attachment', 'post_loggedin', 'post_newpoll', 'post_newthread', 'post_notloggedin', 'post_preview', 'post_reply', 'post_reply_review_post', 'post_reply_review_toolong', 'post_attach_edit_JS', 'post_edit_attach_JS', 'post_edit_delete', 'post_delete_confirm', 'viewforum_password');
 
@@ -1355,7 +1355,7 @@ switch ($action) {
         }
         break;
     case 'captcha':
-        require_once 'captcha.class.php';
+        require_once ROOT . 'class/captcha.class.php';
         $captcha = new GaiaBB\Captcha();
         break;
     default:

@@ -4,11 +4,11 @@
  * Copyright (c) 2009-2020 The GaiaBB Project
  * https://github.com/vanderaj/gaiabb
  *
- * Based off UltimaBB
+ * Forked from UltimaBB
  * Copyright (c) 2004 - 2007 The UltimaBB Group
  * (defunct)
  *
- * Based off XMB
+ * Forked from XMB
  * Copyright (c) 2001 - 2004 The XMB Development Team
  * https://forums.xmbforum2.com/
  *
@@ -30,7 +30,7 @@
  **/
 // phpcs:disable PSR1.Files.SideEffects
 require_once 'header.php';
-require_once 'class/address.class.php';
+require_once ROOT . 'class/address.class.php';
 
 loadtpl(
     'addresslist_edit_address',

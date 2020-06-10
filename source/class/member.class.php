@@ -4,11 +4,11 @@
  * Copyright (c) 2009-2020 The GaiaBB Project
  * https://github.com/vanderaj/gaiabb
  *
- * Based off UltimaBB
+ * Forked from UltimaBB
  * Copyright (c) 2004 - 2007 The UltimaBB Group
  * (defunct)
  *
- * Based off XMB
+ * Forked from XMB
  * Copyright (c) 2001 - 2004 The XMB Development Team
  * https://forums.xmbforum2.com/
  *
@@ -32,20 +32,20 @@
 
 namespace GaiaBB;
 
-require_once 'attachments.class.php';
-require_once 'forum.class.php';
-require_once 'thread.class.php';
-require_once 'post.class.php';
-require_once 'favorite.class.php';
-require_once 'subscription.class.php';
-require_once 'pm.class.php';
+require_once ROOT . 'class/attachments.class.php';
+require_once ROOT . 'class/forum.class.php';
+require_once ROOT . 'class/thread.class.php';
+require_once ROOT . 'class/post.class.php';
+require_once ROOT . 'class/favorite.class.php';
+require_once ROOT . 'class/subscription.class.php';
+require_once ROOT . 'class/pm.class.php';
 
 /**
  * This object creates a nice wrapper for dealing with members.
  *
  * It can be used in several different ways:
  *
- * $member = new member(); // just create an object
+ * $member = new GaiaBB\Member(); // just create an object
  * $member->record['username'] = "fred";
  * $member->update();
  *
@@ -54,7 +54,7 @@ require_once 'pm.class.php';
  *
  * Finding an existing member, and work with their user record:
  *
- * $member = new member($uid); // loads $uid's user record
+ * $member = new GaiaBB\Member($uid); // loads $uid's user record
  * if ($member !== false)
  * {
  * $member->record['username'] = 'fred';
@@ -63,7 +63,7 @@ require_once 'pm.class.php';
  *
  * or
  *
- * $member = new member();
+ * $member = new GaiaBB\Member();
  * if ($member->findByName('example') !== false)
  * {
  * $member->record['customstatus'] = 'Example status';
@@ -75,7 +75,7 @@ require_once 'pm.class.php';
  *
  * Lastly, you don't need to do much to delete members:
  *
- * $member = new member();
+ * $member = new GaiaBB\Member();
  * $member->delete($uid); // delete UID directly
  *
  * Note: You do not need to unescape / escape data using this object. It does it for you.
@@ -357,19 +357,19 @@ class Member
         }
 
         // pm's and pm attachments
-        $pmObj = new pm();
+        $pmObj = new GaiaBB\Pm();
         $pmObj->deleteByUid($this->uid);
 
         // subscriptions
-        $subObj = new subscription();
+        $subObj = new GaiaBB\Subscription();
         $subObj->deleteByUid($this->uid);
 
         // favorites
-        $favObj = new favorite();
+        $favObj = new GaiaBB\Favorite();
         $favObj->deleteByUid($this->uid);
 
         // addresses
-        $addObj = new address();
+        $addObj = new GaiaBB\Address();
         $addObj->deleteByUid($this->uid);
 
         $this->deletePosts($uid);
@@ -400,18 +400,18 @@ class Member
         $this->update();
 
         // Find orphaned attachments and delete them
-        $attachObj = new Attachment();
+        $attachObj = new GaiaBB\Attachment();
         $count = $count2 = 0;
         $attachObj->fixOrphans($count, $count2);
 
         // Fix up threads, so that threads with an now missing first post are re-homed to what used to be the second post
-        $threadObj = new thread();
+        $threadObj = new GaiaBB\thread();
         $threadObj->fixFirstPost();
         // Fix up threads, so that lastpost is correct
         $threadObj->fixLastPost();
 
         // Fix up forums, so that lastpost and thread and post count is correct
-        $forumObj = new forum();
+        $forumObj = new GaiaBB\forum();
         $forumObj->fixThreadPostCount();
         $forumObj->fixLastPost();
     }
@@ -508,14 +508,14 @@ class Member
      *
      * or
      *
-     * $member = new member();
+     * $member = new GaiaBB\Member();
      * if ($member->delete($uid)) ...
      *
      * Both work identically in one query, but the first one is faster as
      * init() is not called
      *
      * Or if you don't care about performance ... take two queries!
-     * $member = new member();
+     * $member = new GaiaBB\Member();
      * $member->findByName('example');
      * $member->delete();
      *

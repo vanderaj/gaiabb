@@ -4,11 +4,11 @@
  * Copyright (c) 2009-2020 The GaiaBB Project
  * https://github.com/vanderaj/gaiabb
  *
- * Based off UltimaBB
+ * Forked from UltimaBB
  * Copyright (c) 2004 - 2007 The UltimaBB Group
  * (defunct)
  *
- * Based off XMB
+ * Forked from XMB
  * Copyright (c) 2001 - 2004 The XMB Development Team
  * https://forums.xmbforum2.com/
  *
@@ -35,19 +35,20 @@ use GaiaBB\SendGridMail;
 use GaiaBB\SmtpMail;
 
 // Production PHP error level, suppresses all warnings
-error_reporting(0);
-ini_set('display_errors', false);
+error_reporting(E_ALL);
+ini_set('display_errors', true);
+// error_reporting(0);
+// ini_set('display_errors', false);
+
+ini_set("log_errors", 1);
+ini_set("error_log", "/tmp/php-error.log");
 
 session_start();
 
 define('IN_PROGRAM', true);
 
-if (!defined(ROOT)) {
+if (!defined('ROOT')) {
     define('ROOT', './');
-}
-
-if (!defined('ROOTCLASS')) {
-    define('ROOTCLASS', './class/');
 }
 
 $smiliecache = array();
@@ -60,12 +61,12 @@ $starttime = $mtime[1] + $mtime[0];
 $onlinetime = time();
 
 // Include files used by all users of header.php
-include 'include/constants.inc.php';
-include 'include/validate.inc.php';
-include 'include/functions.inc.php';
-include 'class/authc.class.php';
-include 'class/cache.class.php';
-include 'class/csrf.class.php';
+require_once ROOT . 'include/constants.inc.php';
+require_once ROOT . 'include/validate.inc.php';
+require_once ROOT . 'include/functions.inc.php';
+require_once ROOT . 'class/authc.class.php';
+require_once ROOT . 'class/cache.class.php';
+require_once ROOT . 'class/csrf.class.php';
 
 // GZIP compression requires action to be set ... or it will not work
 
@@ -92,15 +93,15 @@ if (X_GZIP && $action != 'attachment') {
     }
 }
 
-if (!file_exists('config.php')) {
+if (!file_exists(ROOT . 'config.php')) {
     die('Error: Could not load configuration. Please try again.');
 }
 
-if (file_exists('install/')) {
+if (file_exists(ROOT . 'install/')) {
     die('Error: installer still available. Cannot proceed until it is deleted.');
 }
 
-include 'config.php';
+require_once ROOT . 'config.php';
 
 if (defined('DEBUG') && DEBUG == true) {
     error_reporting(E_ALL | E_STRICT);
@@ -147,10 +148,9 @@ if (isset($_SERVER['REQUEST_URI'])) {
     $url = $_SERVER['REQUEST_URI'];
 }
 
-include 'db/mariadb.class.php';
+require_once ROOT . 'db/mariadb.class.php';
 
 $oToken = new GaiaBB\CsrfToken();
-$oToken->init();
 
 $contactLink = 'contact.php';
 
@@ -194,7 +194,7 @@ if (isset($_SERVER['REMOTE_ADDR'])) {
     $onlineip = $_SERVER['REMOTE_ADDR'];
 
     // hack for IpV6
-    if (strpos($onlineip, ':') == true) {
+    if (strpos($onlineip, ':') !== false) {
         // IPv6 found
         $onlineip = '127.0.0.1'; // any local addresses are IPv6 sourced
     }
@@ -289,17 +289,17 @@ if ($CONFIG === false) {
     $config_cache->setData('settings', $CONFIG);
 }
 
-require_once __DIR__ . './classes/mail.class.php';
+require_once ROOT . 'class/mail.class.php';
 
 if ($CONFIG['smtp_status']) {
-    require_once __DIR__ . './classes/mail.smtp.class.php';
-    $mailSystem = new SmtpMail();
-} elseif ($sendgridAPIkey) {
-    require_once __DIR__ . './classes/mail.sendgrid.class.php';
-    $mailSystem = new SendGridMail();
+    require_once ROOT . 'class/mail.smtp.class.php';
+    $mailSystem = new GaiaBB\SmtpMail();
+} elseif (!empty($sendgridAPIkey)) {
+    require_once ROOT . 'class/mail.sendgrid.class.php';
+    $mailSystem = new GaiaBB\SendGridMail();
 } else {
-    require_once __DIR__ . './classes/mail.php.class.php';
-    $mailSystem = new PhpMail();
+    require_once ROOT . 'class/mail.php.class.php';
+    $mailSystem = new GaiaBB\PhpMail();
 }
 
 // Get the moderators and cache them for later use
@@ -434,8 +434,8 @@ define('X_SMOD', $role['smod']);
 define('X_STAFF', $role['staff']);
 
 // Get the required language file
-if (!file_exists('lang/' . $self['langfile'] . '.lang.php')) {
-    if (!file_exists('lang/English.lang.php')) {
+if (!file_exists(ROOT . 'lang/' . $self['langfile'] . '.lang.php')) {
+    if (!file_exists(ROOT . 'lang/English.lang.php')) {
         die('Error: no languages available.');
     }
     $self['langfile'] = 'English';
@@ -447,7 +447,7 @@ $lang_dir = 'ltr';
 $lang_align = 'left';
 $lang_nalign = 'right';
 $charset = 'ISO-8859-1';
-include 'lang/' . $self['langfile'] . '.lang.php';
+require_once ROOT . 'lang/' . $self['langfile'] . '.lang.php';
 header('Content-Type: text/html; charset=' . $charset);
 header('Content-Language: ' . $lang_code);
 
@@ -459,7 +459,7 @@ if ($CONFIG['regstatus'] == 'on' && X_GUEST) {
 
 // Creates login/logout links
 if (X_MEMBER) {
-    $loginout = '<a href="' . 'logout.php?token=' . $oToken->createToken() . '">' . $lang['textlogout'] . '</a>';
+    $loginout = '<a href="' . 'logout.php?csrf_token=' . $oToken->createToken() . '">' . $lang['textlogout'] . '</a>';
     $usercp = '<a href="' . 'usercp.php">' . $lang['textusercp'] . '</a>';
     $onlineuser = $self['username'];
     $robotname = $cplink = $pmlink = $modcplink = '';

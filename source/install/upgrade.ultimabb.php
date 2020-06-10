@@ -4,7 +4,7 @@
  * Copyright (c) 2009-2020 The GaiaBB Project
  * https://github.com/vanderaj/gaiabb
  *
- * Based off UltimaBB's installer (ajv)
+ * Forked from UltimaBB's installer (ajv)
  * Copyright (c) 2004 - 2007 The UltimaBB Group
  * (defunct)
  *
@@ -174,11 +174,263 @@ class UpgradeUltimaBB extends Upgrade
                 $this->prgbar += 0.05;
                 break;
 
+            case 41:
+                $query = "ALTER TABLE `" . X_PREFIX . "adminlogs` MODIFY action TEXT NOT NULL ";
+                $this->db->query($query);
+
+                $query = "ALTER TABLE `" . X_PREFIX . "faq` MODIFY name TEXT NOT NULL DEFAULT '' ";
+                $this->db->query($query);
+
+                $query = "ALTER TABLE `" . X_PREFIX . "faq` MODIFY description TEXT NOT NULL DEFAULT '' ";
+                $this->db->query($query);
+
+                $query = "ALTER TABLE `" . X_PREFIX . "forums` MODIFY userlist TEXT NOT NULL DEFAULT '' ";
+                $this->db->query($query);
+
+                $query = "ALTER TABLE `" . X_PREFIX . "forums` MODIFY mt_open TEXT NOT NULL DEFAULT '' ";
+                $this->db->query($query);
+
+                $query = "ALTER TABLE `" . X_PREFIX . "forums` MODIFY mt_close TEXT NOT NULL DEFAULT '' ";
+                $this->db->query($query);
+
+                $query = "ALTER TABLE `" . X_PREFIX . "forums` MODIFY subjectprefixes TEXT NOT NULL DEFAULT '' ";
+                $this->db->query($query);
+
+                $query = "ALTER TABLE `" . X_PREFIX . "members` MODIFY sig TEXT NOT NULL DEFAULT '' ";
+                $this->db->query($query);
+
+                $query = "ALTER TABLE `" . X_PREFIX . "members` MODIFY pmfolders TEXT NOT NULL DEFAULT '' ";
+                $this->db->query($query);
+
+                $query = "ALTER TABLE `" . X_PREFIX . "members` MODIFY notepad TEXT NOT NULL DEFAULT '' ";
+                $this->db->query($query);
+
+                $query = "ALTER TABLE `" . X_PREFIX . "plugins` MODIFY name TEXT NOT NULL DEFAULT '' ";
+                $this->db->query($query);
+
+                $query = "ALTER TABLE `" . X_PREFIX . "plugins` MODIFY url TEXT NOT NULL DEFAULT '' ";
+                $this->db->query($query);
+
+                $query = "ALTER TABLE `" . X_PREFIX . "plugins` MODIFY img TEXT NOT NULL DEFAULT '' ";
+                $this->db->query($query);
+
+                $query = "ALTER TABLE `" . X_PREFIX . "pm` MODIFY subject TINYTEXT NOT NULL DEFAULT '' ";
+                $this->db->query($query);
+
+                $query = "ALTER TABLE `" . X_PREFIX . "pm` MODIFY message TEXT NOT NULL DEFAULT '' ";
+                $this->db->query($query);
+
+                $query = "ALTER TABLE `" . X_PREFIX . "posts` MODIFY subject TINYTEXT NOT NULL DEFAULT '' ";
+                $this->db->query($query);
+
+                $query = "ALTER TABLE `" . X_PREFIX . "posts` MODIFY message TEXT NOT NULL DEFAULT '' ";
+                $this->db->query($query);
+
+                setBar($this->prgbar, $this->prgbar);
+                $this->prgbar += 0.05;
+
+                // Indexes
+
+                // Some index schemas may not be well constructed, so we're going to rebuild it
+                if ($this->indexExists(X_PREFIX . 'members', 'threadnum')) {
+                    $query = "ALTER TABLE `" . X_PREFIX . "members` DROP INDEX threadnum ";
+                    $this->db->query($query);
+                }
+
+                if ($this->indexExists(X_PREFIX . 'members', 'invisible')) {
+                    $query = "ALTER TABLE `" . X_PREFIX . "members` DROP INDEX invisible_idx ";
+                    $this->db->query($query);
+                }
+
+                if ($this->indexExists(X_PREFIX . 'members', 'invisible_idx')) {
+                    $query = "ALTER TABLE `" . X_PREFIX . "members` DROP INDEX invisible_idx ";
+                    $this->db->query($query);
+                }
+
+                $query = "ALTER TABLE `" . X_PREFIX . "settings` DROP PRIMARY KEY ";
+                $this->db->query($query);
+
+                if ($this->indexExists(X_PREFIX . 'whosonline', 'username')) {
+                    $query = "ALTER TABLE `" . X_PREFIX . "members` DROP INDEX username ";
+                    $this->db->query($query);
+                }
+
+                if ($this->indexExists(X_PREFIX . 'whosonline', 'username_idx')) {
+                    $query = "ALTER TABLE `" . X_PREFIX . "members` DROP INDEX username_idx ";
+                    $this->db->query($query);
+                }
+
+                $query = "ALTER TABLE `" . X_PREFIX . "members` ADD INDEX threadnum (`threadnum`) ";
+                $this->db->query($query);
+
+                $query = "ALTER TABLE `" . X_PREFIX . "members` ADD INDEX invisible (`invisible`) ";
+                $this->db->query($query);
+
+                $query = "ALTER TABLE `" . X_PREFIX . "settings` CREATE PRIMARY KEY (`config_name`)";
+                $this->db->query($query);
+
+                $query = "ALTER TABLE `" . X_PREFIX . "whosonline` ADD INDEX username (`username`(8))";
+                $this->db->query($query);
+
+                setBar($this->prgbar, $this->prgbar);
+                $this->prgbar += 0.05;
+
+                // Change character sets to a modern alternative
+                $query = "ALTER TABLE `" . X_PREFIX . "addresses` CONVERT TO CHARACTER SET utf8mb4";
+                $this->db->query($query);
+                setBar($this->prgbar, $this->prgbar);
+                $this->prgbar += 0.05;
+
+                $query = "ALTER TABLE `" . X_PREFIX . "attachments` CONVERT TO CHARACTER SET utf8mb4";
+                $this->db->query($query);
+                setBar($this->prgbar, $this->prgbar);
+                $this->prgbar += 0.05;
+
+                $query = "ALTER TABLE `" . X_PREFIX . "banned` CONVERT TO CHARACTER SET utf8mb4";
+                $this->db->query($query);
+                setBar($this->prgbar, $this->prgbar);
+                $this->prgbar += 0.05;
+
+                $query = "ALTER TABLE `" . X_PREFIX . "dateformats` CONVERT TO CHARACTER SET utf8mb4";
+                $this->db->query($query);
+                setBar($this->prgbar, $this->prgbar);
+                $this->prgbar += 0.05;
+
+                $query = "ALTER TABLE `" . X_PREFIX . "faq` CONVERT TO CHARACTER SET utf8mb4";
+                $this->db->query($query);
+                setBar($this->prgbar, $this->prgbar);
+                $this->prgbar += 0.05;
+
+                $query = "ALTER TABLE `" . X_PREFIX . "favorites` CONVERT TO CHARACTER SET utf8mb4";
+                $this->db->query($query);
+                setBar($this->prgbar, $this->prgbar);
+                $this->prgbar += 0.05;
+
+                $query = "ALTER TABLE `" . X_PREFIX . "forums` CONVERT TO CHARACTER SET utf8mb4";
+                $this->db->query($query);
+                setBar($this->prgbar, $this->prgbar);
+                $this->prgbar += 0.05;
+
+                $query = "ALTER TABLE `" . X_PREFIX . "guestcount` CONVERT TO CHARACTER SET utf8mb4";
+                $this->db->query($query);
+                setBar($this->prgbar, $this->prgbar);
+                $this->prgbar += 0.05;
+
+                $query = "ALTER TABLE `" . X_PREFIX . "lastposts` CONVERT TO CHARACTER SET utf8mb4";
+                $this->db->query($query);
+                setBar($this->prgbar, $this->prgbar);
+                $this->prgbar += 0.05;
+
+                $query = "ALTER TABLE `" . X_PREFIX . "members` CONVERT TO CHARACTER SET utf8mb4";
+                $this->db->query($query);
+                setBar($this->prgbar, $this->prgbar);
+                $this->prgbar += 0.05;
+
+                $query = "ALTER TABLE `" . X_PREFIX . "modlogs` CONVERT TO CHARACTER SET utf8mb4";
+                $this->db->query($query);
+                setBar($this->prgbar, $this->prgbar);
+                $this->prgbar += 0.05;
+
+                $query = "ALTER TABLE `" . X_PREFIX . "pluglinks` CONVERT TO CHARACTER SET utf8mb4";
+                $this->db->query($query);
+                setBar($this->prgbar, $this->prgbar);
+                $this->prgbar += 0.05;
+
+                $query = "ALTER TABLE `" . X_PREFIX . "pm` CONVERT TO CHARACTER SET utf8mb4";
+                $this->db->query($query);
+                setBar($this->prgbar, $this->prgbar);
+                $this->prgbar += 0.05;
+                $query = "ALTER TABLE `" . X_PREFIX . "pm_attachments` CONVERT TO CHARACTER SET utf8mb4";
+                $this->db->query($query);
+                setBar($this->prgbar, $this->prgbar);
+                $this->prgbar += 0.05;
+
+                $query = "ALTER TABLE `" . X_PREFIX . "posts` CONVERT TO CHARACTER SET utf8mb4";
+                $this->db->query($query);
+                setBar($this->prgbar, $this->prgbar);
+                $this->prgbar += 0.05;
+
+                $query = "ALTER TABLE `" . X_PREFIX . "ranks` CONVERT TO CHARACTER SET utf8mb4";
+                $this->db->query($query);
+                setBar($this->prgbar, $this->prgbar);
+                $this->prgbar += 0.05;
+
+                $query = "ALTER TABLE `" . X_PREFIX . "restricted` CONVERT TO CHARACTER SET utf8mb4";
+                $this->db->query($query);
+                setBar($this->prgbar, $this->prgbar);
+                $this->prgbar += 0.05;
+
+                $query = "ALTER TABLE `" . X_PREFIX . "robotcount` CONVERT TO CHARACTER SET utf8mb4";
+                $this->db->query($query);
+                setBar($this->prgbar, $this->prgbar);
+                $this->prgbar += 0.05;
+
+                $query = "ALTER TABLE `" . X_PREFIX . "robots` CONVERT TO CHARACTER SET utf8mb4";
+                $this->db->query($query);
+                setBar($this->prgbar, $this->prgbar);
+                $this->prgbar += 0.05;
+
+                $query = "ALTER TABLE `" . X_PREFIX . "settings` CONVERT TO CHARACTER SET utf8mb4";
+                $this->db->query($query);
+                setBar($this->prgbar, $this->prgbar);
+                $this->prgbar += 0.05;
+
+                $query = "ALTER TABLE `" . X_PREFIX . "smilies` CONVERT TO CHARACTER SET utf8mb4";
+                $this->db->query($query);
+                setBar($this->prgbar, $this->prgbar);
+                $this->prgbar += 0.05;
+
+                $query = "ALTER TABLE `" . X_PREFIX . "subscriptions` CONVERT TO CHARACTER SET utf8mb4";
+                $this->db->query($query);
+                setBar($this->prgbar, $this->prgbar);
+                $this->prgbar += 0.05;
+
+                $query = "ALTER TABLE `" . X_PREFIX . "templates` CONVERT TO CHARACTER SET utf8mb4";
+                $this->db->query($query);
+                setBar($this->prgbar, $this->prgbar);
+                $this->prgbar += 0.05;
+
+                $query = "ALTER TABLE `" . X_PREFIX . "themes` CONVERT TO CHARACTER SET utf8mb4";
+                $this->db->query($query);
+                setBar($this->prgbar, $this->prgbar);
+                $this->prgbar += 0.05;
+                
+                $query = "ALTER TABLE `" . X_PREFIX . "threads` CONVERT TO CHARACTER SET utf8mb4";
+                $this->db->query($query);
+                setBar($this->prgbar, $this->prgbar);
+                $this->prgbar += 0.05;
+
+                $query = "ALTER TABLE `" . X_PREFIX . "vote_desc` CONVERT TO CHARACTER SET utf8mb4";
+                $this->db->query($query);
+                setBar($this->prgbar, $this->prgbar);
+                $this->prgbar += 0.05;
+
+                $query = "ALTER TABLE `" . X_PREFIX . "vote_results` CONVERT TO CHARACTER SET utf8mb4";
+                $this->db->query($query);
+                setBar($this->prgbar, $this->prgbar);
+                $this->prgbar += 0.05;
+
+                $query = "ALTER TABLE `" . X_PREFIX . "vote_voters` CONVERT TO CHARACTER SET utf8mb4";
+                $this->db->query($query);
+                setBar($this->prgbar, $this->prgbar);
+                $this->prgbar += 0.05;
+                
+                $query = "ALTER TABLE `" . X_PREFIX . "whosonline` CONVERT TO CHARACTER SET utf8mb4";
+                $this->db->query($query);
+                setBar($this->prgbar, $this->prgbar);
+                $this->prgbar += 0.05;
+
+                $query = "ALTER TABLE `" . X_PREFIX . "words` CONVERT TO CHARACTER SET utf8mb4";
+                $this->db->query($query);
+                setBar($this->prgbar, $this->prgbar);
+                $this->prgbar += 0.05;
+                break;
+
             default:
                 break;
         }
 
-        $query = "UPDATE `" . X_PREFIX . "settings` SET schemaver='36'";
+        $query = "UPDATE `" . X_PREFIX . "settings` SET schemaver='50'";
         $this->db->query($query);
 
         setBar($this->prgbar, $this->prgbar);

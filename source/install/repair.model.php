@@ -4,7 +4,7 @@
  * Copyright (c) 2009-2020 The GaiaBB Project
  * https://github.com/vanderaj/gaiabb
  *
- * Based off UltimaBB's installer (ajv)
+ * Forked from UltimaBB's installer (ajv)
  * Copyright (c) 2004 - 2007 The UltimaBB Group
  * (defunct)
  *
@@ -73,7 +73,7 @@ function repair_forum($path, $prgbar)
 
     setBar($prgbar, 0.05);
 
-    if ($_SESSION['config'] == 'on' && file_exists('./emergency.php') && formVar('confMethod') !== 'skip') {
+    if ($_SESSION['config'] == 'on' && file_exists(ROOT .'install/emergency.php') && formVar('confMethod') !== 'skip') {
         process_config($path);
     }
 
@@ -157,7 +157,7 @@ function repair_forum($path, $prgbar)
 
     setBar($prgbar, 0.5);
 
-    if ($_SESSION['createsa'] == 'on' && file_exists('./emergency.php')) {
+    if ($_SESSION['createsa'] == 'on' && file_exists(ROOT . 'install/emergency.php')) {
         $warn = createsa($db, $tablepre);
         if ($warn) {
             setCol($prgbar, '#ffff00');
@@ -185,7 +185,7 @@ function repair_forum($path, $prgbar)
 
     setBar($prgbar, 0.7);
 
-    if ($_SESSION['disablesa'] == 'on' && file_exists('./emergency.php')) {
+    if ($_SESSION['disablesa'] == 'on' && file_exists(ROOT . 'install/emergency.php')) {
         disablesa($db, $tablepre);
     }
 

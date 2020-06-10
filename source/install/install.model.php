@@ -4,7 +4,7 @@
  * Copyright (c) 2009-2020 The GaiaBB Project
  * https://github.com/vanderaj/gaiabb
  *
- * Based off UltimaBB's installer (ajv)
+ * Forked from UltimaBB's installer (ajv)
  * Copyright (c) 2004 - 2007 The UltimaBB Group
  * (defunct)
  *

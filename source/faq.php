@@ -4,11 +4,11 @@
  * Copyright (c) 2009-2020 The GaiaBB Project
  * https://github.com/vanderaj/gaiabb
  *
- * Based off UltimaBB
+ * Forked from UltimaBB
  * Copyright (c) 2004 - 2007 The UltimaBB Group
  * (defunct)
  *
- * Based off XMB
+ * Forked from XMB
  * Copyright (c) 2001 - 2004 The XMB Development Team
  * https://forums.xmbforum2.com/
  *
@@ -32,7 +32,7 @@
 define('CACHECONTROL', 'public');
 
 require_once 'header.php';
-require_once 'class/csrf.class.php';
+require_once ROOT . 'class/csrf.class.php';
 
 loadtpl('error_nologinsession');
 
@@ -136,7 +136,7 @@ switch ($page) {
 
         $faq .= '
         <form method="post" action="faq.php?page=agreerules">
-        <input type="hidden" name="token" value="$oToken->createToken()" />
+        <input type="hidden" name="csrf_token" value="$oToken->createToken()" />
         <table cellspacing="0px" cellpadding="0px" border="0px" width="' . $THEME['tablewidth'] . '" align="center">
         <tr>
         <td bgcolor="' . $THEME['bordercolor'] . '"><table border="0px" cellspacing="' . $THEME['borderwidth'] . '" cellpadding="' . $THEME['tablespace'] . '" width="100%">
@@ -158,7 +158,7 @@ switch ($page) {
     case 'agreerules':
         $faq .= '
         <form method="post" action="faq.php?page=agreerules">
-        <input type="hidden" name="token" value="$oToken->createToken()" />
+        <input type="hidden" name="csrf_token" value="$oToken->createToken()" />
         <table cellspacing="0px" cellpadding="0px" border="0px" width="' . $THEME['tablewidth'] . '" align="center">
         <tr>
         <td bgcolor="' . $THEME['bordercolor'] . '"><table border="0px" cellspacing="' . $THEME['borderwidth'] . '" cellpadding="' . $THEME['tablespace'] . '" width="100%">

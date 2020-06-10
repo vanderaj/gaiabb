@@ -4,11 +4,11 @@
  * Copyright (c) 2009-2020 The GaiaBB Project
  * https://github.com/vanderaj/gaiabb
  *
- * Based off UltimaBB
+ * Forked from UltimaBB
  * Copyright (c) 2004 - 2007 The UltimaBB Group
  * (defunct)
  *
- * Based off XMB
+ * Forked from XMB
  * Copyright (c) 2001 - 2004 The XMB Development Team
  * https://forums.xmbforum2.com/
  *
@@ -32,7 +32,12 @@
 
 namespace GaiaBB;
 
-require_once 'member.class.php';
+require_once ROOT . 'class/member.class.php';
+require_once ROOT . 'class/favorite.class.php';
+require_once ROOT . 'class/subscription.class.php';
+
+use Member;
+
 class UserObj
 {
     public function __construct()
@@ -74,7 +79,7 @@ class UserObj
         }
 
         // Grab the current member's uid, and use it to populate some fields
-        $member = new member($self['uid']);
+        $member = new Member($self['uid']);
 
         // Check that we populated the object correctly
         if ($member->record['uid'] !== $self['uid']) {
@@ -280,7 +285,7 @@ class UserObj
         }
 
         // Grab the current member's uid, and use it to populate some fields
-        $member = new member($self['uid']);
+        $member = new Member($self['uid']);
 
         // Check that we populated the object correctly
         if ($member->record['uid'] !== $self['uid']) {
@@ -352,7 +357,7 @@ class UserObj
         }
 
         // Grab the current member's uid, and use it to populate some fields
-        $member = new member($self['uid']);
+        $member = new Member($self['uid']);
 
         // Check that we populated the object correctly
         if ($member->record['uid'] !== $self['uid']) {
@@ -489,7 +494,7 @@ class UserObj
         }
 
         // Grab the current member's uid, and use it to populate some fields
-        $member = new member($self['uid']);
+        $member = new Member($self['uid']);
 
         // Check that we populated the object correctly
         if ($member->record['uid'] !== $self['uid']) {
@@ -655,7 +660,7 @@ class UserObj
         }
 
         // Grab the current member's uid, and use it to populate some fields
-        $member = new member($self['uid']);
+        $member = new Member($self['uid']);
 
         // Check that we populated the object correctly
         if ($member->record['uid'] !== $self['uid'] || empty($member->record['username'])) {
@@ -791,7 +796,7 @@ class UserObj
         }
 
         // Grab the current member's uid, and use it to populate some fields
-        $member = new member($self['uid']);
+        $member = new Member($self['uid']);
 
         // Check that we populated the object correctly
         if ($member->record['uid'] !== $self['uid']) {
@@ -898,7 +903,7 @@ class UserObj
         }
 
         // Grab the current member's uid, and use it to populate some fields
-        $member = new member($self['uid']);
+        $member = new Member($self['uid']);
 
         // Check that we populated the object correctly
         if ($member->record['uid'] !== $self['uid']) {
@@ -1224,7 +1229,7 @@ class UserObj
         }
 
         // Grab the current member's uid, and use it to populate some fields
-        $member = new member($self['uid']);
+        $member = new Member($self['uid']);
 
         // Check that we populated the object correctly
         if ($member->record['uid'] !== $self['uid']) {
@@ -1254,7 +1259,7 @@ class UserObj
             error($lang['fnasorry'], false);
         }
 
-        $favObj = new favorite();
+        $favObj = new GaiaBB\Favorite();
         if ($favObj->exists($tid)) {
             error($lang['favonlistmsg'], false);
         }
@@ -1324,7 +1329,7 @@ class UserObj
     {
         global $lang, $THEME, $menu, $shadow2, $CONFIG;
 
-        $favObj = new favorite();
+        $favObj = new GaiaBB\Favorite();
         $favObj->deleteByFormTids();
 
         $output = table_msg($lang['favsdeletedmsg']);
@@ -1391,7 +1396,7 @@ class UserObj
             error($lang['fnasorry'], false);
         }
 
-        $subObj = new subscription();
+        $subObj = new GaiaBB\Subscription();
         if ($subObj->exists($tid)) {
             error($lang['subonlistmsg'], false);
         }
@@ -1409,7 +1414,7 @@ class UserObj
     {
         global $lang, $THEME, $menu, $shadow2, $CONFIG;
 
-        $subObj = new subscription();
+        $subObj = new GaiaBB\Subscription();
         $subObj->deleteByFormTids();
 
         $output = table_msg($lang['subsdeletedmsg']);

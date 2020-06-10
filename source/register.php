@@ -4,11 +4,11 @@
  * Copyright (c) 2009-2020 The GaiaBB Project
  * https://github.com/vanderaj/gaiabb
  *
- * Based off UltimaBB
+ * Forked from UltimaBB
  * Copyright (c) 2004 - 2007 The UltimaBB Group
  * (defunct)
  *
- * Based off XMB
+ * Forked from XMB
  * Copyright (c) 2001 - 2004 The XMB Development Team
  * https://forums.xmbforum2.com/
  *
@@ -32,7 +32,7 @@
 define('CACHECONTROL', 'nocache');
 
 require_once 'header.php';
-require_once 'class/member.class.php';
+require_once ROOT . 'class/member.class.php';
 
 loadtpl('register', 'register_coppa', 'register_password', 'register_rules', 'register_captcha', 'register_captchajs');
 
@@ -513,7 +513,7 @@ if ($db->result($query, 0) > $CONFIG['max_reg_day']) {
 
 switch ($action) {
     case 'captcha':
-        require_once 'class/captcha.class.php';
+        require_once ROOT . 'class/captcha.class.php';
         $captcha = new GaiaBB\Captcha();
         nav($lang['textregister']);
         btitle($lang['textregister']);

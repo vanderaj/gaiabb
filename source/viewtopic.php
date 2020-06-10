@@ -4,11 +4,11 @@
  * Copyright (c) 2009-2020 The GaiaBB Project
  * https://github.com/vanderaj/gaiabb
  *
- * Based off UltimaBB
+ * Forked from UltimaBB
  * Copyright (c) 2004 - 2007 The UltimaBB Group
  * (defunct)
  *
- * Based off XMB
+ * Forked from XMB
  * Copyright (c) 2001 - 2004 The XMB Development Team
  * https://forums.xmbforum2.com/
  *
@@ -34,9 +34,9 @@ if (isset($GET['action']) && $_GET['action'] == 'attachment') {
 }
 
 require_once 'header.php';
-require_once 'class/attachments.class.php';
-require_once 'class/thread.class.php';
-require_once 'include/theme.inc.php';
+require_once ROOT . 'class/attachments.class.php';
+require_once ROOT . 'class/thread.class.php';
+require_once ROOT . 'include/theme.inc.php';
 
 validatePpp();
 

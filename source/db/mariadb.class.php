@@ -4,11 +4,11 @@
  * Copyright (c) 2009-2020 The GaiaBB Project
  * https://github.com/vanderaj/gaiabb
  *
- * Based off UltimaBB
+ * Forked from UltimaBB
  * Copyright (c) 2004 - 2007 The UltimaBB Group
  * (defunct)
  *
- * Based off XMB
+ * Forked from XMB
  * Copyright (c) 2001 - 2004 The XMB Development Team
  * https://forums.xmbforum2.com/
  *
@@ -36,25 +36,15 @@ class MariaDB
 {
 
     public $querynum = 0;
-
     public $querylist = array();
-
     public $querytimes = array();
-
     public $duration = 0;
-
-    private $conn = null; // Maintains the connection object
-
-    private $result = null; // Maintains the result object, if it exists
-
+    private $conn;                  // Maintains the connection object
+    private $result;                // Maintains the result object, if it exists
     private $db = '';
-
     private $timer = 0;
-
     private $queryStr = '';
-
-    private $force = false; // Used to force connections. When you want to panic, set to true, otherwise
-    // it will soft error
+    private $force = false;         // Used to force connections. When you want to panic, set to true, otherwise don't
     private $tablepre = '';
 
     /**
@@ -236,7 +226,7 @@ class MariaDB
     {
         try {
             $this->db = $database;
-            if ($this->conn->selectDb($this->db) === false) {
+            if ($this->conn->select_db($this->db) === false) {
                 throw new \Exception("Could not locate the database. Please check the configuration.");
             }
 
@@ -322,9 +312,9 @@ class MariaDB
     public function fetchArray($query, $type = MYSQLI_ASSOC)
     {
         if ($query !== null || $query !== false) {
-            return $query->fetchArray($type);
+            return $query->fetch_array($type);
         } elseif ($this->result != null && $this->result !== true && $this->result !== false) {
-            return $this->result->fetchArray($type);
+            return $this->result->fetch_array($type);
         }
 
         return false;
@@ -485,7 +475,7 @@ class MariaDB
         if ($field == null) {
             $field = 0;
         }
-        $tmp = $result->fetchArray();
+        $tmp = $result->fetch_array();
 
         // In MySQL 4, result() returned false, so we do too.
         if ($tmp == null) {
@@ -506,9 +496,9 @@ class MariaDB
     public function numRows($result)
     {
         if ($result) {
-            return $result->numRows;
+            return $result->num_rows;
         } elseif ($this->result) {
-            return $this->result->numRows;
+            return $this->result->num_rows;
         }
         return false;
     }
@@ -571,9 +561,9 @@ class MariaDB
     public function fetchRow($result)
     {
         if ($result) {
-            return $result->fetchRow();
+            return $result->fetch_row();
         } elseif ($this->result) {
-            return $this->result->fetchRow();
+            return $this->result->fetch_row();
         }
         return false;
     }
@@ -652,11 +642,11 @@ class MariaDB
                 throw new \Exception("No database tables can be found in the database.");
             }
 
-            while (($table = $result->fetchArray()) != false) {
+            while (($table = $result->fetch_array()) != false) {
                 $tables[] = $table[0];
             }
 
-            $result->freeResult();
+            $result->free_result();
         } catch (\Exception $error) {
             if ($this->force) {
                 $this->panic("List tables", $error);

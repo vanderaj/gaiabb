@@ -4,7 +4,7 @@
  * Copyright (c) 2009-2020 The GaiaBB Project
  * https://github.com/vanderaj/gaiabb
  *
- * Based off UltimaBB's installer (ajv)
+ * Forked from UltimaBB's installer (ajv)
  * Copyright (c) 2004 - 2007 The UltimaBB Group
  * (defunct)
  *
@@ -247,30 +247,6 @@ function check_files()
     $files = array(
         'activity.php',
         'address.php',
-        'config.php',
-        'contact.php',
-        'editprofile.php',
-        'email.php',
-        'faq.php',
-        'header.php',
-        'index.php',
-        'login.php',
-        'logout.php',
-        'lostpw.php',
-        'markread.php',
-        'memberlist.php',
-        'pm.php',
-        'post.php',
-        'register.php',
-        'search.php',
-        'smilies.php',
-        'stats.php',
-        'topicadmin.php',
-        'usercp.php',
-        'viewforum.php',
-        'viewonline.php',
-        'viewprofile.php',
-        'viewtopic.php',
         'admin/cp_analyzetables.php',
         'admin/cp_attachments.php',
         'admin/cp_avatars.php',
@@ -330,51 +306,82 @@ function check_files()
         'admin/cp_themes.php',
         'admin/cp_updatemoods.php',
         'admin/index.php',
-        'admin/templates.gbb',
         'class/address.class.php',
         'class/attachments.class.php',
         'class/authc.class.php',
+        'class/authstate.class.php',
         'class/cache.class.php',
         'class/captcha.class.php',
+        'class/csrf.class.php',
         'class/favorite.class.php',
         'class/forum.class.php',
-        'class/index.html',
         'class/mail.class.php',
+        'class/mail.php.class.php',
+        'class/mail.sendgrid.class.php',
+        'class/mail.smtp.class.php',
         'class/member.class.php',
         'class/pm.class.php',
+        'class/pm.dao.class.php',
+        'class/pm.model.class.php',
         'class/post.class.php',
         'class/subscription.class.php',
         'class/thread.class.php',
+        'config.php',
+        'contact.php',
         'db/mariadb.class.php',
-        'js/address.js',
-        'js/addresslistedit.js',
-        'js/admin.js',
-        'js/admin_menu.js',
-        'js/bbcodefns-ie.js',
-        'js/bbcodefns-mozilla.js',
-        'js/bbcodefns-opera.js',
-        'js/bbcodefns.js',
-        'js/header.js',
-        'js/index.html',
-        'js/popup.js',
-        'js/progressbar.js',
+        'editprofile.php',
+        'email.php',
+        'faq.php',
+        'header.php',
+        'helper/formHelper.php',
         'include/admincp.inc.php',
-        'include/captcha/mpl1.gdf',
-        'include/captcha/mpl2.gdf',
-        'include/captcha/mpl3.gdf',
         'include/constants.inc.php',
         'include/functions.inc.php',
-        'include/index.html',
         'include/mass_mod.inc.php',
         'include/mimetypes.inc.php',
         'include/modcp.inc.php',
         'include/online.inc.php',
-        'include/pm.inc.php',
         'include/theme.inc.php',
         'include/topicadmin.inc.php',
         'include/usercp.inc.php',
         'include/validate.inc.php',
+        'index.php',
+        'install/common.model.php',
+        'install/common.view.php',
+        'install/constants.php',
+        'install/convert.class.php',
+        'install/convert.model.php',
+        'install/convert.view.php',
+        'install/convert.xmb19x.php',
+        'install/dbhost.class.php',
+        'install/index.php',
+        'install/install.model.php',
+        'install/install.view.php',
+        'install/repair.model.php',
+        'install/repair.view.php',
+        'install/schema.php',
+        'install/upgrade.class.php',
+        'install/upgrade.model.php',
+        'install/upgrade.ultimabb.php',
+        'install/upgrade.view.php',
         'lang/English.lang.php',
+        'login.php',
+        'logout.php',
+        'lostpw.php',
+        'markread.php',
+        'memberlist.php',
+        'pm.php',
+        'post.php',
+        'register.php',
+        'search.php',
+        'smilies.php',
+        'stats.php',
+        'topicadmin.php',
+        'usercp.php',
+        'viewforum.php',
+        'viewonline.php',
+        'viewprofile.php',
+        'viewtopic.php',
     );
 
     $retval = true;
@@ -408,12 +415,12 @@ function isInstalled($db = false)
         $dbname = 'DBNAME';
         $dbpw = '';
         $pconnect = false;
-        include_once '../config.php';
+        require_once ROOT . 'config.php';
 
-        if ($dbname !== "DBNAME" && file_exists("../db/mariadb.class.php")) {
+        if ($dbname !== "DBNAME" && file_exists(ROOT . 'db/mariadb.class.php')) {
             // Okay, it's safe to check the database as per config.php
             define('X_PREFIX', $tablepre);
-            include_once "../db/mariadb.class.php";
+            require_once ROOT . 'db/mariadb.class.php';
 
             $db = new GaiaBB\MariaDB();
             $db->connect($dbhost, $dbuser, $dbpw, $dbname, $pconnect, false);
@@ -562,7 +569,7 @@ function process_config($path)
 {
     $confMethod = formVar('confMethod');
 
-    if ($path == 'repair' && !file_exists('./emergency.php')) {
+    if ($path == 'repair' && !file_exists(ROOT . 'install/emergency.php')) {
         viewHeader('Configuration', $path);
         print_error('Configuration Warning', 'Cannot process repair configuration as emergency.php does not exist.');
         return;

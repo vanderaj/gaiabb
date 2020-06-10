@@ -4,11 +4,11 @@
  * Copyright (c) 2009-2020 The GaiaBB Project
  * https://github.com/vanderaj/gaiabb
  *
- * Based off UltimaBB
+ * Forked from UltimaBB
  * Copyright (c) 2004 - 2007 The UltimaBB Group
  * (defunct)
  *
- * Based off XMB
+ * Forked from XMB
  * Copyright (c) 2001 - 2004 The XMB Development Team
  * https://forums.xmbforum2.com/
  *
@@ -37,7 +37,7 @@ if (!X_STAFF) {
     error($lang['notpermitted'], false);
 }
 
-require_once 'topicadmin.inc.php';
+require_once ROOT . 'include/topicadmin.inc.php';
 
 $pid = getInt('pid');
 $tid = getInt('tid');

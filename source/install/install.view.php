@@ -4,7 +4,7 @@
  * Copyright (c) 2009-2020 The GaiaBB Project
  * https://github.com/vanderaj/gaiabb
  *
- * Based off UltimaBB's installer (ajv)
+ * Forked from UltimaBB's installer (ajv)
  * Copyright (c) 2004 - 2007 The UltimaBB Group
  * (defunct)
  *
@@ -64,8 +64,7 @@ function view_install_index()
                                 </tr>
                                 <tr>
                                     <td>
-                                        <script type="text/javascript" language="javascript1.2">
-                                            <!--
+                                        <script type="text/javascript">
                                             var installBar = new progressBar(
                                                 1,         //border thickness
                                                 '#000000', //border colour
@@ -75,7 +74,6 @@ function view_install_index()
                                                 16,        //height of bar (excluding border)
                                                 1          //direction of progress: 1 = right, 2 = down, 3 = left, 4 = up
                                             );
-                                            //-->
                                         </script>
                                     </td>
                                 </tr>

@@ -4,7 +4,7 @@
  * Copyright (c) 2009-2020 The GaiaBB Project
  * https://github.com/vanderaj/gaiabb
  *
- * Based off UltimaBB's installer (ajv)
+ * Forked from UltimaBB's installer (ajv)
  * Copyright (c) 2004 - 2007 The UltimaBB Group
  * (defunct)
  *
@@ -44,7 +44,7 @@ function view_repair_index($path)
     top_box('Select repair actions to complete');
     $emerg = "disabled";
     $instr = " (Requires uploading emergency.php)";
-    if (file_exists('./emergency.php')) {
+    if (file_exists(ROOT . 'install/emergency.php')) {
         $emerg = "";
         $instr = "";
     }

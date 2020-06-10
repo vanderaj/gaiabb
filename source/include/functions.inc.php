@@ -4,12 +4,12 @@
  * Copyright (c) 2009-2020 The GaiaBB Project
  * https://github.com/vanderaj/gaiabb
  *
- * Based off UltimaBB
+ * Forked from UltimaBB
  * Copyright (c) 2004 - 2007 The UltimaBB Group
  * (defunct)
  *
- * Based off XMB and XMB Forum 2 (BBCode)
- * Copyright (c) 2001 - 2012 The XMB Development Team
+ * Forked from XMB and XMB Forum 2
+ * Copyright (c) 2001 - 2019 The XMB Development Team
  * https://forums.xmbforum2.com/
  *
  * This file is part of GaiaBB
@@ -173,14 +173,19 @@ function smile($txt)
     return $txt;
 }
 
-function createAbsFSizeFromRel($rel = 0)
+
+/**
+ * Replaces createAbsFSizeFromRel() to eliminate the /e in size bbcode regex.
+ *
+ * @since 1.9.11 Alpha Three
+ */
+function bbcodeSizeTags($matches)
 {
-    global $THEME;
+    global $fontsize;
     static $cachedFs;
 
-    $res = '';
     if (!is_array($cachedFs) || count($cachedFs) != 2) {
-        preg_match('#([0-9]+)([a-z]+)?#i', $THEME['fontsize'], $res);
+        preg_match('#([0-9]+)([a-z]+)?#i', $fontsize, $res);
         $cachedFs[0] = $res[1];
         $cachedFs[1] = $res[2];
 
@@ -188,8 +193,12 @@ function createAbsFSizeFromRel($rel = 0)
             $cachedFs[1] = 'px';
         }
     }
-    $o = ($rel + $cachedFs[0]) . $cachedFs[1];
-    return $o;
+
+    $o = ($matches[1]+$cachedFs[0]).$cachedFs[1];
+
+    $html = "<span style=\"font-size: $o;\">";
+
+    return $html;
 }
 
 function check_image_size($matches)
@@ -252,13 +261,13 @@ function bbcodeCode($message)
     $offset = 0;
     $done = false;
     $messagearray = array();
-    while (!$done) {
+    while (!$done){
         $pos = strpos($message, '[code]', $offset);
         if (false === $pos) {
             $messagearray[$counter] = substr($message, $offset);
             $messagearray[$counter] = str_replace('[/code]', '&#091;/code]', $messagearray[$counter]);
             if ($counter > 1) {
-                $messagearray[$counter] = '[/code]' . $messagearray[$counter];
+                $messagearray[$counter] = '[/code]'.$messagearray[$counter];
             }
             $done = true;
         } else {
@@ -266,7 +275,7 @@ function bbcodeCode($message)
             $messagearray[$counter] = substr($message, $offset, $pos - $offset);
             $messagearray[$counter] = str_replace('[/code]', '&#091;/code]', $messagearray[$counter]);
             if ($counter > 1) {
-                $messagearray[$counter] = '[/code]' . $messagearray[$counter];
+                $messagearray[$counter] = '[/code]'.$messagearray[$counter];
             }
             $counter++;
             $offset = $pos;
@@ -292,8 +301,7 @@ function bbcodeCode($message)
  * @since 1.9.11.12
  * @param string $input Read/Write Variable
  */
-function post_wordwrap(&$input)
-{
+function post_wordwrap(&$input) {
     $br = trim(nl2br("\n"));
     $messagearray = preg_split("#<!-- nobr -->|<!-- /nobr -->#", $input);
     for ($i = 0; $i < sizeof($messagearray); $i++) {
@@ -369,25 +377,25 @@ function bbcode(&$message, $allowimgcode, $allowurlcode)
         11 => '[/list=A]',
     );
 
-    foreach ($begin as $key => $value) {
+    foreach ($begin as $key=>$value) {
         $check = substr_count($message, $value) - substr_count($message, $end[$key]);
         if ($check > 0) {
             $message .= str_repeat($end[$key], $check);
         } elseif ($check < 0) {
-            $message = str_repeat($value, abs($check)) . $message;
+            $message = str_repeat($value, abs($check)).$message;
         }
     }
 
     // Balance regex tags.
     $regex = array();
-    $regex['align'] = "@\\[align=(left|center|right|justify)\\]@i";
-    $regex['font'] = "@\\[font=([a-z\\r\\n\\t 0-9]+)\\]@i";
+    $regex['align']  = "@\\[align=(left|center|right|justify)\\]@i";
+    $regex['font']   = "@\\[font=([a-z\\r\\n\\t 0-9]+)\\]@i";
     $regex['rquote'] = "@\\[rquote=(\\d+)&(?:amp;)?tid=(\\d+)&(?:amp;)?author=([^\\[\\]<>]+)\\]@s";
-    $regex['size'] = "@\\[size=([+-]?[0-9]{1,2})\\]@";
+    $regex['size']   = "@\\[size=([+-]?[0-9]{1,2})\\]@";
     $regex['color'] = array();
     $regex['color']['named'] = "@\\[color=(White|Black|Red|Yellow|Pink|Green|Orange|Purple|Blue|Beige|Brown|Teal|Navy|Maroon|LimeGreen|aqua|fuchsia|gray|silver|lime|olive)\\]@i";
-    $regex['color']['hex'] = "@\\[color=#([\\da-f]{3,6})\\]@i";
-    $regex['color']['rgb'] = "@\\[color=rgb\\(([\\s]*[\\d]{1,3}%?[\\s]*,[\\s]*[\\d]{1,3}%?[\\s]*,[\\s]*[\\d]{1,3}%?[\\s]*)\\)\\]@i";
+    $regex['color']['hex']   = "@\\[color=#([\\da-f]{3,6})\\]@i";
+    $regex['color']['rgb']   = "@\\[color=rgb\\(([\\s]*[\\d]{1,3}%?[\\s]*,[\\s]*[\\d]{1,3}%?[\\s]*,[\\s]*[\\d]{1,3}%?[\\s]*)\\)\\]@i";
 
     bbcodeBalanceTags($message, $regex);
 
@@ -422,7 +430,7 @@ function bbcode(&$message, $allowimgcode, $allowurlcode)
         26 => '[/font]',
         27 => '[/size]',
         28 => '[/align]',
-        29 => '[/rquote]',
+        29 => '[/rquote]'
     );
 
     $replace = array(
@@ -438,9 +446,9 @@ function bbcode(&$message, $allowimgcode, $allowurlcode)
         9 => '</blink>',
         10 => '<strike>',
         11 => '</strike>',
-        12 => '</font> <!-- nobr --><table align="center" class="quote" cellspacing="0" cellpadding="0"><tr><td class="quote">' . $lang['textquote'] . '</td></tr><tr><td class="quotemessage"><!-- /nobr -->',
+        12 => '</font> <!-- nobr --><table align="center" class="quote" cellspacing="0" cellpadding="0"><tr><td class="quote">'.$lang['textquote'].'</td></tr><tr><td class="quotemessage"><!-- /nobr -->',
         13 => ' </td></tr></table><font class="mediumtxt">',
-        14 => '</font> <!-- nobr --><table align="center" class="code" cellspacing="0" cellpadding="0"><tr><td class="code">' . $lang['textcode'] . '</td></tr><tr><td class="codemessage"><code>',
+        14 => '</font> <!-- nobr --><table align="center" class="code" cellspacing="0" cellpadding="0"><tr><td class="code">'.$lang['textcode'].'</td></tr><tr><td class="codemessage"><code>',
         15 => '</code></td></tr></table><font class="mediumtxt"><!-- /nobr -->',
         16 => '<ul type="square">',
         17 => '</ul>',
@@ -455,7 +463,7 @@ function bbcode(&$message, $allowimgcode, $allowurlcode)
         26 => '</span>',
         27 => '</span>',
         28 => '</div>',
-        29 => ' </td></tr></table><font class="mediumtxt">',
+        29 => ' </td></tr></table><font class="mediumtxt">'
     );
 
     $message = str_replace($find, $replace, $message);
@@ -465,7 +473,7 @@ function bbcode(&$message, $allowimgcode, $allowurlcode)
     $replacements = array();
 
     $patterns[] = $regex['rquote'];
-    $replacements[] = '</font> <!-- nobr --><table align="center" class="quote" cellspacing="0" cellpadding="0"><tr><td class="quote">' . $lang['textquote'] . ' <a href="viewthread.php?tid=$2&amp;goto=search&amp;pid=$1" rel="nofollow">' . $lang['origpostedby'] . ' $3 &nbsp;<img src="' . $imgdir . '/lastpost.gif" border="0" alt="" style="vertical-align: middle;" /></a></td></tr><tr><td class="quotemessage"><!-- /nobr -->';
+    $replacements[] = '</font> <!-- nobr --><table align="center" class="quote" cellspacing="0" cellpadding="0"><tr><td class="quote">'.$lang['textquote'].' <a href="viewthread.php?tid=$2&amp;goto=search&amp;pid=$1" rel="nofollow">'.$lang['origpostedby'].' $3 &nbsp;<img src="'.$imgdir.'/lastpost.gif" border="0" alt="" style="vertical-align: middle;" /></a></td></tr><tr><td class="quotemessage"><!-- /nobr -->';
     $patterns[] = $regex['color']['named'];
     $replacements[] = '<span style="color: $1;">';
     $patterns[] = $regex['color']['hex'];
@@ -478,24 +486,22 @@ function bbcode(&$message, $allowimgcode, $allowurlcode)
     $replacements[] = '<div style="text-align: $1;">';
 
     $patterns[] = "@\\[pid=(\\d+)&amp;tid=(\\d+)](.*?)\\[/pid]@si";
-    $replacements[] = '<a <!-- nobr -->href="viewthread.php?tid=$2&amp;goto=search&amp;pid=$1"><strong><!-- /nobr -->$3</strong> &nbsp;<img src="' . $imgdir . '/lastpost.gif" border="0" alt="" style="vertical-align: middle;" /></a>';
+    $replacements[] = '<a <!-- nobr -->href="viewthread.php?tid=$2&amp;goto=search&amp;pid=$1"><strong><!-- /nobr -->$3</strong> &nbsp;<img src="'.$imgdir.'/lastpost.gif" border="0" alt="" style="vertical-align: middle;" /></a>';
 
     if ($allowimgcode != 'no' && $allowimgcode != 'off') {
         if (false == stripos($message, 'javascript:')) {
-            $patterns[] = '#\[img\](http[s]?|ftp[s]?){1}://([:a-z\\./_\-0-9%~]+){1}\[/img\]#Smi';
+            $base_pattern = get_img_regexp();
+            $patterns[] = '/\[img\]' . $base_pattern . '\[\/img\]/i';
             $replacements[] = '<img <!-- nobr -->src="\1://\2\3"<!-- /nobr --> border="0" alt="" />';
-            $patterns[] = "#[img=([0-9]*?){1}x([0-9]*?)](http[s]?|ftp[s]?){1}://([:~a-z\\./0-9_-%]+){1}(?[a-z=0-9&_-;~]*)?[/img]#Smi";
+            $patterns[] = '/\[img=([0-9]*?){1}x([0-9]*?)\]' . $base_pattern . '\[\/img\]/i';
             $replacements[] = '<img width="\1" height="\2" <!-- nobr -->src="\3://\4\5"<!-- /nobr --> alt="" border="0" />';
         }
     }
 
-    $patterns[] = "#\\[email\\]([^\"'<>]+?)\\[/email\\]#mi";
+    $patterns[] = "#\\[email\\]([^\"'<>]+?)\\[/email\\]#i";
     $replacements[] = '<a href="mailto:\1">\1</a>';
-    $patterns[] = "#\\[email=([^\"'<>\\[\\]]+)\\](.+?)\\[/email\\]#mi";
+    $patterns[] = "#\\[email=([^\"'<>\\[\\]]+)\\](.+?)\\[/email\\]#i";
     $replacements[] = '<a href="mailto:\1">\2</a>';
-
-    $patterns[] = "#\[youtube\]([^\"'<>]*?)\[/youtube\]#Smi";
-    $replacements[] = '<object type="application/x-shockwave-flash" style="width:425px; height:350px;" data="http://www.youtube.com/v/\1"><param name="movie" value="http://www.youtube.com/v/\1" /></object>';
 
     $message = preg_replace($patterns, $replacements, $message);
 
@@ -503,33 +509,160 @@ function bbcode(&$message, $allowimgcode, $allowurlcode)
 
     if ($allowurlcode) {
         /*
-        This block positioned last so that bare URLs may appear adjacent to BBCodes without matching on square braces.
-        Regexp explanation: match strings surrounded by whitespace or () or ><.  Do not include the surrounding chars.
-        Group 1 will be identical to the full match so that the callback function can be reused for [url] codes.
-         */
+          This block positioned last so that bare URLs may appear adjacent to BBCodes without matching on square braces.
+          Regexp explanation: match strings surrounded by whitespace or () or ><.  Do not include the surrounding chars.
+            Group 1 will be identical to the full match so that the callback function can be reused for [url] codes.
+        */
         $regexp = '(?<=^|\s|>|\()'
-            . '('
-            . '(?:(?:http|ftp)s?://|www)'
-            . '[-a-z0-9.]+\.[a-z]{2,4}'
-            . '[^\s()"\'<>\[\]]*'
-            . ')'
-            . '(?=$|\s|<|\))';
-        $message = preg_replace_callback("#$regexp#Smi", 'bbcodeLongURLs', $message);
+                . '('
+                . '(?:(?:http|ftp)s?://|www)'
+                . '[-a-z0-9.]+\.[a-z]{2,4}'
+                . '[^\s()"\'<>\[\]]*'
+                . ')'
+                . '(?=$|\s|<|\))';
+        $message = preg_replace_callback("#$regexp#i", 'bbcodeLongURLs', $message);
 
-        //[url]http://www.example.com/[/url]
+        //[url]https://www.example.com/[/url]
         //[url]www.example.com[/url]
         $message = preg_replace_callback("#\[url\]([^\"'<>]+?)\[/url\]#i", 'bbcodeLongURLs', $message);
 
-        //[url=http://www.example.com/]Lorem Ipsum[/url]
+        //[url=https://www.example.com/]Lorem Ipsum[/url]
         //[url=www.example.com]Lorem Ipsum[/url]
-        $message = preg_replace_callback("#\[url=([^\"'<>\[\]]+)](.*?)\[/url\]#i", 'bbcodeLongURLs', $message);
+        $message = preg_replace_callback("#\[url=([^\"'<>\[\]]+)\](.*?)\[/url\]#i", 'bbcodeLongURLs', $message);
     }
 
     return true;
 }
 
-function postify($message, $smileyoff = 'no', $bbcodeoff = 'no', $allowsmilies = 'yes', $allowbbcode = 'yes', $allowimgcode = 'yes', $ignorespaces = false, $ismood = 'no', $wrap = 'yes')
+/**
+ * Central place to get the image URL pattern.
+ *
+ * Remember, this is also duplicated in js/header.js
+ *
+ * @since 1.9.11.15
+ * @return string Regular expression for a user-provided URL to an image.
+ */
+function get_img_regexp()
 {
+    return '(https?|ftp):\/\/([:a-z\.\/_\-0-9%~]+)(\?[a-z=0-9&_\-;~]*)?';
+}
+
+
+/**
+ * Handles the [url] BBCode.
+ *
+ * This helper function is algorithmically required in order to fully support
+ * unencoded square braces in BBCode URLs.  Encoding of the RFC 1738 Unsafe
+ * character set thus remains optional at the BBCode and HTML layers.
+ *
+ * Credit for the value used in $scheme_whitelist goes to the WordPress project.
+ *
+ * @since 1.9.11.12
+ * @param array $url Expects $url[0] to be the raw BBCode, $url[1] to be the URL only, and optionally $url[2] to be the display text.
+ * @return string The HTML replacement for $url[0] if the code was valid, else the code is unchaged.
+ */
+function bbcodeLongURLs($url) {
+    $url_max_display_len = 60;
+    $scheme_whitelist = array('http', 'https', 'ftp', 'ftps', 'mailto', 'news', 'irc', 'gopher', 'nntp', 'feed', 'telnet', 'mms', 'rtsp', 'svn');
+
+    $colon = strpos($url[1], ':');
+    if (false !== $colon) {
+        $scheme = substr($url[1], 0, $colon);
+        if (in_array($scheme, $scheme_whitelist)) {
+            $href = $url[1];
+        } else {
+            return $url[0];
+        }
+    } else {
+        $href = 'http://'.$url[1];
+    }
+    if (!empty($url[2])) {
+        $text = $url[2];
+    } elseif (strlen($url[1]) <= $url_max_display_len) {
+        $text = $url[1];
+    } else {
+        $text = substr($url[1], 0, $url_max_display_len).'...';
+    }
+    return '<a <!-- nobr -->href="'.$href.'" onclick="window.open(this.href); return false;"><!-- /nobr -->'.$text.'</a>';
+}
+
+/**
+ * Processes tags like [file]1234[/file]
+ *
+ * Caller must include attach.inc.php, query the attachments table,
+ * and load the needed templates.
+ *
+ * @param string $message Read/Write Variable.  Returns the processed HTML.
+ * @param array  $files   Read-Only Variable.  Contains the result rows from an attachment query.
+ * @param int    $pid     Pass zero when in newthread or reply preview.
+ * @param bool   $bBBcodeOnForThisPost
+ */
+function bbcodeFileTags(&$message, &$files, $pid, $bBBcodeOnForThisPost) {
+    global $lang, $SETTINGS;
+
+    $pid = intval($pid);
+    $count = 0;
+    $separator = '';
+    foreach ($files as $attach) {
+        $post = array();
+        $post['filename'] = attrOut($attach['filename']);
+        $post['filetype'] = attrOut($attach['filetype']);
+        $post['fileurl'] = getAttachmentURL($attach['aid'], $pid, $attach['filename']);
+        $attachsize = getSizeFormatted($attach['filesize']);
+
+        $post['filedims'] = '';
+        $output = '';
+        $prefix = '';
+        $extension = strtolower(get_extension($post['filename']));
+        $img_extensions = array('jpg', 'jpeg', 'jpe', 'gif', 'png', 'wbmp', 'wbm', 'bmp');
+        if ($SETTINGS['attachimgpost'] == 'on' and in_array($extension, $img_extensions)) {
+            if (intval($attach['thumbid'] > 0)) {
+                $post['thumburl'] = getAttachmentURL($attach['thumbid'], $pid, $attach['thumbname']);
+                $result = explode('x', $attach['thumbsize']);
+                $post['filedims'] = 'width="'.$result[0].'px" height="'.$result[1].'px"';
+                eval('$output = "'.template('viewthread_post_attachmentthumb').'";');
+            } else {
+                if ($attach['img_size'] != '') {
+                    $result = explode('x', $attach['img_size']);
+                    $post['filedims'] = 'width="'.$result[0].'px" height="'.$result[1].'px"';
+                }
+                eval('$output = "'.template('viewthread_post_attachmentimage').'";');
+            }
+            $separator = '';
+        } else {
+            $downloadcount = $attach['downloads'];
+            if ($downloadcount == '') {
+                $downloadcount = 0;
+            }
+            eval('$output = "'.template('viewthread_post_attachment').'";');
+            if ($separator == '') {
+                $prefix = "<br /><br />";
+            }
+            $separator = "<br /><br />";
+        }
+        $output = '<!-- nobr -->'.trim(str_replace(array("\n","\r"), array('',''), $output)).'<!-- /nobr -->'; // Avoid nl2br, trailing space, wordwrap.
+        if ($count == 0) {
+            $prefix = "<br /><br />";
+        }
+        $matches = 0;
+        if ($bBBcodeOnForThisPost) {
+            $find = "[file]{$attach['aid']}[/file]";
+            $pos = strpos($message, $find);
+            if ($pos !== false) {
+                $matches = 1;
+                $message = substr($message, 0, $pos).$output.substr($message, $pos + strlen($find));
+            }
+        }
+        if ($matches == 0) {
+            $message .= $prefix.$output.$separator; // Do we need some sort of a separator template here?
+            $count++;
+        }
+    }
+}
+
+
+function postify($message, $smileyoff = 'no', $bbcodeoff = 'no', $allowsmilies='yes', $allowhtml='yes', $allowbbcode='yes', $allowimgcode='yes', $ignorespaces=false, $ismood="no", $wrap="yes") {
+
     $bballow = ($allowbbcode == 'yes' || $allowbbcode == 'on') ? (($bbcodeoff != 'off' && $bbcodeoff != 'yes') ? true : false) : false;
     $smiliesallow = ($allowsmilies == 'yes' || $allowsmilies == 'on') ? (($smileyoff != 'off' && $smileyoff != 'yes') ? true : false) : false;
     $allowurlcode = ($ismood != 'yes');
@@ -542,13 +675,13 @@ function postify($message, $smileyoff = 'no', $bbcodeoff = 'no', $allowsmilies =
         //Remove the code block contents from $message.
         $messagearray = bbcodeCode($message);
         $message = array();
-        for ($i = 0; $i < count($messagearray); $i += 2) {
+        for($i = 0; $i < count($messagearray); $i += 2) {
             $message[$i] = $messagearray[$i];
         }
         $message = implode("<!-- code -->", $message);
 
         // Do BBCode
-        $message = rawHTMLmessage($message, 'no'); // GaiaBB does not support raw HTML messages
+        $message = rawHTMLmessage($message, $allowhtml);
         if ($smiliesallow) {
             smile($message);
         }
@@ -558,8 +691,8 @@ function postify($message, $smileyoff = 'no', $bbcodeoff = 'no', $allowsmilies =
         // Replace the code block contents in $message.
         if (count($messagearray) > 1) {
             $message = explode("<!-- code -->", $message);
-            for ($i = 0; $i < count($message) - 1; $i++) {
-                $message[$i] .= censor($messagearray[$i * 2 + 1]);
+            for($i = 0; $i < count($message) - 1; $i++) {
+                $message[$i] .= censor($messagearray[$i*2+1]);
             }
             $message = implode("", $message);
         }
@@ -570,7 +703,7 @@ function postify($message, $smileyoff = 'no', $bbcodeoff = 'no', $allowsmilies =
             $message = str_replace(array('<!-- nobr -->', '<!-- /nobr -->'), array('', ''), $message);
         }
     } else {
-        $message = rawHTMLmessage($message, 'no'); // GaiaBB does not support raw HTML messages
+        $message = rawHTMLmessage($message, $allowhtml);
         if ($smiliesallow) {
             smile($message);
         }
@@ -580,7 +713,7 @@ function postify($message, $smileyoff = 'no', $bbcodeoff = 'no', $allowsmilies =
         }
     }
 
-    $message = preg_replace('#(script|about|applet|activex|chrome):#Sis', "\\1 &#058;", $message);
+    $message = preg_replace('#(script|about|applet|activex|chrome):#is', "\\1 &#058;", $message);
 
     return $message;
 }
@@ -590,7 +723,15 @@ function forum($forum, $template)
     global $db, $THEME, $CONFIG, $lang, $self, $lastvisit2;
     global $oldtopics, $lastvisit, $index_subforums, $sub, $subforums, $MODERATORS, $moderators_cache;
 
-    echo "<!-- " . print_r($forum) . " -->";
+    ?>
+    <!--
+    <?php
+
+    print_r($forum);
+
+    ?>
+    -->
+    <?php
 
     if (empty($forum['private'])) {
         $forum['private'] = '1'; // 1 = default
@@ -1517,6 +1658,7 @@ function cp_error($msg, $showheader = true, $prepend = '', $append = '', $redire
 {
     global $footerstuff, $lang, $navigation;
     global $CONFIG, $THEME;
+    global $shadow2, $lang_nalign, $quickjump, $shadow, $versionlong, $bottomcorners;
 
     $args = func_get_args();
 
@@ -1572,7 +1714,7 @@ function message($msg, $showheader = true, $prepend = '', $append = '', $redirec
 {
     global $footerstuff, $lang, $navigation;
     global $CONFIG, $THEME, $shadow, $lang_nalign, $lang_code, $lang_dir, $lang_align;
-    global $charset, $meta, $quickjump, $btitle, $versionpowered, $background;
+    global $charset, $meta, $quickjump, $btitle, $versionpowered;
     global $versionlong, $bottomcorners, $css, $bbcodescript, $attachscript;
     global $topcorners, $topbgcode, $logo, $links, $pluglink, $lastvisittext;
     global $notify, $newpmmsg;
@@ -1645,7 +1787,8 @@ function cp_message($msg, $showheader = true, $prepend = '', $append = '', $redi
 {
     global $footerstuff, $lang, $navigation;
     global $CONFIG, $THEME;
-
+    global $shadow2, $lang_nalign, $quickjump, $shadow, $versionlong, $bottomcorners;
+    
     $args = func_get_args();
 
     $message = (isset($args[0]) ? $args[0] : '');
@@ -1812,7 +1955,7 @@ function put_cookie($name, $value = null, $expire = null, $path = null, $domain 
             <script language="javascript" type="text/javascript">
                 function setcookie(name, value="deleted", expire=0, path="", domain="", secure=0) {
                     if (expire == 0) {
-                        var now = new Date();
+                        var now = new \Date();
                         expire = now.toGMTString();
                     }
 
@@ -2072,26 +2215,33 @@ function celloverfx($url)
     return $mouseover;
 }
 
+function checkAndRemoveFile($file) {
+    if (file_exists($file)) {
+        if (!@unlink($file)) {
+            exit('<h1>Security Warning:</h1><br />The exploitable file ' . htmlentities($file) . ' was found on the server, but could not be removed. GaiaBB will not function with it present.');
+        }
+    }
+}
+
 function securityChecks()
 {
     global $CONFIG, $onlineip, $url;
 
-    if (file_exists('cplogfile.php') && !@unlink('cplogfile.php')) {
-        exit('<h1>Error:</h1><br />The old logfile("cplogfile.php") has been found on the server, but could not be removed. Please remove it as soon as possible.');
-    }
+    // XMB 1.6 had a log file called cplogfile.php and/or index_log.log and should not be present
+    checkAndRemoveFile(ROOT . 'cplogfile.php');
+    checkAndRemoveFile(ROOT . 'index_log.log');
 
-    if (file_exists('fixhack.php') && !@unlink('fixhack.php')) {
-        exit('<h1>Error:</h1><br />The hack repair tool("fixhack.php") has been found on the server, but could not be removed. Please remove it as soon as possible.');
-    }
+    // A quick hack fix that had security issues should also not be present
+    checkAndRemoveFile(ROOT . 'fixhack.php');
 
-    if (file_exists('install/emergency.php') && !@unlink('install/emergency.php')) {
-        exit('<h1>Error:</h1><br />The emergency repair file("install/emergency.php") has been found on the server, but could not be removed. Please remove it as soon as possible.');
-    }
+    // The official emergency recovery file should not be present
+    checkAndRemoveFile(ROOT . 'install/emergency.php');
 
     // Checks the IP-format, if it's not a IPv4, nor a IPv6 type, it will be blocked, safe to remove....
+    // TODO: Fix IPv6 support
     if ($CONFIG['ipcheck'] == 'on') {
         if (!preg_match('/^([0-9]{1,3}.){3}[0-9]{1,3}$/i', $onlineip) && !preg_match('/^([a-z,0-9]{0,4}:){5}[a-z,0-9]{0,4}$/i', $onlineip) && !stristr($onlineip, ':::::')) {
-            exit("Access to this website is currently not possible as your hostname/IP appears suspicous.");
+            exit("Access to this website is currently not possible as your hostname/IP appears suspicious.");
         }
     }
 
@@ -2110,6 +2260,7 @@ function securityChecks()
     }
 }
 
+// TODO: Fix IPv6
 function is_ip($ip)
 {
     $check = true;
@@ -2331,7 +2482,7 @@ function langswitch($revert = 'no', $thislangfile = '')
     global $CONFIG, $self, $db;
 
     if ($revert == 'no') {
-        if (empty($thislangfile) || !file_exists('lang/' . $thislangfile . '.lang.php')) {
+        if (empty($thislangfile) || !file_exists(ROOT . 'lang/' . $thislangfile . '.lang.php')) {
             $langfile = $CONFIG['langfile'];
         } else {
             $langfile = $thislangfile;
@@ -2348,10 +2499,10 @@ function langSelect()
     global $member, $selHTML, $CONFIG;
 
     $lfs = array();
-    $dir = opendir('lang');
+    $dir = opendir(ROOT . 'lang');
     $langpos = 0;
     while (($file = readdir($dir)) != false) {
-        if (is_file('lang/' . $file) && false !== strpos($file, '.lang.php')) {
+        if (is_file(ROOT . 'lang/' . $file) && false !== strpos($file, '.lang.php')) {
             $file = str_replace('.lang.php', '', $file);
             if ($file == $CONFIG['langfile']) {
                 $lfs[] = '<option value="' . $langpos . '" ' . $selHTML . '>' . $file . '</option>';
