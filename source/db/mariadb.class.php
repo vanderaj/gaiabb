@@ -528,7 +528,7 @@ class MariaDB
     public function insertId()
     {
         if ($this->conn) {
-            return $this->conn->insertId;
+            return $this->conn->insert_id;
         }
         return false;
     }
