@@ -59,6 +59,8 @@ if (X_GUEST || isset($self['status']) && $self['status'] == 'Banned') {
 
 $addr = new GaiaBB\Address();
 
+$addresses = getRequestVar('addresses');
+
 switch ($action) {
     case 'add':
         $addr->add($addresses);
