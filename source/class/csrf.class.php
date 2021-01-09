@@ -9,7 +9,7 @@
  * (defunct)
  *
  * Forked from XMB and XMB Forum 2 (BBCode)
- * Copyright (c) 2001 - 2012 The XMB Development Team
+ * Copyright (c) 2001 - 2020 The XMB Development Team
  * https://forums.xmbforum2.com/
  *
  * This file is part of GaiaBB

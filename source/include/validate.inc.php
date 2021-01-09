@@ -8,8 +8,8 @@
  * Copyright (c) 2004 - 2007 The UltimaBB Group
  * (defunct)
  *
- * Forked from XMB and XMB Forum 2 (BBCode)
- * Copyright (c) 2001 - 2012 The XMB Development Team
+ * Forked from XMB and XMB Forum 2
+ * Copyright (c) 2001 - 2020 The XMB Development Team
  * https://forums.xmbforum2.com/
  *
  * This file is part of GaiaBB
@@ -675,4 +675,14 @@ function decimalEntityDecode($rawstring)
     }
 
     return $rawstring;
+}
+
+// Functions from XMB 1.9.11.15
+
+function attrOut($rawstring, $word='') { //Never safe for STYLE attributes.
+    $retval = $rawstring;
+    if ($word != '') {
+        $retval = str_ireplace($word, "_".$word, $retval);
+    }
+    return htmlspecialchars($retval, ENT_QUOTES);
 }

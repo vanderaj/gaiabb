@@ -9,7 +9,7 @@
  * (defunct)
  *
  * Forked from XMB
- * Copyright (c) 2001 - 2004 The XMB Development Team
+ * Copyright (c) 2001 - 2020 The XMB Development Team
  * https://forums.xmbforum2.com/
  *
  * This file is part of GaiaBB
@@ -58,9 +58,6 @@ class MariaDB
      */
     public function __construct()
     {
-        $this->db = '';
-        $this->conn = null;
-        $this->result = null;
     }
 
     /**

@@ -9,7 +9,7 @@
  * (defunct)
  *
  * Forked from XMB
- * Copyright (c) 2001 - 2004 The XMB Development Team
+ * Copyright (c) 2001 - 2020 The XMB Development Team
  * https://forums.xmbforum2.com/
  *
  * This file is part of GaiaBB
@@ -223,5 +223,56 @@ class Attachment
             }
         }
         $db->freeResult($query);
+    }
+
+    // functions from XMB 1.9.11.15
+
+    public function getAttachmentURL($aid, $pid, $filename, $htmlencode = true)
+    {
+        global $full_url, $SETTINGS;
+
+        if ($SETTINGS['files_virtual_url'] == '') {
+            $virtual_path = $full_url;
+        } else {
+            $virtual_path = $SETTINGS['files_virtual_url'];
+        }
+
+        switch ($SETTINGS['file_url_format']) {
+            case 1:
+                if ($htmlencode) {
+                    $url = "{$virtual_path}files.php?pid=$pid&amp;aid=$aid";
+                } else {
+                    $url = "{$virtual_path}files.php?pid=$pid&aid=$aid";
+                }
+                break;
+            case 2:
+                $url = "{$virtual_path}files/$pid/$aid/";
+                break;
+            case 3:
+                $url = "{$virtual_path}files/$aid/" . rawurlencode($filename);
+                break;
+            case 4:
+                $url = "{$virtual_path}$pid/$aid/";
+                break;
+            case 5:
+                $url = "{$virtual_path}$aid/" . rawurlencode($filename);
+                break;
+        }
+
+        return $url;
+    }
+
+    public function getSizeFormatted($attachsize)
+    {
+        if ($attachsize >= 1073741824) {
+            $attachsize = round($attachsize / 1073741824, 2) . "GB";
+        } elseif ($attachsize >= 1048576) {
+            $attachsize = round($attachsize / 1048576, 1) . "MB";
+        } elseif ($attachsize >= 1024) {
+            $attachsize = round($attachsize / 1024) . "kB";
+        } else {
+            $attachsize = $attachsize . "B";
+        }
+        return $attachsize;
     }
 }

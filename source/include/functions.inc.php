@@ -9,7 +9,7 @@
  * (defunct)
  *
  * Forked from XMB and XMB Forum 2
- * Copyright (c) 2001 - 2019 The XMB Development Team
+ * Copyright (c) 2001 - 2020 The XMB Development Team
  * https://forums.xmbforum2.com/
  *
  * This file is part of GaiaBB
@@ -261,7 +261,7 @@ function bbcodeCode($message)
     $offset = 0;
     $done = false;
     $messagearray = array();
-    while (!$done){
+    while (!$done) {
         $pos = strpos($message, '[code]', $offset);
         if (false === $pos) {
             $messagearray[$counter] = substr($message, $offset);
@@ -301,7 +301,8 @@ function bbcodeCode($message)
  * @since 1.9.11.12
  * @param string $input Read/Write Variable
  */
-function post_wordwrap(&$input) {
+function post_wordwrap(&$input)
+{
     $br = trim(nl2br("\n"));
     $messagearray = preg_split("#<!-- nobr -->|<!-- /nobr -->#", $input);
     for ($i = 0; $i < sizeof($messagearray); $i++) {
@@ -377,7 +378,7 @@ function bbcode(&$message, $allowimgcode, $allowurlcode)
         11 => '[/list=A]',
     );
 
-    foreach ($begin as $key=>$value) {
+    foreach ($begin as $key => $value) {
         $check = substr_count($message, $value) - substr_count($message, $end[$key]);
         if ($check > 0) {
             $message .= str_repeat($end[$key], $check);
@@ -561,7 +562,8 @@ function get_img_regexp()
  * @param array $url Expects $url[0] to be the raw BBCode, $url[1] to be the URL only, and optionally $url[2] to be the display text.
  * @return string The HTML replacement for $url[0] if the code was valid, else the code is unchaged.
  */
-function bbcodeLongURLs($url) {
+function bbcodeLongURLs($url)
+{
     $url_max_display_len = 60;
     $scheme_whitelist = array('http', 'https', 'ftp', 'ftps', 'mailto', 'news', 'irc', 'gopher', 'nntp', 'feed', 'telnet', 'mms', 'rtsp', 'svn');
 
@@ -597,7 +599,8 @@ function bbcodeLongURLs($url) {
  * @param int    $pid     Pass zero when in newthread or reply preview.
  * @param bool   $bBBcodeOnForThisPost
  */
-function bbcodeFileTags(&$message, &$files, $pid, $bBBcodeOnForThisPost) {
+function bbcodeFileTags(&$message, &$files, $pid, $bBBcodeOnForThisPost)
+{
     global $lang, $SETTINGS;
 
     $pid = intval($pid);
@@ -661,7 +664,8 @@ function bbcodeFileTags(&$message, &$files, $pid, $bBBcodeOnForThisPost) {
 }
 
 
-function postify($message, $smileyoff = 'no', $bbcodeoff = 'no', $allowsmilies='yes', $allowhtml='yes', $allowbbcode='yes', $allowimgcode='yes', $ignorespaces=false, $ismood="no", $wrap="yes") {
+function postify($message, $smileyoff = 'no', $bbcodeoff = 'no', $allowsmilies = 'yes', $allowhtml = 'yes', $allowbbcode = 'yes', $allowimgcode = 'yes', $ignorespaces = false, $ismood = "no", $wrap = "yes")
+{
 
     $bballow = ($allowbbcode == 'yes' || $allowbbcode == 'on') ? (($bbcodeoff != 'off' && $bbcodeoff != 'yes') ? true : false) : false;
     $smiliesallow = ($allowsmilies == 'yes' || $allowsmilies == 'on') ? (($smileyoff != 'off' && $smileyoff != 'yes') ? true : false) : false;
@@ -675,7 +679,7 @@ function postify($message, $smileyoff = 'no', $bbcodeoff = 'no', $allowsmilies='
         //Remove the code block contents from $message.
         $messagearray = bbcodeCode($message);
         $message = array();
-        for($i = 0; $i < count($messagearray); $i += 2) {
+        for ($i = 0; $i < count($messagearray); $i += 2) {
             $message[$i] = $messagearray[$i];
         }
         $message = implode("<!-- code -->", $message);
@@ -691,8 +695,8 @@ function postify($message, $smileyoff = 'no', $bbcodeoff = 'no', $allowsmilies='
         // Replace the code block contents in $message.
         if (count($messagearray) > 1) {
             $message = explode("<!-- code -->", $message);
-            for($i = 0; $i < count($message) - 1; $i++) {
-                $message[$i] .= censor($messagearray[$i*2+1]);
+            for ($i = 0; $i < count($message) - 1; $i++) {
+                $message[$i] .= censor($messagearray[$i * 2 + 1]);
             }
             $message = implode("", $message);
         }
@@ -717,6 +721,7 @@ function postify($message, $smileyoff = 'no', $bbcodeoff = 'no', $allowsmilies='
 
     return $message;
 }
+
 
 function forum($forum, $template)
 {
