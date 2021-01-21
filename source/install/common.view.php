@@ -1,7 +1,7 @@
 <?php
 /**
  * GaiaBB
- * Copyright (c) 2009-2020 The GaiaBB Project
+ * Copyright (c) 2009-2021 The GaiaBB Project
  * https://github.com/vanderaj/gaiabb
  *
  * Forked from UltimaBB's installer (ajv)
@@ -615,7 +615,7 @@ function viewFooter()
     <table align="center">
         <tr>
             <td align="center" class="smalltxt"><br/> <br/> Powered by
-                GaiaBB <br/> Copyright &copy; 2009-2020 GaiaBB Group. All rights
+                GaiaBB <br/> Copyright &copy; 2009-2021 GaiaBB Group. All rights
                 reserved. <br/> <br/></td>
         </tr>
     </table> <br/></td>

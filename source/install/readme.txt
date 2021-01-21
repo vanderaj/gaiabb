@@ -130,4 +130,4 @@ Known Issues
   key - upgrade cannot fix this type of problem - you will have to resolve it
   manually.
 
-GaiaBB Team January 2020
+GaiaBB Team January 2021

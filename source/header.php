@@ -1,7 +1,7 @@
 <?php
 /**
  * GaiaBB
- * Copyright (c) 2009-2020 The GaiaBB Project
+ * Copyright (c) 2009-2021 The GaiaBB Project
  * https://github.com/vanderaj/gaiabb
  *
  * Forked from UltimaBB
@@ -9,7 +9,7 @@
  * (defunct)
  *
  * Forked from XMB
- * Copyright (c) 2001 - 2020 The XMB Development Team
+ * Copyright (c) 2001 - 2021 The XMB Development Team
  * https://forums.xmbforum2.com/
  *
  * This file is part of GaiaBB
@@ -859,10 +859,10 @@ if (!isset($CONFIG['max_reg_day']) || $CONFIG['max_reg_day'] < 1 || $CONFIG['max
 // display version build (John)
 if ($CONFIG['show_full_info'] == 'on') {
     $versionlong = '<br />Powered by <a href="https://github.com/vanderaj/gaiabb" target="_blank"><strong>' .
-        $versionshort . '</strong></a>, &copy; 2009-2020 The GaiaBB Group';
+        $versionshort . '</strong></a>, &copy; 2009-2021 The GaiaBB Group';
 } else {
     $versionlong = '<br />Powered by <a href="https://github.com/vanderaj/gaiabb" target="_blank"><strong>' .
-        $versionshort . '</strong></a>, &copy; 2009-2020 The GaiaBB Group';
+        $versionshort . '</strong></a>, &copy; 2009-2021 The GaiaBB Group';
 }
 
 // If the board is offline, display an appropriate message
