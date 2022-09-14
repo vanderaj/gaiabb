@@ -1,16 +1,16 @@
 <?php
 /**
  * GaiaBB
- * Copyright (c) 2009-2021 The GaiaBB Project
+ * Copyright (c) 2011-2022 The GaiaBB Group
  * https://github.com/vanderaj/gaiabb
  *
- * Forked from UltimaBB
+ * Based off UltimaBB
  * Copyright (c) 2004 - 2007 The UltimaBB Group
  * (defunct)
  *
- * Forked from XMB
- * Copyright (c) 2001 - 2021 The XMB Development Team
- * https://forums.xmbforum2.com/
+ * Based off XMB
+ * Copyright (c) 2001 - 2004 The XMB Development Team
+ * http://www.xmbforum.com
  *
  * This file is part of GaiaBB
  *
@@ -28,10 +28,19 @@
  *    along with GaiaBB.  If not, see <http://www.gnu.org/licenses/>.
  *
  **/
-// phpcs:disable PSR1.Files.SideEffects
-require_once 'header.php';
 
-loadtpl('memberlist_row', 'memberlist', 'memberlist_admin', 'memberlist_multipage', 'memberlist_separator', 'memberlist_results_none');
+define('ROOT', './');
+
+require_once ROOT . 'header.php';
+
+loadtpl(
+    'memberlist_row',
+    'memberlist',
+    'memberlist_admin',
+    'memberlist_multipage',
+    'memberlist_separator',
+    'memberlist_results_none'
+);
 
 $shadow = shadowfx();
 $meta = metaTags();
@@ -91,35 +100,7 @@ switch ($action) {
         } else {
             $sortby_fx = '';
         }
-        $letters = array(
-            'A',
-            'B',
-            'C',
-            'D',
-            'E',
-            'F',
-            'G',
-            'H',
-            'I',
-            'J',
-            'K',
-            'L',
-            'M',
-            'N',
-            'O',
-            'P',
-            'Q',
-            'R',
-            'S',
-            'T',
-            'U',
-            'V',
-            'W',
-            'X',
-            'Y',
-            'Z',
-            $lang['lettermisc'],
-        );
+        $letters = array('A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', $lang['lettermisc']);
 
         $lettersort = '<tr>';
 
@@ -169,7 +150,7 @@ switch ($action) {
         if ($order != 'username' && $order != 'postnum' && $order != 'status' && $order != 'threadnum' && $order != 'lastvisit') {
             $orderby = 'uid';
             $order = 'uid';
-        } elseif ($order == 'status') {
+        } else if ($order == 'status') {
             $orderby = "if (status = 'Super Administrator',1, if (status = 'Administrator', 2, if (status = 'Super Moderator', 3, if (status = 'Moderator', 4, if (status = 'member', 5, if (status = 'banned', 6, 7))))))";
         } else {
             $orderby = $db->escape($order);
@@ -185,9 +166,7 @@ switch ($action) {
             $memberlist_template = 'memberlist_admin';
         }
 
-        $ext = array(
-            '&amp;order=' . urlencode(stripslashes($order)),
-        );
+        $ext = array('&amp;order=' . urlencode(stripslashes($order)));
 
         if (!empty($srchemail)) {
             if (!X_SADMIN) {
@@ -222,6 +201,7 @@ switch ($action) {
             $q = implode(' AND', $where);
             $num = $db->result($db->query("SELECT COUNT(uid) FROM " . X_PREFIX . "members WHERE $q"), 0);
             $qmem = $db->query("SELECT * FROM " . X_PREFIX . "members WHERE $q ORDER BY $orderby $desc LIMIT $start_limit, $CONFIG[memberperpage]");
+
         } else {
             $num = $db->result($db->query("SELECT COUNT(uid) FROM " . X_PREFIX . "members $ltrqry"), 0);
             $qmem = $db->query("SELECT * FROM " . X_PREFIX . "members $ltrqry ORDER BY $orderby $desc LIMIT $start_limit, $CONFIG[memberperpage]");
@@ -232,11 +212,11 @@ switch ($action) {
         $adjTime = ($self['timeoffset'] * 3600) + $self['daylightsavings'];
 
         $members = $oldst = '';
-        if ($db->numRows($qmem) == 0) {
-            $db->freeResult($qmem);
+        if ($db->num_rows($qmem) == 0) {
+            $db->free_result($qmem);
             eval('$members = "' . template('memberlist_results_none') . '";');
         } else {
-            while (($member = $db->fetchArray($qmem)) != false) {
+            while ($member = $db->fetch_array($qmem)) {
                 $member['regdate'] = gmdate($self['dateformat'], $member['regdate'] + $adjTime);
 
                 if (!($member['lastvisit'] > 0)) {
@@ -259,7 +239,8 @@ switch ($action) {
                     $member['firstname'] = stripslashes($member['firstname']);
                     $member['lastname'] = censor($member['lastname']);
                     $member['lastname'] = stripslashes($member['lastname']);
-                } elseif (empty($member['firstname']) || empty($member['lastname']) && $member['showname'] == 'no') {
+
+                } else if (empty($member['firstname']) || empty($member['lastname']) && $member['showname'] == 'no') {
                     $member['firstname'] = $lang['profilenoinformation'];
                     $member['lastname'] = '';
                 }
@@ -334,7 +315,7 @@ switch ($action) {
                 }
                 eval('$members .= "' . template('memberlist_row') . '";');
             }
-            $db->freeResult($qmem);
+            $db->free_result($qmem);
         }
 
         if (!isset($CONFIG['memberperpage'])) {
@@ -364,8 +345,8 @@ switch ($action) {
         break;
 }
 
-$header = $footer = '';
 eval('$header = "' . template('header') . '";');
 loadtime();
 eval('$footer = "' . template('footer') . '";');
-echo stripslashes($header . $memberlist . $footer);
+echo stripslashes($header);
+echo stripslashes($memberlist . $footer);

@@ -1,16 +1,16 @@
 <?php
 /**
  * GaiaBB
- * Copyright (c) 2009-2021 The GaiaBB Project
+ * Copyright (c) 2011-2022 The GaiaBB Group
  * https://github.com/vanderaj/gaiabb
  *
- * Forked from UltimaBB
+ * Based off UltimaBB
  * Copyright (c) 2004 - 2007 The UltimaBB Group
  * (defunct)
  *
- * Forked from XMB
- * Copyright (c) 2001 - 2021 The XMB Development Team
- * https://forums.xmbforum2.com/
+ * Based off XMB
+ * Copyright (c) 2001 - 2004 The XMB Development Team
+ * http://www.xmbforum.com
  *
  * This file is part of GaiaBB
  *
@@ -28,15 +28,20 @@
  *    along with GaiaBB.  If not, see <http://www.gnu.org/licenses/>.
  *
  **/
-// phpcs:disable PSR1.Files.SideEffects
-if (!defined('ROOT')) {
-    define('ROOT', '../');
-}
+
+define('ROOT', '../');
+define('ROOTINC', '../include/');
+define('ROOTCLASS', '../class/');
 
 require_once ROOT . 'header.php';
-require_once ROOT . 'include/admincp.inc.php';
+require_once ROOTINC . 'admincp.inc.php';
 
-loadtpl('cp_header', 'cp_footer', 'cp_message', 'cp_error');
+loadtpl(
+    'cp_header',
+    'cp_footer',
+    'cp_message',
+    'cp_error'
+);
 
 $shadow = shadowfx();
 $shadow2 = shadowfx2();
@@ -66,39 +71,30 @@ function viewPanel()
 
     ?>
     <form method="post" action="cp_inactivemembers.php">
-        <input type="hidden" name="csrf_token"
-               value="<?php echo $oToken->createToken() ?>"/>
-        <table cellspacing="0px" cellpadding="0px" border="0px" width="100%"
-               align="center">
-            <tr>
-                <td bgcolor="<?php echo $THEME['bordercolor'] ?>">
-                    <table border="0px" cellspacing="<?php echo $THEME['borderwidth'] ?>"
-                           cellpadding="<?php echo $THEME['tablespace'] ?>" width="100%">
-                        <tr class="category">
-                            <td class="title" colspan="2"><?php echo $lang['inactive'] ?></td>
-                        </tr>
-                        <tr class="tablerow">
-                            <td bgcolor="<?php echo $THEME['altbg1'] ?>"
-                                width="22%"><?php echo $lang['num_days_expl'] ?></td>
-                            <td bgcolor="<?php echo $THEME['altbg2'] ?>"><input type="text"
-                                                                                name="num_days" size="4"/></td>
-                        </tr>
-                        <tr class="tablerow">
-                            <td bgcolor="<?php echo $THEME['altbg1'] ?>"
-                                width="22%"><?php echo $lang['num_posts_expl'] ?></td>
-                            <td bgcolor="<?php echo $THEME['altbg2'] ?>"><input type="text"
-                                                                                name="num_posts" size="4"/></td>
-                        </tr>
-                        <tr bgcolor="<?php echo $THEME['altbg2'] ?>" class="ctrtablerow">
-                            <td colspan="2"><input class="submit" type="submit"
-                                                   name="yessubmit" value="<?php echo $lang['textsubmitchanges'] ?>"/>
-                            </td>
-                        </tr>
-                    </table>
-                </td>
-            </tr>
-        </table>
-        <?php echo $shadow2 ?>
+    <input type="hidden" name="token" value="<?php echo $oToken->get_new_token() ?>" />
+    <table cellspacing="0px" cellpadding="0px" border="0px" width="100%" align="center">
+    <tr>
+    <td bgcolor="<?php echo $THEME['bordercolor'] ?>">
+    <table border="0px" cellspacing="<?php echo $THEME['borderwidth'] ?>" cellpadding="<?php echo $THEME['tablespace'] ?>" width="100%">
+    <tr class="category">
+    <td class="title" colspan="2"><?php echo $lang['inactive'] ?></td>
+    </tr>
+    <tr class="tablerow">
+    <td bgcolor="<?php echo $THEME['altbg1'] ?>" width="22%"><?php echo $lang['num_days_expl'] ?></td>
+    <td bgcolor="<?php echo $THEME['altbg2'] ?>"><input type="text" name="num_days" size="4" /></td>
+    </tr>
+    <tr class="tablerow">
+    <td bgcolor="<?php echo $THEME['altbg1'] ?>" width="22%"><?php echo $lang['num_posts_expl'] ?></td>
+    <td bgcolor="<?php echo $THEME['altbg2'] ?>"><input type="text" name="num_posts" size="4" /></td>
+    </tr>
+    <tr bgcolor="<?php echo $THEME['altbg2'] ?>" class="ctrtablerow">
+    <td colspan="2"><input class="submit" type="submit" name="yessubmit"  value="<?php echo $lang['textsubmitchanges'] ?>" /></td>
+    </tr>
+    </table>
+    </td>
+    </tr>
+    </table>
+    <?php echo $shadow2 ?>
     </form>
     </td>
     </tr>
@@ -111,7 +107,7 @@ function doPanel()
     global $shadow2, $lang, $db, $THEME;
     global $oToken, $onlinetime;
 
-    $oToken->assertToken();
+    $oToken->assert_token();
 
     $num_days = formInt('num_days');
     $num_posts = formInt('num_posts');

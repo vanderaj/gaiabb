@@ -1,16 +1,16 @@
 <?php
 /**
  * GaiaBB
- * Copyright (c) 2009-2021 The GaiaBB Project
+ * Copyright (c) 2011-2022 The GaiaBB Group
  * https://github.com/vanderaj/gaiabb
  *
- * Forked from UltimaBB
+ * Based off UltimaBB
  * Copyright (c) 2004 - 2007 The UltimaBB Group
  * (defunct)
  *
- * Forked from XMB
- * Copyright (c) 2001 - 2021 The XMB Development Team
- * https://forums.xmbforum2.com/
+ * Based off XMB
+ * Copyright (c) 2001 - 2004 The XMB Development Team
+ * http://www.xmbforum.com
  *
  * This file is part of GaiaBB
  *
@@ -28,16 +28,21 @@
  *    along with GaiaBB.  If not, see <http://www.gnu.org/licenses/>.
  *
  **/
-// phpcs:disable PSR1.Files.SideEffects
-if (!defined('ROOT')) {
-    define('ROOT', '../');
-}
+
+define('ROOT', '../');
+define('ROOTINC', '../include/');
+define('ROOTCLASS', '../class/');
 
 require_once ROOT . 'header.php';
-require_once ROOT . 'include/admincp.inc.php';
-require_once ROOT . 'helper/formHelper.php';
+require_once ROOTINC . 'admincp.inc.php';
+require_once ROOTINC . 'settings.inc.php';
 
-loadtpl('cp_header', 'cp_footer', 'cp_message', 'cp_error');
+loadtpl(
+    'cp_header',
+    'cp_footer',
+    'cp_message',
+    'cp_error'
+);
 
 $shadow = shadowfx();
 $shadow2 = shadowfx2();
@@ -62,19 +67,17 @@ smcwcache();
 /**
  * function() - short description of function
  *
- * TODO: Long description of function
+ * Long description of function
  *
- * @param $varname type,
- *            what it does
- * @return type, what the return does
- *
+ * @param    $varname    type, what it does
+ * @return   type, what the return does
  */
 function viewPanel()
 {
     global $CONFIG, $lang, $THEME, $shadow2, $oToken;
 
     $avataron = $avataroff = '';
-    GaiaBB\FormHelper::getSettingOnOffHtml('avastatus', $avataron, $avataroff);
+    settingHTML('avastatus', $avataron, $avataroff);
 
     $avuchecked[0] = $avuchecked[1] = $avuchecked[2] = false;
     switch ($CONFIG['avatar_whocanupload']) {
@@ -90,58 +93,48 @@ function viewPanel()
     }
 
     $avatars_status_on = $avatars_status_off = '';
-    GaiaBB\FormHelper::getSettingOnOffHtml('avatars_status', $avatars_status_on, $avatars_status_off);
+    settingHTML('avatars_status', $avatars_status_on, $avatars_status_off);
 
     $max_avatar_sizes = explode('x', $CONFIG['max_avatar_size']);
     $CONFIG['avatar_path'] = stripslashes($CONFIG['avatar_path']);
     $CONFIG['avgalpath'] = stripslashes($CONFIG['avgalpath']);
     ?>
     <form method="post" action="cp_avatars.php">
-        <input type="hidden" name="csrf_token"
-               value="<?php echo $oToken->createToken() ?>"/>
-        <table cellspacing="0px" cellpadding="0px" border="0px" width="100%"
-               align="center">
-            <tr>
-                <td bgcolor="<?php echo $THEME['bordercolor'] ?>">
-                    <table border="0px" cellspacing="<?php echo $THEME['borderwidth'] ?>"
-                           cellpadding="<?php echo $THEME['tablespace'] ?>" width="100%">
-                        <tr class="category">
-                            <td colspan="2" class="title"><?php echo $lang['Avatar_Settings'] ?></td>
-                        </tr>
-                        <?php
-                        GaiaBB\FormHelper::formSelectOnOff($lang['textavastatus'], 'avastatusnew', $avataron, $avataroff);
-                        GaiaBB\FormHelper::formSelectOnOff($lang['avatars_status'], 'avatars_statusnew', $avatars_status_on, $avatars_status_off);
-                        GaiaBB\FormHelper::formTextBox($lang['avatarsperpage'], 'avatars_perpagenew', $CONFIG['avatars_perpage'], 2);
-                        GaiaBB\FormHelper::formTextBox($lang['avatarsperrow'], "avatars_perrownew", $CONFIG['avatars_perrow'], 2);
-                        GaiaBB\FormHelper::formSelectList($lang['Avatar_Whoupload'], 'avatar_whocanuploadnew', array(
-                            $lang['textoff'],
-                            $lang['Avatar_Upall'],
-                            $lang['Avatar_Upstaff'],
-                        ), array(
-                            'off',
-                            'all',
-                            'staff',
-                        ), $avuchecked, false);
-                        GaiaBB\FormHelper::formTextBox($lang['Avatar_Filesize'], 'avatar_filesizenew', $CONFIG['avatar_filesize'], 5);
-                        GaiaBB\FormHelper::formTextBox($lang['Avatar_Wdimensions'], 'avatar_max_widthnew', $CONFIG['avatar_max_width'], 4);
-                        GaiaBB\FormHelper::formTextBox($lang['Avatar_Hdimensions'], 'avatar_max_heightnew', $CONFIG['avatar_max_height'], 4);
-                        GaiaBB\FormHelper::formTextBox($lang['Avatar_Newwresize'], 'avatar_new_widthnew', $CONFIG['avatar_new_width'], 4);
-                        GaiaBB\FormHelper::formTextBox($lang['Avatar_Newhresize'], 'avatar_new_heightnew', $CONFIG['avatar_new_height'], 4);
-                        GaiaBB\FormHelper::formTextBox($lang['Avatar_Path'], 'avatar_pathnew', $CONFIG['avatar_path'], 20);
-                        GaiaBB\FormHelper::formTextBox($lang['avgalpath'], 'avgalpathnew', $CONFIG['avgalpath'], 20);
-                        GaiaBB\FormHelper::formTextBox($lang['max_avatar_size_w'], 'max_avatar_size_w_new', $max_avatar_sizes[0], 4);
-                        GaiaBB\FormHelper::formTextBox($lang['max_avatar_size_h'], 'max_avatar_size_h_new', $max_avatar_sizes[1], 4);
-                        ?>
-                        <tr class="ctrtablerow" bgcolor="<?php echo $THEME['altbg2'] ?>">
-                            <td colspan="2"><input class="submit" type="submit"
-                                                   name="avatarsubmit"
-                                                   value="<?php echo $lang['textsubmitchanges'] ?>"/></td>
-                        </tr>
-                    </table>
-                </td>
-            </tr>
-        </table>
-        <?php echo $shadow2 ?>
+    <input type="hidden" name="token" value="<?php echo $oToken->get_new_token() ?>" />
+    <table cellspacing="0px" cellpadding="0px" border="0px" width="100%" align="center">
+    <tr>
+    <td bgcolor="<?php echo $THEME['bordercolor'] ?>">
+    <table border="0px" cellspacing="<?php echo $THEME['borderwidth'] ?>" cellpadding="<?php echo $THEME['tablespace'] ?>" width="100%">
+    <tr class="category">
+    <td colspan="2" class="title"><?php echo $lang['Avatar_Settings'] ?></td>
+    </tr>
+    <?php
+    if (!is_writable($CONFIG['avatar_path'])) {
+        error($lang['avatar_nowrite'], false);
+    }
+    printsetting1($lang['textavastatus'], 'avastatusnew', $avataron, $avataroff);
+    printsetting1($lang['avatars_status'], 'avatars_statusnew', $avatars_status_on, $avatars_status_off);
+    printsetting2($lang['avatarsperpage'], 'avatars_perpagenew', $CONFIG['avatars_perpage'], 2);
+    printsetting2($lang['avatarsperrow'], "avatars_perrownew", $CONFIG['avatars_perrow'], 2);
+    printsetting3($lang['Avatar_Whoupload'], 'avatar_whocanuploadnew', array($lang['textoff'], $lang['Avatar_Upall'], $lang['Avatar_Upstaff']), array('off', 'all', 'staff'), $avuchecked, false);
+    printsetting2($lang['Avatar_Filesize'], 'avatar_filesizenew', $CONFIG['avatar_filesize'], 5);
+    printsetting2($lang['Avatar_Wdimensions'], 'avatar_max_widthnew', $CONFIG['avatar_max_width'], 4);
+    printsetting2($lang['Avatar_Hdimensions'], 'avatar_max_heightnew', $CONFIG['avatar_max_height'], 4);
+    printsetting2($lang['Avatar_Newwresize'], 'avatar_new_widthnew', $CONFIG['avatar_new_width'], 4);
+    printsetting2($lang['Avatar_Newhresize'], 'avatar_new_heightnew', $CONFIG['avatar_new_height'], 4);
+    printsetting2($lang['Avatar_Path'], 'avatar_pathnew', $CONFIG['avatar_path'], 20);
+    printsetting2($lang['avgalpath'], 'avgalpathnew', $CONFIG['avgalpath'], 20);
+    printsetting2($lang['max_avatar_size_w'], 'max_avatar_size_w_new', $max_avatar_sizes[0], 4);
+    printsetting2($lang['max_avatar_size_h'], 'max_avatar_size_h_new', $max_avatar_sizes[1], 4);
+    ?>
+    <tr class="ctrtablerow" bgcolor="<?php echo $THEME['altbg2'] ?>">
+    <td colspan="2"><input class="submit" type="submit" name="avatarsubmit" value="<?php echo $lang['textsubmitchanges'] ?>" /></td>
+    </tr>
+    </table>
+    </td>
+    </tr>
+    </table>
+    <?php echo $shadow2 ?>
     </form>
     </td>
     </tr>
@@ -152,18 +145,16 @@ function viewPanel()
 /**
  * function() - short description of function
  *
- * TODO: Long description of function
+ * Long description of function
  *
- * @param $varname type,
- *            what it does
- * @return type, what the return does
- *
+ * @param    $varname    type, what it does
+ * @return   type, what the return does
  */
 function doPanel()
 {
     global $lang, $db, $THEME, $oToken;
 
-    $oToken->assertToken();
+    $oToken->assert_token();
 
     $avastatusnew = formOnOff('avastatusnew');
     $avatars_statusnew = formOnOff('avatars_statusnew');
@@ -171,13 +162,10 @@ function doPanel()
     $avatar_whocanuploadnew = formVar('avatar_whocanuploadnew');
     switch ($avatar_whocanuploadnew) {
         case 'all':
-            // no break
         case 'off':
-            // no break
         case 'staff':
             // positive validation = no action needs to be taken
             break;
-
         default:
             // all other choices, make a safe choice
             $avatar_whocanuploadnew = 'off';

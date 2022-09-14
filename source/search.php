@@ -1,16 +1,16 @@
 <?php
 /**
  * GaiaBB
- * Copyright (c) 2009-2021 The GaiaBB Project
+ * Copyright (c) 2011-2022 The GaiaBB Group
  * https://github.com/vanderaj/gaiabb
  *
- * Forked from UltimaBB
+ * Based off UltimaBB
  * Copyright (c) 2004 - 2007 The UltimaBB Group
  * (defunct)
  *
- * Forked from XMB
- * Copyright (c) 2001 - 2021 The XMB Development Team
- * https://forums.xmbforum2.com/
+ * Based off XMB
+ * Copyright (c) 2001 - 2004 The XMB Development Team
+ * http://www.xmbforum.com
  *
  * This file is part of GaiaBB
  *
@@ -28,10 +28,18 @@
  *    along with GaiaBB.  If not, see <http://www.gnu.org/licenses/>.
  *
  **/
-// phpcs:disable PSR1.Files.SideEffects
-require_once 'header.php';
 
-loadtpl('search', 'search_results_row', 'search_results_none', 'search_results', 'search_nextlink');
+define('ROOT', './');
+
+require_once ROOT . 'header.php';
+
+loadtpl(
+    'search',
+    'search_results_row',
+    'search_results_none',
+    'search_results',
+    'search_nextlink'
+);
 
 $shadow = shadowfx();
 $meta = metaTags();
@@ -48,10 +56,6 @@ $srchfrom = intval(getRequestVar('srchfrom'));
 $srchtxt = $db->escape(getRequestVar('srchtxt'));
 $srchuname = $db->escape(getRequestVar('srchuname'));
 $srchfid = formArray('srchfid');
-
-// Ensure that all fids are integers, or empty
-$srchfid = array_map('intval', $srchfid);
-
 if (empty($srchfid)) {
     $srchfid[] = 'all';
 }
@@ -138,7 +142,7 @@ if (noSubmit('searchsubmit')) {
     $pagenum = $page + 1;
 
     $querysrch = $db->query($sql);
-    $results = $db->numRows($querysrch);
+    $results = $db->num_rows($querysrch);
 
     if (!empty($srchuname)) {
         $srchtxt = '\0';
@@ -147,7 +151,7 @@ if (noSubmit('searchsubmit')) {
     if ($filter_distinct == 'yes') {
         $temparray = array();
         $searchresults = '';
-        while (($post = $db->fetchArray($querysrch)) != false) {
+        while ($post = $db->fetch_array($querysrch)) {
             $fidpw = isset($_COOKIE['fidpw' . $post['fid']]) ? $_COOKIE['fidpw' . $post['fid']] : '';
             $authorization = privfcheck($post['fprivate'], $post['fuserlist']);
             if ((!empty($post['password']) && $post['password'] != $fidpw) && !X_SADMIN) {
@@ -165,12 +169,7 @@ if (noSubmit('searchsubmit')) {
 
                     $message = $post['message'];
 
-                    $srchtxt = str_replace(array(
-                        '_ ',
-                        ' _',
-                        '% ',
-                        ' %',
-                    ), '', $srchtxt);
+                    $srchtxt = str_replace(array('_ ', ' _', '% ', ' %'), '', $srchtxt);
                     $position = strpos($message, $srchtxt, 0);
                     $show_num = 100;
                     $msg_leng = strlen($message);
@@ -219,7 +218,7 @@ if (noSubmit('searchsubmit')) {
             }
         }
     } else {
-        while (($post = $db->fetchArray($querysrch)) != false) {
+        while ($post = $db->fetch_array($querysrch)) {
             $fidpw = isset($_COOKIE['fidpw' . $post['fid']]) ? $_COOKIE['fidpw' . $post['fid']] : '';
             $authorization = privfcheck($post['fprivate'], $post['fuserlist']);
             if (($post['password'] != $fidpw && !empty($post['password'])) && !X_SADMIN) {
@@ -234,12 +233,7 @@ if (noSubmit('searchsubmit')) {
                 }
                 $message = $post['message'];
 
-                $srchtxt = str_replace(array(
-                    '_ ',
-                    ' _',
-                    '% ',
-                    ' %',
-                ), '', $srchtxt);
+                $srchtxt = str_replace(array('_ ', ' _', '% ', ' %'), '', $srchtxt);
 
                 $position = 0;
                 if (!empty($srchtxt)) {

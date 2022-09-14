@@ -1,16 +1,16 @@
 <?php
 /**
  * GaiaBB
- * Copyright (c) 2009-2021 The GaiaBB Project
+ * Copyright (c) 2011-2022 The GaiaBB Group
  * https://github.com/vanderaj/gaiabb
  *
- * Forked from UltimaBB
+ * Based off UltimaBB
  * Copyright (c) 2004 - 2007 The UltimaBB Group
  * (defunct)
  *
- * Forked from XMB
- * Copyright (c) 2001 - 2021 The XMB Development Team
- * https://forums.xmbforum2.com/
+ * Based off XMB
+ * Copyright (c) 2001 - 2004 The XMB Development Team
+ * http://www.xmbforum.com
  *
  * This file is part of GaiaBB
  *
@@ -28,48 +28,193 @@
  *    along with GaiaBB.  If not, see <http://www.gnu.org/licenses/>.
  *
  **/
-// phpcs:disable PSR1.Files.SideEffects
 
-namespace GaiaBB;
+if (!defined('IN_PROGRAM') && (defined('DEBUG') && DEBUG == false)) {
+    exit('This file is not designed to be called directly');
+}
 
-require_once ROOT . 'class/authstate.class.php';
+class AuthState
+{
+    private $state;
+    public $ubbuid;
+    public $ubbpw;
+
+    public function __construct()
+    {
+        $this->state = array();
+        $this->ubbuid = '';
+        $this->ubbpw = '';
+
+        $this->get();
+    }
+
+    public function get()
+    {
+        if (isset($_COOKIE['ubbstate'])) {
+            try
+            {
+                $tmpState = $_COOKIE['ubbstate'];
+
+                $tmpState = base64_decode($tmpState, true);
+
+                if ($tmpState === false) {
+                    throw new Exception("Invalid decode of state string");
+                }
+
+                // $this->state = mcrypt_decrypt(MCRYPT_RIJNDAEL_256, GAIABB_MASTERKEY, $tmpState, MCRYPT_MODE_ECB, mcrypt_create_iv(mcrypt_get_iv_size(MCRYPT_RIJNDAEL_256, MCRYPT_MODE_ECB), MCRYPT_RAND));
+//                if ($this->state === false)
+//                {
+//                    throw new Exception("Invalid decryption");
+//                }
+                $this->state = unserialize($tmpState);
+
+                if (isset($this->state['version']) && $this->state['version'] != 1) {
+                    throw new Exception("Invalid state version, or state is not valid.");
+                }
+
+                $this->ubbuid = $this->state['ubbuid'];
+                $this->ubbpw = $this->state['ubbpw'];
+            } catch (Exception $e) {
+                global $db;
+
+                $db->panic("authState :: get() - Failed to decrypt authentication state", $e);
+            }
+        }
+    }
+
+    public function convert()
+    {
+        if (isset($_COOKIE['ubbuid'])) {
+            $this->ubbuid = $_COOKIE['ubbuid'];
+        }
+
+        if (isset($_COOKIE['ubbpw'])) {
+            $this->ubbpw = $_COOKIE['ubbpw'];
+        }
+
+        $this->update();
+    }
+
+    public function update()
+    {
+        global $onlinetime, $cookiepath, $cookiedomain;
+
+        try
+        {
+            $this->state['version'] = 1;
+            $this->state['ubbuid'] = $this->ubbuid;
+            $this->state['ubbpw'] = $this->ubbpw;
+
+            $tmpState = serialize($this->state);
+
+//            $tmpState = mcrypt_encrypt(MCRYPT_RIJNDAEL_256, GAIABB_MASTERKEY, $tmpState, MCRYPT_MODE_ECB, mcrypt_create_iv(mcrypt_get_iv_size(MCRYPT_RIJNDAEL_256, MCRYPT_MODE_ECB), MCRYPT_RAND));
+//            if ($this->state === false)
+//            {
+//                throw new Exception("Invalid encryption");
+//            }
+            $tmpState = base64_encode($tmpState);
+            $currtime = $onlinetime + (86400 * 30);
+            setcookie('ubbstate', $tmpState, $currtime, $cookiepath, $cookiedomain);
+        } catch (Exception $e) {
+            global $db;
+
+            $db->panic("authState :: update() - Failed to update authentication state", $e);
+        }
+    }
+}
 
 class AuthC
 {
-
     public function __construct()
     {
     }
 
+    public function expireCaches()
+    {
+        global $config_cache, $moderators_cache;
+
+        $config_cache->expire('settings');
+        $moderators_cache->expire('moderators');
+        $config_cache->expire('theme');
+        $config_cache->expire('pluglinks');
+        $config_cache->expire('whosonline');
+        $config_cache->expire('forumjump');
+    }
+
+    public function autoLoginViaSession()
+    {
+        global $ubbpw, $ubbuid;
+
+        $retval = false;
+
+        if (isset($_SESSION['ubbuid']) && is_numeric($_SESSION['ubbuid'])) {
+            $ubbuid = intval($_SESSION['ubbuid']);
+            $ubbpw = $_SESSION['ubbpw'];
+
+            $retval = true;
+        }
+        return $retval;
+    }
+
+    public function autoLoginViaAuthState()
+    {
+        global $ubbpw, $ubbuid, $authState;
+
+        $retval = false;
+
+        $authState->get();
+
+        if (isset($authState->ubbuid) && is_numeric($authState->ubbuid)) {
+            $ubbuid = $_SESSION['ubbuid'] = $authState->ubbuid;
+            $ubbpw = $_SESSION['ubbpw'] = $authState->ubbpw;
+
+            $retval = true;
+        }
+        return $retval;
+    }
+
+    public function autoLoginViaCookie()
+    {
+        global $authState;
+
+        $retval = false;
+
+        if (isset($_COOKIE['ubbuid']) && is_numeric($_COOKIE['ubbuid'])) {
+            $authState->convert();
+            $retval = $this->autoLoginViaAuthState();
+        }
+        return $retval;
+    }
+
     public function autoLogin()
     {
-        global $db, $self, $gbbuser, $gbbpw, $gbbuid, $onlinetime, $CONFIG;
+        global $db, $self, $ubbuser, $ubbpw, $ubbuid, $onlinetime, $CONFIG;
 
-        $gbbuser = '';
-        $gbbpw = '';
-        $gbbuid = 0;
+        $ubbuser = '';
+        $ubbpw = '';
+        $ubbuid = 0;
 
         $auto = false;
 
-        if (isset($_SESSION['gbbuid']) && $_SESSION['gbbuid'] > 0) {
+        if (isset($_SESSION['ubbuid']) && $_SESSION['ubbuid'] > 0) {
             $auto = $this->autoLoginViaSession();
-        } elseif (isset($_COOKIE['gbbstate'])) {
+        } else if (isset($_COOKIE['ubbstate'])) {
             $auto = $this->autoLoginViaAuthState();
-        } elseif (isset($_COOKIE['gbbuid'])) {
+        } else if (isset($_COOKIE['ubbuid'])) {
             $auto = $this->autoLoginViaCookie();
         }
 
         $q = false;
         $self['status'] = '';
         $userrec = array();
-        if ($auto && intval($gbbuid) > 0) {
-            $mq = $db->query("SELECT * FROM " . X_PREFIX . "members WHERE uid = '$gbbuid'");
-            $userrec = $db->fetchArray($mq);
-            if (($db->numRows($mq) == 1) && ($userrec['password'] == $gbbpw)) {
-                $db->query("UPDATE " . X_PREFIX . "members SET lastvisit = " . $db->time($onlinetime) . " WHERE uid = '$gbbuid'");
+        if ($auto && $ubbuid > 0) {
+            $mq = $db->query("SELECT * FROM " . X_PREFIX . "members WHERE uid = '$ubbuid'");
+            $userrec = $db->fetch_array($mq);
+            if (($db->num_rows($mq) == 1) && ($userrec['password'] == $ubbpw)) {
+                $db->query("UPDATE " . X_PREFIX . "members SET lastvisit = " . $db->time($onlinetime) . " WHERE uid = '$ubbuid'");
                 $q = true;
             }
-            $db->freeResult($mq);
+            $db->free_result($mq);
         }
 
         if ($q) {
@@ -79,7 +224,7 @@ class AuthC
                 $self[$key] = $val;
             }
 
-            $gbbuser = $self['username'];
+            $ubbuser = $self['username'];
 
             if (empty($self['theme'])) {
                 $self['theme'] = 0;
@@ -143,76 +288,32 @@ class AuthC
                 'threadnum' => 0,
                 'readrules' => 'no',
                 'forcelogout' => 'no',
+
             );
         }
-    }
-
-    public function autoLoginViaSession()
-    {
-        global $gbbpw, $gbbuid;
-
-        $retval = false;
-
-        if (isset($_SESSION['gbbuid']) && is_numeric($_SESSION['gbbuid'])) {
-            $gbbuid = intval($_SESSION['gbbuid']);
-            $gbbpw = $_SESSION['gbbpw'];
-
-            $retval = true;
-        }
-        return $retval;
-    }
-
-    public function autoLoginViaAuthState()
-    {
-        global $gbbpw, $gbbuid, $authState;
-
-        $retval = false;
-
-        $authState->get();
-
-        if (isset($authState->gbbuid) && is_numeric($authState->gbbuid)) {
-            $gbbuid = $_SESSION['gbbuid'] = $authState->gbbuid;
-            $gbbpw = $_SESSION['gbbpw'] = $authState->gbbpw;
-
-            $retval = true;
-        }
-        return $retval;
-    }
-
-    public function autoLoginViaCookie()
-    {
-        global $authState;
-
-        $retval = false;
-
-        if (isset($_COOKIE['gbbuid']) && is_numeric($_COOKIE['gbbuid'])) {
-            $authState->convert();
-            $retval = $this->autoLoginViaAuthState();
-        }
-        return $retval;
     }
 
     public function updateLastVisit()
     {
         global $onlinetime, $cookiepath, $cookiedomain;
-        global $gbblva, $gbblvb;
+        global $ubblva, $ubblvb;
         global $lastvisit, $lastvisit2;
 
-        $gbblva = isset($_COOKIE['gbblva']) ? intval($_COOKIE['gbblva']) : 0;
-        $gbblvb = isset($_COOKIE['gbblvb']) ? intval($_COOKIE['gbblvb']) : 0;
+        $ubblva = isset($_COOKIE['ubblva']) ? intval($_COOKIE['ubblva']) : 0;
+        $ubblvb = isset($_COOKIE['ubblvb']) ? intval($_COOKIE['ubblvb']) : 0;
 
-        setcookie('gbblva', $onlinetime, $onlinetime + (86400 * 365), $cookiepath, $cookiedomain);
+        setcookie('ubblva', $onlinetime, $onlinetime + (86400 * 365), $cookiepath, $cookiedomain);
 
         $thetime = $onlinetime;
-        if ($gbblvb > 0) {
-            $thetime = $gbblvb;
+        if ($ubblvb > 0) {
+            $thetime = $ubblvb;
         } else {
-            if ($gbblva > 0) {
-                $thetime = $gbblva;
+            if ($ubblva > 0) {
+                $thetime = $ubblva;
             }
         }
 
-        setcookie('gbblvb', $thetime, ($onlinetime + 600), $cookiepath, $cookiedomain);
+        setcookie('ubblvb', $thetime, ($onlinetime + 600), $cookiepath, $cookiedomain);
 
         $lastvisit = $thetime;
         $lastvisit2 = $lastvisit - 540;
@@ -258,114 +359,6 @@ class AuthC
         }
     }
 
-    public function logout($url = 'index.php', $delay = 0)
-    {
-        global $db, $onlinetime, $cookiepath, $cookiedomain, $self;
-
-        $query = $db->query("DELETE FROM " . X_PREFIX . "whosonline WHERE username = '" . $self['uid'] . "'");
-
-        if (isset($_COOKIE['gbbstate'])) {
-            setcookie("gbbstate", '', 0, $cookiepath, $cookiedomain);
-        }
-        if (isset($_COOKIE['gbbuser'])) {
-            setcookie("gbbuser", '', 0, $cookiepath, $cookiedomain);
-        }
-        if (isset($_COOKIE['gbbpw'])) {
-            setcookie("gbbpw", '', 0, $cookiepath, $cookiedomain);
-        }
-        if (isset($_COOKIE['gbbuid'])) {
-            setcookie("gbbuid", '', 0, $cookiepath, $cookiedomain);
-        }
-        if (isset($_COOKIE['oldtopics'])) {
-            setcookie("oldtopics", '', 0, $cookiepath, $cookiedomain);
-        }
-        if (isset($_COOKIE['gbblva'])) {
-            setcookie("gbblva", '', 0, $cookiepath, $cookiedomain);
-        }
-        if (isset($_COOKIE['gbblvb'])) {
-            setcookie("gbblvb", '', 0, $cookiepath, $cookiedomain);
-        }
-
-        // loop trough all password-forum-cookies and remove them
-        foreach ($_COOKIE as $key => $val) {
-            if (preg_match('#^fidpw([0-9]+)$#', $key)) {
-                setcookie($key, '', 0, $cookiepath, $cookiedomain);
-            }
-        }
-
-        $this->expireCaches();
-
-        // Clear out the session data and session cookie
-        session_regenerate_id(true);
-        $_SESSION = array();
-        redirect($url, $delay, (($delay > 0) ? X_REDIRECT_JS : X_REDIRECT_HEADER));
-    }
-
-    public function expireCaches()
-    {
-        global $config_cache, $moderators_cache;
-
-        $config_cache->expire('settings');
-        $moderators_cache->expire('moderators');
-        $config_cache->expire('theme');
-        $config_cache->expire('pluglinks');
-        $config_cache->expire('whosonline');
-        $config_cache->expire('forumjump');
-    }
-
-    public function login()
-    {
-        global $db, $member, $cookiedomain, $cookiepath, $onlinetime, $onlineip, $authState, $gbbuid, $gbbpw;
-
-        $errmsg = '';
-
-        $username = formVar('username');
-        $password = md5(formVar('password'));
-        $hide = form10('hide');
-        $remember = formYesNo('remember');
-
-        // Beware for this...
-        $username = $db->escape($username, -1, true);
-
-        $query = $db->query("SELECT * FROM " . X_PREFIX . "members WHERE username = '$username'");
-        if ($query && $db->numRows($query) == 1) {
-            $member = $db->fetchArray($query);
-        }
-        $db->freeResult($query);
-
-        if (count($member) > 0 && $member['password'] == $password) {
-            unset($_SESSION['login_next_attempt']);
-            unset($_SESSION['login_attempts']);
-
-            $this->expireCaches();
-
-            $db->query("DELETE FROM " . X_PREFIX . "whosonline WHERE ip = '$onlineip' && username = 'xguest123'");
-            $currtime = $onlinetime + (86400 * 30);
-
-            $gbbuid = $_SESSION['gbbuid'] = $member['uid'];
-            $gbbpw = $_SESSION['gbbpw'] = $password;
-
-            // Logging on invisible?
-            $db->query("UPDATE " . X_PREFIX . "members SET invisible = '$hide' WHERE uid = '$gbbuid'");
-
-            // Logging on permanently?
-            if ($remember == 'yes') {
-                // Set a permanent cookie, which will generally last a month without being updated
-                $authState->gbbuid = $gbbuid;
-                $authState->gbbpw = $gbbpw;
-                $authState->update();
-            }
-
-            session_regenerate_id(false);
-
-            redirect('index.php', 0);
-        } else {
-            $errmsg = $this->updateLoginCounters();
-        }
-
-        return $errmsg;
-    }
-
     public function updateLoginCounters()
     {
         global $CONFIG, $onlinetime, $lang, $THEME, $shadow;
@@ -384,5 +377,101 @@ class AuthC
         }
 
         return $errmsg;
+    }
+
+    public function login()
+    {
+        global $db, $member, $cookiedomain, $cookiepath, $onlinetime, $onlineip, $authState, $ubbuid, $ubbpw;
+
+        $errmsg = '';
+
+        $username = formVar('username');
+        $password = md5(formVar('password'));
+        $hide = form10('hide');
+        $remember = formYesNo('remember');
+
+        // Beware for this...
+        $username = $db->escape($username, -1, true);
+
+        $query = $db->query("SELECT * FROM " . X_PREFIX . "members WHERE username = '$username'");
+        if ($query && $db->num_rows($query) == 1) {
+            $member = $db->fetch_array($query);
+        }
+        $db->free_result($query);
+
+        if (count($member) > 0 && $member['password'] == $password) {
+            unset($_SESSION['login_next_attempt']);
+            unset($_SESSION['login_attempts']);
+
+            $this->expireCaches();
+
+            $db->query("DELETE FROM " . X_PREFIX . "whosonline WHERE ip = '$onlineip' && username = 'xguest123'");
+            $currtime = $onlinetime + (86400 * 30);
+
+            $ubbuid = $_SESSION['ubbuid'] = $member['uid'];
+            $ubbpw = $_SESSION['ubbpw'] = $password;
+
+            // Logging on invisible?
+            $db->query("UPDATE " . X_PREFIX . "members SET invisible = '$hide' WHERE uid = '$ubbuid'");
+
+            // Logging on permanently?
+            if ($remember == 'yes') {
+                // Set a permanent cookie, which will generally last a month without being updated
+                $authState->ubbuid = $ubbuid;
+                $authState->ubbpw = $ubbpw;
+                $authState->update();
+            }
+
+            session_regenerate_id(false);
+
+            redirect('index.php', 0);
+        } else {
+            $errmsg = $this->updateLoginCounters();
+        }
+
+        return $errmsg;
+    }
+
+    public function logout($url = 'index.php', $delay = 0)
+    {
+        global $db, $onlinetime, $cookiepath, $cookiedomain, $self;
+
+        $query = $db->query("DELETE FROM " . X_PREFIX . "whosonline WHERE username = '" . $self['uid'] . "'");
+
+        if (isset($_COOKIE['ubbstate'])) {
+            setcookie("ubbstate", '', 0, $cookiepath, $cookiedomain);
+        }
+        if (isset($_COOKIE['ubbuser'])) {
+            setcookie("ubbuser", '', 0, $cookiepath, $cookiedomain);
+        }
+        if (isset($_COOKIE['ubbpw'])) {
+            setcookie("ubbpw", '', 0, $cookiepath, $cookiedomain);
+        }
+        if (isset($_COOKIE['ubbuid'])) {
+            setcookie("ubbuid", '', 0, $cookiepath, $cookiedomain);
+        }
+        if (isset($_COOKIE['oldtopics'])) {
+            setcookie("oldtopics", '', 0, $cookiepath, $cookiedomain);
+        }
+        if (isset($_COOKIE['ubblva'])) {
+            setcookie("ubblva", '', 0, $cookiepath, $cookiedomain);
+        }
+        if (isset($_COOKIE['ubblvb'])) {
+            setcookie("ubblvb", '', 0, $cookiepath, $cookiedomain);
+        }
+
+        // loop trough all password-forum-cookies and remove them
+        foreach ($_COOKIE as $key => $val) {
+            if (preg_match('#^fidpw([0-9]+)$#', $key)) {
+                setcookie($key, '', 0, $cookiepath, $cookiedomain);
+            }
+        }
+
+        $this->expireCaches();
+
+        // Clear out the session data and session cookie
+        session_regenerate_id(true);
+        $_SESSION = array();
+        redirect($url, $delay, (($delay > 0) ? X_REDIRECT_JS : X_REDIRECT_HEADER));
     }
 }

@@ -1,16 +1,16 @@
 <?php
 /**
  * GaiaBB
- * Copyright (c) 2009-2021 The GaiaBB Project
+ * Copyright (c) 2011-2022 The GaiaBB Group
  * https://github.com/vanderaj/gaiabb
  *
- * Forked from UltimaBB
+ * Based off UltimaBB
  * Copyright (c) 2004 - 2007 The UltimaBB Group
  * (defunct)
  *
- * Forked from XMB
- * Copyright (c) 2001 - 2021 The XMB Development Team
- * https://forums.xmbforum2.com/
+ * Based off XMB
+ * Copyright (c) 2001 - 2004 The XMB Development Team
+ * http://www.xmbforum.com
  *
  * This file is part of GaiaBB
  *
@@ -28,11 +28,18 @@
  *    along with GaiaBB.  If not, see <http://www.gnu.org/licenses/>.
  *
  **/
-// phpcs:disable PSR1.Files.SideEffects
-require_once 'header.php';
-require_once ROOT . 'include/online.inc.php';
 
-loadtpl('online_row_admin', 'online_row', 'online_admin', 'online');
+define('ROOT', './');
+
+require_once ROOT . 'header.php';
+require_once ROOTINC . 'online.inc.php';
+
+loadtpl(
+    'online_row_admin',
+    'online_row',
+    'online_admin',
+    'online'
+);
 
 $shadow = shadowfx();
 $meta = metaTags();
@@ -61,7 +68,7 @@ if (X_ADMIN) {
 }
 
 $onlineusers = '';
-while (($online = $db->fetchArray($q)) != false) {
+while ($online = $db->fetch_array($q)) {
     $array = url_to_text($online['location']);
     $onlinetime = gmdate($self['timecode'], $online['time'] + ($self['timeoffset'] * 3600) + $self['daylightsavings']);
     $username = str_replace('xguest123', $lang['textguest1'], $online['username']);
@@ -152,7 +159,7 @@ while (($online = $db->fetchArray($q)) != false) {
                 }
                 break;
         }
-    } elseif ($online['username'] == 'xrobot123') {
+    } else if ($online['username'] == 'xrobot123') {
         if ($THEME['riconstatus'] == 'on') {
             $icon = '<img src="' . $THEME['ricondir'] . '/online_robot.gif" alt="' . $lang['textrobot1'] . '" title="' . $lang['textrobot1'] . '" border="0px" />';
             $online['username'] = $icon . '' . $username;
@@ -176,7 +183,7 @@ while (($online = $db->fetchArray($q)) != false) {
         eval('$onlineusers .= "' . template('online_row') . '";');
     }
 }
-$db->freeResult($q);
+$db->free_result($q);
 
 if (X_ADMIN) {
     eval('echo "' . template('online_admin') . '";');

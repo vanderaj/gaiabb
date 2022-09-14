@@ -1,16 +1,16 @@
 <?php
 /**
  * GaiaBB
- * Copyright (c) 2009-2021 The GaiaBB Project
+ * Copyright (c) 2011-2022 The GaiaBB Group
  * https://github.com/vanderaj/gaiabb
  *
- * Forked from UltimaBB
+ * Based off UltimaBB
  * Copyright (c) 2004 - 2007 The UltimaBB Group
  * (defunct)
  *
- * Forked from XMB
- * Copyright (c) 2001 - 2021 The XMB Development Team
- * https://forums.xmbforum2.com/
+ * Based off XMB
+ * Copyright (c) 2001 - 2004 The XMB Development Team
+ * http://www.xmbforum.com
  *
  * This file is part of GaiaBB
  *
@@ -28,15 +28,20 @@
  *    along with GaiaBB.  If not, see <http://www.gnu.org/licenses/>.
  *
  **/
-// phpcs:disable PSR1.Files.SideEffects
-if (!defined('ROOT')) {
-    define('ROOT', '../');
-}
+
+define('ROOT', '../');
+define('ROOTINC', '../include/');
+define('ROOTCLASS', '../class/');
 
 require_once ROOT . 'header.php';
-require_once ROOT . 'include/admincp.inc.php';
+require_once ROOTINC . 'admincp.inc.php';
 
-loadtpl('cp_header', 'cp_footer', 'cp_message', 'cp_error');
+loadtpl(
+    'cp_header',
+    'cp_footer',
+    'cp_message',
+    'cp_error'
+);
 
 $shadow = shadowfx();
 $shadow2 = shadowfx2();
@@ -61,73 +66,61 @@ smcwcache();
 /**
  * function() - short description of function
  *
- * TODO: Long description of function
+ * Long description of function
  *
- * @param $varname type,
- *            what it does
- * @return type, what the return does
- *
+ * @param    $varname    type, what it does
+ * @return   type, what the return does
  */
 function viewPanel()
 {
     global $oToken, $CONFIG, $THEME, $lang, $shadow2, $db;
     ?>
     <form method="post" action="cp_censors.php">
-        <input type="hidden" name="csrf_token"
-               value="<?php echo $oToken->createToken() ?>"/>
-        <table cellspacing="0px" cellpadding="0px" border="0px" width="100%"
-               align="center">
-            <tr>
-                <td bgcolor="<?php echo $THEME['bordercolor'] ?>">
-                    <table border="0px" cellspacing="<?php echo $THEME['borderwidth'] ?>"
-                           cellpadding="<?php echo $THEME['tablespace'] ?>" width="100%">
-                        <tr class="category">
-                            <td align="center" class="title"><?php echo $lang['textdeleteques'] ?></td>
-                            <td align="center" class="title"><?php echo $lang['textcensorfind'] ?></td>
-                            <td align="center" class="title"><?php echo $lang['textcensorreplace'] ?></td>
-                        </tr>
-                        <?php
-                        $query = $db->query("SELECT * FROM " . X_PREFIX . "words ORDER BY id");
-                        $rowsFound = $db->numRows($query);
-                        while (($censor = $db->fetchArray($query)) != false) {
-                            ?>
-                            <tr bgcolor="<?php echo $THEME['altbg2'] ?>" class="ctrtablerow">
-                                <td><input type="checkbox" name="delete<?php echo $censor['id'] ?>"
-                                           value="<?php echo $censor['id'] ?>"/></td>
-                                <td><input type="text" size="20"
-                                           name="find<?php echo $censor['id'] ?>"
-                                           value="<?php echo $censor['find'] ?>"/></td>
-                                <td><input type="text" size="20"
-                                           name="replace<?php echo $censor['id'] ?>"
-                                           value="<?php echo $censor['replace1'] ?>"/></td>
-                            </tr>
-                            <?php
-                        }
-                            $db->freeResult($query);
+    <input type="hidden" name="token" value="<?php echo $oToken->get_new_token() ?>" />
+    <table cellspacing="0px" cellpadding="0px" border="0px" width="100%" align="center">
+    <tr>
+    <td bgcolor="<?php echo $THEME['bordercolor'] ?>">
+    <table border="0px" cellspacing="<?php echo $THEME['borderwidth'] ?>" cellpadding="<?php echo $THEME['tablespace'] ?>" width="100%">
+    <tr class="category">
+    <td align="center" class="title"><?php echo $lang['textdeleteques'] ?></td>
+    <td align="center" class="title"><?php echo $lang['textcensorfind'] ?></td>
+    <td align="center" class="title"><?php echo $lang['textcensorreplace'] ?></td>
+    </tr>
+    <?php
+$query = $db->query("SELECT * FROM " . X_PREFIX . "words ORDER BY id");
+    $rowsFound = $db->num_rows($query);
+    while ($censor = $db->fetch_array($query)) {
+        ?>
+        <tr bgcolor="<?php echo $THEME['altbg2'] ?>" class="ctrtablerow">
+        <td><input type="checkbox" name="delete<?php echo $censor['id'] ?>" value="<?php echo $censor['id'] ?>" /></td>
+        <td><input type="text" size="20" name="find<?php echo $censor['id'] ?>" value="<?php echo $censor['find'] ?>" /></td>
+        <td><input type="text" size="20" name="replace<?php echo $censor['id'] ?>" value="<?php echo $censor['replace1'] ?>" /></td>
+        </tr>
+        <?php
+}
+    $db->free_result($query);
 
-                        if ($rowsFound < 1) {
-                            ?>
-                            <tr bgcolor="<?php echo $THEME['altbg1'] ?>" class="ctrtablerow">
-                                <td colspan="3"><?php echo $lang['textnone'] ?></td>
-                            </tr>
-                            <?php
-                        }
-                        ?>
-                        <tr bgcolor="<?php echo $THEME['altbg2'] ?>" class="ctrtablerow">
-                            <td><strong><?php echo $lang['textnewcode'] ?></strong></td>
-                            <td><input type="text" size="20" name="newfind"/></td>
-                            <td><input type="text" size="20" name="newreplace"/></td>
-                        </tr>
-                        <tr class="ctrtablerow" bgcolor="<?php echo $THEME['altbg2'] ?>">
-                            <td colspan="3"><input type="submit" class="submit"
-                                                   name="censorsubmit"
-                                                   value="<?php echo $lang['textsubmitchanges'] ?>"/></td>
-                        </tr>
-                    </table>
-                </td>
-            </tr>
-        </table>
-        <?php echo $shadow2 ?>
+    if ($rowsFound < 1) {
+        ?>
+        <tr bgcolor="<?php echo $THEME['altbg1'] ?>" class="ctrtablerow">
+        <td colspan="3"><?php echo $lang['textnone'] ?></td>
+        </tr>
+        <?php
+}
+    ?>
+    <tr bgcolor="<?php echo $THEME['altbg2'] ?>" class="ctrtablerow">
+    <td><strong><?php echo $lang['textnewcode'] ?></strong></td>
+    <td><input type="text" size="20" name="newfind" /></td>
+    <td><input type="text" size="20" name="newreplace" /></td>
+    </tr>
+    <tr class="ctrtablerow" bgcolor="<?php echo $THEME['altbg2'] ?>">
+    <td colspan="3"><input type="submit" class="submit" name="censorsubmit" value="<?php echo $lang['textsubmitchanges'] ?>" /></td>
+    </tr>
+    </table>
+    </td>
+    </tr>
+    </table>
+    <?php echo $shadow2 ?>
     </form>
     </td>
     </tr>
@@ -138,21 +131,19 @@ function viewPanel()
 /**
  * function() - short description of function
  *
- * TODO: Long description of function
+ * Long description of function
  *
- * @param $varname type,
- *            what it does
- * @return type, what the return does
- *
+ * @param    $varname    type, what it does
+ * @return   type, what the return does
  */
 function doPanel()
 {
     global $db, $lang, $oToken;
 
-    $oToken->assertToken();
+    $oToken->assert_token();
 
     $querycensor = $db->query("SELECT id FROM " . X_PREFIX . "words");
-    while (($censor = $db->fetchArray($querycensor)) != false) {
+    while ($censor = $db->fetch_array($querycensor)) {
         $delete = "delete" . $censor['id'];
         $delete = formInt($delete);
         if ($delete > 0) {
@@ -166,7 +157,7 @@ function doPanel()
         $replace = $db->escape(formVar($replace));
         $db->query("UPDATE " . X_PREFIX . "words SET find = '$find', replace1 = '$replace' WHERE id = '$censor[id]'");
     }
-    $db->freeResult($querycensor);
+    $db->free_result($querycensor);
 
     $newfind = $db->escape(formVar('newfind'));
     $newreplace = $db->escape(formVar('newreplace'));

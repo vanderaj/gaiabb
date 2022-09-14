@@ -1,16 +1,16 @@
 <?php
 /**
  * GaiaBB
- * Copyright (c) 2009-2021 The GaiaBB Project
+ * Copyright (c) 2011-2022 The GaiaBB Group
  * https://github.com/vanderaj/gaiabb
  *
- * Forked from UltimaBB
+ * Based off UltimaBB
  * Copyright (c) 2004 - 2007 The UltimaBB Group
  * (defunct)
  *
- * Forked from XMB
- * Copyright (c) 2001 - 2021 The XMB Development Team
- * https://forums.xmbforum2.com/
+ * Based off XMB
+ * Copyright (c) 2001 - 2004 The XMB Development Team
+ * http://www.xmbforum.com
  *
  * This file is part of GaiaBB
  *
@@ -28,18 +28,17 @@
  *    along with GaiaBB.  If not, see <http://www.gnu.org/licenses/>.
  *
  **/
-// phpcs:disable PSR1.Files.SideEffects
 
-namespace GaiaBB;
+if (!defined('IN_PROGRAM') && (defined('DEBUG') && DEBUG == false)) {
+    exit('This file is not designed to be called directly');
+}
 
-class Subscription
+class subscription
 {
-
     public $tid;
-
     public $dirty;
 
-    public function __construct($tid = 0)
+    public function subscription($tid = 0)
     {
         if ($tid === 0) {
             $this->dirty = false;
@@ -69,12 +68,12 @@ class Subscription
         $retval = false;
 
         $query = $db->query("SELECT tid FROM " . X_PREFIX . "subscriptions WHERE tid = '$tid' AND username = '" . $self['username'] . "' AND type = 'subscription'");
-        if ($query && $db->numRows($query) == 1) {
+        if ($query && $db->num_rows($query) == 1) {
             $this->tid = $tid;
             $retval = true;
         }
 
-        $db->freeResult($query);
+        $db->free_result($query);
         return $retval;
     }
 
@@ -118,13 +117,13 @@ class Subscription
         $toDelete = array();
 
         $query = $db->query("SELECT tid FROM " . X_PREFIX . "subscriptions WHERE username = '" . $self['username'] . "' AND type='subscription'");
-        while (($sub = $db->fetchArray($query)) != false) {
+        while ($sub = $db->fetch_array($query)) {
             $delete = formInt("delete" . $sub['tid'] . "");
             if (is_numeric($delete)) {
                 $toDelete[] = $delete;
             }
         }
-        $db->freeResult($query);
+        $db->free_result($query);
 
         if (!empty($toDelete)) {
             $in = implode(' ,', $toDelete);

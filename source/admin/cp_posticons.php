@@ -1,16 +1,16 @@
 <?php
 /**
  * GaiaBB
- * Copyright (c) 2009-2021 The GaiaBB Project
+ * Copyright (c) 2011-2022 The GaiaBB Group
  * https://github.com/vanderaj/gaiabb
  *
- * Forked from UltimaBB
+ * Based off UltimaBB
  * Copyright (c) 2004 - 2007 The UltimaBB Group
  * (defunct)
  *
- * Forked from XMB
- * Copyright (c) 2001 - 2021 The XMB Development Team
- * https://forums.xmbforum2.com/
+ * Based off XMB
+ * Copyright (c) 2001 - 2004 The XMB Development Team
+ * http://www.xmbforum.com
  *
  * This file is part of GaiaBB
  *
@@ -28,15 +28,20 @@
  *    along with GaiaBB.  If not, see <http://www.gnu.org/licenses/>.
  *
  **/
-// phpcs:disable PSR1.Files.SideEffects
-if (!defined('ROOT')) {
-    define('ROOT', '../');
-}
+
+define('ROOT', '../');
+define('ROOTINC', '../include/');
+define('ROOTCLASS', '../class/');
 
 require_once ROOT . 'header.php';
-require_once ROOT . 'include/admincp.inc.php';
+require_once ROOTINC . 'admincp.inc.php';
 
-loadtpl('cp_header', 'cp_footer', 'cp_message', 'cp_error');
+loadtpl(
+    'cp_header',
+    'cp_footer',
+    'cp_message',
+    'cp_error'
+);
 
 $shadow = shadowfx();
 $shadow2 = shadowfx2();
@@ -61,63 +66,50 @@ function viewPanel()
     global $oToken, $CONFIG, $cheHTML, $selHTML;
     ?>
     <form method="post" action="cp_posticons.php">
-        <input type="hidden" name="csrf_token"
-               value="<?php echo $oToken->createToken() ?>"/>
-        <table cellspacing="0px" cellpadding="0px" border="0px" width="100%"
-               align="center">
-            <tr>
-                <td bgcolor="<?php echo $THEME['bordercolor'] ?>">
-                    <table border="0px" cellspacing="<?php echo $THEME['borderwidth'] ?>"
-                           cellpadding="<?php echo $THEME['tablespace'] ?>" width="100%">
-                        <tr class="category">
-                            <td colspan="3" class="title"><?php echo $lang['picons'] ?></td>
-                        </tr>
-                        <tr class="header">
-                            <td align="center"><?php echo $lang['textdeleteques'] ?></td>
-                            <td><?php echo $lang['textsmiliefile'] ?></td>
-                            <td align="center"><?php echo $lang['picons'] ?></td>
-                        </tr>
-                        <?php
-                        $query = $db->query("SELECT * FROM " . X_PREFIX . "smilies WHERE type = 'picon' ORDER BY id ASC");
-                        while (($smilie = $db->fetchArray($query)) != false) {
-                            ?>
-                            <tr bgcolor="<?php echo $THEME['altbg2'] ?>">
-                                <td class="ctrtablerow"><input type="checkbox"
-                                                               name="pidelete[<?php echo $smilie['id'] ?>]" value="1"/>
-                                </td>
-                                <td class="tablerow"><input type="text"
-                                                            name="piurl[<?php echo $smilie['id'] ?>]"
-                                                            value="<?php echo $smilie['url'] ?>"/></td>
-                                <td class="ctrtablerow"><img
-                                            src="../<?php echo $THEME['smdir'] ?>/<?php echo $smilie['url'] ?>"
-                                            alt="<?php echo $smilie['url'] ?>"
-                                            title="<?php echo $smilie['url'] ?>"/></td>
-                            </tr>
-                            <?php
-                        }
-                        $db->freeResult($query);
-                        ?>
-                        <tr bgcolor="<?php echo $THEME['altbg1'] ?>" class="tablerow">
-                            <td><?php echo $lang['textnewpicon'] ?></td>
-                            <td colspan="2"><input type="text" name="newurl2" value=""/></td>
-                        </tr>
-                        <tr bgcolor="<?php echo $THEME['altbg1'] ?>">
-                            <td class="ctrtablerow"><input type="checkbox"
-                                                           name="autoinsertposticons" value="1"/></td>
-                            <td class="tablerow" colspan="3"><?php echo $lang['autoinsertposticons'] ?>
-                                (<?php echo $THEME['smdir'] ?>)?
-                            </td>
-                        </tr>
-                        <tr class="ctrtablerow" bgcolor="<?php echo $THEME['altbg2'] ?>">
-                            <td colspan="3"><input type="submit" class="submit"
-                                                   name="posticonsubmit"
-                                                   value="<?php echo $lang['textsubmitchanges'] ?>"/></td>
-                        </tr>
-                    </table>
-                </td>
-            </tr>
-        </table>
-        <?php echo $shadow2 ?>
+    <input type="hidden" name="token" value="<?php echo $oToken->get_new_token() ?>" />
+    <table cellspacing="0px" cellpadding="0px" border="0px" width="100%" align="center">
+    <tr>
+    <td bgcolor="<?php echo $THEME['bordercolor'] ?>">
+    <table border="0px" cellspacing="<?php echo $THEME['borderwidth'] ?>" cellpadding="<?php echo $THEME['tablespace'] ?>" width="100%">
+    <tr class="category">
+    <td colspan="3" class="title"><?php echo $lang['picons'] ?></td>
+    </tr>
+    <tr class="header">
+    <td align="center"><?php echo $lang['textdeleteques'] ?></td>
+    <td><?php echo $lang['textsmiliefile'] ?></td>
+    <td align="center"><?php echo $lang['picons'] ?></td>
+    </tr>
+    <?php
+
+    $query = $db->query("SELECT * FROM " . X_PREFIX . "smilies WHERE type = 'picon' ORDER BY id ASC");
+    while ($smilie = $db->fetch_array($query)) {
+        ?>
+        <tr bgcolor="<?php echo $THEME['altbg2'] ?>">
+        <td class="ctrtablerow"><input type="checkbox" name="pidelete[<?php echo $smilie['id'] ?>]" value="1" /></td>
+        <td class="tablerow"><input type="text" name="piurl[<?php echo $smilie['id'] ?>]" value="<?php echo $smilie['url'] ?>" /></td>
+        <td class="ctrtablerow"><img src="../<?php echo $THEME['smdir'] ?>/<?php echo $smilie['url'] ?>" alt="<?php echo $smilie['url'] ?>" title="<?php echo $smilie['url'] ?>" /></td>
+        </tr>
+        <?php
+
+    }
+    $db->free_result($query);
+    ?>
+    <tr bgcolor="<?php echo $THEME['altbg1'] ?>" class="tablerow">
+    <td><?php echo $lang['textnewpicon'] ?></td>
+    <td colspan="2"><input type="text" name="newurl2" value="" /></td>
+    </tr>
+    <tr bgcolor="<?php echo $THEME['altbg1'] ?>">
+    <td class="ctrtablerow"><input type="checkbox" name="autoinsertposticons" value="1" /></td>
+    <td class="tablerow" colspan="3"><?php echo $lang['autoinsertposticons'] ?> (<?php echo $THEME['smdir'] ?>)?</td>
+    </tr>
+    <tr class="ctrtablerow" bgcolor="<?php echo $THEME['altbg2'] ?>">
+    <td colspan="3"><input type="submit" class="submit" name="posticonsubmit" value="<?php echo $lang['textsubmitchanges'] ?>" /></td>
+    </tr>
+    </table>
+    </td>
+    </tr>
+    </table>
+    <?php echo $shadow2 ?>
     </form>
     </td>
     </tr>
@@ -129,7 +121,7 @@ function doPanel()
 {
     global $lang, $db, $oToken, $THEME, $shadow2;
 
-    $oToken->assertToken();
+    $oToken->assert_token();
 
     $pidelete = formArray('pidelete');
     $piurl = formArray('piurl');
@@ -143,7 +135,7 @@ function doPanel()
         }
     }
     $querysmilie = $db->query("SELECT id FROM " . X_PREFIX . "smilies WHERE type = 'picon' ORDER BY id ASC");
-    while (($picon = $db->fetchArray($querysmilie)) != false) {
+    while ($picon = $db->fetch_array($querysmilie)) {
         $id = $picon['id'];
         if (isset($pidelete[$id]) && $pidelete[$id] == 1) {
             $query = $db->query("DELETE FROM " . X_PREFIX . "smilies WHERE id = '$picon[id]'");
@@ -151,7 +143,7 @@ function doPanel()
         }
         $query = $db->query("UPDATE " . X_PREFIX . "smilies SET url = '$piurl[$id]' WHERE id = '$picon[id]' AND type = 'picon'");
     }
-    $db->freeResult($querysmilie);
+    $db->free_result($querysmilie);
     if ($newurl2 != '') {
         if ($db->result($db->query("SELECT count(id) FROM " . X_PREFIX . "smilies WHERE url = '$newurl2' AND type = 'picon'"), 0) > 0) {
             cp_error($lang['piconexists'], false, '', '</td></tr></table>', 'cp_posticons.php', true, false, true);
@@ -162,12 +154,12 @@ function doPanel()
         $posticons_count = $newposticons_count = 0;
         $posticon_url = array();
         $query = $db->query("SELECT * FROM " . X_PREFIX . "smilies WHERE type = 'picon'");
-        while (($picon = $db->fetchArray($query)) != false) {
+        while ($picon = $db->fetch_array($query)) {
             $posticon_url[] = $picon['url'];
         }
-        $db->freeResult($query);
+        $db->free_result($query);
         $dir = opendir(ROOT . $THEME['smdir']);
-        while (($picon = readdir($dir)) != false) {
+        while ($picon = readdir($dir)) {
             if ($picon != '.' && $picon != '..' && (strpos($picon, '.gif') || strpos($picon, '.jpg') || strpos($picon, '.bmp') || strpos($picon, '.png'))) {
                 $newposticon_url = $picon;
                 $newposticon_url = urlencode($newposticon_url);

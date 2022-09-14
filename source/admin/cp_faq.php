@@ -1,16 +1,16 @@
 <?php
 /**
  * GaiaBB
- * Copyright (c) 2009-2021 The GaiaBB Project
+ * Copyright (c) 2011-2022 The GaiaBB Group
  * https://github.com/vanderaj/gaiabb
  *
- * Forked from UltimaBB
+ * Based off UltimaBB
  * Copyright (c) 2004 - 2007 The UltimaBB Group
  * (defunct)
  *
- * Forked from XMB
- * Copyright (c) 2001 - 2021 The XMB Development Team
- * https://forums.xmbforum2.com/
+ * Based off XMB
+ * Copyright (c) 2001 - 2004 The XMB Development Team
+ * http://www.xmbforum.com
  *
  * This file is part of GaiaBB
  *
@@ -28,15 +28,22 @@
  *    along with GaiaBB.  If not, see <http://www.gnu.org/licenses/>.
  *
  **/
-// phpcs:disable PSR1.Files.SideEffects
-if (!defined('ROOT')) {
-    define('ROOT', '../');
-}
+
+define('ROOT', '../');
+define('ROOTINC', '../include/');
+define('ROOTCLASS', '../class/');
 
 require_once ROOT . 'header.php';
-require_once ROOT . 'include/admincp.inc.php';
+require_once ROOTINC . 'admincp.inc.php';
 
-loadtpl('cp_header', 'cp_footer', 'cp_message', 'cp_error', 'functions_bbcode', 'functions_bbcodeinsert');
+loadtpl(
+    'cp_header',
+    'cp_footer',
+    'cp_message',
+    'cp_error',
+    'functions_bbcode',
+    'functions_bbcodeinsert'
+);
 
 $shadow = shadowfx();
 $shadow2 = shadowfx2();
@@ -76,7 +83,7 @@ function viewPanel()
     $itemlist = array();
     $i = 0;
     $query = $db->query("SELECT fid, type, name, displayorder, status, fup, code, view FROM " . X_PREFIX . "faq ORDER BY fup ASC, displayorder ASC");
-    while (($selItems = $db->fetchArray($query)) != false) {
+    while ($selItems = $db->fetch_array($query)) {
         if ($selItems['type'] == 'group') {
             $groups[$i]['fid'] = $selItems['fid'];
             $groups[$i]['name'] = $selItems['name'];
@@ -84,7 +91,7 @@ function viewPanel()
             $groups[$i]['status'] = $selItems['status'];
             $groups[$i]['fup'] = $selItems['fup'];
             $groups[$i]['code'] = $selItems['code'];
-        } elseif ($selItems['type'] == 'item') {
+        } else if ($selItems['type'] == 'item') {
             $id = (empty($selItems['fup'])) ? 0 : $selItems['fup'];
             $items[$id][$i]['fid'] = $selItems['fid'];
             $items[$id][$i]['name'] = $selItems['name'];
@@ -97,214 +104,158 @@ function viewPanel()
         }
         $i++;
     }
-    $db->freeResult($query);
+    $db->free_result($query);
     ?>
     <form method="post" action="cp_faq.php">
-        <input type="hidden" name="csrf_token"
-               value="<?php echo $oToken->createToken() ?>"/>
-        <table cellspacing="0px" cellpadding="0px" border="0px" width="100%"
-               align="center">
-            <tr>
-                <td bgcolor="<?php echo $THEME['bordercolor'] ?>">
-                    <table border="0px" cellspacing="<?php echo $THEME['borderwidth'] ?>"
-                           cellpadding="<?php echo $THEME['tablespace'] ?>" width="100%">
-                        <tr class="category">
-                            <td class="title"><?php echo $lang['FAQ_Management_System'] ?></td>
-                        </tr>
-                        <tr bgcolor="<?php echo $THEME['altbg1'] ?>" class="tablerow">
-                            <td><?php echo $lang['faq_O'] ?></td>
-                        </tr>
-                    </table>
-                </td>
-            </tr>
-        </table>
-        <?php echo $shadow2 ?>
-        <br/>
-        <table cellspacing="0px" cellpadding="0px" border="0px" width="100%"
-               align="center">
-            <tr>
-                <td bgcolor="<?php echo $THEME['bordercolor'] ?>">
-                    <table border="0px" cellspacing="<?php echo $THEME['borderwidth'] ?>"
-                           cellpadding="<?php echo $THEME['tablespace'] ?>" width="100%">
-                        <tr class="category">
-                            <td class="title"><?php echo $lang['faq_I'] ?></td>
-                        </tr>
-                        <?php
-                        foreach ($items['0'] as $item) {
-                            $on = $off = '';
-                            if ($item['status'] == 'on') {
-                                $on = $selHTML;
-                            } else {
-                                $off = $selHTML;
-                            }
-                            ?>
-                            <tr bgcolor="<?php echo $THEME['altbg2'] ?>" class="tablerow">
-                                <td class="smalltxt"><input type="checkbox"
-                                                            name="delete<?php echo $item['fid'] ?>"
-                                                            value="<?php echo $item['fid'] ?>"/> &nbsp;<input
-                                            type="text"
-                                            name="name<?php echo $item['fid'] ?>"
-                                            value="<?php echo stripslashes($item['name']) ?>"/>
-                                    &nbsp; <?php echo $lang['textorder'] ?> <input type="text"
-                                                                                   name="displayorder<?php echo $item['fid'] ?>"
-                                                                                   size="2"
-                                                                                   value="<?php echo $item['displayorder'] ?>"/>
-                                    &nbsp; <select
-                                            name="status<?php echo $item['fid'] ?>">
-                                        <option value="on" <?php echo $on ?>><?php echo $lang['texton'] ?></option>
-                                        <option value="off" <?php echo $off ?>><?php echo $lang['textoff'] ?></option>
-                                    </select> &nbsp; <select name="moveto<?php echo $item['fid'] ?>">
-                                        <option
-                                                value="" selected="selected">-<?php echo $lang['textnone'] ?>-
-                                        </option>
-                                        <?php
-                                        foreach ($groups as $moveforum) {
-                                            echo '<option value="' . $moveforum['fid'] . '">' . stripslashes($moveforum['name']) . '</option>';
-                                        }
-                                        ?>
-                                    </select> <a title="<?php echo stripslashes($item['name']) ?>"
-                                                 href="cp_faq.php?fdetails=<?php echo $item['fid'] ?>"><?php echo $lang['faq_F'] ?></a>
-                                </td>
-                            </tr>
-                            <?php
-                        }
+    <input type="hidden" name="token" value="<?php echo $oToken->get_new_token() ?>" />
+    <table cellspacing="0px" cellpadding="0px" border="0px" width="100%" align="center">
+    <tr>
+    <td bgcolor="<?php echo $THEME['bordercolor'] ?>">
+    <table border="0px" cellspacing="<?php echo $THEME['borderwidth'] ?>" cellpadding="<?php echo $THEME['tablespace'] ?>" width="100%">
+    <tr class="category">
+    <td class="title"><?php echo $lang['FAQ_Management_System'] ?></td>
+    </tr>
+    <tr bgcolor="<?php echo $THEME['altbg1'] ?>" class="tablerow">
+    <td><?php echo $lang['faq_O'] ?></td>
+    </tr></table>
+    </td>
+    </tr>
+    </table>
+    <?php echo $shadow2 ?>
+    <br />
+    <table cellspacing="0px" cellpadding="0px" border="0px" width="100%" align="center">
+    <tr>
+    <td bgcolor="<?php echo $THEME['bordercolor'] ?>">
+    <table border="0px" cellspacing="<?php echo $THEME['borderwidth'] ?>" cellpadding="<?php echo $THEME['tablespace'] ?>" width="100%">
+    <tr class="category">
+    <td class="title"><?php echo $lang['faq_I'] ?></td>
+    </tr>
+    <?php
+foreach ($items['0'] as $item) {
+        $on = $off = '';
+        if ($item['status'] == 'on') {
+            $on = $selHTML;
+        } else {
+            $off = $selHTML;
+        }
+        ?>
+        <tr bgcolor="<?php echo $THEME['altbg2'] ?>" class="tablerow">
+        <td class="smalltxt"><input type="checkbox" name="delete<?php echo $item['fid'] ?>" value="<?php echo $item['fid'] ?>" />
+        &nbsp;<input type="text" name="name<?php echo $item['fid'] ?>" value="<?php echo stripslashes($item['name']) ?>" />
+        &nbsp; <?php echo $lang['textorder'] ?> <input type="text" name="displayorder<?php echo $item['fid'] ?>" size="2" value="<?php echo $item['displayorder'] ?>" />
+        &nbsp; <select name="status<?php echo $item['fid'] ?>">
+        <option value="on" <?php echo $on ?>><?php echo $lang['texton'] ?></option><option value="off" <?php echo $off ?>><?php echo $lang['textoff'] ?></option></select>
+        &nbsp; <select name="moveto<?php echo $item['fid'] ?>"><option value="" selected="selected">-<?php echo $lang['textnone'] ?>-</option>
+        <?php
+foreach ($groups as $moveforum) {
+            echo '<option value="' . $moveforum['fid'] . '">' . stripslashes($moveforum['name']) . '</option>';
+        }
+        ?>
+        </select>
+        <a title="<?php echo stripslashes($item['name']) ?>" href="cp_faq.php?fdetails=<?php echo $item['fid'] ?>"><?php echo $lang['faq_F'] ?></a></td>
+        </tr>
+        <?php
+}
 
-                        foreach ($groups as $group) {
-                            $on = $off = '';
-                            if ($group['status'] == 'on') {
-                                $on = $selHTML;
-                            } else {
-                                $off = $selHTML;
-                            }
-                            ?>
-                            <tr bgcolor="<?php echo $THEME['altbg2'] ?>" class="tablerow">
-                                <td>&nbsp;</td>
-                            </tr>
-                            <tr bgcolor="<?php echo $THEME['altbg1'] ?>" class="tablerow">
-                                <td class="smalltxt"><input type="checkbox"
-                                                            name="delete<?php echo $group['fid'] ?>"
-                                                            value="<?php echo $group['fid'] ?>"/> <input type="text"
-                                                                                                         name="name<?php echo $group['fid'] ?>"
-                                                                                                         value="<?php echo stripslashes($group['name']) ?>"/>
-                                    &nbsp; <?php echo $lang['textorder'] ?> <input type="text"
-                                                                                   name="displayorder<?php echo $group['fid'] ?>"
-                                                                                   size="2"
-                                                                                   value="<?php echo $group['displayorder'] ?>"/>
-                                    &nbsp; <select
-                                            name="status<?php echo $group['fid'] ?>">
-                                        <option value="on" <?php echo $on ?>><?php echo $lang['texton'] ?></option>
-                                        <option value="off" <?php echo $off ?>><?php echo $lang['textoff'] ?></option>
-                                    </select> &nbsp; <a
-                                            href="cp_faq.php?gdetails=<?php echo $group['fid'] ?>"><?php echo $lang['faq_F'] ?></a>
-                                </td>
-                            </tr>
-                            <?php
-                            if (array_key_exists($group['fid'], $items)) {
-                                foreach ($items[$group['fid']] as $item) {
-                                    $on = $off = '';
-                                    if ($item['status'] == 'on') {
-                                        $on = $selHTML;
-                                    } else {
-                                        $off = $selHTML;
-                                    }
-                                    ?>
-                                    <tr bgcolor="<?php echo $THEME['altbg2'] ?>"
-                                        class="tablerow">
-                                        <td class="smalltxt">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <input
-                                                    type="checkbox" name="delete<?php echo $item['fid'] ?>"
-                                                    value="<?php echo $item['fid'] ?>"/> &nbsp;<input type="text"
-                                                                                                      name="name<?php echo $item['fid'] ?>"
-                                                                                                      value="<?php echo stripslashes($item['name']) ?>"/>
-                                            &nbsp; <?php echo $lang['textorder'] ?> <input
-                                                    type="text" name="displayorder<?php echo $item['fid'] ?>" size="2"
-                                                    value="<?php echo $item['displayorder'] ?>"/> &nbsp; <select
-                                                    name="status<?php echo $item['fid'] ?>">
-                                                <option value="on" <?php echo $on ?>><?php echo $lang['texton'] ?></option>
-                                                <option value="off" <?php echo $off ?>><?php echo $lang['textoff'] ?></option>
-                                            </select> &nbsp; <select name="moveto<?php echo $item['fid'] ?>">
-                                                <option
-                                                        value="">-<?php echo $lang['textnone'] ?>-
-                                                </option>
-                                                <?php
-                                                foreach ($groups as $moveforum) {
-                                                    if ($moveforum['fid'] == $item['fup']) {
-                                                        $curgroup = $selHTML;
-                                                    } else {
-                                                        $curgroup = '';
-                                                    }
-                                                    echo '<option value="' . $moveforum['fid'] . '" ' . $curgroup . '>' . stripslashes($moveforum['name']) . '</option>';
-                                                }
-                                                ?>
-                                            </select> <a
-                                                    title="<?php echo stripslashes($item['name']) ?>"
-                                                    href="cp_faq.php?fdetails=<?php echo $item['fid'] ?>"><?php echo $lang['faq_F'] ?></a>
-                                        </td>
-                                    </tr>
-                                    <?php
-                                }
-                            }
-                        }
-                        ?>
-                        <tr>
-                            <td bgcolor="<?php echo $THEME['altbg2'] ?>" class="ctrtablerow"><input
-                                        class="submit" type="submit" name="faqsubmit"
-                                        value="<?php echo $lang['textsubmitchanges'] ?>"/></td>
-                        </tr>
-                    </table>
-                </td>
-            </tr>
-        </table>
-        <?php echo $shadow2 ?>
-        <br/>
-        <table cellspacing="0px" cellpadding="0px" border="0px" width="100%"
-               align="center">
-            <tr>
-                <td bgcolor="<?php echo $THEME['bordercolor'] ?>">
-                    <table border="0px" cellspacing="<?php echo $THEME['borderwidth'] ?>"
-                           cellpadding="<?php echo $THEME['tablespace'] ?>" width="100%">
-                        <tr class="category">
-                            <td class="title"><?php echo $lang['faq_B'] ?></td>
-                        </tr>
-                        <tr bgcolor="<?php echo $THEME['altbg2'] ?>" class="tablerow">
-                            <td class="smalltxt"><input type="text" name="newgname"
-                                                        value="<?php echo $lang['faq_G'] ?>" size="40"/>
-                                &nbsp; <?php echo $lang['textorder'] ?> <input type="text"
-                                                                               name="newgorder" size="2"/> &nbsp;
-                                <select name="newgstatus">
-                                    <option value="on"><?php echo $lang['texton'] ?></option>
-                                    <option value="off"><?php echo $lang['textoff'] ?></option>
-                                </select></td>
-                        </tr>
-                        <tr class="tablerow">
-                            <td bgcolor="<?php echo $THEME['altbg2'] ?>" class="smalltxt"><input
-                                        type="text" name="newfname" value="<?php echo $lang['faq_H'] ?>"
-                                        size="61"/> <br/>
-                                <textarea rows="5" name="newfdesc" cols="60"><?php echo $lang['faq_J'] ?></textarea>
-                                <br/><?php echo $lang['textorder'] ?> <input type="text"
-                                                                             name="newforder" size="2"/> &nbsp; <select
-                                        name="newfstatus">
-                                    <option value="on"><?php echo $lang['texton'] ?></option>
-                                    <option value="off"><?php echo $lang['textoff'] ?></option>
-                                </select> &nbsp; <select name="newffup">
-                                    <option value=""
-                                            selected="selected">-<?php echo $lang['textnone'] ?>-
-                                    </option>
-                                    <?php
-                                    foreach ($groups as $group) {
-                                        echo '<option value="' . $group['fid'] . '">' . stripslashes($group['name']) . '</option>';
-                                    }
-                                    ?>
-                                </select></td>
-                        </tr>
-                        <tr>
-                            <td bgcolor="<?php echo $THEME['altbg2'] ?>" class="ctrtablerow"><input
-                                        class="submit" type="submit" name="faqsubmit"
-                                        value="<?php echo $lang['textsubmitchanges'] ?>"/></td>
-                        </tr>
-                    </table>
-                </td>
-            </tr>
-        </table>
+    foreach ($groups as $group) {
+        $on = $off = '';
+        if ($group['status'] == 'on') {
+            $on = $selHTML;
+        } else {
+            $off = $selHTML;
+        }
+        ?>
+        <tr bgcolor="<?php echo $THEME['altbg2'] ?>" class="tablerow">
+        <td>&nbsp;</td>
+        </tr>
+        <tr bgcolor="<?php echo $THEME['altbg1'] ?>" class="tablerow">
+        <td class="smalltxt"><input type="checkbox" name="delete<?php echo $group['fid'] ?>" value="<?php echo $group['fid'] ?>" />
+        <input type="text" name="name<?php echo $group['fid'] ?>" value="<?php echo stripslashes($group['name']) ?>" />
+        &nbsp; <?php echo $lang['textorder'] ?> <input type="text" name="displayorder<?php echo $group['fid'] ?>" size="2" value="<?php echo $group['displayorder'] ?>" />
+        &nbsp; <select name="status<?php echo $group['fid'] ?>">
+        <option value="on" <?php echo $on ?>><?php echo $lang['texton'] ?></option><option value="off" <?php echo $off ?>><?php echo $lang['textoff'] ?></option></select>
+        &nbsp; <a href="cp_faq.php?gdetails=<?php echo $group['fid'] ?>"><?php echo $lang['faq_F'] ?></a>
+        </td>
+        </tr>
+        <?php
+if (array_key_exists($group['fid'], $items)) {
+            foreach ($items[$group['fid']] as $item) {
+                $on = $off = '';
+                if ($item['status'] == 'on') {
+                    $on = $selHTML;
+                } else {
+                    $off = $selHTML;
+                }
+                ?>
+                <tr bgcolor="<?php echo $THEME['altbg2'] ?>" class="tablerow">
+                <td class="smalltxt"> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <input type="checkbox" name="delete<?php echo $item['fid'] ?>" value="<?php echo $item['fid'] ?>" />
+                &nbsp;<input type="text" name="name<?php echo $item['fid'] ?>" value="<?php echo stripslashes($item['name']) ?>" />
+                &nbsp; <?php echo $lang['textorder'] ?> <input type="text" name="displayorder<?php echo $item['fid'] ?>" size="2" value="<?php echo $item['displayorder'] ?>" />
+                &nbsp; <select name="status<?php echo $item['fid'] ?>">
+                <option value="on" <?php echo $on ?>><?php echo $lang['texton'] ?></option><option value="off" <?php echo $off ?>><?php echo $lang['textoff'] ?></option></select>
+                &nbsp; <select name="moveto<?php echo $item['fid'] ?>"><option value="">-<?php echo $lang['textnone'] ?>-</option>
+                <?php
+foreach ($groups as $moveforum) {
+                    if ($moveforum['fid'] == $item['fup']) {
+                        $curgroup = $selHTML;
+                    } else {
+                        $curgroup = '';
+                    }
+                    echo '<option value="' . $moveforum['fid'] . '" ' . $curgroup . '>' . stripslashes($moveforum['name']) . '</option>';
+                }
+                ?>
+                </select>
+                <a title="<?php echo stripslashes($item['name']) ?>" href="cp_faq.php?fdetails=<?php echo $item['fid'] ?>"><?php echo $lang['faq_F'] ?></a></td>
+                </tr>
+                <?php
+}
+        }
+    }
+    ?>
+    <tr>
+    <td bgcolor="<?php echo $THEME['altbg2'] ?>" class="ctrtablerow"><input class="submit" type="submit" name="faqsubmit" value="<?php echo $lang['textsubmitchanges'] ?>" /></td>
+    </tr>
+    </table>
+    </td>
+    </tr>
+    </table>
+    <?php echo $shadow2 ?>
+    <br />
+    <table cellspacing="0px" cellpadding="0px" border="0px" width="100%" align="center">
+    <tr>
+    <td bgcolor="<?php echo $THEME['bordercolor'] ?>">
+    <table border="0px" cellspacing="<?php echo $THEME['borderwidth'] ?>" cellpadding="<?php echo $THEME['tablespace'] ?>" width="100%">
+    <tr class="category">
+    <td class="title"><?php echo $lang['faq_B'] ?></td>
+    </tr>
+    <tr bgcolor="<?php echo $THEME['altbg2'] ?>" class="tablerow">
+    <td class="smalltxt"><input type="text" name="newgname" value="<?php echo $lang['faq_G'] ?>" size="40" />
+    &nbsp; <?php echo $lang['textorder'] ?> <input type="text" name="newgorder" size="2" />
+    &nbsp; <select name="newgstatus">
+    <option value="on"><?php echo $lang['texton'] ?></option><option value="off"><?php echo $lang['textoff'] ?></option></select></td>
+    </tr>
+    <tr class="tablerow">
+    <td bgcolor="<?php echo $THEME['altbg2'] ?>" class="smalltxt"><input type="text" name="newfname" value="<?php echo $lang['faq_H'] ?>" size="61" />
+    <br /><textarea rows="5" name="newfdesc" cols="60"><?php echo $lang['faq_J'] ?></textarea>
+    <br /><?php echo $lang['textorder'] ?> <input type="text" name="newforder" size="2" />
+    &nbsp; <select name="newfstatus">
+    <option value="on"><?php echo $lang['texton'] ?></option><option value="off"><?php echo $lang['textoff'] ?></option></select>
+    &nbsp; <select name="newffup"><option value="" selected="selected">-<?php echo $lang['textnone'] ?>-</option>
+    <?php
+foreach ($groups as $group) {
+        echo '<option value="' . $group['fid'] . '">' . stripslashes($group['name']) . '</option>';
+    }
+    ?>
+    </select>
+    </td>
+    </tr>
+    <tr>
+    <td bgcolor="<?php echo $THEME['altbg2'] ?>" class="ctrtablerow"><input class="submit" type="submit" name="faqsubmit" value="<?php echo $lang['textsubmitchanges'] ?>" /></td>
+    </tr>
+    </table>
+    </td>
+    </tr>
+    </table>
     </form>
     <?php echo $shadow2 ?>
     </td>
@@ -319,91 +270,74 @@ function dogDetailsPanel($gdetails)
     global $selHTML, $cheHTML;
     ?>
     <form method="post" action="cp_faq.php?gdetails=<?php echo $gdetails ?>">
-        <input type="hidden" name="csrf_token"
-               value="<?php echo $oToken->createToken() ?>"/>
-        <table cellspacing="0px" cellpadding="0px" border="0px" width="100%"
-               align="center">
-            <tr>
-                <td bgcolor="<?php echo $THEME['bordercolor'] ?>">
-                    <table border="0px" cellspacing="<?php echo $THEME['borderwidth'] ?>"
-                           cellpadding="<?php echo $THEME['tablespace'] ?>" width="100%">
-                        <tr class="category">
-                            <td class="title" colspan="2"><?php echo $lang['faq_E'] ?></td>
-                        </tr>
-                        <?php
-                        $queryg = $db->query("SELECT fid, name, status, displayorder, code FROM " . X_PREFIX . "faq WHERE fid = '$gdetails'");
-                        $group = $db->fetchArray($queryg);
-                        $db->freeResult($queryg);
+    <input type="hidden" name="token" value="<?php echo $oToken->get_new_token() ?>" />
+    <table cellspacing="0px" cellpadding="0px" border="0px" width="100%" align="center">
+    <tr>
+    <td bgcolor="<?php echo $THEME['bordercolor'] ?>">
+    <table border="0px" cellspacing="<?php echo $THEME['borderwidth'] ?>" cellpadding="<?php echo $THEME['tablespace'] ?>" width="100%">
+    <tr class="category">
+    <td class="title" colspan="2"><?php echo $lang['faq_E'] ?></td>
+    </tr>
+    <?php
+$queryg = $db->query("SELECT fid, name, status, displayorder, code FROM " . X_PREFIX . "faq WHERE fid = '$gdetails'");
+    $group = $db->fetch_array($queryg);
+    $db->free_result($queryg);
 
-                        $group['name'] = stripslashes($group['name']);
+    $group['name'] = stripslashes($group['name']);
 
-                        $ic00 = $ic01 = $ic02 = $ic03 = $ic04 = '';
-                        if ($group['code'] == 'usermaint') {
-                            $ic01 = $selHTML;
-                        } elseif ($group['code'] == 'using') {
-                            $ic02 = $selHTML;
-                        } elseif ($group['code'] == 'messages') {
-                            $ic03 = $selHTML;
-                        } elseif ($group['code'] == 'misc') {
-                            $ic04 = $selHTML;
-                        } else {
-                            $ic00 = $selHTML;
-                        }
+    $ic00 = $ic01 = $ic02 = $ic03 = $ic04 = '';
+    if ($group['code'] == 'usermaint') {
+        $ic01 = $selHTML;
+    } else if ($group['code'] == 'using') {
+        $ic02 = $selHTML;
+    } else if ($group['code'] == 'messages') {
+        $ic03 = $selHTML;
+    } else if ($group['code'] == 'misc') {
+        $ic04 = $selHTML;
+    } else {
+        $ic00 = $selHTML;
+    }
 
-                        $on = $off = '';
-                        if ($group['status'] == 'on') {
-                            $on = $selHTML;
-                        } else {
-                            $off = $selHTML;
-                        }
-                        ?>
-                        <tr class="tablerow">
-                            <td bgcolor="<?php echo $THEME['altbg1'] ?>"><?php echo $lang['faq_P'] ?></td>
-                            <td bgcolor="<?php echo $THEME['altbg2'] ?>"><input type="text"
-                                                                                name="namenew"
-                                                                                value="<?php echo $group['name'] ?>"/>
-                            </td>
-                        </tr>
-                        <tr class="tablerow">
-                            <td bgcolor="<?php echo $THEME['altbg1'] ?>"><?php echo $lang['textorder'] ?></td>
-                            <td bgcolor="<?php echo $THEME['altbg2'] ?>"><input type="text"
-                                                                                name="displayordernew" size="2"
-                                                                                value="<?php echo $group['displayorder'] ?>"/>
-                            </td>
-                        </tr>
-                        <tr class="tablerow">
-                            <td bgcolor="<?php echo $THEME['altbg1'] ?>"><?php echo $lang['pmreadstatus'] ?></td>
-                            <td bgcolor="<?php echo $THEME['altbg2'] ?>"><select
-                                        name="groupstatusnew">
-                                    <option value="on" <?php echo $on ?>><?php echo $lang['texton'] ?></option>
-                                    <option value="off" <?php echo $off ?>><?php echo $lang['textoff'] ?></option>
-                                </select></td>
-                        </tr>
-                        <tr class="tablerow">
-                            <td bgcolor="<?php echo $THEME['altbg1'] ?>"><?php echo $lang['faq_Q'] ?></td>
-                            <td bgcolor="<?php echo $THEME['altbg2'] ?>"><select name="codenew">
-                                    <option
-                                            value="" <?php echo $ic00 ?>>-<?php echo $lang['textnone'] ?>-
-                                    </option>
-                                    <option value="usermaint" <?php echo $ic01 ?>>usermaint</option>
-                                    <option value="using" <?php echo $ic02 ?>>using</option>
-                                    <option value="messages" <?php echo $ic03 ?>>messages</option>
-                                    <option value="misc" <?php echo $ic04 ?>>misc</option>
-                                </select></td>
-                        </tr>
-                        <tr>
-                            <td bgcolor="<?php echo $THEME['altbg2'] ?>" class="tablerow"
-                                align="left" colspan="2"><?php echo $lang['faq_R'] ?></td>
-                        </tr>
-                        <tr>
-                            <td bgcolor="<?php echo $THEME['altbg2'] ?>" class="ctrtablerow"
-                                colspan="2"><input class="submit" type="submit" name="gsubmit"
-                                                   value="<?php echo $lang['textsubmitchanges'] ?>"/></td>
-                        </tr>
-                    </table>
-                </td>
-            </tr>
-        </table>
+    $on = $off = '';
+    if ($group['status'] == 'on') {
+        $on = $selHTML;
+    } else {
+        $off = $selHTML;
+    }
+    ?>
+    <tr class="tablerow">
+    <td bgcolor="<?php echo $THEME['altbg1'] ?>"><?php echo $lang['faq_P'] ?></td>
+    <td bgcolor="<?php echo $THEME['altbg2'] ?>"><input type="text" name="namenew" value="<?php echo $group['name'] ?>" /></td>
+    </tr>
+    <tr class="tablerow">
+    <td bgcolor="<?php echo $THEME['altbg1'] ?>"><?php echo $lang['textorder'] ?></td>
+    <td bgcolor="<?php echo $THEME['altbg2'] ?>"><input type="text" name="displayordernew" size="2" value="<?php echo $group['displayorder'] ?>" /></td>
+    </tr>
+    <tr class="tablerow">
+    <td bgcolor="<?php echo $THEME['altbg1'] ?>"><?php echo $lang['pmreadstatus'] ?></td>
+    <td bgcolor="<?php echo $THEME['altbg2'] ?>"><select name="groupstatusnew"><option value="on"<?php echo $on ?>><?php echo $lang['texton'] ?></option><option value="off"<?php echo $off ?>><?php echo $lang['textoff'] ?></option></select></td>
+    </tr>
+    <tr class="tablerow">
+    <td bgcolor="<?php echo $THEME['altbg1'] ?>"><?php echo $lang['faq_Q'] ?></td>
+    <td bgcolor="<?php echo $THEME['altbg2'] ?>">
+    <select name="codenew"><option value=""<?php echo $ic00 ?>>-<?php echo $lang['textnone'] ?>-</option>
+    <option value="usermaint"<?php echo $ic01 ?>>usermaint</option>
+    <option value="using"<?php echo $ic02 ?>>using</option>
+    <option value="messages"<?php echo $ic03 ?>>messages</option>
+    <option value="misc"<?php echo $ic04 ?>>misc</option>
+    </select>
+    </td>
+    </tr>
+    <tr>
+    <td bgcolor="<?php echo $THEME['altbg2'] ?>" class="tablerow" align="left" colspan="2"><?php echo $lang['faq_R'] ?></td>
+    </tr>
+    <tr>
+    <td bgcolor="<?php echo $THEME['altbg2'] ?>" class="ctrtablerow" colspan="2"><input class="submit" type="submit" name="gsubmit" value="<?php echo $lang['textsubmitchanges'] ?>" /></td>
+    </tr>
+    </table>
+    </td>
+    </tr>
+    </table>
     </form>
     <?php echo $shadow2 ?>
     </td>
@@ -424,7 +358,7 @@ function dogDetails($gdetails)
 
     $querygd = $db->query("SELECT fid FROM " . X_PREFIX . "faq WHERE (type = 'group' AND fid = '$gdetails')");
     $theid = $db->result($querygd, 0);
-    $db->freeResult($querygd);
+    $db->free_result($querygd);
 
     $db->query("UPDATE " . X_PREFIX . "faq SET name = '$name', code = '$code', displayorder = '$displayordernew', status = '$groupstatusnew' WHERE fid = '$theid'");
 
@@ -437,112 +371,89 @@ function dofDetailsPanel($fdetails)
     global $selHTML, $cheHTML, $bbcodeinsert;
     ?>
     <form method="post" action="cp_faq.php?fdetails=<?php echo $fdetails ?>">
-        <input type="hidden" name="csrf_token"
-               value="<?php echo $oToken->createToken() ?>"/>
-        <table cellspacing="0px" cellpadding="0px" border="0px" width="100%"
-               align="center">
-            <tr>
-                <td bgcolor="<?php echo $THEME['bordercolor'] ?>">
-                    <table border="0px" cellspacing="<?php echo $THEME['borderwidth'] ?>"
-                           cellpadding="<?php echo $THEME['tablespace'] ?>" width="100%">
-                        <tr class="category">
-                            <td class="title" colspan="2"><?php echo $lang['faq_E'] ?></td>
-                        </tr>
-                        <?php
-                        $queryg = $db->query("SELECT * FROM " . X_PREFIX . "faq WHERE fid = '$fdetails'");
-                        $item = $db->fetchArray($queryg);
-                        $db->freeResult($queryg);
+    <input type="hidden" name="token" value="<?php echo $oToken->get_new_token() ?>" />
+    <table cellspacing="0px" cellpadding="0px" border="0px" width="100%" align="center">
+    <tr>
+    <td bgcolor="<?php echo $THEME['bordercolor'] ?>">
+    <table border="0px" cellspacing="<?php echo $THEME['borderwidth'] ?>" cellpadding="<?php echo $THEME['tablespace'] ?>" width="100%">
+    <tr class="category">
+    <td class="title" colspan="2"><?php echo $lang['faq_E'] ?></td>
+    </tr>
+    <?php
+$queryg = $db->query("SELECT * FROM " . X_PREFIX . "faq WHERE fid = '$fdetails'");
+    $item = $db->fetch_array($queryg);
+    $db->free_result($queryg);
 
-                        if ($item['allowsmilies'] == 'yes') {
-                            $checked3 = $cheHTML;
-                        } else {
-                            $checked3 = '';
-                        }
+    if ($item['allowsmilies'] == 'yes') {
+        $checked3 = $cheHTML;
+    } else {
+        $checked3 = '';
+    }
 
-                        if ($item['allowbbcode'] == 'yes') {
-                            $checked4 = $cheHTML;
-                        } else {
-                            $checked4 = '';
-                        }
+    if ($item['allowbbcode'] == 'yes') {
+        $checked4 = $cheHTML;
+    } else {
+        $checked4 = '';
+    }
 
-                        if ($item['allowimgcode'] == 'yes') {
-                            $checked5 = $cheHTML;
-                        } else {
-                            $checked5 = '';
-                        }
+    if ($item['allowimgcode'] == 'yes') {
+        $checked5 = $cheHTML;
+    } else {
+        $checked5 = '';
+    }
 
-                        $ic00 = $ic01 = $ic02 = $ic03 = '';
-                        if ($item['view'] == 1) {
-                            $ic01 = $selHTML;
-                        } elseif ($item['view'] == 2) {
-                            $ic02 = $selHTML;
-                        } elseif ($item['view'] == 3) {
-                            $ic03 = $selHTML;
-                        } else {
-                            $ic00 = $selHTML;
-                        }
+    $ic00 = $ic01 = $ic02 = $ic03 = '';
+    if ($item['view'] == 1) {
+        $ic01 = $selHTML;
+    } else if ($item['view'] == 2) {
+        $ic02 = $selHTML;
+    } else if ($item['view'] == 3) {
+        $ic03 = $selHTML;
+    } else {
+        $ic00 = $selHTML;
+    }
 
-                        $item['name'] = stripslashes($item['name']);
-                        $item['description'] = stripslashes($item['description']);
-                        ?>
-                        <tr class="tablerow">
-                            <td bgcolor="<?php echo $THEME['altbg1'] ?>"><?php echo $lang['faq_C'] ?></td>
-                            <td bgcolor="<?php echo $THEME['altbg2'] ?>"><input type="text"
-                                                                                name="namenew"
-                                                                                value="<?php echo $item['name'] ?>"
-                                                                                size="60"/></td>
-                        </tr>
-                        <?php echo $bbcodeinsert ?>
-                        <tr class="tablerow">
-                            <td bgcolor="<?php echo $THEME['altbg1'] ?>" valign="top"><?php echo $lang['faq_D'] ?></td>
-                            <td bgcolor="<?php echo $THEME['altbg2'] ?>"><textarea rows="20"
-                                                                                   cols="60" name="descnew" id="message"
-                                                                                   onselect="storeCaret(this);"
-                                                                                   onclick="storeCaret(this);"
-                                                                                   onkeyup="storeCaret(this);"><?php echo $item['description'] ?></textarea>
-                            </td>
-                        </tr>
-                        <tr class="tablerow">
-                            <td bgcolor="<?php echo $THEME['altbg1'] ?>"
-                                valign="top"><?php echo $lang['textallow'] ?></td>
-                            <td bgcolor="<?php echo $THEME['altbg2'] ?>" class="smalltxt"><input
-                                        type="checkbox" name="allowsmiliesnew" value="yes"
-                                    <?php echo $checked3 ?> /><?php echo $lang['textsmilies'] ?><br/>
-                                <input type="checkbox" name="allowbbcodenew" value="yes"
-                                    <?php echo $checked4 ?> /><?php echo $lang['textbbcode'] ?><br/> <input
-                                        type="checkbox" name="allowimgcodenew" value="yes"
-                                    <?php echo $checked5 ?> /><?php echo $lang['textimgcode'] ?><br/>
-                            </td>
-                        </tr>
-                        <tr class="tablerow">
-                            <td bgcolor="<?php echo $THEME['altbg1'] ?>"><?php echo $lang['faq_S'] ?></td>
-                            <td bgcolor="<?php echo $THEME['altbg2'] ?>"><select name="viewnew">
-                                    <option
-                                            value="0" <?php echo $ic00 ?>>-<?php echo $lang['textnone'] ?>-
-                                    </option>
-                                    <option value="1" <?php echo $ic01 ?>><?php echo $lang['smilies'] ?></option>
-                                    <option value="2" <?php echo $ic02 ?>><?php echo $lang['textuserranks'] ?></option>
-                                    <option value="3" <?php echo $ic03 ?>><?php echo $lang['smilies'] ?>
-                                        + <?php echo $lang['textuserranks'] ?></option>
-                                </select></td>
-                        </tr>
-                        <tr class="tablerow">
-                            <td bgcolor="<?php echo $THEME['altbg1'] ?>"><strong><?php echo $lang['textdeleteques'] ?>
-                                    :</strong></td>
-                            <td bgcolor="<?php echo $THEME['altbg2'] ?>"><input type="checkbox"
-                                                                                name="delete"
-                                                                                value="<?php echo $item['fid'] ?>"/>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td bgcolor="<?php echo $THEME['altbg2'] ?>" class="ctrtablerow"
-                                colspan="2"><input class="submit" type="submit" name="faqsubmit"
-                                                   value="<?php echo $lang['textsubmitchanges'] ?>"/></td>
-                        </tr>
-                    </table>
-                </td>
-            </tr>
-        </table>
+    $item['name'] = stripslashes($item['name']);
+    $item['description'] = stripslashes($item['description']);
+    ?>
+    <tr class="tablerow">
+    <td bgcolor="<?php echo $THEME['altbg1'] ?>"><?php echo $lang['faq_C'] ?></td>
+    <td bgcolor="<?php echo $THEME['altbg2'] ?>"><input type="text" name="namenew" value="<?php echo $item['name'] ?>" size="60" /></td>
+    </tr>
+    <?php echo $bbcodeinsert ?>
+    <tr class="tablerow">
+    <td bgcolor="<?php echo $THEME['altbg1'] ?>" valign="top"><?php echo $lang['faq_D'] ?></td>
+    <td bgcolor="<?php echo $THEME['altbg2'] ?>"><textarea rows="20" cols="60" name="descnew" id="message" onselect="storeCaret(this);" onclick="storeCaret(this);" onkeyup="storeCaret(this);"><?php echo $item['description'] ?></textarea></td>
+    </tr>
+    <tr class="tablerow">
+    <td bgcolor="<?php echo $THEME['altbg1'] ?>" valign="top"><?php echo $lang['textallow'] ?></td>
+    <td bgcolor="<?php echo $THEME['altbg2'] ?>" class="smalltxt">
+    <input type="checkbox" name="allowsmiliesnew" value="yes" <?php echo $checked3 ?> /><?php echo $lang['textsmilies'] ?><br />
+    <input type="checkbox" name="allowbbcodenew" value="yes" <?php echo $checked4 ?> /><?php echo $lang['textbbcode'] ?><br />
+    <input type="checkbox" name="allowimgcodenew" value="yes" <?php echo $checked5 ?> /><?php echo $lang['textimgcode'] ?><br />
+    </td>
+    </tr>
+    <tr class="tablerow">
+    <td bgcolor="<?php echo $THEME['altbg1'] ?>"><?php echo $lang['faq_S'] ?></td>
+    <td bgcolor="<?php echo $THEME['altbg2'] ?>">
+    <select name="viewnew"><option value="0"<?php echo $ic00 ?>>-<?php echo $lang['textnone'] ?>-</option>
+    <option value="1"<?php echo $ic01 ?>><?php echo $lang['smilies'] ?></option>
+    <option value="2"<?php echo $ic02 ?>><?php echo $lang['textuserranks'] ?></option>
+    <option value="3"<?php echo $ic03 ?>><?php echo $lang['smilies'] ?> + <?php echo $lang['textuserranks'] ?></option>
+    </select>
+    </td>
+    </tr>
+    <tr class="tablerow">
+    <td bgcolor="<?php echo $THEME['altbg1'] ?>"><strong><?php echo $lang['textdeleteques'] ?>:</strong></td>
+    <td bgcolor="<?php echo $THEME['altbg2'] ?>"><input type="checkbox" name="delete" value="<?php echo $item['fid'] ?>" /></td>
+    </tr>
+    <tr>
+    <td bgcolor="<?php echo $THEME['altbg2'] ?>" class="ctrtablerow" colspan="2"><input class="submit" type="submit" name="faqsubmit" value="<?php echo $lang['textsubmitchanges'] ?>" /></td>
+    </tr>
+    </table>
+    </td>
+    </tr>
+    </table>
     </form>
     <?php echo $shadow2 ?>
     </td>
@@ -559,7 +470,7 @@ function faqSubmit($fdetails)
         $db->query("DELETE FROM " . X_PREFIX . "faq WHERE name = ''");
 
         $queryforum = $db->query("SELECT fid, type FROM " . X_PREFIX . "faq WHERE type = 'item'");
-        while (($item = $db->fetchArray($queryforum)) != false) {
+        while ($item = $db->fetch_array($queryforum)) {
             $displayorder = "displayorder$item[fid]";
             $displayorder = formInt($displayorder);
             $name = "name$item[fid]";
@@ -577,15 +488,15 @@ function faqSubmit($fdetails)
 
             $db->query("UPDATE " . X_PREFIX . "faq SET name='$name', displayorder='$displayorder', status='$self[status]', fup='$moveto' WHERE fid='$item[fid]'");
         }
-        $db->freeResult($queryforum);
+        $db->free_result($queryforum);
 
         $querygroup = $db->query("SELECT fid FROM " . X_PREFIX . "faq WHERE type='group'");
-        while (($group = $db->fetchArray($querygroup)) != false) {
+        while ($group = $db->fetch_array($querygroup)) {
             $delete = "delete$group[fid]";
             $delete = formInt($delete);
             if ($delete > 0) {
                 $query = $db->query("SELECT fid FROM " . X_PREFIX . "faq WHERE type = 'item' AND fup = '$delete'");
-                while (($item = $db->fetchArray($query)) != false) {
+                while ($item = $db->fetch_array($query)) {
                     $db->query("UPDATE " . X_PREFIX . "faq SET fup = '' WHERE type = 'item' AND fup = '$delete'");
                 }
 
@@ -601,7 +512,7 @@ function faqSubmit($fdetails)
 
             $db->query("UPDATE " . X_PREFIX . "faq SET name='$name', displayorder='$displayorder', status='$self[status]' WHERE fid = '$group[fid]'");
         }
-        $db->freeResult($querygroup);
+        $db->free_result($querygroup);
 
         $newgname = $db->escape(formVar('newgname'));
         $newgstatus = $db->escape(formVar('newgstatus'));
@@ -656,15 +567,15 @@ $gdetails = getRequestInt('gdetails');
 if ($fdetails > 0) {
     if (noSubmit('faqsubmit')) {
         dofDetailsPanel($fdetails);
-    } elseif (onSubmit('faqsubmit')) {
-        $oToken->assertToken();
+    } else if (onSubmit('faqsubmit')) {
+        $oToken->assert_token();
         faqSubmit($fdetails);
     }
-} elseif ($gdetails > 0) {
+} else if ($gdetails > 0) {
     if (noSubmit('faqsubmit')) {
         dogDetailsPanel($gdetails);
-    } elseif (onSubmit('faqsubmit')) {
-        $oToken->assertToken();
+    } else if (onSubmit('faqsubmit')) {
+        $oToken->assert_token();
         dogDetails($gdetails);
     }
 } else {

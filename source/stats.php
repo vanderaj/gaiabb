@@ -1,16 +1,16 @@
 <?php
 /**
  * GaiaBB
- * Copyright (c) 2009-2021 The GaiaBB Project
+ * Copyright (c) 2011-2022 The GaiaBB Group
  * https://github.com/vanderaj/gaiabb
  *
- * Forked from UltimaBB
+ * Based off UltimaBB
  * Copyright (c) 2004 - 2007 The UltimaBB Group
  * (defunct)
  *
- * Forked from XMB
- * Copyright (c) 2001 - 2021 The XMB Development Team
- * https://forums.xmbforum2.com/
+ * Based off XMB
+ * Copyright (c) 2001 - 2004 The XMB Development Team
+ * http://www.xmbforum.com
  *
  * This file is part of GaiaBB
  *
@@ -28,8 +28,10 @@
  *    along with GaiaBB.  If not, see <http://www.gnu.org/licenses/>.
  *
  **/
-// phpcs:disable PSR1.Files.SideEffects
-require_once 'header.php';
+
+define('ROOT', './');
+
+require_once ROOT . 'header.php';
 
 loadtpl('stats');
 
@@ -53,15 +55,11 @@ $restrict = 'WHERE';
 switch ($self['status']) {
     case 'Member':
         $restrict .= " f.private != '3' AND";
-    // no break
     case 'Moderator':
-    // no break
     case 'Super Moderator':
         $restrict .= " f.private != '2' AND";
-    // no break
     case 'Administrator':
         $restrict .= " f.userlist = '' AND f.password = '' AND";
-    // no break
     case 'Super Administrator':
         break;
     default:
@@ -84,7 +82,7 @@ $posts = $db->result($q, 2);
 if ($posts == false) {
     $posts = 0;
 }
-$db->freeResult($q);
+$db->free_result($q);
 
 $query = $db->query("SELECT regdate FROM " . X_PREFIX . "members ORDER BY regdate LIMIT 0, 1");
 $days = ($onlinetime-@$db->result($query, 0)) / 86400;
@@ -93,19 +91,19 @@ if ($days > 0) {
 } else {
     $membersday = number_format(0, 2);
 }
-$db->freeResult($query);
+$db->free_result($query);
 
 $query = $db->query("SELECT COUNT(fid) FROM " . X_PREFIX . "forums WHERE type = 'forum'");
 $forums = $db->result($query, 0);
-$db->freeResult($query);
+$db->free_result($query);
 
 $query = $db->query("SELECT COUNT(fid) FROM " . X_PREFIX . "forums WHERE type = 'forum' AND status = 'on'");
 $forumsa = $db->result($query, 0);
-$db->freeResult($query);
+$db->free_result($query);
 
 $query = $db->query("SELECT COUNT(postnum) FROM " . X_PREFIX . "members WHERE postnum > '0'");
 $membersact = $db->result($query, 0);
-$db->freeResult($query);
+$db->free_result($query);
 
 if ($posts == 0 || $members == 0 || $threads == 0 || $forums == 0 || $days < 1) {
     message($lang['stats_incomplete'], false);
@@ -114,20 +112,20 @@ if ($posts == 0 || $members == 0 || $threads == 0 || $forums == 0 || $days < 1) 
 $mempost = 0;
 $query = $db->query("SELECT SUM(postnum) FROM " . X_PREFIX . "members");
 $mempost = number_format(($db->result($query, 0) / $members), 2);
-$db->freeResult($query);
+$db->free_result($query);
 
 $forumpost = 0;
 if ($forums > 0) {
     $query = $db->query("SELECT SUM(posts) FROM " . X_PREFIX . "forums");
     $forumpost = number_format(($db->result($query, 0) / $forums), 2);
-    $db->freeResult($query);
+    $db->free_result($query);
 }
 
 $threadreply = 0;
 if ($threads > 0) {
     $query = $db->query("SELECT SUM(replies) FROM " . X_PREFIX . "threads");
     $threadreply = number_format(($db->result($query, 0) / $threads), 2);
-    $db->freeResult($query);
+    $db->free_result($query);
 }
 
 $mapercent = "0%";
@@ -137,26 +135,26 @@ if ($members > 0) {
 
 $viewmost = array();
 $query = $db->query("SELECT t.views, t.tid, t.subject FROM " . X_PREFIX . "threads t, " . X_PREFIX . "forums f $restrict f.fid = t.fid AND f.status = 'on' ORDER BY views DESC LIMIT 0,5");
-while (($views = $db->fetchArray($query)) != false) {
+while ($views = $db->fetch_array($query)) {
     $views['subject'] = shortenString(censor($views['subject']), 80, X_SHORTEN_SOFT | X_SHORTEN_HARD, '...');
     $viewmost[] = '<a href="viewtopic.php?tid=' . intval($views['tid']) . '">' . $views['subject'] . '</a> (' . $views['views'] . ')<br />';
 }
 $viewmost = implode("\n", $viewmost);
-$db->freeResult($query);
+$db->free_result($query);
 
 $replymost = array();
 $query = $db->query("SELECT t.replies, t.tid, t.subject FROM " . X_PREFIX . "threads t, " . X_PREFIX . "forums f $restrict f.fid = t.fid AND f.status = 'on' ORDER BY replies DESC LIMIT 0,5");
-while (($reply = $db->fetchArray($query)) != false) {
+while ($reply = $db->fetch_array($query)) {
     $reply['subject'] = shortenString(censor($reply['subject']), 80, X_SHORTEN_SOFT | X_SHORTEN_HARD, '...');
     $replymost[] = '<a href="viewtopic.php?tid=' . intval($reply['tid']) . '">' . $reply['subject'] . '</a> (' . $reply['replies'] . ')<br />';
 }
 $replymost = implode("\n", $replymost);
-$db->freeResult($query);
+$db->free_result($query);
 
 $latest = array();
 $query = $db->query("SELECT l.dateline as lp_dateline, l.pid as lp_pid, t.tid, t.subject FROM " . X_PREFIX . "threads t, " . X_PREFIX . "forums f, " . X_PREFIX . "lastposts l $restrict l.tid = t.tid AND f.fid = t.fid AND f.status = 'on' ORDER BY l.dateline DESC LIMIT 0,5");
 $adjTime = ($self['timeoffset'] * 3600) + $self['daylightsavings'];
-while (($last = $db->fetchArray($query)) != false) {
+while ($last = $db->fetch_array($query)) {
     $lpdate = gmdate($self['dateformat'], $last['lp_dateline'] + $adjTime);
     $lptime = gmdate($self['timecode'], $last['lp_dateline'] + $adjTime);
     $thislast = $lang['lpoststats'] . ' ' . $lang['lastreply1'] . ' ' . $lpdate . ' ' . $lang['textat'] . ' ' . $lptime;
@@ -164,12 +162,12 @@ while (($last = $db->fetchArray($query)) != false) {
     $latest[] = '<a href="viewtopic.php?tid=' . intval($last['tid']) . '">' . $last['subject'] . '</a> (' . $thislast . ')<br/>';
 }
 $latest = implode("\n", $latest);
-$db->freeResult($query);
+$db->free_result($query);
 
 $query = $db->query("SELECT f.posts, f.threads, f.fid, f.name FROM " . X_PREFIX . "forums f $restrict f.fid = f.fid AND f.type = 'forum' OR f.type = 'sub' AND f.status = 'on' ORDER BY posts DESC LIMIT 0, 1");
-$pop = $db->fetchArray($query);
+$pop = $db->fetch_array($query);
 $popforum = '<a href="viewforum.php?fid=' . intval($pop['fid']) . '"><strong>' . $pop['name'] . '</strong></a>';
-$db->freeResult($query);
+$db->free_result($query);
 
 $postsday = 0;
 if ($days > 0) {
@@ -180,10 +178,11 @@ $timesearch = $onlinetime - 86400;
 $eval = $lang['evalnobestmember'];
 
 $query = $db->query("SELECT uid, username, regdate, postnum, COUNT(postnum) AS Total FROM " . X_PREFIX . "members WHERE regdate <='$timesearch' GROUP BY postnum ORDER BY postnum DESC LIMIT 1");
-$info = $db->fetchArray($query);
-$db->freeResult($query);
+$info = $db->fetch_array($query);
+$db->free_result($query);
 
 if ($info['Total'] > 0) {
+
     if (X_MEMBER) {
         $membesthtml = '<a href="viewprofile.php?memberid=' . intval($info['uid']) . '"><strong>' . trim($info['username']) . '</strong></a>';
     } else {

@@ -1,16 +1,16 @@
 <?php
 /**
  * GaiaBB
- * Copyright (c) 2009-2021 The GaiaBB Project
+ * Copyright (c) 2011-2022 The GaiaBB Group
  * https://github.com/vanderaj/gaiabb
  *
- * Forked from UltimaBB
+ * Based off UltimaBB
  * Copyright (c) 2004 - 2007 The UltimaBB Group
  * (defunct)
  *
- * Forked from XMB
- * Copyright (c) 2001 - 2021 The XMB Development Team
- * https://forums.xmbforum2.com/
+ * Based off XMB
+ * Copyright (c) 2001 - 2004 The XMB Development Team
+ * http://www.xmbforum.com
  *
  * This file is part of GaiaBB
  *
@@ -28,9 +28,10 @@
  *    along with GaiaBB.  If not, see <http://www.gnu.org/licenses/>.
  *
  **/
-// phpcs:disable PSR1.Files.SideEffects
+
+// check to ensure no direct viewing of page
 if (!defined('IN_PROGRAM') && (defined('DEBUG') && DEBUG == false)) {
-    exit('This file is not designed to be called directly');
+//     exit('This file is not designed to be called directly');
 }
 
 /*
@@ -40,46 +41,49 @@ if (!defined('IN_PROGRAM') && (defined('DEBUG') && DEBUG == false)) {
  *
  * Debug mode has several effects:
  *
- * - Displays SQL queries for Super Administrators at the bottom of the screen
+ * - Enables SQL queries for Super Administrators at the bottom of the screen
  * - Detailed error messages in SQL classes and other areas for super admins
  * - Any warning or error messages which are normally suppressed by PHP for all users
- * - Performs a few more checks (not unit tests) for all users
+ * - Performs a few more checks(not unit tests) for all users
  * - Slows performance by about 5% for all users
  *
- * Turn DEBUG on by changing define('DEBUG', false); to define('DEBUG', true) in config.php
+ * Turn DEBUG on by changing define('DEBUG', false); to define('DEBUG', true);
  */
 
-
-// set to true for debugging or development, false in production
+// Development
 define('DEBUG', true);
+
+// Production
+if (!defined('DEBUG')) {
+    define('DEBUG', false);
+}
 
 // 0 = completely off
 // 1 = normal, debug is enabled for X_SADMIN and above
 // 2 = more, debug is enabled for X_MEMBER and above (so no banned or guest debug messages)
 // 3 = all, debug is enabled for everyone (including banned and guests)
-define('DEBUGLEVEL', 1);
+define('DEBUGLEVEL', 3);
 
-// Debug mode
-if (!defined('DEBUG')) {
-    define('DEBUG', false);
-}
-// Debug log level - 0 - 3, where 0 is off for all users, 3 displays it for everyone
+// Production
 if (!defined('DEBUGLEVEL')) {
     define('DEBUGLEVEL', 0);
 }
-
-/*
- * Product name and version
+/* Product name and version
  *
  * Change these as necessary.
  */
 $versionpowered = ' - Powered by GaiaBB';
 $versioncompany = 'The GaiaBB Group';
 $versionshort = 'GaiaBB';
-$versiongeneral = 'GaiaBB 1.0-M1';
-$versioncopyright = 'GaiaBB 1.0-M1, &copy; 2009-2021 The GaiaBB Group';
-$versionbuild = '2021.06.09';
+$versiongeneral = 'GaiaBB 1.0-HEAD';
+$versioncopyright = 'GaiaBB 1.0-HEAD, &copy; 2022 The GaiaBB Group';
+$versionbuild = '2022090901';
+$alpha = '';
+$beta = '';
+$gamma = '1.0-HEAD fixpack 1';
+$sp = '';
 
+// No user serviceable items below
 define('X_CACHE_GET', 1);
 define('X_CACHE_PUT', 2);
 define('X_SET_HEADER', 1);
@@ -92,8 +96,8 @@ define('X_SHORTEN_HARD', 2);
 
 $cookiepath = '';
 $cookiedomain = '';
-$gbblva = 0;
-$gbblvb = 0;
+$ubblva = 0;
+$ubblvb = 0;
 $bbcodescript = '';
 $attachscript = '';
 $navigation = '';
@@ -108,12 +112,13 @@ $newpmmsg = '';
 $meta = '';
 $quickjump = '';
 $cssadd = '';
+
+$tpp = 0;
+$ppp = 0;
 $filesize = 0;
 $forumtheme = 0;
 
 $self = array();
-$self['tpp'] = 0;
-$self['ppp'] = 0;
 $footerstuff = array();
 $CONFIG = array();
 $THEME = array();
@@ -130,6 +135,8 @@ $cheHTML = 'checked="checked"';
 define('GAIABB_VERSION', $versiongeneral);
 define('GAIABB_BUILD', $versionbuild);
 define('GAIABB_COPYRIGHT', $versioncopyright);
+
+define('GAIABB_MASTERKEY', 'sq^%L4Ld/<*C~WG)');
 
 // Cache-control
 if (!defined('CACHECONTROL')) {

@@ -1,16 +1,16 @@
 <?php
 /**
  * GaiaBB
- * Copyright (c) 2009-2021 The GaiaBB Project
+ * Copyright (c) 2011-2022 The GaiaBB Group
  * https://github.com/vanderaj/gaiabb
  *
- * Forked from UltimaBB
+ * Based off UltimaBB
  * Copyright (c) 2004 - 2007 The UltimaBB Group
  * (defunct)
  *
- * Forked from XMB
- * Copyright (c) 2001 - 2021 The XMB Development Team
- * https://forums.xmbforum2.com/
+ * Based off XMB
+ * Copyright (c) 2001 - 2004 The XMB Development Team
+ * http://www.xmbforum.com
  *
  * This file is part of GaiaBB
  *
@@ -28,8 +28,10 @@
  *    along with GaiaBB.  If not, see <http://www.gnu.org/licenses/>.
  *
  **/
-// phpcs:disable PSR1.Files.SideEffects
-require_once 'header.php';
+
+define('ROOT', './');
+
+require_once ROOT . 'header.php';
 
 loadtpl('');
 
@@ -40,8 +42,8 @@ if (X_GUEST) {
     error($lang['textnoaction']);
 }
 
-$gbblvb = $onlinetime;
-put_cookie('gbblvb', $gbblvb, $gbblvb + 600, $cookiepath, $cookiedomain, null, X_SET_HEADER);
+$ubblvb = $onlinetime;
+put_cookie('ubblvb', $ubblvb, $ubblvb + 600, $cookiepath, $cookiedomain, false, X_SET_HEADER);
 $lastvisit = $onlinetime;
 $lastvisit2 = $onlinetime;
 redirect('index.php', 0);

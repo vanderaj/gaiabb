@@ -1,16 +1,16 @@
 <?php
 /**
  * GaiaBB
- * Copyright (c) 2009-2021 The GaiaBB Project
+ * Copyright (c) 2011-2022 The GaiaBB Group
  * https://github.com/vanderaj/gaiabb
  *
- * Forked from UltimaBB
+ * Based off UltimaBB
  * Copyright (c) 2004 - 2007 The UltimaBB Group
  * (defunct)
  *
- * Forked from XMB
- * Copyright (c) 2001 - 2021 The XMB Development Team
- * https://forums.xmbforum2.com/
+ * Based off XMB
+ * Copyright (c) 2001 - 2004 The XMB Development Team
+ * http://www.xmbforum.com
  *
  * This file is part of GaiaBB
  *
@@ -28,11 +28,19 @@
  *    along with GaiaBB.  If not, see <http://www.gnu.org/licenses/>.
  *
  **/
-// phpcs:disable PSR1.Files.SideEffects
-require_once 'header.php';
-require_once ROOT . 'include/theme.inc.php';
 
-loadtpl('viewprofile', 'viewprofile_email', 'viewprofile_aka', 'viewprofile_sig', 'viewprofile_pm');
+define('ROOT', './');
+
+require_once ROOT . 'header.php';
+require_once ROOTINC . 'theme.inc.php';
+
+loadtpl(
+    'viewprofile',
+    'viewprofile_email',
+    'viewprofile_aka',
+    'viewprofile_sig',
+    'viewprofile_pm'
+);
 
 $shadow = shadowfx();
 $shadow2 = shadowfx2();
@@ -54,7 +62,7 @@ $memberinfo = array();
 
 $memberid = getInt('memberid');
 if ($memberid > 0) {
-    $memberinfo = $db->fetchArray($db->query("SELECT * FROM " . X_PREFIX . "members WHERE uid='$memberid'"));
+    $memberinfo = $db->fetch_array($db->query("SELECT * FROM " . X_PREFIX . "members WHERE uid='$memberid'"));
     $member = $memberinfo['username'];
 } else {
     error($lang['nomember']);
@@ -66,7 +74,7 @@ if ($memberinfo['status'] == 'Administrator' || $memberinfo['status'] == 'Super 
 } else {
     $limit = "posts <= '$memberinfo[postnum]' AND title!='Super Administrator' AND title!='Administrator' AND title!='Super Moderator' AND title!='Moderator'";
 }
-$rank = $db->fetchArray($db->query("SELECT * FROM " . X_PREFIX . "ranks WHERE $limit ORDER BY posts DESC LIMIT 1"));
+$rank = $db->fetch_array($db->query("SELECT * FROM " . X_PREFIX . "ranks WHERE $limit ORDER BY posts DESC LIMIT 1"));
 
 if ($memberinfo['uid'] == '') {
     error($lang['nomember']);
@@ -230,7 +238,7 @@ if ($memberinfo['uid'] == '') {
     }
     $stars = str_repeat('<img src="' . $THEME['imgdir'] . '/' . $star . '" alt="*" title="*" border="0px" />', $rank['stars']);
 
-    $q = $db->fetchArray($db->query("SELECT invisible FROM " . X_PREFIX . "whosonline WHERE username='$member'"));
+    $q = $db->fetch_array($db->query("SELECT invisible FROM " . X_PREFIX . "whosonline WHERE username='$member'"));
     if (!$q) {
         $onlinenow = $lang['memberisoff'];
     } else {
@@ -265,7 +273,7 @@ if ($memberinfo['uid'] == '') {
 
     $query = $db->query("SELECT COUNT(tid) FROM " . X_PREFIX . "threads");
     $threads = $db->result($query, 0);
-    $db->freeResult($query);
+    $db->free_result($query);
 
     $threadtot = $threads;
     if ($threadtot == 0 || $memberinfo['threadnum'] == 0) {
@@ -277,7 +285,7 @@ if ($memberinfo['uid'] == '') {
 
     $query = $db->query("SELECT COUNT(pid) FROM " . X_PREFIX . "posts");
     $posts = $db->result($query, 0);
-    $db->freeResult($query);
+    $db->free_result($query);
 
     $posttot = $posts;
     if ($posttot == 0 || $memberinfo['postnum'] == 0) {
@@ -373,15 +381,11 @@ if ($memberinfo['uid'] == '') {
     switch ($self['status']) {
         case 'Member':
             $restrict .= " f.password='' AND f.private!='3' AND";
-            // no break
         case 'Moderator':
-            // no break
         case 'Super Moderator':
             $restrict .= " f.password='' AND f.private!='2' AND";
-            // no break
         case 'Administrator':
             $restrict .= " f.userlist='' AND f.password='' AND";
-            // no break
         case 'Super Administrator':
             break;
         default:
@@ -390,8 +394,8 @@ if ($memberinfo['uid'] == '') {
     }
 
     $query = $db->query("SELECT f.name, p.fid, COUNT(DISTINCT p.pid) as posts FROM " . X_PREFIX . "posts p LEFT JOIN " . X_PREFIX . "forums f ON p.fid=f.fid WHERE $restrict p.author='$member' GROUP BY p.fid ORDER BY posts DESC LIMIT 1");
-    $forum = $db->fetchArray($query);
-    $db->freeResult($query);
+    $forum = $db->fetch_array($query);
+    $db->free_result($query);
 
     if ($forum['posts'] < 1 || $memberinfo['postnum'] < 1) {
         $topforum = $lang['textnopostsyet'];
@@ -400,7 +404,7 @@ if ($memberinfo['uid'] == '') {
     }
 
     $query = $db->query("SELECT t.tid, t.subject, p.dateline FROM (" . X_PREFIX . "posts p, " . X_PREFIX . "threads t) LEFT JOIN " . X_PREFIX . "forums f ON p.fid=f.fid WHERE $restrict t.author='$member' AND p.tid=t.tid ORDER BY t.tid DESC LIMIT 1");
-    if (($thread = $db->fetchArray($query)) != false) {
+    if ($thread = $db->fetch_array($query)) {
         $lastthreaddate = gmdate($self['dateformat'], $thread['dateline'] + ($self['timeoffset'] * 3600) + $self['daylightsavings']);
         $lastthreadtime = gmdate($self['timecode'], $thread['dateline'] + ($self['timeoffset'] * 3600) + $self['daylightsavings']);
         $lastthreadtext = $lastthreaddate . ' ' . $lang['textat'] . ' ' . $lastthreadtime;
@@ -409,10 +413,10 @@ if ($memberinfo['uid'] == '') {
     } else {
         $lastthread = $lang['textnothreadsyet'];
     }
-    $db->freeResult($query);
+    $db->free_result($query);
 
     $query = $db->query("SELECT t.tid, t.subject, p.dateline, p.pid FROM (" . X_PREFIX . "posts p, " . X_PREFIX . "threads t) LEFT JOIN " . X_PREFIX . "forums f ON p.fid=f.fid WHERE $restrict p.author='$member' AND p.tid=t.tid ORDER BY p.dateline DESC LIMIT 1");
-    if (($post = $db->fetchArray($query)) != false) {
+    if ($post = $db->fetch_array($query)) {
         $posts = $db->result($db->query("SELECT COUNT(pid) FROM " . X_PREFIX . "posts WHERE tid = '$post[tid]' AND pid < '$post[pid]'"), 0) + 1;
 
         validatePpp();
@@ -427,7 +431,7 @@ if ($memberinfo['uid'] == '') {
     } else {
         $lastpost = $lang['textnopostsyet'];
     }
-    $db->freeResult($query);
+    $db->free_result($query);
 
     $lang['searchusermsg'] = str_replace('*USER*', $memberinfo['username'], $lang['searchusermsg']);
 

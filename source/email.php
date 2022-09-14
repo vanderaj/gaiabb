@@ -1,16 +1,16 @@
 <?php
 /**
  * GaiaBB
- * Copyright (c) 2009-2021 The GaiaBB Project
+ * Copyright (c) 2011-2022 The GaiaBB Group
  * https://github.com/vanderaj/gaiabb
  *
- * Forked from UltimaBB
+ * Based off UltimaBB
  * Copyright (c) 2004 - 2007 The UltimaBB Group
  * (defunct)
  *
- * Forked from XMB
- * Copyright (c) 2001 - 2021 The XMB Development Team
- * https://forums.xmbforum2.com/
+ * Based off XMB
+ * Copyright (c) 2001 - 2004 The XMB Development Team
+ * http://www.xmbforum.com
  *
  * This file is part of GaiaBB
  *
@@ -28,8 +28,10 @@
  *    along with GaiaBB.  If not, see <http://www.gnu.org/licenses/>.
  *
  **/
-// phpcs:disable PSR1.Files.SideEffects
-require_once 'header.php';
+
+define('ROOT', './');
+
+require_once ROOT . 'header.php';
 
 loadtpl('email_member');
 
@@ -56,10 +58,9 @@ if (noSubmit('emailsubmit')) {
         error($lang['emailmemnomem'], false);
     }
 
-    $query = $db->query("SELECT uid, email, username, showemail FROM " .
-        X_PREFIX . "members WHERE uid = '$memberid' AND status != 'Banned'");
-    $sendto = $db->fetchArray($query);
-    $db->freeResult($query);
+    $query = $db->query("SELECT uid, email, username, showemail FROM " . X_PREFIX . "members WHERE uid = '$memberid' AND status != 'Banned'");
+    $sendto = $db->fetch_array($query);
+    $db->free_result($query);
 
     if (empty($sendto)) {
         error($lang['emailmemnoexist'], false);
@@ -75,10 +76,9 @@ if (noSubmit('emailsubmit')) {
 }
 
 if (onSubmit('emailsubmit')) {
-    $query = $db->query("SELECT uid, email, username, showemail FROM " .
-        X_PREFIX . "members WHERE uid = '$memberid' AND status != 'Banned'");
-    $sendto = $db->fetchArray($query);
-    $db->freeResult($query);
+    $query = $db->query("SELECT uid, email, username, showemail FROM " . X_PREFIX . "members WHERE uid = '$memberid' AND status != 'Banned'");
+    $sendto = $db->fetch_array($query);
+    $db->free_result($query);
 
     if (empty($sendto)) {
         error($lang['emailmemnoexist'], false);
@@ -108,34 +108,17 @@ if (onSubmit('emailsubmit')) {
 
     $emailmsgurl = $CONFIG['boardurl'] . 'index.php';
 
-    $tpl_keys = array(
-        '{TO}',
-        '{FROM}',
-        '{MSG}',
-    );
-    $tpl_values = array(
-        $sendto['username'],
-        $name,
-        $message,
-    );
+    $tpl_keys = array('{TO}', '{FROM}', '{MSG}');
+    $tpl_values = array($sendto['username'], $name, $message);
     $msgbody = str_replace($tpl_keys, $tpl_values, $lang['emailmemmsg']);
 
-    $mailSystem->setTo($sendto['email']);
-    $mailSystem->setFrom($email, $name);
-    $mailSystem->setSubject('[' . $CONFIG['bbname'] . '] ' . $subject);
-    $mailSystem->setMessage($msgbody);
-    $mailSystem->sendMail();
+    $mailsys->setTo($sendto['email']);
+    $mailsys->setFrom($email, $name);
+    $mailsys->setSubject('[' . $CONFIG['bbname'] . '] ' . $subject);
+    $mailsys->setMessage($msgbody);
+    $mailsys->Send();
 
-    message(
-        $lang['emailmemsubmitted'],
-        false,
-        '',
-        '',
-        'viewprofile.php?memberid=' . intval($sendto['uid']),
-        true,
-        false,
-        true
-    );
+    message($lang['emailmemsubmitted'], false, '', '', 'viewprofile.php?memberid=' . intval($sendto['uid']), true, false, true);
 }
 
 loadtime();

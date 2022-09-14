@@ -1,16 +1,16 @@
 <?php
 /**
  * GaiaBB
- * Copyright (c) 2009-2021 The GaiaBB Project
+ * Copyright (c) 2011-2022 The GaiaBB Group
  * https://github.com/vanderaj/gaiabb
  *
- * Forked from UltimaBB
+ * Based off UltimaBB
  * Copyright (c) 2004 - 2007 The UltimaBB Group
  * (defunct)
  *
- * Forked from XMB
- * Copyright (c) 2001 - 2021 The XMB Development Team
- * https://forums.xmbforum2.com/
+ * Based off XMB
+ * Copyright (c) 2001 - 2004 The XMB Development Team
+ * http://www.xmbforum.com
  *
  * This file is part of GaiaBB
  *
@@ -28,9 +28,11 @@
  *    along with GaiaBB.  If not, see <http://www.gnu.org/licenses/>.
  *
  **/
-// phpcs:disable PSR1.Files.SideEffects
-require_once 'header.php';
-require_once ROOT . 'include/usercp.inc.php';
+
+define('ROOT', './');
+
+require_once ROOT . 'header.php';
+require_once ROOTINC . 'usercp.inc.php';
 
 loadtpl(
     'error_nologinsession',
@@ -78,7 +80,7 @@ $auditaction = addslashes("$onlineip|#|$auditaction");
 adminaudit($self['username'], $auditaction, 0, 0);
 
 $memberid = getInt('memberid');
-$userid = $db->fetchArray($db->query("SELECT username FROM " . X_PREFIX . "members WHERE uid = '$memberid'"));
+$userid = $db->fetch_array($db->query("SELECT username FROM " . X_PREFIX . "members WHERE uid = '$memberid'"));
 if (empty($userid['username'])) {
     error($lang['nomember'], false);
 } else {
@@ -87,8 +89,8 @@ if (empty($userid['username'])) {
 
 if (noSubmit('editsubmit')) {
     $query = $db->query("SELECT * FROM " . X_PREFIX . "members WHERE uid = '$memberid'");
-    $member = $db->fetchArray($query);
-    $db->freeResult($query);
+    $member = $db->fetch_array($query);
+    $db->free_result($query);
 
     $showemailyes = $showemailno = '';
     memberYesNo('showemail', $showemailyes, $showemailno);
@@ -144,10 +146,8 @@ if (noSubmit('editsubmit')) {
             break;
     }
 
-    $registerdate = gmdate($self['dateformat'], $member['regdate'] +
-        ($self['timeoffset'] * 3600) + $self['daylightsavings']);
-    $lastlogdate = gmdate($self['dateformat'], $member['lastvisit'] +
-        ($self['timeoffset'] * 3600) + $self['daylightsavings']);
+    $registerdate = gmdate($self['dateformat'], $member['regdate'] + ($self['timeoffset'] * 3600) + $self['daylightsavings']);
+    $lastlogdate = gmdate($self['dateformat'], $member['lastvisit'] + ($self['timeoffset'] * 3600) + $self['daylightsavings']);
 
     $currdate = gmdate($self['timecode'], $onlinetime);
     eval($lang['evaloffset']);
@@ -158,18 +158,16 @@ if (noSubmit('editsubmit')) {
     $themelist[] = '<select name="thememem">';
     $themelist[] = '<option value="0">' . $lang['textusedefault'] . '</option>';
     $query = $db->query("SELECT themeid, name FROM " . X_PREFIX . "themes WHERE themestatus = 'on' ORDER BY name ASC");
-    while (($themeinfo = $db->fetchArray($query)) != false) {
+    while ($themeinfo = $db->fetch_array($query)) {
         if ($themeinfo['themeid'] == $member['theme']) {
-            $themelist[] = '<option value="' . $themeinfo['themeid'] .
-            '" ' . $selHTML . '>' . stripslashes($themeinfo['name']) . '</option>';
+            $themelist[] = '<option value="' . $themeinfo['themeid'] . '" ' . $selHTML . '>' . stripslashes($themeinfo['name']) . '</option>';
         } else {
-            $themelist[] = '<option value="' . $themeinfo['themeid'] . '">' .
-            stripslashes($themeinfo['name']) . '</option>';
+            $themelist[] = '<option value="' . $themeinfo['themeid'] . '">' . stripslashes($themeinfo['name']) . '</option>';
         }
     }
     $themelist[] = '</select>';
     $themelist = implode("\n", $themelist);
-    $db->freeResult($query);
+    $db->free_result($query);
 
     $langfileselect = langSelect();
 
@@ -187,12 +185,8 @@ if (noSubmit('editsubmit')) {
 
     $timeformatlist = array();
     $timeformatlist[] = '<select name="timeformatnew">';
-    $timeformatlist[] = '<option value="24"' . $check24 . '>' .
-    gmdate("H:i", $onlinetime + ($self['timeoffset'] * 3600) +
-        $self['daylightsavings']) . '</option>';
-    $timeformatlist[] = '<option value="12"' . $check12 . '>' .
-    gmdate("h:i A", $onlinetime + ($self['timeoffset'] * 3600) +
-        $self['daylightsavings']) . '</option>';
+    $timeformatlist[] = '<option value="24"' . $check24 . '>' . gmdate("H:i", $onlinetime + ($self['timeoffset'] * 3600) + $self['daylightsavings']) . '</option>';
+    $timeformatlist[] = '<option value="12"' . $check12 . '>' . gmdate("h:i A", $onlinetime + ($self['timeoffset'] * 3600) + $self['daylightsavings']) . '</option>';
     $timeformatlist[] = '</select>';
     $timeformatlist = implode("\n", $timeformatlist);
 
@@ -231,10 +225,9 @@ if (noSubmit('editsubmit')) {
 
     $df = $df . "\t<td bgcolor=\"$THEME[altbg2]\" class=\"tablerow\"><select name=\"dateformatnew\">\n";
     $querydf = $db->query("SELECT * FROM " . X_PREFIX . "dateformats");
-    while (($dformats = $db->fetchArray($querydf)) != false) {
+    while ($dformats = $db->fetch_array($querydf)) {
         if ($CONFIG['predformat'] == 'on') {
-            $example = gmdate(formatDate($dformats['dateformat']), $gbblva + ($self['timeoffset'] * 3600) +
-                $self['daylightsavings']);
+            $example = gmdate(formatDate($dformats['dateformat']), $ubblva + ($self['timeoffset'] * 3600) + $self['daylightsavings']);
         } else {
             $example = $dformats['dateformat'];
         }
@@ -246,7 +239,7 @@ if (noSubmit('editsubmit')) {
         }
     }
     $df = $df . "\t</select>\n\t</td>\n</tr>";
-    $db->freeResult($querydf);
+    $db->free_result($querydf);
 
     $lang['searchusermsg'] = str_replace('*USER*', $user, $lang['searchusermsg']);
 
@@ -255,8 +248,8 @@ if (noSubmit('editsubmit')) {
 
 if (onSubmit('editsubmit')) {
     $query = $db->query("SELECT * FROM " . X_PREFIX . "members WHERE uid = '$memberid'");
-    $member = $db->fetchArray($query);
-    $db->freeResult($query);
+    $member = $db->fetch_array($query);
+    $db->free_result($query);
 
     if (empty($member['username'])) {
         error($lang['badname'], false);
@@ -342,21 +335,17 @@ if (onSubmit('editsubmit')) {
         $size = getimagesize($avatar);
         if ($size === false) {
             $avatar = '';
-        } elseif (($size[0] > $max_size[0] && $max_size[0] > 0) ||
-            ($size[1] > $max_size[1] && $max_size[1] > 0) &&
-            !X_ADMIN) {
+        } else if (($size[0] > $max_size[0] && $max_size[0] > 0) || ($size[1] > $max_size[1] && $max_size[1] > 0) && !X_ADMIN) {
             error($lang['avatar_too_big'] . $CONFIG['max_avatar_size'] . $lang['Avatar_Pixels'], false);
         }
     }
 
     if (isset($_COOKIE['avatarfile']) || isset($_POST['avatarfile']) || isset($_GET['avatarfile'])) {
         die('Action Halted Due To Illegal Acivity!!');
-        exit();
+        exit;
     }
 
-    if (isset($_FILES['avatarfile']['name']) &&
-        $_FILES['avatarfile']['tmp_name'] &&
-        !empty($_FILES['avatarfile']['name'])) {
+    if (isset($_FILES['avatarfile']['name']) && $_FILES['avatarfile']['tmp_name'] && !empty($_FILES['avatarfile']['name'])) {
         $avatarext = substr($_FILES['avatarfile']['name'], strlen($_FILES['avatarfile']['name']) - 3, 3);
         $newavatarname = $member['uid'] . '.' . $onlinetime . '.' . $avatarext;
         $check = $_FILES['avatarfile'];
@@ -420,7 +409,7 @@ if (onSubmit('editsubmit')) {
         if ($width > $CONFIG['avatar_max_width']) {
             $newwidth = $CONFIG['avatar_new_width'];
             $newheight = ($newwidth / $width) * $height;
-        } elseif ($height > $CONFIG['avatar_max_height']) {
+        } else if ($height > $CONFIG['avatar_max_height']) {
             $newheight = $CONFIG['avatar_new_height'];
             $newwidth = ($newheight / $height) * $width;
         }
@@ -442,9 +431,9 @@ if (onSubmit('editsubmit')) {
                 case IMAGETYPE_WBMP:
                     imagewbmp($destImage, $tmppath);
                     break;
+                    imagedestroy($srcImage);
+                    imagedestroy($destImage);
             }
-            imagedestroy($srcImage);
-            imagedestroy($destImage);
         }
 
         copy($tmppath, $avatarpath);
@@ -455,8 +444,7 @@ if (onSubmit('editsubmit')) {
         $db->query("UPDATE " . X_PREFIX . "members SET avatar = '$avatar' WHERE uid = '$memberid'");
     }
 
-    if (onSubmit('editsubmit') && isset($_POST['avatardel']) != 1 && !empty($member['avatar']) &&
-        empty($_POST['newavatar']) && empty($_FILES['avatarfile']['name'])) {
+    if (onSubmit('editsubmit') && isset($_POST['avatardel']) != 1 && !empty($member['avatar']) && empty($_POST['newavatar']) && empty($_FILES['avatarfile']['name'])) {
         $db->query("UPDATE " . X_PREFIX . "members SET avatar = '$member[avatar]' WHERE uid = '$memberid'");
     }
 
@@ -472,20 +460,17 @@ if (onSubmit('editsubmit')) {
         $size = getimagesize($photo);
         if ($size === false) {
             $photo = '';
-        } elseif (($size[0] > $max_size[0] && $max_size[0] > 0) ||
-            ($size[1] > $max_size[1] && $max_size[1] > 0) && !X_ADMIN) {
+        } else if (($size[0] > $max_size[0] && $max_size[0] > 0) || ($size[1] > $max_size[1] && $max_size[1] > 0) && !X_ADMIN) {
             error($lang['photo_too_big'] . $CONFIG['max_photo_size'] . $lang['photo_Pixels'], false);
         }
     }
 
     if (isset($_COOKIE['photofile']) || isset($_POST['photofile']) || isset($_GET['photofile'])) {
         die('Action Halted Due To Illegal Acivity!!');
-        exit();
+        exit;
     }
 
-    if (isset($_FILES['photofile']['name']) &&
-        $_FILES['photofile']['tmp_name'] &&
-        !empty($_FILES['photofile']['name'])) {
+    if (isset($_FILES['photofile']['name']) && $_FILES['photofile']['tmp_name'] && !empty($_FILES['photofile']['name'])) {
         $photoext = substr($_FILES['photofile']['name'], strlen($_FILES['photofile']['name']) - 3, 3);
         $newphotoname = $member['uid'] . '.' . $onlinetime . '.' . $photoext;
         $check = $_FILES['photofile'];
@@ -550,7 +535,7 @@ if (onSubmit('editsubmit')) {
         if ($width > $CONFIG['photo_max_width']) {
             $newwidth = $CONFIG['photo_new_width'];
             $newheight = ($newwidth / $width) * $height;
-        } elseif ($height > $CONFIG['photo_max_height']) {
+        } else if ($height > $CONFIG['photo_max_height']) {
             $newheight = $CONFIG['photo_new_height'];
             $newwidth = ($newheight / $height) * $width;
         }
@@ -585,9 +570,7 @@ if (onSubmit('editsubmit')) {
         $db->query("UPDATE " . X_PREFIX . "members SET photo = '$photo' WHERE uid = '$memberid'");
     }
 
-    if (onSubmit('editsubmit')
-        && isset($_POST['photodel']) != 1 && !empty($member['photo'])
-        && empty($_POST['newphoto']) && empty($_FILES['photofile']['name'])) {
+    if (onSubmit('editsubmit') && isset($_POST['photodel']) != 1 && !empty($member['photo']) && empty($_POST['newphoto']) && empty($_FILES['photofile']['name'])) {
         $db->query("UPDATE " . X_PREFIX . "members SET photo = '$member[photo]' WHERE uid = '$memberid'");
     }
 
@@ -646,7 +629,7 @@ if (onSubmit('editsubmit')) {
 
         $db->query("UPDATE " . X_PREFIX . "members SET password = '$newpassword' WHERE uid = '$memberid'");
     }
-    message($lang['textsettingsupdate'], false, '', '', '' . 'admin/index.php', true, false, true);
+    message($lang['textsettingsupdate'], false, '', '', '' . ROOT . 'admin/index.php', true, false, true);
 }
 
 loadtime();

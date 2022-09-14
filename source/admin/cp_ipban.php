@@ -1,16 +1,16 @@
 <?php
 /**
  * GaiaBB
- * Copyright (c) 2009-2021 The GaiaBB Project
+ * Copyright (c) 2011-2022 The GaiaBB Group
  * https://github.com/vanderaj/gaiabb
  *
- * Forked from UltimaBB
+ * Based off UltimaBB
  * Copyright (c) 2004 - 2007 The UltimaBB Group
  * (defunct)
  *
- * Forked from XMB
- * Copyright (c) 2001 - 2021 The XMB Development Team
- * https://forums.xmbforum2.com/
+ * Based off XMB
+ * Copyright (c) 2001 - 2004 The XMB Development Team
+ * http://www.xmbforum.com
  *
  * This file is part of GaiaBB
  *
@@ -28,15 +28,20 @@
  *    along with GaiaBB.  If not, see <http://www.gnu.org/licenses/>.
  *
  **/
-// phpcs:disable PSR1.Files.SideEffects
-if (!defined('ROOT')) {
-    define('ROOT', '../');
-}
+
+define('ROOT', '../');
+define('ROOTINC', '../include/');
+define('ROOTCLASS', '../class/');
 
 require_once ROOT . 'header.php';
-require_once ROOT . 'include/admincp.inc.php';
+require_once ROOTINC . 'admincp.inc.php';
 
-loadtpl('cp_header', 'cp_footer', 'cp_message', 'cp_error');
+loadtpl(
+    'cp_header',
+    'cp_footer',
+    'cp_message',
+    'cp_error'
+);
 
 $shadow = shadowfx();
 $shadow2 = shadowfx2();
@@ -64,84 +69,69 @@ function viewPanel()
     global $oToken, $onlinetime, $self;
     ?>
     <form method="post" action="cp_ipban.php">
-        <input type="hidden" name="csrf_token"
-               value="<?php echo $oToken->createToken() ?>"/>
-        <table cellspacing="0px" cellpadding="0px" border="0px" width="100%"
-               align="center">
-            <tr>
-                <td bgcolor="<?php echo $THEME['bordercolor'] ?>">
-                    <table border="0px" cellspacing="<?php echo $THEME['borderwidth'] ?>"
-                           cellpadding="<?php echo $THEME['tablespace'] ?>" width="100%">
-                        <tr class="category">
-                            <td class="title" align="center"><?php echo $lang['textdeleteques'] ?></td>
-                            <td class="title" align="center"><?php echo $lang['textip'] ?>:</td>
-                            <td class="title" align="center"><?php echo $lang['textipresolve'] ?>:</td>
-                            <td class="title" align="center"><?php echo $lang['textadded'] ?></td>
-                        </tr>
-                        <?php
-                        $query = $db->query("SELECT * FROM " . X_PREFIX . "banned ORDER BY dateline");
-                        $rowsFound = $db->numRows($query);
-                        while (($ipaddress = $db->fetchArray($query)) != false) {
-                            for ($i = 1; $i <= 4; ++$i) {
-                                $j = "ip" . $i;
-                                if ($ipaddress[$j] == -1) {
-                                    $ipaddress[$j] = "*";
-                                }
-                            }
-                            $ipdate = gmdate($self['dateformat'], $ipaddress['dateline'] + ($self['timeoffset'] * 3600) + $self['daylightsavings']) . ' ' . $lang['textat'] . ' ' . gmdate($self['timecode'], $ipaddress['dateline'] + ($self['timeoffset'] * 3600) + $self['daylightsavings']);
-                            $theip = "$ipaddress[ip1].$ipaddress[ip2].$ipaddress[ip3].$ipaddress[ip4]";
-                            ?>
-                            <tr class="tablerow" bgcolor="<?php echo $THEME['altbg2'] ?>">
-                                <td><input type="checkbox"
-                                           name="delete<?php echo $ipaddress['id'] ?>" value="on"/></td>
-                                <td><?php echo $theip ?></td>
-                                <td><?php echo @gethostbyaddr($theip) ?></td>
-                                <td><?php echo $ipdate ?></td>
-                            </tr>
-                            <?php
-                        }
-                            $db->freeResult($query);
+    <input type="hidden" name="token" value="<?php echo $oToken->get_new_token() ?>" />
+    <table cellspacing="0px" cellpadding="0px" border="0px" width="100%" align="center">
+    <tr><td bgcolor="<?php echo $THEME['bordercolor'] ?>">
+    <table border="0px" cellspacing="<?php echo $THEME['borderwidth'] ?>" cellpadding="<?php echo $THEME['tablespace'] ?>" width="100%">
+    <tr class="category">
+    <td class="title" align="center"><?php echo $lang['textdeleteques'] ?></td>
+    <td class="title" align="center"><?php echo $lang['textip'] ?>:</td>
+    <td class="title" align="center"><?php echo $lang['textipresolve'] ?>:</td>
+    <td class="title" align="center"><?php echo $lang['textadded'] ?></td>
+    </tr>
+    <?php
+$query = $db->query("SELECT * FROM " . X_PREFIX . "banned ORDER BY dateline");
+    $rowsFound = $db->num_rows($query);
+    while ($ipaddress = $db->fetch_array($query)) {
+        for ($i = 1; $i <= 4; ++$i) {
+            $j = "ip" . $i;
+            if ($ipaddress[$j] == -1) {
+                $ipaddress[$j] = "*";
+            }
+        }
+        $ipdate = gmdate($self['dateformat'], $ipaddress['dateline'] + ($self['timeoffset'] * 3600) + $self['daylightsavings']) . ' ' . $lang['textat'] . ' ' . gmdate($self['timecode'], $ipaddress['dateline'] + ($self['timeoffset'] * 3600) + $self['daylightsavings']);
+        $theip = "$ipaddress[ip1].$ipaddress[ip2].$ipaddress[ip3].$ipaddress[ip4]";
+        ?>
+        <tr class="tablerow" bgcolor="<?php echo $THEME['altbg2'] ?>">
+        <td><input type="checkbox" name="delete<?php echo $ipaddress['id'] ?>" value="on" /></td>
+        <td><?php echo $theip ?></td>
+        <td><?php echo @gethostbyaddr($theip) ?></td>
+        <td><?php echo $ipdate ?></td>
+        </tr>
+        <?php
+}
+    $db->free_result($query);
 
-                            $query = $db->query("SELECT id FROM " . X_PREFIX . "banned WHERE (ip1 = '$ips[0]' OR ip1 = '-1') AND (ip2 = '$ips[1]' OR ip2 = '-1') AND (ip3 = '$ips[2]' OR ip3 = '-1') AND (ip4 = '$ips[3]' OR ip4 = '-1')");
-                            $result = $db->fetchArray($query);
+    $query = $db->query("SELECT id FROM " . X_PREFIX . "banned WHERE (ip1 = '$ips[0]' OR ip1 = '-1') AND (ip2 = '$ips[1]' OR ip2 = '-1') AND (ip3 = '$ips[2]' OR ip3 = '-1') AND (ip4 = '$ips[3]' OR ip4 = '-1')");
+    $result = $db->fetch_array($query);
 
-                        if ($result) {
-                            $warning = $lang['ipwarning'];
-                        } else {
-                            $warning = '';
-                        }
+    if ($result) {
+        $warning = $lang['ipwarning'];
+    } else {
+        $warning = '';
+    }
 
-                        if ($rowsFound < 1) {
-                            ?>
-                            <tr bgcolor="<?php echo $THEME['altbg2'] ?>" class="ctrtablerow">
-                                <td colspan="4"><?php echo $lang['textnone'] ?></td>
-                            </tr>
-                            <?php
-                        }
-                        ?>
-                        <tr class="tablerow">
-                            <td bgcolor="<?php echo $THEME['altbg1'] ?>" colspan="4"><span
-                                        class="smalltxt"><?php echo $lang['currentip'] ?>
-                                    <strong><?php echo $onlineip ?></strong><?php echo $warning ?>
-                                    <br/><?php echo $lang['multipnote'] ?></span></td>
-                        </tr>
-                        <tr bgcolor="<?php echo $THEME['altbg2'] ?>">
-                            <td colspan="4" class="tablerow"><?php echo $lang['textnewip'] ?>&nbsp;<input
-                                        type="text" name="newip1" size="3" maxlength="3"/>.<input
-                                        type="text" name="newip2" size="3" maxlength="3"/>.<input
-                                        type="text" name="newip3" size="3" maxlength="3"/>.<input
-                                        type="text" name="newip4" size="3" maxlength="3"/></td>
-                        </tr>
-                        <tr>
-                            <td class="ctrtablerow" bgcolor="<?php echo $THEME['altbg2'] ?>"
-                                colspan="4"><input type="submit" class="submit"
-                                                   name="ipbansubmit"
-                                                   value="<?php echo $lang['textsubmitchanges'] ?>"/></td>
-                        </tr>
-                    </table>
-                </td>
-            </tr>
-        </table>
+    if ($rowsFound < 1) {
+        ?>
+        <tr bgcolor="<?php echo $THEME['altbg2'] ?>" class="ctrtablerow">
+        <td colspan="4"><?php echo $lang['textnone'] ?></td>
+        </tr>
+        <?php
+}
+    ?>
+    <tr class="tablerow">
+    <td bgcolor="<?php echo $THEME['altbg1'] ?>" colspan="4"><span class="smalltxt"><?php echo $lang['currentip'] ?> <strong><?php echo $onlineip ?></strong><?php echo $warning ?><br /><?php echo $lang['multipnote'] ?></span></td>
+    </tr>
+    <tr bgcolor="<?php echo $THEME['altbg2'] ?>">
+    <td colspan="4" class="tablerow"><?php echo $lang['textnewip'] ?>&nbsp;<input type="text" name="newip1" size="3" maxlength="3" />.<input type="text" name="newip2" size="3" maxlength="3" />.<input type="text" name="newip3" size="3" maxlength="3" />.<input type="text" name="newip4" size="3" maxlength="3" /></td>
+    </tr>
+    <tr>
+    <td class="ctrtablerow" bgcolor="<?php echo $THEME['altbg2'] ?>" colspan="4"><input type="submit" class="submit" name="ipbansubmit" value="<?php echo $lang['textsubmitchanges'] ?>" /></td>
+    </tr>
+    </table>
+    </td>
+    </tr>
+    </table>
     </form>
     <?php echo $shadow2 ?>
     </td>
@@ -155,16 +145,16 @@ function doPanel()
     global $shadow2, $lang, $db, $THEME;
     global $oToken, $onlinetime;
 
-    $oToken->assertToken();
+    $oToken->assert_token();
 
     $query = $db->query("SELECT id FROM " . X_PREFIX . "banned");
-    while (($ip = $db->fetchArray($query)) != false) {
+    while ($ip = $db->fetch_array($query)) {
         $delete = "delete" . $ip['id'];
         if (formOnOff($delete) == 'on') {
             $db->query("DELETE FROM " . X_PREFIX . "banned WHERE id = '" . $ip['id'] . "'");
         }
     }
-    $db->freeResult($query);
+    $db->free_result($query);
 
     $msg = $lang['textipupdate'];
 
@@ -193,7 +183,7 @@ function doPanel()
 
     if ($msg === $lang['textipupdate']) {
         $query = $db->query("SELECT id FROM " . X_PREFIX . "banned WHERE (ip1 = '$ip[1]' OR ip1 = '-1') AND (ip2 = '$ip[2]' OR ip2 = '-1') AND (ip3 = '$ip[3]' OR ip3 = '-1') AND (ip4 = '$ip[4]' OR ip4 = '-1')");
-        $result = $db->fetchArray($query);
+        $result = $db->fetch_array($query);
         if ($result) {
             $msg = $lang['existingip'];
         } else {

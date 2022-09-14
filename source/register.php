@@ -1,16 +1,16 @@
 <?php
 /**
  * GaiaBB
- * Copyright (c) 2009-2021 The GaiaBB Project
+ * Copyright (c) 2011-2022 The GaiaBB Group
  * https://github.com/vanderaj/gaiabb
  *
- * Forked from UltimaBB
+ * Based off UltimaBB
  * Copyright (c) 2004 - 2007 The UltimaBB Group
  * (defunct)
  *
- * Forked from XMB
- * Copyright (c) 2001 - 2021 The XMB Development Team
- * https://forums.xmbforum2.com/
+ * Based off XMB
+ * Copyright (c) 2001 - 2004 The XMB Development Team
+ * http://www.xmbforum.com
  *
  * This file is part of GaiaBB
  *
@@ -28,17 +28,25 @@
  *    along with GaiaBB.  If not, see <http://www.gnu.org/licenses/>.
  *
  **/
-// phpcs:disable PSR1.Files.SideEffects
+
+define('ROOT', './');
 define('CACHECONTROL', 'nocache');
 
-require_once 'header.php';
-require_once ROOT . 'class/member.class.php';
+require_once ROOT . 'header.php';
+require_once ROOTCLASS . 'member.class.php';
 
-loadtpl('register', 'register_coppa', 'register_password', 'register_rules', 'register_captcha', 'register_captchajs');
+loadtpl(
+    'register',
+    'register_coppa',
+    'register_password',
+    'register_rules',
+    'register_captcha',
+    'register_captchajs'
+);
 
 function viewRegister()
 {
-    global $CONFIG, $lang, $self, $THEME, $gbblva;
+    global $CONFIG, $lang, $self, $THEME, $ubblva;
     global $selHTML, $db, $onlinetime, $dformatorig;
     global $oToken, $shadow;
 
@@ -179,12 +187,12 @@ function viewRegister()
         $themelist[] = '<select name="thememem">';
         $themelist[] = '<option value="0">' . $lang['textusedefault'] . '</option>';
         $query = $db->query("SELECT themeid, name FROM " . X_PREFIX . "themes WHERE themestatus = 'on' ORDER BY name ASC");
-        while (($themeinfo = $db->fetchArray($query)) != false) {
+        while ($themeinfo = $db->fetch_array($query)) {
             $themelist[] = '<option value="' . intval($themeinfo['themeid']) . '">' . stripslashes($themeinfo['name']) . '</option>';
         }
         $themelist[] = '</select>';
         $themelist = implode("\n", $themelist);
-        $db->freeResult($query);
+        $db->free_result($query);
 
         if ($CONFIG['predformat'] == 'on') {
             $df = "<tr>\n\t<td bgcolor=\"$THEME[altbg1]\" class=\"tablerow\" width=\"22%\">$lang[dateformat1]</td>\n";
@@ -194,9 +202,9 @@ function viewRegister()
 
         $df = $df . "\t<td bgcolor=\"$THEME[altbg2]\" class=\"tablerow\"><select name=\"dateformat1\">\n";
         $querydf = $db->query("SELECT * FROM " . X_PREFIX . "dateformats");
-        while (($dformats = $db->fetchArray($querydf)) != false) {
+        while ($dformats = $db->fetch_array($querydf)) {
             if ($CONFIG['predformat'] == 'on') {
-                $example = gmdate(formatDate($dformats['dateformat']), $gbblva + ($self['timeoffset'] * 3600) + $self['daylightsavings']);
+                $example = gmdate(formatDate($dformats['dateformat']), $ubblva + ($self['timeoffset'] * 3600) + $self['daylightsavings']);
             } else {
                 $example = $dformats['dateformat'];
             }
@@ -208,7 +216,7 @@ function viewRegister()
             }
         }
         $df = $df . "\t</select>\n\t</td>\n</tr>";
-        $db->freeResult($querydf);
+        $db->free_result($querydf);
 
         $timeformatlist = array();
         $timeformatlist[] = '<select name="timeformat1">';
@@ -234,9 +242,9 @@ function viewRegister()
 
 function doRegister()
 {
-    global $CONFIG, $lang, $self, $THEME, $gbblva;
-    global $selHTML, $db, $onlinetime, $dformatorig, $mailSystem, $authState;
-    global $oToken, $shadow, $onlineip, $config_cache, $moderators_cache;
+    global $CONFIG, $lang, $self, $THEME, $ubblva;
+    global $selHTML, $db, $onlinetime, $dformatorig;
+    global $oToken, $shadow, $onlineip;
 
     // Validation of user supplied data
     $username = formVar('username');
@@ -262,9 +270,9 @@ function doRegister()
     $dateformat1 = formVar('dateformat1');
     $timeoffset1 = formInt('timeoffset1');
 
-    $member = new GaiaBB\Member();
+    $member = new member();
 
-    if (preg_match('/[\]\[.,!@#~$%\^&*()+=\/\\\\:;?|.<>{}]/', $username)) {
+    if (preg_match("/[\]\['" . '",!@#~$%\^&*()+=\/\\\\:;?|.<>{}]/', $username)) {
         error($lang['badusername'], false, '', '', 'register.php?action=reg', true, false, true);
     }
 
@@ -275,8 +283,8 @@ function doRegister()
     if ($CONFIG['ipreg'] == 'on') {
         $time = $onlinetime - 86400;
         $query = $db->query("SELECT uid FROM " . X_PREFIX . "members WHERE regip = '$onlineip' AND regdate >= '$time'");
-        if ($db->numRows($query) >= 1) {
-            $db->freeResult($query);
+        if ($db->num_rows($query) >= 1) {
+            $db->free_result($query);
             error($lang['reg_today'], false, '', '', 'register.php?action=reg', true, false, true);
         }
     }
@@ -353,8 +361,18 @@ function doRegister()
     $member->record['regip'] = $onlineip;
     $member->record['lastvisit'] = 0; // yet to log on
     $member->record['showemail'] = $showemail;
-    $member->record['tpp'] = $self['tpp'];
-    $member->record['ppp'] = $self['ppp'];
+    if (!empty($tpp) && intval($tpp) > 0) {
+        $member->record['tpp'] = $tpp;
+    } else {
+        $member->record['tpp'] = 25;
+    }
+
+    if (!empty($ppp) && intval($ppp) > 0) {
+        $member->record['ppp'] = $ppp;
+    } else {
+        $member->record['ppp'] = 25;
+    }
+
     $member->record['newsletter'] = $newsletter;
     $member->record['timeformat'] = $timeformat1;
     $member->record['dateformat'] = $dateformat1;
@@ -369,6 +387,8 @@ function doRegister()
 
     $member->update();
 
+    global $config_cache;
+
     $config_cache->expire('settings');
     $moderators_cache->expire('moderators');
     $config_cache->expire('theme');
@@ -379,7 +399,7 @@ function doRegister()
     // If set, alert the admins that a new member has signed up
     switch ($CONFIG['notifyonreg']) {
         case 'pm':
-            notifyViaPM($username);
+            notifyViapm($username);
             break;
         case 'email':
             notifyViaEmail($username);
@@ -389,32 +409,32 @@ function doRegister()
 
     if ($CONFIG['pmwelcomestatus'] == 'on') {
         if (!empty($CONFIG['pmwelcomefrom']) && !empty($CONFIG['pmwelcomesubject']) && !empty($CONFIG['pmwelcomemessage'])) {
-            $db->query("INSERT INTO " . X_PREFIX . "pm (pmid, msgto, msgfrom, type, owner, folder, subject, message, dateline, readstatus, sentstatus, usesig) VALUES ('', '$username', '$CONFIG[pmwelcomefrom]', 'incoming', '$username', 'Inbox', '$CONFIG[pmwelcomesubject]', '$CONFIG[pmwelcomemessage]', '$onlinetime', 'no', 'yes', 'no')");
+            $db->query("INSERT INTO " . X_PREFIX . "pm (msgto, msgfrom, type, owner, folder, subject, message, dateline, readstatus, sentstatus, usesig) VALUES ('$username', '$CONFIG[pmwelcomefrom]', 'incoming', '$username', 'Inbox', '$CONFIG[pmwelcomesubject]', '$CONFIG[pmwelcomemessage]', '$onlinetime', 'no', 'yes', 'no')");
         }
     }
 
     if ($CONFIG['emailcheck'] == 'on') {
-        if (empty($CONFIG['adminemail'])) {
-            error($lang['noadminemail'], false, '', '', 'cp_board.php', true, false, true);
-        }
-        if (empty($CONFIG['bbname'])) {
-            error($lang['nobbname'], false, '', '', 'cp_board.php', true, false, true);
-        }
+        if (empty($CONFIG['adminemail'])) // The mail class can handle this error, but it'll describe it vaguely {
+        error($lang['noadminemail'], false, '', '', 'cp_board.php', true, false, true);
+    }
+    if (empty($CONFIG['bbname'])) // The mail class can handle this error, but it'll describe it vaguely {
+    error($lang['nobbname'], false, '', '', 'cp_board.php', true, false, true);
+}
 
-        $messagebody = $lang['Thanks_You_Register'] . " \n$username\n$password3\n$CONFIG[boardurl]";
+$messagebody = $lang['Thanks_You_Register'] . " \n$username\n$password3\n$CONFIG[boardurl]";
 
-        $mailSystem->setTo($email);
-        $mailSystem->setFrom($CONFIG['adminemail'], $CONFIG['bbname']);
-        $mailSystem->setSubject($lang['textyourpw']);
-        $mailSystem->setMessage($messagebody);
-        $mailSystem->sendMail();   // XXX
-    } else {
+$mailsys->setTo($email);
+$mailsys->setSubject($lang['textyourpw']);
+$mailsys->setMessage($messagebody);
+$mailsys->Send();
+} else {
         $uid = $member->findUidByUsername($username);
 
         $currtime = $onlinetime + (86400 * 30);
 
-        $authState->gbbuid = $uid;
-        $authState->gbbpw = $password;
+        $authState->ubbuid = $uid;
+        $authState->ubbuser = $username;
+        $authState->ubbpw = $password;
         $authState->update();
     }
 
@@ -426,131 +446,130 @@ function doRegister()
 }
 
 /**
- * notifyViaPM() - notify admins about new users
+ * function() - short description of function
  *
- * If new user registration notification is enabled,
- * notify all users on the notification list (found in the admin CP)
+ * Long description of function
  *
- * @param $username     string, the new username to notify admins about
- *
+ * @param    $varname    type, what it does
+ * @return   type, what the return does
  */
-function notifyViaPM($username)
+    function notifyViapm($username)
 {
-    global $db, $CONFIG, $lang, $onlinetime;
-    if (!empty($CONFIG['usernamenotify'])) {
-        $member = explode(',', $CONFIG['usernamenotify']);
-        for ($i = 0; $i < count($member); $i++) {
-            $member[$i] = trim($member[$i]);
-            $mailquery = $db->query("SELECT * FROM " . X_PREFIX . "members WHERE username = '$member[$i]'");
-            while (($admin = $db->fetchArray($mailquery)) != false) {
-                $db->query("INSERT INTO " . X_PREFIX . "pm (pmid, msgto, msgfrom, type, owner, folder, subject, message, dateline, readstatus, sentstatus, usesig) VALUES ('', '$admin[username]', '$admin[username]', 'incoming', '$admin[username]', 'Inbox', '$lang[newmember] " . $db->escape($CONFIG['bbname']) . "', '$lang[newmember3]\n\n$username', '$onlinetime', 'no', 'yes', 'no')");
+        global $db, $CONFIG, $lang, $onlinetime;
+        if (!empty($CONFIG['usernamenotify'])) {
+            $member = explode(',', $CONFIG['usernamenotify']);
+            for ($i = 0; $i < count($member); $i++) {
+                $member[$i] = trim($member[$i]);
+                $mailquery = $db->query("SELECT * FROM " . X_PREFIX . "members WHERE username = '$member[$i]'");
+                while ($admin = $db->fetch_array($mailquery)) {
+                    $db->query("INSERT INTO " . X_PREFIX . "pm (msgto, msgfrom, type, owner, folder, subject, message, dateline, readstatus, sentstatus, usesig) VALUES ('$admin[username]', '$admin[username]', 'incoming', '$admin[username]', 'Inbox', '$lang[newmember] " . $db->escape($CONFIG['bbname']) . "', '$lang[newmember3]\n\n$username', '$onlinetime', 'no', 'yes', 'no')");
+                }
+                $db->free_result($mailquery);
             }
-            $db->freeResult($mailquery);
         }
     }
-}
 
 /**
- * notifyViaEmail() - notify admins about new users
+ * function() - short description of function
  *
- * If new user registration notification is enabled,
- * notify all users on the notification list (found in the admin CP)
+ * Long description of function
  *
- * @param $username     string, the new username to notify admins about
- *
+ * @param    $varname    type, what it does
+ * @return   type, what the return does
  */
-function notifyViaEmail($username)
+    function notifyViaEmail($username)
 {
-    global $db, $mailSystem, $CONFIG, $lang, $charset;
+        global $db, $mailsys, $CONFIG, $lang, $charset;
 
-    if (!empty($CONFIG['usernamenotify'])) {
-        $member = explode(',', $CONFIG['usernamenotify']);
-        for ($i = 0; $i < count($member); $i++) {
-            $member[$i] = trim($member[$i]);
-            $mailquery = $db->query("SELECT * FROM " . X_PREFIX . "members WHERE username = '$member[$i]'");
-            while (($notify = $db->fetchArray($mailquery)) != false) {
-                $mailSystem->setTo($notify['email']);
-                $mailSystem->setFrom($CONFIG['adminemail'], $CONFIG['bbname']);
-                $mailSystem->setSubject($lang['textnewmember']);
-                $mailSystem->setMessage($lang['textnewmember2']);
-                $mailSystem->sendMail(); // XXX
+        if (!empty($CONFIG['usernamenotify'])) {
+
+            $member = explode(',', $CONFIG['usernamenotify']);
+            for ($i = 0; $i < count($member); $i++) {
+                $member[$i] = trim($member[$i]);
+                $mailquery = $db->query("SELECT * FROM " . X_PREFIX . "members WHERE username = '$member[$i]'");
+                while ($notify = $db->fetch_array($mailquery)) {
+                    $mailsys->setTo($notify['email']);
+                    $mailsys->setSubject($lang['textnewmember']);
+                    $mailsys->setMessage($lang['textnewmember2']);
+                    $mailsys->Send();
+                }
+                $db->free_result($mailquery);
             }
-            $db->freeResult($mailquery);
         }
     }
-}
 
-$shadow = shadowfx();
-$meta = metaTags();
+    $shadow = shadowfx();
+    $meta = metaTags();
 
-smcwcache();
+    smcwcache();
 
-eval('$css = "' . template('css') . '";');
+    eval('$css = "' . template('css') . '";');
 
-if (X_MEMBER) {
-    nav($lang['textregister']);
-    btitle($lang['textregister']);
-    eval('echo "' . template('header') . '";');
-    error($lang['plogtuf'], false);
-}
-
-if ($CONFIG['regstatus'] == 'off') {
-    nav($lang['textregister']);
-    btitle($lang['textregister']);
-    eval('echo "' . template('header') . '";');
-    error($lang['fnasorry'], false);
-}
-
-$time = $onlinetime - 86400;
-$query = $db->query("SELECT COUNT(uid) FROM " . X_PREFIX . "members WHERE regdate > '$time'");
-if ($db->result($query, 0) > $CONFIG['max_reg_day']) {
-    $db->freeResult($query);
-    nav($lang['textregister']);
-    btitle($lang['textregister']);
-    eval('echo "' . template('header') . '";');
-    error($lang['max_regs'], false, '', '', 'index.php', true, false, true);
-}
-
-switch ($action) {
-    case 'captcha':
-        require_once ROOT . 'class/captcha.class.php';
-        $captcha = new GaiaBB\Captcha();
-        nav($lang['textregister']);
-        btitle($lang['textregister']);
-        break;
-    case 'coppa':
-        if ($CONFIG['coppa'] == 'off') {
-            redirect('register.php?action=reg', 0);
-        }
-
-        if (onSubmit('coppasubmit')) {
-            redirect('register.php?action=reg', 0);
-        }
-
-        nav($lang['textcoppa']);
-        btitle($lang['textcoppa']);
-        eval('echo "' . template('header') . '";');
-        eval('echo "' . template('register_coppa') . '";');
-        break;
-    case 'reg':
+    if (X_MEMBER) {
         nav($lang['textregister']);
         btitle($lang['textregister']);
         eval('echo "' . template('header') . '";');
+        error($lang['plogtuf'], false);
+    }
 
-        if (noSubmit('regsubmit')) {
-            viewRegister();
-        } else {
-            doRegister();
-        }
-        break;
-    default:
-        nav($lang['error']);
-        btitle($lang['error']);
+    if ($CONFIG['regstatus'] == 'off') {
+        nav($lang['textregister']);
+        btitle($lang['textregister']);
         eval('echo "' . template('header') . '";');
+        error($lang['fnasorry'], false);
+    }
 
-        error($lang['textnoaction'], false, '', '', 'index.php', true, false, true);
-        break;
-}
+    $time = $onlinetime - 86400;
+    $query = $db->query("SELECT COUNT(uid) FROM " . X_PREFIX . "members WHERE regdate > '$time'");
+    if ($db->result($query, 0) > $CONFIG['max_reg_day']) {
+        $db->free_result($query);
+        nav($lang['textregister']);
+        btitle($lang['textregister']);
+        eval('echo "' . template('header') . '";');
+        error($lang['max_regs'], false, '', '', 'index.php', true, false, true);
+    }
 
-loadtime();
-eval('echo "' . template('footer') . '";');
+    switch ($action) {
+        case 'captcha':
+            require_once ROOTCLASS . 'captcha.class.php';
+            $captcha = new captcha();
+            nav($lang['textregister']);
+            btitle($lang['textregister']);
+            break;
+        case 'coppa':
+
+            if ($CONFIG['coppa'] == 'off') {
+                redirect('register.php?action=reg', 0);
+            }
+
+            if (onSubmit('coppasubmit')) {
+                redirect('register.php?action=reg', 0);
+            }
+
+            nav($lang['textcoppa']);
+            btitle($lang['textcoppa']);
+            eval('echo "' . template('header') . '";');
+            eval('echo "' . template('register_coppa') . '";');
+            break;
+        case 'reg':
+            nav($lang['textregister']);
+            btitle($lang['textregister']);
+            eval('echo "' . template('header') . '";');
+
+            if (noSubmit('regsubmit')) {
+                viewRegister();
+            } else {
+                doRegister();
+            }
+            break;
+        default:
+            nav($lang['error']);
+            btitle($lang['error']);
+            eval('echo "' . template('header') . '";');
+
+            error($lang['textnoaction'], false, '', '', 'index.php', true, false, true);
+            break;
+    }
+
+    loadtime();
+    eval('echo "' . template('footer') . '";');

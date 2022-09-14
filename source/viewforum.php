@@ -1,16 +1,16 @@
 <?php
 /**
  * GaiaBB
- * Copyright (c) 2009-2021 The GaiaBB Project
+ * Copyright (c) 2011-2022 The GaiaBB Group
  * https://github.com/vanderaj/gaiabb
  *
- * Forked from UltimaBB
+ * Based off UltimaBB
  * Copyright (c) 2004 - 2007 The UltimaBB Group
  * (defunct)
  *
- * Forked from XMB
- * Copyright (c) 2001 - 2021 The XMB Development Team
- * https://forums.xmbforum2.com/
+ * Based off XMB
+ * Copyright (c) 2001 - 2004 The XMB Development Team
+ * http://www.xmbforum.com
  *
  * This file is part of GaiaBB
  *
@@ -28,10 +28,43 @@
  *    along with GaiaBB.  If not, see <http://www.gnu.org/licenses/>.
  *
  **/
-// phpcs:disable PSR1.Files.SideEffects
-require_once 'header.php';
 
-loadtpl('massmod_openclose', 'massmod_topuntop', 'massmod_bump', 'massmod_copy', 'massmod_merge', 'massmod_delete', 'massmod_empty', 'massmod_move', 'massmod_markthread', 'viewforum_newtopic', 'viewforum_newpoll', 'viewforum_password', 'viewforum_thread', 'viewforum_invalidforum', 'viewforum_nothreads', 'viewforum', 'viewforum_subforum_lastpost', 'viewforum_thread_lastpost', 'viewforum_admin', 'viewforum_thread_admin', 'viewforum_subforum', 'viewforum_subforums', 'viewforum_multipage_admin', 'viewforum_multipage', 'viewforum_subforum_nolastpost', 'viewforum_dotfolders', 'viewforum_search', 'viewforum_rules', 'viewforum_mpn_info', 'viewforum_nothreads_admin');
+define('ROOT', './');
+
+require_once ROOT . 'header.php';
+
+loadtpl(
+    'massmod_openclose',
+    'massmod_topuntop',
+    'massmod_bump',
+    'massmod_copy',
+    'massmod_merge',
+    'massmod_delete',
+    'massmod_empty',
+    'massmod_move',
+    'massmod_markthread',
+    'viewforum_newtopic',
+    'viewforum_newpoll',
+    'viewforum_password',
+    'viewforum_thread',
+    'viewforum_invalidforum',
+    'viewforum_nothreads',
+    'viewforum',
+    'viewforum_subforum_lastpost',
+    'viewforum_thread_lastpost',
+    'viewforum_admin',
+    'viewforum_thread_admin',
+    'viewforum_subforum',
+    'viewforum_subforums',
+    'viewforum_multipage_admin',
+    'viewforum_multipage',
+    'viewforum_subforum_nolastpost',
+    'viewforum_dotfolders',
+    'viewforum_search',
+    'viewforum_rules',
+    'viewforum_mpn_info',
+    'viewforum_nothreads_admin'
+);
 
 $shadow = shadowfx();
 $meta = metaTags();
@@ -44,9 +77,9 @@ if ($fid === 0) {
 }
 
 $query = $db->query("SELECT * FROM " . X_PREFIX . "forums WHERE fid = '$fid' AND status = 'on'");
-$rows = $db->numRows($query);
-$forum = $db->fetchArray($query);
-$db->freeResult($query);
+$rows = $db->num_rows($query);
+$forum = $db->fetch_array($query);
+$db->free_result($query);
 
 if ($rows === 0 || isset($forum['type']) && $forum['type'] != 'forum' && $forum['type'] != 'sub') {
     error($lang['textnoforum']);
@@ -56,12 +89,12 @@ $fup = array();
 if (isset($forum['type']) && $forum['type'] == 'sub') {
     $forum['fup'] = intval($forum['fup']);
     $query = $db->query("SELECT private, userlist, name, fid FROM " . X_PREFIX . "forums WHERE fid = '$forum[fup]'");
-    $fup = $db->fetchArray($query);
-    $db->freeResult($query);
+    $fup = $db->fetch_array($query);
+    $db->free_result($query);
     if (!privfcheck($fup['private'], $fup['userlist'])) {
         error($lang['privforummsg']);
     }
-} elseif (isset($forum['type']) && $forum['type'] != 'forum') {
+} else if (isset($forum['type']) && $forum['type'] != 'forum') {
     error($lang['textnoforum']);
 }
 
@@ -75,7 +108,7 @@ pwverify($forum['password'], 'viewforum.php?fid=' . $fid, $fid, true);
 if (isset($forum['type']) && $forum['type'] == 'forum') {
     nav(stripslashes($forum['name']));
     btitle(stripslashes($forum['name']));
-} elseif (isset($forum['type']) && $forum['type'] == 'sub') {
+} else if (isset($forum['type']) && $forum['type'] == 'sub') {
     nav('<a href="viewforum.php?fid=' . intval($fup['fid']) . '">' . stripslashes($fup['name']) . '</a>');
     nav(stripslashes($forum['name']));
     btitle(stripslashes($fup['name']));
@@ -102,14 +135,14 @@ $subforums = $forumlist = '';
 if (count($fup) == 0) {
     $query = $db->query("SELECT f.*, l.uid AS lp_uid, l.username AS lp_user, l.dateline AS lp_dateline, l.pid AS lp_pid FROM " . X_PREFIX . "forums f LEFT  JOIN " . X_PREFIX . "lastposts l ON l.tid = f.lastpost WHERE f.type =  'sub' AND f.fup =  '$fid' AND f.status =  'on' ORDER  BY f.displayorder");
 
-    if ($db->numRows($query) != 0) {
+    if ($db->num_rows($query) != 0) {
         $fulist = $forum['userlist'];
-        while (($sub = $db->fetchArray($query)) != false) {
+        while ($sub = $db->fetch_array($query)) {
             $forumlist .= forum($sub, 'viewforum_subforum');
         }
         $forum['userlist'] = $fulist;
         eval('$subforums = "' . template('viewforum_subforums') . '";');
-        $db->freeResult($query);
+        $db->free_result($query);
     }
 }
 
@@ -266,19 +299,19 @@ $viewforum_thread = 'viewforum_thread';
 $status1 = '';
 if (X_STAFF && isset($self['status']) && $self['status'] != 'Moderator') {
     $status1 = 'Moderator';
-} elseif (isset($self['status']) && $self['status'] == 'Moderator') {
+} else if (isset($self['status']) && $self['status'] == 'Moderator') {
     $status1 = modcheck($forum['moderator']);
 }
 
 if ($status1 == 'Moderator') {
     $viewforum_thread = 'viewforum_thread_admin';
-    require_once ROOT . 'include/mass_mod.inc.php';
+    include_once ROOTINC . 'mass_mod.inc.php';
 }
 
 $topicsnum = 0;
 $threadlist = '';
 $querytop = $db->query("SELECT $dotadd1 t.*, m.uid, l.uid as lp_uid, l.username as lp_user, l.dateline as lp_dateline, l.pid as lp_pid FROM " . X_PREFIX . "threads t $dotadd2 LEFT JOIN " . X_PREFIX . "members m ON (m.username = t.author) LEFT JOIN " . X_PREFIX . "lastposts l ON l.tid = t.tid WHERE t.fid = '$fid' $srchfrom $srchtype ORDER BY topped $srchorder, $srchsort $srchorder LIMIT $start_limit, " . $self['tpp']);
-while (($thread = $db->fetchArray($querytop)) != false) {
+while ($thread = $db->fetch_array($querytop)) {
     $thread['subject'] = shortenString(censor($thread['subject']), 80, X_SHORTEN_SOFT | X_SHORTEN_HARD, '...');
     $tmOffset = ($self['timeoffset'] * 3600) + $self['daylightsavings'];
 
@@ -317,7 +350,7 @@ while (($thread = $db->fetchArray($querytop)) != false) {
 
     if ($thread['replies'] >= $CONFIG['hottopic']) {
         $folder = 'hot_folder.gif';
-    } elseif ($thread['pollopts'] == 1) {
+    } else if ($thread['pollopts'] == 1) {
         $folder = 'folder_poll.gif';
     } else {
         $folder = 'folder.gif';
@@ -327,10 +360,12 @@ while (($thread = $db->fetchArray($querytop)) != false) {
 
     if (($oT = strpos($oldtopics, '|' . $lastPid . '|')) === false && $thread['replies'] >= $CONFIG['hottopic'] && $lastvisit < $dalast) {
         $folder = 'hot_red_folder.gif';
-    } elseif ($lastvisit < $dalast && $oT === false && $thread['pollopts'] == 1) {
+    } else if ($lastvisit < $dalast && $oT === false && $thread['pollopts'] == 1) {
         $folder = 'folder_new_poll.gif';
-    } elseif ($lastvisit < $dalast && $oT === false) {
+    } else if ($lastvisit < $dalast && $oT === false) {
         $folder = 'red_folder.gif';
+    } else {
+        $folder = $folder;
     }
 
     if ($CONFIG['dotfolders'] == 'on' && isset($thread['dotauthor']) == $self['username'] && X_MEMBER) {
@@ -384,7 +419,7 @@ while (($thread = $db->fetchArray($querytop)) != false) {
     $prefix = '';
     $topicsnum++;
 }
-$db->freeResult($querytop);
+$db->free_result($querytop);
 
 if ($topicsnum == 0) {
     if (X_ADMIN || X_SMOD || (X_STAFF && $status1 == 'Moderator')) {
@@ -486,8 +521,8 @@ switch ($days) {
 }
 
 $totalquery = $db->query("SELECT $dotadd1 t.* FROM " . X_PREFIX . "threads t LEFT JOIN " . X_PREFIX . "lastposts l ON l.tid = t.tid $dotadd2 WHERE t.fid = '$fid' $srchfrom $srchtype");
-$total = $db->numRows($totalquery);
-$db->freeResult($totalquery);
+$total = $db->num_rows($totalquery);
+$db->free_result($totalquery);
 
 $mpurl = 'viewforum.php?fid=' . $fid . '&amp;type=' . $type . '&amp;days=' . $days . '&amp;sort=' . $sort . '&amp;order=' . $order;
 if (($multipage = multi($total, $self['tpp'], $page, $mpurl)) === false) {

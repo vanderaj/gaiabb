@@ -1,16 +1,16 @@
 <?php
 /**
  * GaiaBB
- * Copyright (c) 2009-2021 The GaiaBB Project
+ * Copyright (c) 2011-2022 The GaiaBB Group
  * https://github.com/vanderaj/gaiabb
  *
- * Forked from UltimaBB
+ * Based off UltimaBB
  * Copyright (c) 2004 - 2007 The UltimaBB Group
  * (defunct)
  *
- * Forked from XMB
- * Copyright (c) 2001 - 2021 The XMB Development Team
- * https://forums.xmbforum2.com/
+ * Based off XMB
+ * Copyright (c) 2001 - 2004 The XMB Development Team
+ * http://www.xmbforum.com
  *
  * This file is part of GaiaBB
  *
@@ -28,15 +28,20 @@
  *    along with GaiaBB.  If not, see <http://www.gnu.org/licenses/>.
  *
  **/
-// phpcs:disable PSR1.Files.SideEffects
-if (!defined('ROOT')) {
-    define('ROOT', '../');
-}
+
+define('ROOT', '../');
+define('ROOTINC', '../include/');
+define('ROOTCLASS', '../class/');
 
 require_once ROOT . 'header.php';
-require_once ROOT . 'include/admincp.inc.php';
+require_once ROOTINC . 'admincp.inc.php';
 
-loadtpl('cp_header', 'cp_footer', 'cp_message', 'cp_error');
+loadtpl(
+    'cp_header',
+    'cp_footer',
+    'cp_message',
+    'cp_error'
+);
 
 $shadow = shadowfx();
 $shadow2 = shadowfx2();
@@ -65,41 +70,30 @@ function viewPanel()
     $CONFIG['adminnotes'] = stripslashes($CONFIG['adminnotes']);
     ?>
     <form method="post" action="cp_notepad.php">
-        <input type="hidden" name="csrf_token"
-               value="<?php echo $oToken->createToken() ?>"/>
-        <table cellspacing="0px" cellpadding="0px" border="0px" width="100%"
-               align="center">
-            <tr>
-                <td bgcolor="<?php echo $THEME['bordercolor'] ?>">
-                    <table border="0px" cellspacing="<?php echo $THEME['borderwidth'] ?>"
-                           cellpadding="<?php echo $THEME['tablespace'] ?>" width="100%">
-                        <tr>
-                            <td class="category"><strong><font
-                                            color="<?php echo $THEME['cattext'] ?>"><?php echo $lang['Admin_Notes'] ?></font></strong>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td bgcolor="<?php echo $THEME['altbg2'] ?>" class="ctrtablerow"><textarea
-                                        name="adminnotes" rows="20" cols="40"
-                                        style="width: 100%"><?php echo $CONFIG['adminnotes'] ?></textarea>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td bgcolor="<?php echo $THEME['altbg1'] ?>"
-                                class="tablerow"><?php echo $lang['Admin_Notes_Note'] ?></td>
-                        </tr>
-                        <tr>
-                            <td bgcolor="<?php echo $THEME['altbg2'] ?>" class="ctrtablerow"><input
-                                        class="submit" type="submit" name="adminnotesubmit"
-                                        value="<?php echo $lang['Admin_Notes_Submit'] ?>"/>&nbsp;<input
-                                        class="submit" type="submit" name="adminnoteclear"
-                                        value="<?php echo $lang['Admin_Notes_Clear'] ?>"/></td>
-                        </tr>
-                    </table>
-                </td>
-            </tr>
-        </table>
-        <?php echo $shadow2 ?>
+    <input type="hidden" name="token" value="<?php echo $oToken->get_new_token() ?>" />
+    <table cellspacing="0px" cellpadding="0px" border="0px" width="100%" align="center">
+    <tr>
+    <td bgcolor="<?php echo $THEME['bordercolor'] ?>">
+    <table border="0px" cellspacing="<?php echo $THEME['borderwidth'] ?>" cellpadding="<?php echo $THEME['tablespace'] ?>" width="100%">
+    <tr>
+    <td class="category"><strong><font color="<?php echo $THEME['cattext'] ?>"><?php echo $lang['Admin_Notes'] ?></font></strong></td>
+    </tr>
+    <tr>
+    <td bgcolor="<?php echo $THEME['altbg2'] ?>" class="ctrtablerow">
+    <textarea name="adminnotes" rows="20" cols="40" style="width: 100%"><?php echo $CONFIG['adminnotes'] ?></textarea>
+    </td>
+    </tr>
+    <tr>
+    <td bgcolor="<?php echo $THEME['altbg1'] ?>" class="tablerow"><?php echo $lang['Admin_Notes_Note'] ?></td>
+    </tr>
+    <tr>
+    <td bgcolor="<?php echo $THEME['altbg2'] ?>" class="ctrtablerow"><input class="submit" type="submit" name="adminnotesubmit" value="<?php echo $lang['Admin_Notes_Submit'] ?>" />&nbsp;<input class="submit" type="submit" name="adminnoteclear" value="<?php echo $lang['Admin_Notes_Clear'] ?>" /></td>
+    </tr>
+    </table>
+    </td>
+    </tr>
+    </table>
+    <?php echo $shadow2 ?>
     </form>
     </td>
     </tr>
@@ -111,7 +105,7 @@ function doAdminNoteUpdate()
 {
     global $lang, $db, $oToken;
 
-    $oToken->assertToken();
+    $oToken->assert_token();
 
     $adminnotesnew = $db->escape(formVar('adminnotes'));
     if (empty($adminnotesnew)) {
@@ -126,7 +120,7 @@ function doAdminNoteCLear()
 {
     global $lang, $db, $oToken;
 
-    $oToken->assertToken();
+    $oToken->assert_token();
 
     $db->query("UPDATE " . X_PREFIX . "settings SET config_value = '' WHERE config_name = 'adminnotes' LIMIT 1");
     cp_message($lang['Admin_Notes_Cleared'], false, '', '</td></tr></table>', 'cp_notepad.php', true, false, true);

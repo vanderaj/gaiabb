@@ -1,16 +1,16 @@
 <?php
 /**
  * GaiaBB
- * Copyright (c) 2009-2021 The GaiaBB Project
+ * Copyright (c) 2011-2022 The GaiaBB Group
  * https://github.com/vanderaj/gaiabb
  *
- * Forked from UltimaBB
+ * Based off UltimaBB
  * Copyright (c) 2004 - 2007 The UltimaBB Group
  * (defunct)
  *
- * Forked from XMB
- * Copyright (c) 2001 - 2021 The XMB Development Team
- * https://forums.xmbforum2.com/
+ * Based off XMB
+ * Copyright (c) 2001 - 2004 The XMB Development Team
+ * http://www.xmbforum.com
  *
  * This file is part of GaiaBB
  *
@@ -28,20 +28,18 @@
  *    along with GaiaBB.  If not, see <http://www.gnu.org/licenses/>.
  *
  **/
-// phpcs:disable PSR1.Files.SideEffects
 
-namespace GaiaBB;
+if (!defined('IN_PROGRAM') && (defined('DEBUG') && DEBUG == false)) {
+    exit('This file is not designed to be called directly');
+}
 
-class Cacheable
+class cacheable
 {
-
     public $maxlife;
-
     public $prefix;
-
     public $expiry;
 
-    public function __construct($prefix, $maxlife)
+    public function cacheable($prefix, $maxlife)
     {
         global $onlinetime;
 
@@ -56,6 +54,16 @@ class Cacheable
         }
     }
 
+    public function isStale($name)
+    {
+        global $onlinetime;
+
+        if (isset($this->expiry[$name])) {
+            return ($onlinetime > $this->expiry[$name]) ? true : false;
+        }
+        return true;
+    }
+
     public function getWorkDir($reset = 'no')
     {
         $full = dirname($_SERVER['PHP_SELF']);
@@ -68,15 +76,6 @@ class Cacheable
         return $workdir;
     }
 
-    public function setData($name, $object)
-    {
-        global $onlinetime;
-
-        $_SESSION[$this->prefix . $name] = serialize($object);
-        $this->expiry[$name] = $onlinetime + $this->maxlife;
-        $_SESSION[$this->prefix . '__expiry'] = $this->expiry;
-    }
-
     public function refresh()
     {
     }
@@ -85,23 +84,22 @@ class Cacheable
     {
         if ($this->isStale($name)) {
             $this->expire($name);
-            return false;
+            return null;
         }
 
         if (isset($_SESSION[$this->prefix . $name])) {
             return unserialize($_SESSION[$this->prefix . $name]);
         }
-        return false;
+        return null;
     }
 
-    public function isStale($name)
+    public function setData($name, $object)
     {
         global $onlinetime;
 
-        if (isset($this->expiry[$name])) {
-            return ($onlinetime > $this->expiry[$name]) ? true : false;
-        }
-        return true;
+        $_SESSION[$this->prefix . $name] = serialize($object);
+        $this->expiry[$name] = $onlinetime + $this->maxlife;
+        $_SESSION[$this->prefix . '__expiry'] = $this->expiry;
     }
 
     public function expire($name)

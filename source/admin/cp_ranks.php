@@ -1,16 +1,16 @@
 <?php
 /**
  * GaiaBB
- * Copyright (c) 2009-2021 The GaiaBB Project
+ * Copyright (c) 2011-2022 The GaiaBB Group
  * https://github.com/vanderaj/gaiabb
  *
- * Forked from UltimaBB
+ * Based off UltimaBB
  * Copyright (c) 2004 - 2007 The UltimaBB Group
  * (defunct)
  *
- * Forked from XMB
- * Copyright (c) 2001 - 2021 The XMB Development Team
- * https://forums.xmbforum2.com/
+ * Based off XMB
+ * Copyright (c) 2001 - 2004 The XMB Development Team
+ * http://www.xmbforum.com
  *
  * This file is part of GaiaBB
  *
@@ -28,15 +28,20 @@
  *    along with GaiaBB.  If not, see <http://www.gnu.org/licenses/>.
  *
  **/
-// phpcs:disable PSR1.Files.SideEffects
-if (!defined('ROOT')) {
-    define('ROOT', '../');
-}
+
+define('ROOT', '../');
+define('ROOTINC', '../include/');
+define('ROOTCLASS', '../class/');
 
 require_once ROOT . 'header.php';
-require_once ROOT . 'include/admincp.inc.php';
+require_once ROOTINC . 'admincp.inc.php';
 
-loadtpl('cp_header', 'cp_footer', 'cp_message', 'cp_error');
+loadtpl(
+    'cp_header',
+    'cp_footer',
+    'cp_message',
+    'cp_error'
+);
 
 $shadow = shadowfx();
 $shadow2 = shadowfx2();
@@ -65,114 +70,106 @@ function viewPanel()
     global $selHTML, $cheHTML;
     ?>
     <form method="post" action="cp_ranks.php">
-        <input type="hidden" name="csrf_token"
-               value="<?php echo $oToken->createToken() ?>"/>
-        <table cellspacing="0px" cellpadding="0px" border="0px" width="100%"
-               align="center">
-            <tr>
-                <td bgcolor="<?php echo $THEME['bordercolor'] ?>">
-                    <table border="0px" cellspacing="<?php echo $THEME['borderwidth'] ?>"
-                           cellpadding="<?php echo $THEME['tablespace'] ?>" width="100%">
-                        <tr class="category">
-                            <td class="title" align="center"><?php echo $lang['textdeleteques'] ?></td>
-                            <td class="title" align="center"><?php echo $lang['textcusstatus'] ?></td>
-                            <td class="title" align="center"><?php echo $lang['textposts'] ?></td>
-                            <td class="title" align="center"><?php echo $lang['textstars'] ?></td>
-                            <td class="title" align="center"><?php echo $lang['textallowavatars'] ?></td>
-                            <td class="title" align="center"><?php echo $lang['textavatar'] ?></td>
-                        </tr>
-                        <?php
-                        $avatarno = $avataryes = '';
-                        $query = $db->query("SELECT * FROM " . X_PREFIX . "ranks ORDER BY id");
-                        while (($rank = $db->fetchArray($query)) != false) {
-                            $staff_disable = '';
-                            switch ($rank['title']) {
-                                case 'Super Administrator':
-                                    $staff_disable = 'disabled="disabled"';
-                                    break;
-                                case 'Administrator':
-                                    $staff_disable = 'disabled="disabled"';
-                                    break;
-                                case 'Super Moderator':
-                                    $staff_disable = 'disabled="disabled"';
-                                    break;
-                                case 'Moderator':
-                                    $staff_disable = 'disabled="disabled"';
-                                    break;
-                                default:
-                                    $staff_disable = '';
-                                    break;
-                            }
+    <input type="hidden" name="token" value="<?php echo $oToken->get_new_token() ?>" />
+    <table cellspacing="0px" cellpadding="0px" border="0px" width="100%" align="center">
+    <tr>
+    <td bgcolor="<?php echo $THEME['bordercolor'] ?>">
+    <table border="0px" cellspacing="<?php echo $THEME['borderwidth'] ?>" cellpadding="<?php echo $THEME['tablespace'] ?>" width="100%">
+    <tr class="category">
+    <td class="title" align="center"><?php echo $lang['textdeleteques'] ?></td>
+    <td class="title" align="center"><?php echo $lang['textcusstatus'] ?></td>
+    <td class="title" align="center"><?php echo $lang['textposts'] ?></td>
+    <td class="title" align="center"><?php echo $lang['textstars'] ?></td>
+    <td class="title" align="center"><?php echo $lang['textallowavatars'] ?></td>
+    <td class="title" align="center"><?php echo $lang['textavatar'] ?></td>
+    </tr>
+    <?php
+$avatarno = $avataryes = '';
+    $query = $db->query("SELECT * FROM " . X_PREFIX . "ranks ORDER BY id");
+    while ($rank = $db->fetch_array($query)) {
+        $staff_disable = '';
+        switch ($rank['title']) {
+            case 'Super Administrator':
+                $staff_disable = 'disabled="disabled"';
+                break;
+            case 'Administrator':
+                $staff_disable = 'disabled="disabled"';
+                break;
+            case 'Super Moderator':
+                $staff_disable = 'disabled="disabled"';
+                break;
+            case 'Moderator':
+                $staff_disable = 'disabled="disabled"';
+                break;
+            default:
+                $staff_disable = '';
+                break;
+        }
 
-                            $avataryes = $avatarno = '';
-                            switch ($rank['allowavatars']) {
-                                case 'yes':
-                                    $avataryes = $selHTML;
-                                    break;
-                                default:
-                                    $avatarno = $selHTML;
-                                    break;
-                            }
-                            ?>
-                            <tr class="ctrtablerow" bgcolor="<?php echo $THEME['altbg2'] ?>">
-                                <td><input type="checkbox" name="delete[<?php echo $rank['id'] ?>]"
-                                           value="1" <?php echo $staff_disable ?> /></td>
-                                <td><input type="text" name="title[<?php echo $rank['id'] ?>]"
-                                           value="<?php echo $rank['title'] ?>" <?php echo $staff_disable ?> /></td>
-                                <td><input type="text" name="posts[<?php echo $rank['id'] ?>]"
-                                           value="<?php echo $rank['posts'] ?>" <?php echo $staff_disable ?>
-                                           size="5"/></td>
-                                <td><input type="text" name="stars[<?php echo $rank['id'] ?>]"
-                                           value="<?php echo $rank['stars'] ?>" size="4"/></td>
-                                <td><select name="allowavatars[<?php echo $rank['id'] ?>]">
-                                        <option value="yes" <?php echo $avataryes ?>><?php echo $lang['texton'] ?></option>
-                                        <option value="no" <?php echo $avatarno ?>><?php echo $lang['textoff'] ?></option>
-                                    </select> <input type="hidden" name="id[<?php echo $rank['id'] ?>]"
-                                                     value="<?php echo $rank['id'] ?>"/></td>
-                                <td><input type="text" name="avaurl[<?php echo $rank['id'] ?>]"
-                                           value="<?php echo stripslashes($rank['avatarrank']); ?>"
-                                           size="20"/></td>
-                            </tr>
-                            <?php
-                        }
-                        $db->freeResult($query);
-                        ?>
-                        <tr class="tablerow" bgcolor="<?php echo $THEME['altbg1'] ?>">
-                            <td colspan="6">&nbsp;</td>
-                        </tr>
-                        <tr class="ctrtablerow" bgcolor="<?php echo $THEME['altbg2'] ?>">
-                            <td><strong><?php echo $lang['textnewrank'] ?></strong></td>
-                            <td><input type="text" name="newtitle" value=""/></td>
-                            <td><input type="text" name="newposts" size="5" value=""/></td>
-                            <td><input type="text" name="newstars" size="4" value=""/></td>
-                            <td><select name="newallowavatars">
-                                    <option value="yes"><?php echo $lang['texton'] ?></option>
-                                    <option value="no"><?php echo $lang['textoff'] ?></option>
-                                </select></td>
-                            <td><input type="text" name="newavaurl" size="20" value=""/></td>
-                        </tr>
-                        <tr class="ctrtablerow">
-                            <td colspan="6" bgcolor="<?php echo $THEME['altbg2'] ?>"><input
-                                        type="submit" name="rankssubmit" class="submit"
-                                        value="<?php echo $lang['textsubmitchanges'] ?>"/></td>
-                        </tr>
-                    </table>
-                </td>
-            </tr>
-        </table>
-        <?php echo $shadow2 ?>
+        $avataryes = $avatarno = '';
+        switch ($rank['allowavatars']) {
+            case 'yes':
+                $avataryes = $selHTML;
+                break;
+            default:
+                $avatarno = $selHTML;
+                break;
+        }
+        ?>
+        <tr class="ctrtablerow" bgcolor="<?php echo $THEME['altbg2'] ?>">
+        <td><input type="checkbox" name="delete[<?php echo $rank['id'] ?>]" value="1" <?php echo $staff_disable ?> /></td>
+        <td><input type="text" name="title[<?php echo $rank['id'] ?>]" value="<?php echo $rank['title'] ?>" <?php echo $staff_disable ?>/></td>
+        <td><input type="text" name="posts[<?php echo $rank['id'] ?>]" value="<?php echo $rank['posts'] ?>" <?php echo $staff_disable ?> size="5" /></td>
+        <td><input type="text" name="stars[<?php echo $rank['id'] ?>]" value="<?php echo $rank['stars'] ?>" size="4" /></td>
+        <td>
+        <select name="allowavatars[<?php echo $rank['id'] ?>]">
+        <option value="yes" <?php echo $avataryes ?>><?php echo $lang['texton'] ?></option>
+        <option value="no" <?php echo $avatarno ?>><?php echo $lang['textoff'] ?></option>
+        </select>
+        <input type="hidden" name="id[<?php echo $rank['id'] ?>]" value="<?php echo $rank['id'] ?>" />
+        </td>
+        <td><input type="text" name="avaurl[<?php echo $rank['id'] ?>]" value="<?php echo stripslashes($rank['avatarrank']); ?>" size="20" /></td>
+        </tr>
+        <?php
+
+    }
+    $db->free_result($query);
+    ?>
+    <tr class="tablerow" bgcolor="<?php echo $THEME['altbg1'] ?>">
+    <td colspan="6">&nbsp;</td>
+    </tr>
+    <tr class="ctrtablerow" bgcolor="<?php echo $THEME['altbg2'] ?>">
+    <td><strong><?php echo $lang['textnewrank'] ?></strong></td>
+    <td><input type="text" name="newtitle" value="" /></td>
+    <td><input type="text" name="newposts" size="5" value="" /></td>
+    <td><input type="text" name="newstars" size="4" value="" /></td>
+    <td>
+    <select name="newallowavatars">
+    <option value="yes"><?php echo $lang['texton'] ?></option>
+    <option value="no"><?php echo $lang['textoff'] ?></option></select></td>
+    <td><input type="text" name="newavaurl" size="20" value="" /></td>
+    </tr>
+    <tr class="ctrtablerow">
+    <td colspan="6" bgcolor="<?php echo $THEME['altbg2'] ?>"><input type="submit" name="rankssubmit" class="submit" value="<?php echo $lang['textsubmitchanges'] ?>" /></td>
+    </tr>
+    </table>
+    </td>
+    </tr>
+    </table>
+    <?php echo $shadow2 ?>
     </form>
     </td>
     </tr>
     </table>
     <?php
+
 }
 
 function doPanel()
 {
     global $THEME, $lang, $shadow2, $oToken, $db, $CONFIG, $onlinetime;
 
-    $oToken->assertToken();
+    $oToken->assert_token();
 
     $id = formArray('id', false, false, 'int');
     $title = formArray('title');
@@ -184,13 +181,13 @@ function doPanel()
     // Load the existing ranks in
     $query = $db->query("SELECT * FROM " . X_PREFIX . "ranks ORDER BY id ASC");
     $staffranks = array();
-    while (($ranks = $db->fetchArray($query)) != false) {
+    while ($ranks = $db->fetch_array($query)) {
         if ($ranks['title'] == 'Super Administrator' || $ranks['title'] == 'Administrator' || $ranks['title'] == 'Super Moderator' || $ranks['title'] == 'Moderator') {
             $title[$ranks['id']] = $ranks['title'];
             $staffranks[$ranks['id']] = $ranks['title'];
         }
     }
-    $db->freeResult($query);
+    $db->free_result($query);
 
     // Process existing ranks to be deleted
     $delete_keys = array();

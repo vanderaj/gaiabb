@@ -1,16 +1,16 @@
 <?php
 /**
  * GaiaBB
- * Copyright (c) 2009-2021 The GaiaBB Project
+ * Copyright (c) 2011-2022 The GaiaBB Group
  * https://github.com/vanderaj/gaiabb
  *
- * Forked from UltimaBB
+ * Based off UltimaBB
  * Copyright (c) 2004 - 2007 The UltimaBB Group
  * (defunct)
  *
- * Forked from XMB
- * Copyright (c) 2001 - 2021 The XMB Development Team
- * https://forums.xmbforum2.com/
+ * Based off XMB
+ * Copyright (c) 2001 - 2004 The XMB Development Team
+ * http://www.xmbforum.com
  *
  * This file is part of GaiaBB
  *
@@ -28,15 +28,20 @@
  *    along with GaiaBB.  If not, see <http://www.gnu.org/licenses/>.
  *
  **/
-// phpcs:disable PSR1.Files.SideEffects
-if (!defined('ROOT')) {
-    define('ROOT', '../');
-}
+
+define('ROOT', '../');
+define('ROOTINC', '../include/');
+define('ROOTCLASS', '../class/');
 
 require_once ROOT . 'header.php';
-require_once ROOT . 'include/admincp.inc.php';
+require_once ROOTINC . 'admincp.inc.php';
 
-loadtpl('cp_header', 'cp_footer', 'cp_message', 'cp_error');
+loadtpl(
+    'cp_header',
+    'cp_footer',
+    'cp_message',
+    'cp_error'
+);
 
 $shadow = shadowfx();
 $shadow2 = shadowfx2();
@@ -62,32 +67,26 @@ function viewPanel()
     global $oToken, $CONFIG, $cheHTML, $selHTML;
     ?>
     <form method="post" action="cp_robots.php?action=search">
-        <input type="hidden" name="csrf_token"
-               value="<?php echo $oToken->createToken() ?>"/>
-        <table cellspacing="0px" cellpadding="0px" border="0px" width="100%"
-               align="center">
-            <tr>
-                <td bgcolor="<?php echo $THEME['bordercolor'] ?>">
-                    <table border="0px" cellspacing="<?php echo $THEME['borderwidth'] ?>"
-                           cellpadding="<?php echo $THEME['tablespace'] ?>" width="100%">
-                        <tr class="category">
-                            <td class="title" colspan="2"><?php echo $lang['textrobots'] ?></td>
-                        </tr>
-                        <tr class="tablerow">
-                            <td bgcolor="<?php echo $THEME['altbg1'] ?>"
-                                width="22%"><?php echo $lang['textsrchbot'] ?></td>
-                            <td bgcolor="<?php echo $THEME['altbg2'] ?>"><input type="text"
-                                                                                name="srchbot"/></td>
-                        </tr>
-                        <tr bgcolor="<?php echo $THEME['altbg2'] ?>" class="ctrtablerow">
-                            <td colspan="2"><input type="submit" class="submit"
-                                                   value="<?php echo $lang['textgo'] ?>"/></td>
-                        </tr>
-                    </table>
-                </td>
-            </tr>
-        </table>
-        <?php echo $shadow2 ?>
+    <input type="hidden" name="token" value="<?php echo $oToken->get_new_token() ?>" />
+    <table cellspacing="0px" cellpadding="0px" border="0px" width="100%" align="center">
+    <tr>
+    <td bgcolor="<?php echo $THEME['bordercolor'] ?>">
+    <table border="0px" cellspacing="<?php echo $THEME['borderwidth'] ?>" cellpadding="<?php echo $THEME['tablespace'] ?>" width="100%">
+    <tr class="category">
+    <td class="title" colspan="2"><?php echo $lang['textrobots'] ?></td>
+    </tr>
+    <tr class="tablerow">
+    <td bgcolor="<?php echo $THEME['altbg1'] ?>" width="22%"><?php echo $lang['textsrchbot'] ?></td>
+    <td bgcolor="<?php echo $THEME['altbg2'] ?>"><input type="text" name="srchbot" /></td>
+    </tr>
+    <tr bgcolor="<?php echo $THEME['altbg2'] ?>" class="ctrtablerow">
+    <td colspan="2"><input type="submit" class="submit" value="<?php echo $lang['textgo'] ?>" /></td>
+    </tr>
+    </table>
+    </td>
+    </tr>
+    </table>
+    <?php echo $shadow2 ?>
     </form>
     </td>
     </tr>
@@ -100,61 +99,52 @@ function viewSearchPanel()
     global $shadow2, $lang, $db, $THEME;
     global $oToken, $CONFIG, $cheHTML, $selHTML;
 
-    $oToken->assertToken();
+    $oToken->assert_token();
     ?>
     <form method="post" action="cp_robots.php">
-        <input type="hidden" name="csrf_token"
-               value="<?php echo $oToken->createToken() ?>"/>
-        <table cellspacing="0px" cellpadding="0px" border="0px" width="100%"
-               align="center">
-            <tr>
-                <td bgcolor="<?php echo $THEME['bordercolor'] ?>">
-                    <table border="0px" cellspacing="<?php echo $THEME['borderwidth'] ?>"
-                           cellpadding="<?php echo $THEME['tablespace'] ?>" width="100%">
-                        <tr class="category">
-                            <td class="title" align="center" width="3%"><?php echo $lang['textdeleteques'] ?></td>
-                            <td class="title"><?php echo $lang['textrobotname'] ?></td>
-                            <td class="title"><?php echo $lang['textrobotagent'] ?></td>
-                        </tr>
-                        <?php
-                        $srchbot = $db->escape(formVar('srchbot'));
-                        if (!empty($srchbot)) {
-                            $srchbot = "WHERE robot_fullname LIKE '%" . $srchbot . "%' ";
-                        }
-                        $query = $db->query("SELECT * FROM " . X_PREFIX . "robots $srchbot ORDER BY robot_fullname");
-                        while (($robot = $db->fetchArray($query)) != false) {
-                            ?>
-                            <tr bgcolor="<?php echo $THEME['altbg2'] ?>" class="tablerow">
-                                <td align="center"><input type="checkbox"
-                                                          name="delete<?php echo $robot['robot_id'] ?>"
-                                                          value="<?php echo $robot['robot_id'] ?>"/></td>
-                                <td><input type="text" size="20"
-                                           name="robotname<?php echo $robot['robot_id'] ?>"
-                                           value="<?php echo $robot['robot_fullname'] ?>"/></td>
-                                <td><input type="text" size="20"
-                                           name="robotagent<?php echo $robot['robot_id'] ?>"
-                                           value="<?php echo $robot['robot_string'] ?>"/></td>
-                            </tr>
-                            <?php
-                        }
-                        ?>
-                        <tr>
-                            <td bgcolor="<?php echo $THEME['altbg2'] ?>" colspan="4">&nbsp;</td>
-                        </tr>
-                        <tr bgcolor="<?php echo $THEME['altbg1'] ?>" class="tablerow">
-                            <td><?php echo $lang['textnewrobot'] ?></td>
-                            <td><input type="text" name="newrobotname"/></td>
-                            <td colspan="2"><input type="text" name="newrobotagent"/></td>
-                        </tr>
-                        <tr bgcolor="<?php echo $THEME['altbg2'] ?>" class="ctrtablerow">
-                            <td colspan="7"><input type="submit" class="submit"
-                                                   name="robotsubmit"
-                                                   value="<?php echo $lang['textsubmitchanges'] ?>"/></td>
-                        </tr>
-                    </table>
-                </td>
-            </tr>
-        </table>
+    <input type="hidden" name="token" value="<?php echo $oToken->get_new_token() ?>" />
+    <table cellspacing="0px" cellpadding="0px" border="0px" width="100%" align="center">
+    <tr>
+    <td bgcolor="<?php echo $THEME['bordercolor'] ?>">
+    <table border="0px" cellspacing="<?php echo $THEME['borderwidth'] ?>" cellpadding="<?php echo $THEME['tablespace'] ?>" width="100%">
+    <tr class="category">
+    <td class="title" align="center" width="3%"><?php echo $lang['textdeleteques'] ?></td>
+    <td class="title"><?php echo $lang['textrobotname'] ?></td>
+    <td class="title"><?php echo $lang['textrobotagent'] ?></td>
+    </tr>
+    <?php
+$srchbot = $db->escape(formVar('srchbot'));
+    if (!empty($srchbot)) {
+        $srchbot = "WHERE robot_fullname LIKE '%" . $srchbot . "%' ";
+    }
+    $query = $db->query("SELECT * FROM " . X_PREFIX . "robots $srchbot ORDER BY robot_fullname");
+    while ($robot = $db->fetch_array($query)) {
+        ?>
+        <tr bgcolor="<?php echo $THEME['altbg2'] ?>" class="tablerow">
+        <td align="center"><input type="checkbox" name="delete<?php echo $robot['robot_id'] ?>" value="<?php echo $robot['robot_id'] ?>" /></td>
+        <td><input type="text" size="20" name="robotname<?php echo $robot['robot_id'] ?>" value="<?php echo $robot['robot_fullname'] ?>" /></td>
+        <td><input type="text" size="20" name="robotagent<?php echo $robot['robot_id'] ?>" value="<?php echo $robot['robot_string'] ?>" /></td>
+        </tr>
+        <?php
+}
+    ?>
+    <tr>
+    <td bgcolor="<?php echo $THEME['altbg2'] ?>" colspan="4">&nbsp;</td>
+    </tr>
+    <tr bgcolor="<?php echo $THEME['altbg1'] ?>" class="tablerow">
+    <td><?php echo $lang['textnewrobot'] ?></td>
+    <td><input type="text" name="newrobotname" /></td>
+    <td colspan="2"><input type="text" name="newrobotagent" /></td>
+    </tr>
+    <tr bgcolor="<?php echo $THEME['altbg2'] ?>" class="ctrtablerow">
+    <td colspan="7">
+    <input type="submit" class="submit" name="robotsubmit" value="<?php echo $lang['textsubmitchanges'] ?>" />
+    </td>
+    </tr>
+    </table>
+    </td>
+    </tr>
+    </table>
     </form>
     <?php echo $shadow2 ?>
     </td>
@@ -167,7 +157,7 @@ function doPanel()
     global $shadow2, $lang, $db, $THEME;
     global $oToken;
 
-    $oToken->assertToken();
+    $oToken->assert_token();
 
     $srchbot = $db->escape(formVar('srchbot'));
     if (!empty($srchbot)) {
@@ -175,7 +165,7 @@ function doPanel()
     }
 
     $query = $db->query("SELECT * FROM " . X_PREFIX . "robots $srchbot");
-    while (($bot = $db->fetchArray($query)) != false) {
+    while ($bot = $db->fetch_array($query)) {
         $delete = formInt("delete" . $bot['robot_id']);
         if ($delete > 0) {
             $db->query("DELETE FROM " . X_PREFIX . "robots WHERE robot_id = '$delete'");
@@ -187,7 +177,7 @@ function doPanel()
             $db->query("UPDATE " . X_PREFIX . "robots SET robot_fullname = '$robotname', robot_string = '$robotagent' WHERE robot_id = '$bot[robot_id]'");
         }
     }
-    $db->freeResult($query);
+    $db->free_result($query);
 
     $newrobotagent = $db->escape(formVar('newrobotagent'));
     $newrobotname = $db->escape(formVar('newrobotname'));

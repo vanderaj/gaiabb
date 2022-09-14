@@ -1,16 +1,16 @@
 <?php
 /**
  * GaiaBB
- * Copyright (c) 2009-2021 The GaiaBB Project
+ * Copyright (c) 2011-2022 The GaiaBB Group
  * https://github.com/vanderaj/gaiabb
  *
- * Forked from UltimaBB
+ * Based off UltimaBB
  * Copyright (c) 2004 - 2007 The UltimaBB Group
  * (defunct)
  *
- * Forked from XMB
- * Copyright (c) 2001 - 2021 The XMB Development Team
- * https://forums.xmbforum2.com/
+ * Based off XMB
+ * Copyright (c) 2001 - 2004 The XMB Development Team
+ * http://www.xmbforum.com
  *
  * This file is part of GaiaBB
  *
@@ -28,15 +28,20 @@
  *    along with GaiaBB.  If not, see <http://www.gnu.org/licenses/>.
  *
  **/
-// phpcs:disable PSR1.Files.SideEffects
-if (!defined('ROOT')) {
-    define('ROOT', '../');
-}
+
+define('ROOT', '../');
+define('ROOTINC', '../include/');
+define('ROOTCLASS', '../class/');
 
 require_once ROOT . 'header.php';
-require_once ROOT . 'include/admincp.inc.php';
+require_once ROOTINC . 'admincp.inc.php';
 
-loadtpl('cp_header', 'cp_footer', 'cp_message', 'cp_error');
+loadtpl(
+    'cp_header',
+    'cp_footer',
+    'cp_message',
+    'cp_error'
+);
 
 $shadow = shadowfx();
 $shadow2 = shadowfx2();
@@ -66,93 +71,82 @@ function viewPanel()
     $forumselect = forumList('pruneFromList[]', true, false);
     ?>
     <form method="post" action="cp_prune.php">
-        <input type="hidden" name="csrf_token"
-               value="<?php echo $oToken->createToken() ?>"/>
-        <table cellspacing="0px" cellpadding="0px" border="0px" width="100%">
-            <tr>
-                <td bgcolor="<?php echo $THEME['bordercolor'] ?>">
-                    <table border="0px" cellspacing="<?php echo $THEME['borderwidth'] ?>"
-                           cellpadding="<?php echo $THEME['tablespace'] ?>" width="100%">
-                        <tr class="category">
-                            <td class="title" colspan="2"><?php echo $lang['textprune'] ?></td>
-                        </tr>
-                        <tr>
-                            <td class="tablerow" bgcolor="<?php echo $THEME['altbg1'] ?>">
-                                <?php echo $lang['pruneby'] ?>
-                            </td>
-                            <td class="tablerow" bgcolor="<?php echo $THEME['altbg2'] ?>">
-                                <table>
-                                    <tr>
-                                        <td><input type="checkbox" name="pruneBy[]" value="date"/></td>
-                                        <td class="tablerow"><select name="pruneByDateType">
-                                                <option value="more"><?php echo $lang['prunemorethan'] ?></option>
-                                                <option value="is"><?php echo $lang['pruneexactly'] ?></option>
-                                                <option value="less"><?php echo $lang['prunelessthan'] ?></option>
-                                            </select> <input type="text" name="pruneByDate"
-                                                             value="10"/> <?php echo $lang['daysold'] ?>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td class="tablerow"><input type="checkbox" name="pruneBy[]"
-                                                                    value="posts"/></td>
-                                        <td class="tablerow"><select name="pruneByPostsType">
-                                                <option value="more"><?php echo $lang['prunemorethan'] ?></option>
-                                                <option value="is"><?php echo $lang['pruneexactly'] ?></option>
-                                                <option value="less"><?php echo $lang['prunelessthan'] ?></option>
-                                            </select> <input type="text" name="pruneByPosts"
-                                                             value="10"/> <?php echo $lang['memposts'] ?>
-                                        </td>
-                                    </tr>
-                                </table>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="tablerow"
-                                bgcolor="<?php echo $THEME['altbg1'] ?>"><?php echo $lang['prunefrom'] ?></td>
-                            <td class="tablerow" bgcolor="<?php echo $THEME['altbg2'] ?>">
-                                <table>
-                                    <tr>
-                                        <td class="tablerow"><input type="radio" name="pruneFrom"
-                                                                    value="all" <?php echo $cheHTML ?> /></td>
-                                        <td class="tablerow"><?php echo $lang['textallforumsandsubs'] ?></td>
-                                    </tr>
-                                    <tr>
-                                        <td class="tablerow"><input type="radio" name="pruneFrom"
-                                                                    value="list"/></td>
-                                        <td class="tablerow"><?php echo $forumselect ?></td>
-                                    </tr>
-                                    <tr>
-                                        <td class="tablerow"><input type="radio" name="pruneFrom"
-                                                                    value="fid"/></td>
-                                        <td class="tablerow"><?php echo $lang['prunefids'] ?> <input
-                                                    type="text" name="pruneFromFid" value=""/> <span
-                                                    class="smalltxt">(<?php echo $lang['seperatebycomma'] ?>)</span>
-                                        </td>
-                                    </tr>
-                                </table>
-                            </td>
-                        </tr>
-                        <tr class="tablerow">
-                            <td bgcolor="<?php echo $THEME['altbg1'] ?>"><?php echo $lang['pruneposttypes'] ?></td>
-                            <td bgcolor="<?php echo $THEME['altbg2'] ?>"><input type="checkbox"
-                                                                                name="pruneType[]"
-                                                                                value="normal" <?php echo $cheHTML ?> /> <?php echo $lang['prunenormal'] ?>
-                                <br/>
-                                <input type="checkbox" name="pruneType[]" value="closed"
-                                    <?php echo $cheHTML ?> /> <?php echo $lang['pruneclosed'] ?><br/>
-                                <input type="checkbox" name="pruneType[]"
-                                       value="topped"/> <?php echo $lang['prunetopped'] ?><br/>
-                            </td>
-                        </tr>
-                        <tr class="ctrtablerow" bgcolor="<?php echo $THEME['altbg2'] ?>">
-                            <td colspan="2"><input type="submit" name="pruneSubmit"
-                                                   value="<?php echo $lang['textprune'] ?>"/></td>
-                        </tr>
-                    </table>
-                </td>
-            </tr>
-        </table>
-        <?php echo $shadow2 ?>
+    <input type="hidden" name="token" value="<?php echo $oToken->get_new_token() ?>" />
+    <table cellspacing="0px" cellpadding="0px" border="0px" width="100%">
+    <tr>
+    <td bgcolor="<?php echo $THEME['bordercolor'] ?>">
+    <table border="0px" cellspacing="<?php echo $THEME['borderwidth'] ?>" cellpadding="<?php echo $THEME['tablespace'] ?>" width="100%">
+    <tr class="category">
+    <td class="title" colspan="2"><?php echo $lang['textprune'] ?></td>
+    </tr>
+    <tr>
+    <td class="tablerow" bgcolor="<?php echo $THEME['altbg1'] ?>">
+    <?php echo $lang['pruneby'] ?>
+    </td>
+    <td class="tablerow" bgcolor="<?php echo $THEME['altbg2'] ?>">
+    <table>
+    <tr>
+    <td>
+    <input type="checkbox" name="pruneBy[]" value="date" /></td>
+    <td class="tablerow">
+    <select name="pruneByDateType">
+    <option value="more"><?php echo $lang['prunemorethan'] ?></option>
+    <option value="is"><?php echo $lang['pruneexactly'] ?></option>
+    <option value="less"><?php echo $lang['prunelessthan'] ?></option>
+    </select>
+    <input type="text" name="pruneByDate" value="10" /> <?php echo $lang['daysold'] ?>
+    </td>
+    </tr>
+    <tr>
+    <td class="tablerow">
+    <input type="checkbox" name="pruneBy[]" value="posts" /></td>
+    <td class="tablerow">
+    <select name="pruneByPostsType">
+    <option value="more"><?php echo $lang['prunemorethan'] ?></option>
+    <option value="is"><?php echo $lang['pruneexactly'] ?></option>
+    <option value="less"><?php echo $lang['prunelessthan'] ?></option>
+    </select>
+    <input type="text" name="pruneByPosts" value="10" /> <?php echo $lang['memposts'] ?>
+    </td>
+    </tr>
+    </table>
+    </td>
+    </tr>
+    <tr>
+    <td class="tablerow" bgcolor="<?php echo $THEME['altbg1'] ?>"><?php echo $lang['prunefrom'] ?></td>
+    <td class="tablerow" bgcolor="<?php echo $THEME['altbg2'] ?>">
+    <table>
+    <tr>
+    <td class="tablerow"><input type="radio" name="pruneFrom" value="all" <?php echo $cheHTML ?> /></td>
+    <td class="tablerow"><?php echo $lang['textallforumsandsubs'] ?></td>
+    </tr>
+    <tr>
+    <td class="tablerow"><input type="radio" name="pruneFrom" value="list" /></td>
+    <td class="tablerow"><?php echo $forumselect ?></td>
+    </tr>
+    <tr>
+    <td class="tablerow"><input type="radio" name="pruneFrom" value="fid" /></td>
+    <td class="tablerow"><?php echo $lang['prunefids'] ?> <input type="text" name="pruneFromFid" value="" /> <span class="smalltxt">(<?php echo $lang['seperatebycomma'] ?>)</span></td>
+    </tr>
+    </table>
+    </td>
+    </tr>
+    <tr class="tablerow">
+    <td bgcolor="<?php echo $THEME['altbg1'] ?>"><?php echo $lang['pruneposttypes'] ?></td>
+    <td bgcolor="<?php echo $THEME['altbg2'] ?>">
+    <input type="checkbox" name="pruneType[]" value="normal" <?php echo $cheHTML ?> /> <?php echo $lang['prunenormal'] ?><br />
+    <input type="checkbox" name="pruneType[]" value="closed" <?php echo $cheHTML ?> /> <?php echo $lang['pruneclosed'] ?><br />
+    <input type="checkbox" name="pruneType[]" value="topped" /> <?php echo $lang['prunetopped'] ?><br />
+    </td>
+    </tr>
+    <tr class="ctrtablerow" bgcolor="<?php echo $THEME['altbg2'] ?>">
+    <td colspan="2"><input type="submit" name="pruneSubmit" value="<?php echo $lang['textprune'] ?>" /></td>
+    </tr>
+    </table>
+    </td>
+    </tr>
+    </table>
+    <?php echo $shadow2 ?>
     </form>
     </td>
     </tr>
@@ -164,7 +158,7 @@ function doPanel()
 {
     global $THEME, $lang, $shadow2, $oToken, $db, $CONFIG, $onlinetime;
 
-    $oToken->assertToken();
+    $oToken->assert_token();
 
     $queryWhere = array();
 
@@ -275,11 +269,11 @@ function doPanel()
         $tids = array();
         $queryWhere = implode(' AND ', $queryWhere);
         $q = $db->query("SELECT t.tid FROM " . X_PREFIX . "threads t, " . X_PREFIX . "lastposts l WHERE " . $queryWhere);
-        if ($db->numRows($q) > 0) {
-            while (($t = $db->fetchArray($q)) != false) {
+        if ($db->num_rows($q) > 0) {
+            while ($t = $db->fetch_array($q)) {
                 $tids[] = $t['tid'];
             }
-            $db->freeResult($q);
+            $db->free_result($q);
             $tids = implode(',', $tids);
             $db->query("DELETE FROM " . X_PREFIX . "threads WHERE tid IN (" . $tids . ")");
             $db->query("DELETE FROM " . X_PREFIX . "posts WHERE tid IN (" . $tids . ")");

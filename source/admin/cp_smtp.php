@@ -1,16 +1,16 @@
 <?php
 /**
  * GaiaBB
- * Copyright (c) 2009-2021 The GaiaBB Project
+ * Copyright (c) 2011-2022 The GaiaBB Group
  * https://github.com/vanderaj/gaiabb
  *
- * Forked from UltimaBB
+ * Based off UltimaBB
  * Copyright (c) 2004 - 2007 The UltimaBB Group
  * (defunct)
  *
- * Forked from XMB
- * Copyright (c) 2001 - 2021 The XMB Development Team
- * https://forums.xmbforum2.com/
+ * Based off XMB
+ * Copyright (c) 2001 - 2004 The XMB Development Team
+ * http://www.xmbforum.com
  *
  * This file is part of GaiaBB
  *
@@ -28,16 +28,21 @@
  *    along with GaiaBB.  If not, see <http://www.gnu.org/licenses/>.
  *
  **/
-// phpcs:disable PSR1.Files.SideEffects
-if (!defined('ROOT')) {
-    define('ROOT', '../');
-}
+
+define('ROOT', '../');
+define('ROOTINC', '../include/');
+define('ROOTCLASS', '../class/');
 
 require_once ROOT . 'header.php';
-require_once ROOT . 'include/admincp.inc.php';
-require_once ROOT . 'helper/formHelper.php';
+require_once ROOTINC . 'admincp.inc.php';
+require_once ROOTINC . 'settings.inc.php';
 
-loadtpl('cp_header', 'cp_footer', 'cp_message', 'cp_error');
+loadtpl(
+    'cp_header',
+    'cp_footer',
+    'cp_message',
+    'cp_error'
+);
 
 $shadow = shadowfx();
 $shadow2 = shadowfx2();
@@ -64,7 +69,7 @@ function viewPanel()
     global $oToken, $CONFIG, $cheHTML, $selHTML;
 
     $smtp_statuson = $smtp_statusoff = '';
-    GaiaBB\FormHelper::getSettingOnOffHtml('smtp_status', $smtp_statuson, $smtp_statusoff);
+    settingHTML('smtp_status', $smtp_statuson, $smtp_statusoff);
 
     $CONFIG['smtpServer'] = stripslashes($CONFIG['smtpServer']);
     $CONFIG['smtpusername'] = stripslashes($CONFIG['smtpusername']);
@@ -74,69 +79,32 @@ function viewPanel()
     $CONFIG['smtptimeout'] = (int) ($CONFIG['smtptimeout']);
     ?>
     <form method="post" action="cp_smtp.php">
-        <input type="hidden" name="csrf_token"
-               value="<?php echo $oToken->createToken() ?>"/>
-        <table cellspacing="0px" cellpadding="0px" border="0px" width="100%"
-               align="center">
-            <tr>
-                <td bgcolor="<?php echo $THEME['bordercolor'] ?>">
-                    <table border="0px" cellspacing="<?php echo $THEME['borderwidth'] ?>"
-                           cellpadding="<?php echo $THEME['tablespace'] ?>" width="100%">
-                        <tr>
-                            <td colspan="2" class="category"><strong>
-                            <font color="<?php echo $THEME['cattext'] ?>"><?php echo $lang['Smtp_Settings'] ?>
-                            </font></strong></td>
-                        </tr>
-                        <?php
-                        GaiaBB\FormHelper::formSelectOnOff(
-                            $lang['Smtp_Status'],
-                            'smtp_statusnew',
-                            $smtp_statuson,
-                            $smtp_statusoff
-                        );
-                        GaiaBB\FormHelper::formTextBox(
-                            $lang['Smtp_Server'],
-                            'smtpServernew',
-                            $CONFIG['smtpServer'],
-                            50
-                        );
-                        GaiaBB\FormHelper::formTextBox(
-                            $lang['Smtp_Port_Number'],
-                            'smtpportnew',
-                            $CONFIG['smtpport'],
-                            4
-                        );
-                        GaiaBB\FormHelper::formTextBox(
-                            $lang['Smtp_Timeout'],
-                            'smtptimeoutnew',
-                            $CONFIG['smtptimeout'],
-                            3
-                        );
-                        GaiaBB\FormHelper::formTextBox(
-                            $lang['Smtp_Username'],
-                            'smtpusernamenew',
-                            $CONFIG['smtpusername'],
-                            50
-                        );
-                        GaiaBB\FormHelper::formTextPassBox(
-                            $lang['Smtp_Password'],
-                            'smtppasswordnew',
-                            $CONFIG['smtppassword'],
-                            50,
-                            true
-                        );
-                        GaiaBB\FormHelper::formTextBox($lang['Smtp_Host'], 'smtphostnew', $CONFIG['smtphost'], 50);
-                        ?>
-                        <tr>
-                            <td class="ctrtablerow" bgcolor="<?php echo $THEME['altbg2'] ?>"
-                                colspan="2"><input class="submit" type="submit" name="smtpsubmit"
-                                                   value="<?php echo $lang['textsubmitchanges'] ?>"/></td>
-                        </tr>
-                    </table>
-                </td>
-            </tr>
-        </table>
-        <?php echo $shadow2 ?>
+    <input type="hidden" name="token" value="<?php echo $oToken->get_new_token() ?>" />
+    <table cellspacing="0px" cellpadding="0px" border="0px" width="100%" align="center">
+    <tr>
+    <td bgcolor="<?php echo $THEME['bordercolor'] ?>">
+    <table border="0px" cellspacing="<?php echo $THEME['borderwidth'] ?>" cellpadding="<?php echo $THEME['tablespace'] ?>" width="100%">
+    <tr>
+    <td colspan="2" class="category"><strong><font color="<?php echo $THEME['cattext'] ?>"><?php echo $lang['Smtp_Settings'] ?></font></strong></td>
+    </tr>
+    <?php
+printsetting1($lang['Smtp_Status'], 'smtp_statusnew', $smtp_statuson, $smtp_statusoff);
+    printsetting2($lang['Smtp_Server'], 'smtpServernew', $CONFIG['smtpServer'], 50);
+    printsetting2($lang['Smtp_Port_Number'], 'smtpportnew', $CONFIG['smtpport'], 4);
+    printsetting2($lang['Smtp_Timeout'], 'smtptimeoutnew', $CONFIG['smtptimeout'], 3);
+    printsetting2($lang['Smtp_Username'], 'smtpusernamenew', $CONFIG['smtpusername'], 50);
+    printsetting2($lang['Smtp_Password'], 'smtppasswordnew', $CONFIG['smtppassword'], 50, true);
+    printsetting2($lang['Smtp_Host'], 'smtphostnew', $CONFIG['smtphost'], 50);
+    ?>
+    <tr>
+    <td class="ctrtablerow" bgcolor="<?php echo $THEME['altbg2'] ?>" colspan="2">
+    <input class="submit" type="submit" name="smtpsubmit" value="<?php echo $lang['textsubmitchanges'] ?>" /></td>
+    </tr>
+    </table>
+    </td>
+    </tr>
+    </table>
+    <?php echo $shadow2 ?>
     </form>
     </td>
     </tr>
@@ -148,7 +116,7 @@ function doPanel()
 {
     global $shadow2, $lang, $db, $THEME, $oToken;
 
-    $oToken->assertToken();
+    $oToken->assert_token();
 
     $smtpServernew = $db->escape(formVar('smtpServernew'));
     $smtpusernamenew = $db->escape(formVar('smtpusernamenew'));

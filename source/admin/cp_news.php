@@ -1,16 +1,16 @@
 <?php
 /**
  * GaiaBB
- * Copyright (c) 2009-2021 The GaiaBB Project
+ * Copyright (c) 2011-2022 The GaiaBB Group
  * https://github.com/vanderaj/gaiabb
  *
- * Forked from UltimaBB
+ * Based off UltimaBB
  * Copyright (c) 2004 - 2007 The UltimaBB Group
  * (defunct)
  *
- * Forked from XMB
- * Copyright (c) 2001 - 2021 The XMB Development Team
- * https://forums.xmbforum2.com/
+ * Based off XMB
+ * Copyright (c) 2001 - 2004 The XMB Development Team
+ * http://www.xmbforum.com
  *
  * This file is part of GaiaBB
  *
@@ -28,16 +28,23 @@
  *    along with GaiaBB.  If not, see <http://www.gnu.org/licenses/>.
  *
  **/
-// phpcs:disable PSR1.Files.SideEffects
-if (!defined('ROOT')) {
-    define('ROOT', '../');
-}
+
+define('ROOT', '../');
+define('ROOTINC', '../include/');
+define('ROOTCLASS', '../class/');
 
 require_once ROOT . 'header.php';
-require_once ROOT . 'include/admincp.inc.php';
-require_once ROOT . 'helper/formHelper.php';
+require_once ROOTINC . 'admincp.inc.php';
+require_once ROOTINC . 'settings.inc.php';
 
-loadtpl('cp_header', 'cp_footer', 'cp_message', 'cp_error', 'functions_bbcode', 'functions_bbcodeinsert');
+loadtpl(
+    'cp_header',
+    'cp_footer',
+    'cp_message',
+    'cp_error',
+    'functions_bbcode',
+    'functions_bbcodeinsert'
+);
 
 $shadow = shadowfx();
 $shadow2 = shadowfx2();
@@ -73,45 +80,35 @@ function viewPanel()
     $bbcodeinsert = bbcodeinsert();
 
     $indexnewson = $indexnewsoff = '';
-    GaiaBB\FormHelper::getSettingOnOffHtml('indexnews', $indexnewson, $indexnewsoff);
+    settingHTML('indexnews', $indexnewson, $indexnewsoff);
 
     $CONFIG['indexnewstxt'] = stripslashes($CONFIG['indexnewstxt']);
     ?>
     <form method="post" action="cp_news.php">
-        <input type="hidden" name="csrf_token"
-               value="<?php echo $oToken->createToken() ?>"/>
-        <table cellspacing="0px" cellpadding="0px" border="0px" width="100%"
-               align="center">
-            <tr>
-                <td bgcolor="<?php echo $THEME['bordercolor'] ?>">
-                    <table border="0px" cellspacing="<?php echo $THEME['borderwidth'] ?>"
-                           cellpadding="<?php echo $THEME['tablespace'] ?>" width="100%">
-                        <tr class="category">
-                            <td class="title" colspan="2"><?php echo $lang['indexnewscp'] ?></td>
-                        </tr>
-                        <?php
-                        GaiaBB\FormHelper::formSelectOnOff($lang['set_indexnews'], 'indexnewsnew', $indexnewson, $indexnewsoff);
-                        echo $bbcodeinsert;
-                        ?>
-                        <tr class="tablerow">
-                            <td bgcolor="<?php echo $THEME['altbg1'] ?>" valign="top"
-                                width="50%"><?php echo $lang['set_indexnewstxt'] ?></td>
-                            <td bgcolor="<?php echo $THEME['altbg2'] ?>" width="50%"><textarea
-                                        rows="12" name="indexnewstxtnew" cols="60" id="message"
-                                        onselect="storeCaret(this);" onclick="storeCaret(this);"
-                                        onkeyup="storeCaret(this);"><?php echo $CONFIG['indexnewstxt'] ?></textarea>
-                            </td>
-                        </tr>
-                        <tr class="ctrtablerow" bgcolor="<?php echo $THEME['altbg2'] ?>">
-                            <td colspan="2"><input class="submit" type="submit"
-                                                   name="newssubmit" value="<?php echo $lang['textsubmitchanges'] ?>"/>
-                            </td>
-                        </tr>
-                    </table>
-                </td>
-            </tr>
-        </table>
-        <?php echo $shadow2 ?>
+    <input type="hidden" name="token" value="<?php echo $oToken->get_new_token() ?>" />
+    <table cellspacing="0px" cellpadding="0px" border="0px" width="100%" align="center">
+    <tr>
+    <td bgcolor="<?php echo $THEME['bordercolor'] ?>">
+    <table border="0px" cellspacing="<?php echo $THEME['borderwidth'] ?>" cellpadding="<?php echo $THEME['tablespace'] ?>" width="100%">
+    <tr class="category">
+    <td class="title" colspan="2"><?php echo $lang['indexnewscp'] ?></td>
+    </tr>
+    <?php
+printsetting1($lang['set_indexnews'], 'indexnewsnew', $indexnewson, $indexnewsoff);
+    echo $bbcodeinsert;
+    ?>
+    <tr class="tablerow">
+    <td bgcolor="<?php echo $THEME['altbg1'] ?>" valign="top" width="50%"><?php echo $lang['set_indexnewstxt'] ?></td>
+    <td bgcolor="<?php echo $THEME['altbg2'] ?>" width="50%"><textarea rows="12" name="indexnewstxtnew" cols="60" id="message" onselect="storeCaret(this);" onclick="storeCaret(this);" onkeyup="storeCaret(this);"><?php echo $CONFIG['indexnewstxt'] ?></textarea></td>
+    </tr>
+    <tr class="ctrtablerow" bgcolor="<?php echo $THEME['altbg2'] ?>">
+    <td colspan="2"><input class="submit" type="submit" name="newssubmit" value="<?php echo $lang['textsubmitchanges'] ?>" /></td>
+    </tr>
+    </table>
+    </td>
+    </tr>
+    </table>
+    <?php echo $shadow2 ?>
     </form>
     </td>
     </tr>
@@ -123,7 +120,7 @@ function doPanel()
 {
     global $lang, $db, $oToken;
 
-    $oToken->assertToken();
+    $oToken->assert_token();
 
     $indexnewsnew = formOnOff('indexnewsnew');
     $indexnewstxtnew = $db->escape(formVar('indexnewstxtnew'));

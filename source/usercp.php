@@ -1,16 +1,16 @@
 <?php
 /**
  * GaiaBB
- * Copyright (c) 2009-2021 The GaiaBB Project
+ * Copyright (c) 2011-2022 The GaiaBB Group
  * https://github.com/vanderaj/gaiabb
  *
- * Forked from UltimaBB
+ * Based off UltimaBB
  * Copyright (c) 2004 - 2007 The UltimaBB Group
  * (defunct)
  *
- * Forked from XMB
- * Copyright (c) 2001 - 2021 The XMB Development Team
- * https://forums.xmbforum2.com/
+ * Based off XMB
+ * Copyright (c) 2001 - 2004 The XMB Development Team
+ * http://www.xmbforum.com
  *
  * This file is part of GaiaBB
  *
@@ -28,9 +28,11 @@
  *    along with GaiaBB.  If not, see <http://www.gnu.org/licenses/>.
  *
  **/
-// phpcs:disable PSR1.Files.SideEffects
-require_once 'header.php';
-require_once ROOT . 'include/usercp.inc.php';
+
+define('ROOT', './');
+
+require_once ROOT . 'header.php';
+require_once ROOTINC . 'usercp.inc.php';
 
 if (X_GUEST) {
     redirect('login.php', 0);
@@ -157,7 +159,6 @@ switch ($action) {
     case 'gallery':
         nav('<a href="usercp.php">' . $lang['textusercp'] . '</a>');
         btitle($lang['textusercp']);
-        $type = formVar('type');
         if (!isset($type)) {
             nav($lang['avatargallery']);
             btitle($lang['avatargallery']);
@@ -192,13 +193,12 @@ switch ($action) {
         break;
 }
 
-$userObj = new GaiaBB\UserObj();
+$userObj = new userObj;
 
 switch ($action) {
     case 'quicktheme':
         $newtheme = getInt('newtheme');
-        $db->query("UPDATE " . X_PREFIX . "members SET theme = '$newtheme' WHERE username = '" .
-            $self['username'] . "'");
+        $db->query("UPDATE " . X_PREFIX . "members SET theme = '$newtheme' WHERE username = '" . $self['username'] . "'");
         redirect('usercp.php', 0);
         break;
     case 'notepad':
@@ -216,8 +216,7 @@ switch ($action) {
         }
 
         if (onSubmit('savesubmit')) {
-            $db->query("UPDATE " . X_PREFIX . "members SET notepad = '" .
-                $db->escape(formVar('notes')) . "' WHERE username = '" . $self['username'] . "'");
+            $db->query("UPDATE " . X_PREFIX . "members SET notepad = '" . $db->escape(formVar('notes')) . "' WHERE username = '" . $self['username'] . "'");
             $output = table_msg($lang['notepadsuccess']);
             eval('echo stripslashes("' . template('usercp_home_layout') . '");');
             redirect('usercp.php?action=notepad', 2.5, X_REDIRECT_JS);
@@ -368,9 +367,9 @@ switch ($action) {
 
         if (empty($subadd) && noSubmit('subsubmit')) {
             $userObj->viewSubscriptions();
-        } elseif (!empty($subadd) && noSubmit('subsubmit')) {
+        } else if (!empty($subadd) && noSubmit('subsubmit')) {
             $userObj->submitAddSubscription($subadd);
-        } elseif (empty($subadd) && onSubmit('subsubmit')) {
+        } else if (empty($subadd) && onSubmit('subsubmit')) {
             $userObj->submitManageSubscriptions();
         }
         break;

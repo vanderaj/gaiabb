@@ -1,16 +1,16 @@
 <?php
 /**
  * GaiaBB
- * Copyright (c) 2009-2021 The GaiaBB Project
+ * Copyright (c) 2011-2022 The GaiaBB Group
  * https://github.com/vanderaj/gaiabb
  *
- * Forked from UltimaBB
+ * Based off UltimaBB
  * Copyright (c) 2004 - 2007 The UltimaBB Group
  * (defunct)
  *
- * Forked from XMB
- * Copyright (c) 2001 - 2021 The XMB Development Team
- * https://forums.xmbforum2.com/
+ * Based off XMB
+ * Copyright (c) 2001 - 2004 The XMB Development Team
+ * http://www.xmbforum.com
  *
  * This file is part of GaiaBB
  *
@@ -28,15 +28,20 @@
  *    along with GaiaBB.  If not, see <http://www.gnu.org/licenses/>.
  *
  **/
-// phpcs:disable PSR1.Files.SideEffects
-if (!defined('ROOT')) {
-    define('ROOT', '../');
-}
+
+define('ROOT', '../');
+define('ROOTINC', '../include/');
+define('ROOTCLASS', '../class/');
 
 require_once ROOT . 'header.php';
-require_once ROOT . 'include/admincp.inc.php';
+require_once ROOTINC . 'admincp.inc.php';
 
-loadtpl('cp_header', 'cp_footer', 'cp_message', 'cp_error');
+loadtpl(
+    'cp_header',
+    'cp_footer',
+    'cp_message',
+    'cp_error'
+);
 
 $shadow = shadowfx();
 $shadow2 = shadowfx2();
@@ -62,43 +67,30 @@ function viewPanel()
     global $selHTML, $cheHTML;
     ?>
     <form method="post" action="cp_reguser.php">
-        <input type="hidden" name="csrf_token"
-               value="<?php echo $oToken->createToken() ?>"/>
-        <table cellspacing="0px" cellpadding="0px" border="0px" width="100%"
-               align="center">
-            <tr>
-                <td bgcolor="<?php echo $THEME['bordercolor'] ?>">
-                    <table border="0px" cellspacing="<?php echo $THEME['borderwidth'] ?>"
-                           cellpadding="<?php echo $THEME['tablespace'] ?>" width="100%">
-                        <tr>
-                            <td class="category" colspan="2"><strong><font
-                                            color="<?php echo $THEME['cattext'] ?>"><?php echo $lang['reguser'] ?></font></strong>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td bgcolor="<?php echo $THEME['altbg1'] ?>" class="tablerow"
-                                width="22%"><?php echo $lang['regusername'] ?></td>
-                            <td bgcolor="<?php echo $THEME['altbg2'] ?>" class="tablerow"><input
-                                        type="text" name="regusername" size="25" maxlength="25"/></td>
-                        </tr>
-                        <tr>
-                            <td bgcolor="<?php echo $THEME['altbg1'] ?>" class="tablerow"
-                                width="22%"><?php echo $lang['regemail'] ?></td>
-                            <td bgcolor="<?php echo $THEME['altbg2'] ?>" class="tablerow"><input
-                                        type="text" name="regemail" size="25"/></td>
-                        </tr>
-                        <tr>
-                            <td bgcolor="<?php echo $THEME['altbg2'] ?>" class="tablerow"
-                                colspan="2" align="center"><input type="submit" class="submit"
-                                                                  name="regusersubmit"
-                                                                  value="<?php echo $lang['regsubmit'] ?>"/>&nbsp;<input
-                                        type="reset" value="<?php echo $lang['regclear'] ?>"/></td>
-                        </tr>
-                    </table>
-                </td>
-            </tr>
-        </table>
-        <?php echo $shadow2 ?>
+    <input type="hidden" name="token" value="<?php echo $oToken->get_new_token() ?>" />
+    <table cellspacing="0px" cellpadding="0px" border="0px" width="100%" align="center">
+    <tr>
+    <td bgcolor="<?php echo $THEME['bordercolor'] ?>">
+    <table border="0px" cellspacing="<?php echo $THEME['borderwidth'] ?>" cellpadding="<?php echo $THEME['tablespace'] ?>" width="100%">
+    <tr>
+    <td class="category" colspan="2"><strong><font color="<?php echo $THEME['cattext'] ?>"><?php echo $lang['reguser'] ?></font></strong></td>
+    </tr>
+    <tr>
+    <td bgcolor="<?php echo $THEME['altbg1'] ?>" class="tablerow" width="22%"><?php echo $lang['regusername'] ?></td>
+    <td bgcolor="<?php echo $THEME['altbg2'] ?>" class="tablerow"><input type="text" name="regusername" size="25" maxlength="25" /></td>
+    </tr>
+    <tr>
+    <td bgcolor="<?php echo $THEME['altbg1'] ?>" class="tablerow" width="22%"><?php echo $lang['regemail'] ?></td>
+    <td bgcolor="<?php echo $THEME['altbg2'] ?>" class="tablerow"><input type="text" name="regemail" size="25" /></td>
+    </tr>
+    <tr>
+    <td bgcolor="<?php echo $THEME['altbg2'] ?>" class="tablerow" colspan="2" align="center"><input type="submit" class="submit" name="regusersubmit" value="<?php echo $lang['regsubmit'] ?>" />&nbsp;<input type="reset" value="<?php echo $lang['regclear'] ?>" /></td>
+    </tr>
+    </table>
+    </td>
+    </tr>
+    </table>
+    <?php echo $shadow2 ?>
     </form>
     </td>
     </tr>
@@ -108,9 +100,9 @@ function viewPanel()
 
 function doPanel()
 {
-    global $THEME, $mailSystem, $lang, $shadow2, $oToken, $db, $CONFIG, $onlinetime;
+    global $THEME, $mailsys, $lang, $shadow2, $oToken, $db, $CONFIG, $onlinetime;
 
-    $oToken->assertToken();
+    $oToken->assert_token();
 
     $regusername = $db->escape(formVar('regusername'), -1, true);
     $regemail = $db->escape(formVar('regemail'), -1, true);
@@ -122,10 +114,12 @@ function doPanel()
     }
 
     if (empty($CONFIG['adminemail'])) {
+        // The mail class can handle this error, but it'll describe it vaguely
         error($lang['noadminemail'], false, '', '', 'cp_reguser.php', true, false, true);
     }
 
     if (empty($CONFIG['bbname'])) {
+        // The mail class can handle this error, but it'll describe it vaguely
         error($lang['nobbname'], false, '', '', 'cp_reguser.php', true, false, true);
     }
 
@@ -141,8 +135,8 @@ function doPanel()
     }
 
     $query = $db->query("SELECT username$email1 FROM " . X_PREFIX . "members WHERE username = '$regusername' $email2");
-    $usercheck = $db->numRows($query);
-    $db->freeResult($query);
+    $usercheck = $db->num_rows($query);
+    $db->free_result($query);
 
     if (!($usercheck == 0)) {
         cp_error($lang['regcheck'], false, '', '</td></tr></table>');
@@ -150,7 +144,7 @@ function doPanel()
 
     $fail = $efail = false;
     $query = $db->query("SELECT * FROM " . X_PREFIX . "restricted");
-    while (($restriction = $db->fetchArray($query)) != false) {
+    while ($restriction = $db->fetch_array($query)) {
         if ($restriction['case_sensitivity'] == 1) {
             if ($restriction['partial'] == 1) {
                 if (strpos($regusername, $restriction['name']) !== false) {
@@ -193,7 +187,7 @@ function doPanel()
             }
         }
     }
-    $db->freeResult($query);
+    $db->free_result($query);
 
     if ($efail || $fail) {
         cp_error($lang['regerestricted'], false, '', '</td></tr></table>');
@@ -214,13 +208,12 @@ function doPanel()
 
     $db->query("INSERT INTO " . X_PREFIX . "members (username, password, regdate, email, status, showemail, theme, langfile, timeformat, dateformat, mood, pwdate, tpp, ppp, saveogpm, emailonpm) VALUES ('$regusername', '$newmd5pass', $regdate, '$regemail', 'Member', 'no', '0', 'English', 24, 'dd-mm-yyyy', '', $regdate, 30, 30, 'yes', 'no');");
 
-    $mailSystem->setTo($regemail);
-    $mailSystem->setFrom($CONFIG['adminemail'], $CONFIG['bbname']);
-    $mailSystem->setSubject('[' . $CONFIG['bbname'] . '] ' . $lang['textyourpw']);
-    $mailSystem->setMessage($lang['textyourpwis'] . "\n\n" . $regusername . "\n" . $regpassword);
+    $mailsys->setTo($regemail);
+    $mailsys->setSubject('[' . $CONFIG['bbname'] . '] ' . $lang['textyourpw']);
+    $mailsys->setMessage($lang['textyourpwis'] . "\n\n" . $regusername . "\n" . $regpassword);
 
-    if (!$mailSystem->sendMail()) {
-        $uid = $db->insertId();
+    if (!$mailsys->Send()) {
+        $uid = $db->insert_id();
         if ($uid > 0) {
             $db->query("DELETE FROM " . X_PREFIX . "members WHERE uid = " . $uid);
         }

@@ -1,16 +1,16 @@
 <?php
 /**
  * GaiaBB
- * Copyright (c) 2009-2021 The GaiaBB Project
+ * Copyright (c) 2011-2022 The GaiaBB Group
  * https://github.com/vanderaj/gaiabb
  *
- * Forked from UltimaBB
+ * Based off UltimaBB
  * Copyright (c) 2004 - 2007 The UltimaBB Group
  * (defunct)
  *
- * Forked from XMB
- * Copyright (c) 2001 - 2021 The XMB Development Team
- * https://forums.xmbforum2.com/
+ * Based off XMB
+ * Copyright (c) 2001 - 2004 The XMB Development Team
+ * http://www.xmbforum.com
  *
  * This file is part of GaiaBB
  *
@@ -28,16 +28,21 @@
  *    along with GaiaBB.  If not, see <http://www.gnu.org/licenses/>.
  *
  **/
-// phpcs:disable PSR1.Files.SideEffects
-if (!defined('ROOT')) {
-    define('ROOT', '../');
-}
+
+define('ROOT', '../');
+define('ROOTINC', '../include/');
+define('ROOTCLASS', '../class/');
 
 require_once ROOT . 'header.php';
-require_once ROOT . 'include/admincp.inc.php';
-require_once ROOT . 'helper/formHelper.php';
+require_once ROOTINC . 'admincp.inc.php';
+require_once ROOTINC . 'settings.inc.php';
 
-loadtpl('cp_header', 'cp_footer', 'cp_message', 'cp_error');
+loadtpl(
+    'cp_header',
+    'cp_footer',
+    'cp_message',
+    'cp_error'
+);
 
 $shadow = shadowfx();
 $shadow2 = shadowfx2();
@@ -62,14 +67,14 @@ smcwcache();
 function viewPanel()
 {
     global $THEME, $lang, $shadow2, $oToken, $db, $CONFIG, $selHTML;
-    global $self, $onlinetime, $gbblva;
+    global $self, $onlinetime, $ubblva;
 
     $langfileselect = langSelect();
 
     $themelist = array();
     $themelist[] = '<select name="themenew">';
     $query = $db->query("SELECT themeid, name FROM " . X_PREFIX . "themes WHERE themestatus = 'on' ORDER BY name ASC");
-    while (($themeinfo = $db->fetchArray($query)) != false) {
+    while ($themeinfo = $db->fetch_array($query)) {
         $themeinfo['name'] = stripslashes($themeinfo['name']);
         if ($themeinfo['themeid'] == $CONFIG['theme']) {
             $themelist[] = '<option value="' . $themeinfo['themeid'] . '" selected="selected">' . $themeinfo['name'] . '</option>';
@@ -79,7 +84,7 @@ function viewPanel()
     }
     $themelist[] = '</select>';
     $themelist = implode("\n", $themelist);
-    $db->freeResult($query);
+    $db->free_result($query);
 
     $timezone1 = $timezone2 = $timezone3 = $timezone4 = $timezone5 = $timezone6 = false;
     $timezone7 = $timezone8 = $timezone9 = $timezone10 = $timezone11 = $timezone12 = false;
@@ -215,7 +220,7 @@ function viewPanel()
     }
 
     $bbcimg_statuson = $bbcimg_statusoff = '';
-    GaiaBB\FormHelper::getSettingOnOffHtml('bbcimg_status', $bbcimg_statuson, $bbcimg_statusoff);
+    settingHTML('bbcimg_status', $bbcimg_statuson, $bbcimg_statusoff);
 
     $timeformatlist = array();
     $timeformatlist[] = '<select name="timeformatnew">';
@@ -236,192 +241,86 @@ function viewPanel()
     $CONFIG['bbc_maxht'] = (int) $CONFIG['bbc_maxht'];
     ?>
     <form method="post" action="cp_default.php">
-        <input type="hidden" name="csrf_token"
-               value="<?php echo $oToken->createToken() ?>"/>
-        <table cellspacing="0px" cellpadding="0px" border="0px" width="100%"
-               align="center">
-            <tr>
-                <td bgcolor="<?php echo $THEME['bordercolor'] ?>">
-                    <table border="0px" cellspacing="<?php echo $THEME['borderwidth'] ?>"
-                           cellpadding="<?php echo $THEME['tablespace'] ?>" width="100%">
-                        <tr class="category">
-                            <td colspan="2" class="title"><?php echo $lang['admin_main_settings2'] ?></td>
-                        </tr>
-                        <tr class="tablerow">
-                            <td bgcolor="<?php echo $THEME['altbg1'] ?>"><?php echo $lang['textlanguage'] ?></td>
-                            <td bgcolor="<?php echo $THEME['altbg2'] ?>"><?php echo $langfileselect ?></td>
-                        </tr>
-                        <tr class="tablerow">
-                            <td bgcolor="<?php echo $THEME['altbg1'] ?>"><?php echo $lang['texttheme'] ?></td>
-                            <td bgcolor="<?php echo $THEME['altbg2'] ?>"><?php echo $themelist ?></td>
-                        </tr>
-                        <?php
-                        GaiaBB\FormHelper::formTextBox($lang['textppp'], 'postperpagenew', $CONFIG['postperpage'], 3);
-                        GaiaBB\FormHelper::formTextBox($lang['texttpp'], 'topicperpagenew', $CONFIG['topicperpage'], 3);
-                        GaiaBB\FormHelper::formTextBox($lang['textmpp'], 'memberperpagenew', $CONFIG['memberperpage'], 3);
-                        GaiaBB\FormHelper::formTextBox($lang['customposts'], 'custompostsnew', $CONFIG['customposts'], 3);
-                        GaiaBB\FormHelper::formTextBox($lang['pmposts'], 'pmpostsnew', $CONFIG['pmposts'], 3);
-                        GaiaBB\FormHelper::formTextBox($lang['max_reg_day'], 'max_reg_daynew', $CONFIG['max_reg_day'], 3);
-                        GaiaBB\FormHelper::formTextBox($lang['set_maxsigchars'], 'maxsigcharsnew', $CONFIG['maxsigchars'], 3);
-                        GaiaBB\FormHelper::formTextBox($lang['viewsigminposts'], 'viewsigminpostsnew', $CONFIG['viewsigminposts'], 3);
-                        GaiaBB\FormHelper::formTextBox($lang['attachnumdef'], 'attachnumnew', $attach_num, 2);
-                        GaiaBB\FormHelper::formTextBox($lang['max_attheight'], 'max_attheightnew', $CONFIG['max_attheight'], 3);
-                        GaiaBB\FormHelper::formTextBox($lang['max_attwidth'], 'max_attwidthnew', $CONFIG['max_attwidth'], 3);
-                        GaiaBB\FormHelper::formSelectOnOff($lang['bbcimg_status'], 'bbcimg_statusnew', $bbcimg_statuson, $bbcimg_statusoff);
-                        GaiaBB\FormHelper::formTextBox($lang['bbc_maxht'], 'bbc_maxhtnew', $CONFIG['bbc_maxht'], 3);
-                        GaiaBB\FormHelper::formTextBox($lang['bbc_maxwd'], 'bbc_maxwdnew', $CONFIG['bbc_maxwd'], 3);
-                        ?>
-                        <tr class="tablerow">
-                            <td bgcolor="<?php echo $THEME['altbg1'] ?>"><?php echo $lang['daylightsavings'] ?></td>
-                            <td bgcolor="<?php echo $THEME['altbg2'] ?>"><select
-                                        name="daylightsavings1">
-                                    <option value="3600" <?php echo $daylight1 ?>><?php echo $lang['textyes'] ?></option>
-                                    <option value="0" <?php echo $daylight2 ?>><?php echo $lang['textno'] ?></option>
-                                </select></td>
-                        </tr>
-                        <tr class="tablerow">
-                            <td bgcolor="<?php echo $THEME['altbg1'] ?>"><?php echo $lang['texttimeformat'] ?></td>
-                            <td bgcolor="<?php echo $THEME['altbg2'] ?>"><?php echo $timeformatlist ?></td>
-                        </tr>
-                        <?php
-                        if ($CONFIG['predformat'] == 'on') {
-                            $df = "<tr class=\"tablerow\">\n\t<td bgcolor=\"$THEME[altbg1]\">$lang[dateformat1]</td>\n";
-                        } else {
-                            $df = "<tr class=\"tablerow\">\n\t<td bgcolor=\"$THEME[altbg1]\">$lang[dateformat2]</td>\n";
-                        }
-                        $df = $df . "\t<td bgcolor=\"$THEME[altbg2]\"><select name=\"dateformatnew\">\n";
-                        $querydf = $db->query("SELECT * FROM " . X_PREFIX . "dateformats");
-                        while (($dformats = $db->fetchArray($querydf)) != false) {
-                            if ($CONFIG['predformat'] == 'on') {
-                                $example = gmdate(formatDate($dformats['dateformat']), $gbblva + ($self['timeoffset'] * 3600) + $self['daylightsavings']);
-                            } else {
-                                $example = $dformats['dateformat'];
-                            }
+    <input type="hidden" name="token" value="<?php echo $oToken->get_new_token() ?>" />
+    <table cellspacing="0px" cellpadding="0px" border="0px" width="100%" align="center">
+    <tr>
+    <td bgcolor="<?php echo $THEME['bordercolor'] ?>">
+    <table border="0px" cellspacing="<?php echo $THEME['borderwidth'] ?>" cellpadding="<?php echo $THEME['tablespace'] ?>" width="100%">
+    <tr class="category">
+    <td colspan="2" class="title"><?php echo $lang['admin_main_settings2'] ?></td>
+    </tr>
+    <tr class="tablerow">
+    <td bgcolor="<?php echo $THEME['altbg1'] ?>"><?php echo $lang['textlanguage'] ?></td>
+    <td bgcolor="<?php echo $THEME['altbg2'] ?>"><?php echo $langfileselect ?></td>
+    </tr>
+    <tr class="tablerow">
+    <td bgcolor="<?php echo $THEME['altbg1'] ?>"><?php echo $lang['texttheme'] ?></td>
+    <td bgcolor="<?php echo $THEME['altbg2'] ?>"><?php echo $themelist ?></td>
+    </tr>
+    <?php
+printsetting2($lang['textppp'], 'postperpagenew', $CONFIG['postperpage'], 3);
+    printsetting2($lang['texttpp'], 'topicperpagenew', $CONFIG['topicperpage'], 3);
+    printsetting2($lang['textmpp'], 'memberperpagenew', $CONFIG['memberperpage'], 3);
+    printsetting2($lang['customposts'], 'custompostsnew', $CONFIG['customposts'], 3);
+    printsetting2($lang['pmposts'], 'pmpostsnew', $CONFIG['pmposts'], 3);
+    printsetting2($lang['max_reg_day'], 'max_reg_daynew', $CONFIG['max_reg_day'], 3);
+    printsetting2($lang['set_maxsigchars'], 'maxsigcharsnew', $CONFIG['maxsigchars'], 3);
+    printsetting2($lang['viewsigminposts'], 'viewsigminpostsnew', $CONFIG['viewsigminposts'], 3);
+    printsetting2($lang['attachnumdef'], 'attachnumnew', $attach_num, 2);
+    printsetting2($lang['max_attheight'], 'max_attheightnew', $CONFIG['max_attheight'], 3);
+    printsetting2($lang['max_attwidth'], 'max_attwidthnew', $CONFIG['max_attwidth'], 3);
+    printsetting1($lang['bbcimg_status'], 'bbcimg_statusnew', $bbcimg_statuson, $bbcimg_statusoff);
+    printsetting2($lang['bbc_maxht'], 'bbc_maxhtnew', $CONFIG['bbc_maxht'], 3);
+    printsetting2($lang['bbc_maxwd'], 'bbc_maxwdnew', $CONFIG['bbc_maxwd'], 3);
+    ?>
+    <tr class="tablerow">
+    <td bgcolor="<?php echo $THEME['altbg1'] ?>"><?php echo $lang['daylightsavings'] ?></td>
+    <td bgcolor="<?php echo $THEME['altbg2'] ?>">
+    <select name="daylightsavings1">
+    <option value="3600" <?php echo $daylight1 ?>><?php echo $lang['textyes'] ?></option>
+    <option value="0" <?php echo $daylight2 ?>><?php echo $lang['textno'] ?></option>
+    </select>
+    </td>
+    </tr>
+    <tr class="tablerow">
+    <td bgcolor="<?php echo $THEME['altbg1'] ?>"><?php echo $lang['texttimeformat'] ?></td>
+    <td bgcolor="<?php echo $THEME['altbg2'] ?>"><?php echo $timeformatlist ?></td>
+    </tr>
+    <?php
+if ($CONFIG['predformat'] == 'on') {
+        $df = "<tr class=\"tablerow\">\n\t<td bgcolor=\"$THEME[altbg1]\">$lang[dateformat1]</td>\n";
+    } else {
+        $df = "<tr class=\"tablerow\">\n\t<td bgcolor=\"$THEME[altbg1]\">$lang[dateformat2]</td>\n";
+    }
+    $df = $df . "\t<td bgcolor=\"$THEME[altbg2]\"><select name=\"dateformatnew\">\n";
+    $querydf = $db->query("SELECT * FROM " . X_PREFIX . "dateformats");
+    while ($dformats = $db->fetch_array($querydf)) {
+        if ($CONFIG['predformat'] == 'on') {
+            $example = gmdate(formatDate($dformats['dateformat']), $ubblva + ($self['timeoffset'] * 3600) + $self['daylightsavings']);
+        } else {
+            $example = $dformats['dateformat'];
+        }
 
-                            if ($CONFIG['dateformat'] == $dformats['dateformat']) {
-                                $df = $df . "\t<option value=\"$dformats[dateformat]\" selected=\"selected\">$example</option>\n";
-                            } else {
-                                $df = $df . "\t<option value=\"$dformats[dateformat]\">$example</option>\n";
-                            }
-                        }
-                        $df = $df . "\t</select>\n\t</td>\n</tr>";
-                        echo $df;
-                        $db->freeResult($querydf);
+        if ($CONFIG['dateformat'] == $dformats['dateformat']) {
+            $df = $df . "\t<option value=\"$dformats[dateformat]\" selected=\"selected\">$example</option>\n";
+        } else {
+            $df = $df . "\t<option value=\"$dformats[dateformat]\">$example</option>\n";
+        }
+    }
+    $df = $df . "\t</select>\n\t</td>\n</tr>";
+    echo $df;
+    $db->free_result($querydf);
 
-                        GaiaBB\FormHelper::formSelectList($lang['textoffset'], 'new_def_tz', array(
-                            $lang['timezone1'],
-                            $lang['timezone2'],
-                            $lang['timezone3'],
-                            $lang['timezone4'],
-                            $lang['timezone5'],
-                            $lang['timezone6'],
-                            $lang['timezone7'],
-                            $lang['timezone8'],
-                            $lang['timezone9'],
-                            $lang['timezone10'],
-                            $lang['timezone11'],
-                            $lang['timezone12'],
-                            $lang['timezone13'],
-                            $lang['timezone14'],
-                            $lang['timezone15'],
-                            $lang['timezone16'],
-                            $lang['timezone17'],
-                            $lang['timezone18'],
-                            $lang['timezone19'],
-                            $lang['timezone20'],
-                            $lang['timezone21'],
-                            $lang['timezone22'],
-                            $lang['timezone23'],
-                            $lang['timezone24'],
-                            $lang['timezone25'],
-                            $lang['timezone26'],
-                            $lang['timezone27'],
-                            $lang['timezone28'],
-                            $lang['timezone29'],
-                            $lang['timezone30'],
-                            $lang['timezone31'],
-                            $lang['timezone32'],
-                            $lang['timezone33'],
-                        ), array(
-                            '-12',
-                            '-11',
-                            '-10',
-                            '-9',
-                            '-8',
-                            '-7',
-                            '-6',
-                            '-5',
-                            '-4',
-                            '-3.5',
-                            '-3',
-                            '-2',
-                            '-1',
-                            '0',
-                            '1',
-                            '2',
-                            '3',
-                            '3.5',
-                            '4',
-                            '4.5',
-                            '5',
-                            '5.5',
-                            '5.75',
-                            '6',
-                            '6.5',
-                            '7',
-                            '8',
-                            '9',
-                            '9.5',
-                            '10',
-                            '11',
-                            '12',
-                            '13',
-                        ), array(
-                            $timezone1,
-                            $timezone2,
-                            $timezone3,
-                            $timezone4,
-                            $timezone5,
-                            $timezone6,
-                            $timezone7,
-                            $timezone8,
-                            $timezone9,
-                            $timezone10,
-                            $timezone11,
-                            $timezone12,
-                            $timezone13,
-                            $timezone14,
-                            $timezone15,
-                            $timezone16,
-                            $timezone17,
-                            $timezone18,
-                            $timezone19,
-                            $timezone20,
-                            $timezone21,
-                            $timezone22,
-                            $timezone23,
-                            $timezone24,
-                            $timezone25,
-                            $timezone26,
-                            $timezone27,
-                            $timezone28,
-                            $timezone29,
-                            $timezone30,
-                            $timezone31,
-                            $timezone32,
-                            $timezone33,
-                        ), false);
-                        ?>
-                        <tr class="ctrtablerow" bgcolor="<?php echo $THEME['altbg2'] ?>">
-                            <td colspan="2"><input class="submit" type="submit"
-                                                   name="defaultsubmit"
-                                                   value="<?php echo $lang['textsubmitchanges'] ?>"/></td>
-                        </tr>
-                    </table>
-                </td>
-            </tr>
-        </table>
-        <?php echo $shadow2 ?>
+    printsetting3($lang['textoffset'], 'new_def_tz', array($lang['timezone1'], $lang['timezone2'], $lang['timezone3'], $lang['timezone4'], $lang['timezone5'], $lang['timezone6'], $lang['timezone7'], $lang['timezone8'], $lang['timezone9'], $lang['timezone10'], $lang['timezone11'], $lang['timezone12'], $lang['timezone13'], $lang['timezone14'], $lang['timezone15'], $lang['timezone16'], $lang['timezone17'], $lang['timezone18'], $lang['timezone19'], $lang['timezone20'], $lang['timezone21'], $lang['timezone22'], $lang['timezone23'], $lang['timezone24'], $lang['timezone25'], $lang['timezone26'], $lang['timezone27'], $lang['timezone28'], $lang['timezone29'], $lang['timezone30'], $lang['timezone31'], $lang['timezone32'], $lang['timezone33']), array('-12', '-11', '-10', '-9', '-8', '-7', '-6', '-5', '-4', '-3.5', '-3', '-2', '-1', '0', '1', '2', '3', '3.5', '4', '4.5', '5', '5.5', '5.75', '6', '6.5', '7', '8', '9', '9.5', '10', '11', '12', '13'), array($timezone1, $timezone2, $timezone3, $timezone4, $timezone5, $timezone6, $timezone7, $timezone8, $timezone9, $timezone10, $timezone11, $timezone12, $timezone13, $timezone14, $timezone15, $timezone16, $timezone17, $timezone18, $timezone19, $timezone20, $timezone21, $timezone22, $timezone23, $timezone24, $timezone25, $timezone26, $timezone27, $timezone28, $timezone29, $timezone30, $timezone31, $timezone32, $timezone33), false);
+    ?>
+    <tr class="ctrtablerow" bgcolor="<?php echo $THEME['altbg2'] ?>">
+    <td colspan="2"><input class="submit" type="submit" name="defaultsubmit" value="<?php echo $lang['textsubmitchanges'] ?>" /></td>
+    </tr>
+    </table>
+    </td>
+    </tr>
+    </table>
+    <?php echo $shadow2 ?>
     </form>
     </td>
     </tr>
@@ -434,7 +333,7 @@ function doPanel()
     global $shadow2, $lang, $db, $THEME;
     global $oToken;
 
-    $oToken->assertToken();
+    $oToken->assert_token();
 
     $max_attheightnew = formInt('max_attheightnew');
     $max_attwidthnew = formInt('max_attwidthnew');

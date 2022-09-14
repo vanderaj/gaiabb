@@ -1,16 +1,16 @@
 <?php
 /**
  * GaiaBB
- * Copyright (c) 2009-2021 The GaiaBB Project
+ * Copyright (c) 2011-2022 The GaiaBB Group
  * https://github.com/vanderaj/gaiabb
  *
- * Forked from UltimaBB
+ * Based off UltimaBB
  * Copyright (c) 2004 - 2007 The UltimaBB Group
  * (defunct)
  *
- * Forked from XMB
- * Copyright (c) 2001 - 2021 The XMB Development Team
- * https://forums.xmbforum2.com/
+ * Based off XMB
+ * Copyright (c) 2001 - 2004 The XMB Development Team
+ * http://www.xmbforum.com
  *
  * This file is part of GaiaBB
  *
@@ -28,15 +28,24 @@
  *    along with GaiaBB.  If not, see <http://www.gnu.org/licenses/>.
  *
  **/
-// phpcs:disable PSR1.Files.SideEffects
-if (!defined('ROOT')) {
-    define('ROOT', '../');
-}
+
+define('ROOT', '../');
+define('ROOTINC', '../include/');
+define('ROOTCLASS', '../class/');
 
 require_once ROOT . 'header.php';
-require_once ROOT . 'include/admincp.inc.php';
+require_once ROOTINC . 'admincp.inc.php';
+require_once ROOTCLASS . 'member.class.php';
 
-loadtpl('cp_header', 'cp_footer', 'cp_message', 'cp_error', 'popup_header', 'popup_footer', 'memberlist_multipage');
+loadtpl(
+    'cp_header',
+    'cp_footer',
+    'cp_message',
+    'cp_error',
+    'popup_header',
+    'popup_footer',
+    'memberlist_multipage'
+);
 
 $shadow = shadowfx();
 $shadow2 = shadowfx2();
@@ -60,15 +69,7 @@ smcwcache();
 
 function validateSpecialRank($inRank)
 {
-    $specialRanks = array(
-        "0",
-        "Member",
-        "Moderator",
-        "Super Moderator",
-        "Administrator",
-        "Super Administrator",
-        "Banned",
-    );
+    $specialRanks = array("0", "Member", "Moderator", "Super Moderator", "Administrator", "Super Administrator", "Banned");
     if (!in_array($inRank, $specialRanks)) {
         // Tamper attack, stop now
         return false;
@@ -83,52 +84,44 @@ function viewMemberCPForm()
     global $oToken;
     ?>
     <form method="post" action="cp_members.php?action=search">
-        <input type="hidden" name="csrf_token"
-               value="<?php echo $oToken->createToken() ?>"/>
-        <table cellspacing="0px" cellpadding="0px" border="0px" width="100%"
-               align="center">
-            <tr>
-                <td bgcolor="<?php echo $THEME['bordercolor'] ?>">
-                    <table border="0px" cellspacing="<?php echo $THEME['borderwidth'] ?>"
-                           cellpadding="<?php echo $THEME['tablespace'] ?>" width="100%">
-                        <tr class="category">
-                            <td class="title" colspan="2"><?php echo $lang['textmembers'] ?></td>
-                        </tr>
-                        <tr class="tablerow">
-                            <td bgcolor="<?php echo $THEME['altbg1'] ?>"
-                                width="22%"><?php echo $lang['textsrchusr'] ?></td>
-                            <td bgcolor="<?php echo $THEME['altbg2'] ?>"><input type="text"
-                                                                                name="srchmem" value="" size="32"/></td>
-                        </tr class="tablerow">
-                        <tr>
-                            <td bgcolor="<?php echo $THEME['altbg1'] ?>" class="tablerow"
-                                width="22%"><?php echo $lang['textsrchemail'] ?></td>
-                            <td bgcolor="<?php echo $THEME['altbg2'] ?>" class="tablerow"><input
-                                        type="text" name="srchemail" size="32"/></td>
-                        </tr>
-                        <tr class="tablerow">
-                            <td bgcolor="<?php echo $THEME['altbg1'] ?>"
-                                width="22%"><?php echo $lang['textwithstatus'] ?></td>
-                            <td bgcolor="<?php echo $THEME['altbg2'] ?>"><select
-                                        name="srchrank">
-                                    <option value="0"><?php echo $lang['anystatus'] ?></option>
-                                    <option value="Super Administrator"><?php echo $lang['superadmin'] ?></option>
-                                    <option value="Administrator"><?php echo $lang['textadmin'] ?></option>
-                                    <option value="Super Moderator"><?php echo $lang['textsupermod'] ?></option>
-                                    <option value="Moderator"><?php echo $lang['textmod'] ?></option>
-                                    <option value="Member"><?php echo $lang['textmem'] ?></option>
-                                    <option value="Banned"><?php echo $lang['textbanned'] ?></option>
-                                </select></td>
-                        </tr>
-                        <tr bgcolor="<?php echo $THEME['altbg2'] ?>" class="ctrtablerow">
-                            <td colspan="2"><input type="submit" class="submit"
-                                                   value="<?php echo $lang['textgo'] ?>"/></td>
-                        </tr>
-                    </table>
-                </td>
-            </tr>
-        </table>
-        <?php echo $shadow2 ?>
+    <input type="hidden" name="token" value="<?php echo $oToken->get_new_token() ?>" />
+    <table cellspacing="0px" cellpadding="0px" border="0px" width="100%" align="center">
+    <tr>
+    <td bgcolor="<?php echo $THEME['bordercolor'] ?>">
+    <table border="0px" cellspacing="<?php echo $THEME['borderwidth'] ?>" cellpadding="<?php echo $THEME['tablespace'] ?>" width="100%">
+    <tr class="category">
+    <td class="title" colspan="2"><?php echo $lang['textmembers'] ?></td>
+    </tr>
+    <tr class="tablerow">
+    <td bgcolor="<?php echo $THEME['altbg1'] ?>" width="22%"><?php echo $lang['textsrchusr'] ?></td>
+    <td bgcolor="<?php echo $THEME['altbg2'] ?>"><input type="text" name="srchmem" value=""  size="32" /></td>
+    </tr class="tablerow">
+    <tr>
+    <td bgcolor="<?php echo $THEME['altbg1'] ?>" class="tablerow" width="22%"><?php echo $lang['textsrchemail'] ?></td>
+    <td bgcolor="<?php echo $THEME['altbg2'] ?>" class="tablerow"><input type="text" name="srchemail" size="32" /></td>
+    </tr>
+    <tr class="tablerow">
+    <td bgcolor="<?php echo $THEME['altbg1'] ?>" width="22%"><?php echo $lang['textwithstatus'] ?></td>
+    <td bgcolor="<?php echo $THEME['altbg2'] ?>">
+    <select name="srchrank">
+    <option value="0"><?php echo $lang['anystatus'] ?></option>
+    <option value="Super Administrator"><?php echo $lang['superadmin'] ?></option>
+    <option value="Administrator"><?php echo $lang['textadmin'] ?></option>
+    <option value="Super Moderator"><?php echo $lang['textsupermod'] ?></option>
+    <option value="Moderator"><?php echo $lang['textmod'] ?></option>
+    <option value="Member"><?php echo $lang['textmem'] ?></option>
+    <option value="Banned"><?php echo $lang['textbanned'] ?></option>
+    </select>
+    </td>
+    </tr>
+    <tr bgcolor="<?php echo $THEME['altbg2'] ?>" class="ctrtablerow">
+    <td colspan="2"><input type="submit" class="submit" value="<?php echo $lang['textgo'] ?>" /></td>
+    </tr>
+    </table>
+    </td>
+    </tr>
+    </table>
+    <?php echo $shadow2 ?>
     </form>
     </td>
     </tr>
@@ -170,8 +163,8 @@ function viewMembers()
     $sql .= ") ";
 
     $q1 = $db->query("SELECT uid " . $sql);
-    $num = $db->numRows($q1);
-    $db->freeResult($q1);
+    $num = $db->num_rows($q1);
+    $db->free_result($q1);
 
     $mpurl = 'cp_members.php?action=search' . $srchmemtxt . $srchemailtxt . $srchranktxt;
 
@@ -181,184 +174,168 @@ function viewMembers()
     }
 
     $q1 = $db->query("SELECT * " . $sql . " ORDER BY username LIMIT $start, $CONFIG[memberperpage]");
-    $rowsFound = $db->numRows($q1);
+    $rowsFound = $db->num_rows($q1);
     ?>
     <form method="post" action="cp_members.php?action=members">
-        <input type="hidden" name="csrf_token"
-               value="<?php echo $oToken->createToken() ?>"/>
-        <table cellspacing="0px" cellpadding="0px" border="0px" width="100%"
-               align="center">
-            <tr>
-                <td bgcolor="<?php echo $THEME['bordercolor'] ?>">
-                    <table border="0px" cellspacing="<?php echo $THEME['borderwidth'] ?>"
-                           cellpadding="<?php echo $THEME['tablespace'] ?>" width="100%">
-                        <tr class="category">
-                            <td align="center" class="title"><?php echo $lang['textdeleteques'] ?></td>
-                            <td align="center" class="title"><?php echo $lang['textusername'] ?></td>
-                            <td align="center" class="title"><?php echo $lang['textnewpassword'] ?></td>
-                            <td align="center" class="title"><?php echo $lang['textposts'] ?></td>
-                            <td align="center" class="title"><?php echo $lang['textthreads'] ?></td>
-                            <td align="center" class="title"><?php echo $lang['reagreerules'] ?></td>
-                            <td align="center" class="title"><?php echo $lang['textstatus'] ?></td>
-                            <td align="center" class="title"><?php echo $lang['textcusstatus'] ?></td>
-                            <td align="center" class="title"><?php echo $lang['textbanfrom'] ?></td>
-                        </tr>
-                        <tr bgcolor="<?php echo $THEME['altbg2'] ?>" class="ctrtablerow">
-                            <td colspan="9"><?php echo $multipage ?></td>
-                        </tr>
-                        <?php
-                        while (($member = $db->fetchArray($q1)) != false) {
-                            $readrulesyes = $readrulesno = '';
-                            switch ($member['readrules']) {
-                                case 'yes':
-                                    $readrulesyes = $selHTML;
-                                    break;
-                                default:
-                                    $readrulesno = $selHTML;
-                                    break;
-                            }
+    <input type="hidden" name="token" value="<?php echo $oToken->get_new_token() ?>" />
+    <table cellspacing="0px" cellpadding="0px" border="0px" width="100%" align="center">
+    <tr>
+    <td bgcolor="<?php echo $THEME['bordercolor'] ?>">
+    <table border="0px" cellspacing="<?php echo $THEME['borderwidth'] ?>" cellpadding="<?php echo $THEME['tablespace'] ?>" width="100%">
+    <tr class="category">
+    <td align="center" class="title"><?php echo $lang['textdeleteques'] ?></td>
+    <td align="center" class="title"><?php echo $lang['textusername'] ?></td>
+    <td align="center" class="title"><?php echo $lang['textnewpassword'] ?></td>
+    <td align="center" class="title"><?php echo $lang['textposts'] ?></td>
+    <td align="center" class="title"><?php echo $lang['textthreads'] ?></td>
+    <td align="center" class="title"><?php echo $lang['reagreerules'] ?></td>
+    <td align="center" class="title"><?php echo $lang['textstatus'] ?></td>
+    <td align="center" class="title"><?php echo $lang['textcusstatus'] ?></td>
+    <td align="center" class="title"><?php echo $lang['textbanfrom'] ?></td>
+    </tr>
+    <tr bgcolor="<?php echo $THEME['altbg2'] ?>" class="ctrtablerow">
+    <td colspan="9"><?php echo $multipage ?></td>
+    </tr>
+    <?php
+while ($member = $db->fetch_array($q1)) {
+        $readrulesyes = $readrulesno = '';
+        switch ($member['readrules']) {
+            case 'yes':
+                $readrulesyes = $selHTML;
+                break;
+            default:
+                $readrulesno = $selHTML;
+                break;
+        }
 
-                            $staff_disable = '';
-                            switch ($member['status']) {
-                                case 'Super Administrator':
-                                    $staff_disable = 'disabled="disabled"';
-                                    break;
-                                case 'Administrator':
-                                    $staff_disable = 'disabled="disabled"';
-                                    break;
-                                case 'Super Moderator':
-                                    $staff_disable = 'disabled="disabled"';
-                                    break;
-                                case 'Moderator':
-                                    $staff_disable = 'disabled="disabled"';
-                                    break;
-                                default:
-                                    $staff_disable = '';
-                                    break;
-                            }
+        $staff_disable = '';
+        switch ($member['status']) {
+            case 'Super Administrator':
+                $staff_disable = 'disabled="disabled"';
+                break;
+            case 'Administrator':
+                $staff_disable = 'disabled="disabled"';
+                break;
+            case 'Super Moderator':
+                $staff_disable = 'disabled="disabled"';
+                break;
+            case 'Moderator':
+                $staff_disable = 'disabled="disabled"';
+                break;
+            default:
+                $staff_disable = '';
+                break;
+        }
 
-                            $sadminselect = $adminselect = $smodselect = '';
-                            $modselect = $memselect = $banselect = '';
-                            switch ($member['status']) {
-                                case 'Super Administrator':
-                                    $sadminselect = $selHTML;
-                                    break;
-                                case 'Administrator':
-                                    $adminselect = $selHTML;
-                                    break;
-                                case 'Super Moderator':
-                                    $smodselect = $selHTML;
-                                    break;
-                                case 'Moderator':
-                                    $modselect = $selHTML;
-                                    break;
-                                case 'Member':
-                                    $memselect = $selHTML;
-                                    break;
-                                case 'Banned':
-                                    $banselect = $selHTML;
-                                    break;
-                                default:
-                                    $memselect = $selHTML;
-                                    break;
-                            }
+        $sadminselect = $adminselect = $smodselect = '';
+        $modselect = $memselect = $banselect = '';
+        switch ($member['status']) {
+            case 'Super Administrator':
+                $sadminselect = $selHTML;
+                break;
+            case 'Administrator':
+                $adminselect = $selHTML;
+                break;
+            case 'Super Moderator':
+                $smodselect = $selHTML;
+                break;
+            case 'Moderator':
+                $modselect = $selHTML;
+                break;
+            case 'Member':
+                $memselect = $selHTML;
+                break;
+            case 'Banned':
+                $banselect = $selHTML;
+                break;
+            default:
+                $memselect = $selHTML;
+                break;
+        }
 
-                            $pmban = $postban = $bothban = $noban = '';
-                            switch ($member['ban']) {
-                                case 'pm':
-                                    $pmban = $selHTML;
-                                    break;
-                                case 'posts':
-                                    $postban = $selHTML;
-                                    break;
-                                case 'both':
-                                    $bothban = $selHTML;
-                                    break;
-                                default:
-                                    $noban = $selHTML;
-                                    break;
-                            }
-                            ?>
-                            <tr bgcolor="<?php echo $THEME['altbg2'] ?>" class="tablerow">
-                                <td align="center"><input type="checkbox"
-                                                          name="delete<?php echo $member['uid'] ?>"
-                                                          value="<?php echo $member['uid'] ?>" <?php echo $staff_disable ?> />
-                                </td>
-                                <td><a
-                                            href="../viewprofile.php?memberid=<?php echo intval($member['uid']) ?>"><?php echo $member['username'] ?></a>
-                                    <br/>
-                                    <a
-                                            href="cp_members.php?action=deleteposts&amp;member=<?php echo $member['uid'] ?>"><strong><?php echo $lang['cp_deleteposts'] ?></strong></a>
-                                </td>
-                                <td align="center"><input type="text" size="12"
-                                                          name="pw<?php echo $member['uid'] ?>"/></td>
-                                <td align="center"><input type="text" size="3"
-                                                          name="postnum<?php echo $member['uid'] ?>"
-                                                          value="<?php echo $member['postnum'] ?>"/></td>
-                                <td align="center"><input type="text" size="3"
-                                                          name="threadnum<?php echo $member['uid'] ?>"
-                                                          value="<?php echo $member['threadnum'] ?>"/></td>
-                                <td align="center"><select
-                                            name="readrules<?php echo $member['uid'] ?>">
-                                        <option value="yes" <?php echo $readrulesyes ?>
-                                            <?php echo $staff_disable ?>><?php echo $lang['textyes'] ?></option>
-                                        <option value="no" <?php echo $readrulesno ?>
-                                            <?php echo $staff_disable ?>><?php echo $lang['textno'] ?></option>
-                                    </select></td>
-                                <td align="center"><select
-                                            name="status<?php echo $member['uid'] ?>">
-                                        <option value="Super Administrator" <?php echo $sadminselect ?>><?php echo $lang['superadmin'] ?></option>
-                                        <option value="Administrator" <?php echo $adminselect ?>><?php echo $lang['textadmin'] ?></option>
-                                        <option value="Super Moderator" <?php echo $smodselect ?>><?php echo $lang['textsupermod'] ?></option>
-                                        <option value="Moderator" <?php echo $modselect ?>><?php echo $lang['textmod'] ?></option>
-                                        <option value="Member" <?php echo $memselect ?>><?php echo $lang['textmem'] ?></option>
-                                        <option value="Banned" <?php echo $banselect ?>><?php echo $lang['textbanned'] ?></option>
-                                    </select></td>
-                                <td align="center"><input type="text" size="16"
-                                                          name="cusstatus<?php echo $member['uid'] ?>"
-                                                          value="<?php echo htmlspecialchars(stripslashes($member['customstatus'])) ?>"/>
-                                </td>
-                                <td align="center"><select
-                                            name="banstatus<?php echo $member['uid'] ?>">
-                                        <option value="" <?php echo $noban ?>><?php echo $lang['noban'] ?></option>
-                                        <option value="pm" <?php echo $pmban ?>><?php echo $lang['banpm'] ?></option>
-                                        <option value="posts" <?php echo $postban ?>><?php echo $lang['banpost'] ?></option>
-                                        <option value="both" <?php echo $bothban ?>><?php echo $lang['banboth'] ?></option>
-                                    </select></td>
-                            </tr>
-                            <?php
-                            $readrulesyes = $readrulesno = $staff_disable = '';
-                            $sadminselect = $adminselect = $smodselect = '';
-                            $modselect = $memselect = $banselect = '';
-                            $pmban = $postban = $bothban = $noban = '';
-                        }
-                        $db->freeResult($q1);
-                        if ($rowsFound < 1) {
-                            ?>
-                            <tr bgcolor="<?php echo $THEME['altbg1'] ?>" class="ctrtablerow">
-                                <td colspan="9"><?php echo $lang['nouserfound'] ?></td>
-                            </tr>
-                            <?php
-                        }
-                        ?>
-                        <tr bgcolor="<?php echo $THEME['altbg2'] ?>" class="ctrtablerow">
-                            <td colspan="9"><?php echo $multipage ?></td>
-                        </tr>
-                        <tr bgcolor="<?php echo $THEME['altbg2'] ?>" class="ctrtablerow">
-                            <td colspan="9"><input type="submit" class="submit"
-                                                   name="membersubmit"
-                                                   value="<?php echo $lang['textsubmitchanges'] ?>"/> <input
-                                        type="hidden" name="srchmem" value="<?php echo $srchmem ?>"/> <input
-                                        type="hidden" name="srchrank" value="<?php echo $srchrank ?>"/> <input
-                                        type="hidden" name="page" value="<?php echo $page ?>"/> <input
-                                        type="hidden" name="srchemail" value="<?php echo $srchemail ?>"/>
-                            </td>
-                        </tr>
-                    </table>
-                </td>
-            </tr>
-        </table>
-        <?php echo $shadow2 ?>
+        $pmban = $postban = $bothban = $noban = '';
+        switch ($member['ban']) {
+            case 'pm':
+                $pmban = $selHTML;
+                break;
+            case 'posts':
+                $postban = $selHTML;
+                break;
+            case 'both':
+                $bothban = $selHTML;
+                break;
+            default:
+                $noban = $selHTML;
+                break;
+        }
+        ?>
+        <tr bgcolor="<?php echo $THEME['altbg2'] ?>" class="tablerow">
+        <td align="center"><input type="checkbox" name="delete<?php echo $member['uid'] ?>" value="<?php echo $member['uid'] ?>" <?php echo $staff_disable ?> /></td>
+        <td>
+        <a href="../viewprofile.php?memberid=<?php echo intval($member['uid']) ?>"><?php echo $member['username'] ?></a>
+        <br /><a href="cp_members.php?action=deleteposts&amp;member=<?php echo $member['uid'] ?>"><strong><?php echo $lang['cp_deleteposts'] ?></strong></a>
+        </td>
+        <td align="center"><input type="text" size="12" name="pw<?php echo $member['uid'] ?>" /></td>
+        <td align="center"><input type="text" size="3" name="postnum<?php echo $member['uid'] ?>" value="<?php echo $member['postnum'] ?>" /></td>
+        <td align="center"><input type="text" size="3" name="threadnum<?php echo $member['uid'] ?>" value="<?php echo $member['threadnum'] ?>" /></td>
+        <td align="center">
+        <select name="readrules<?php echo $member['uid'] ?>">
+        <option value="yes" <?php echo $readrulesyes ?> <?php echo $staff_disable ?>><?php echo $lang['textyes'] ?></option>
+        <option value="no" <?php echo $readrulesno ?> <?php echo $staff_disable ?>><?php echo $lang['textno'] ?></option>
+        </select>
+        </td>
+        <td align="center">
+        <select name="status<?php echo $member['uid'] ?>">
+        <option value="Super Administrator" <?php echo $sadminselect ?>><?php echo $lang['superadmin'] ?></option>
+        <option value="Administrator" <?php echo $adminselect ?>><?php echo $lang['textadmin'] ?></option>
+        <option value="Super Moderator" <?php echo $smodselect ?>><?php echo $lang['textsupermod'] ?></option>
+        <option value="Moderator" <?php echo $modselect ?>><?php echo $lang['textmod'] ?></option>
+        <option value="Member" <?php echo $memselect ?>><?php echo $lang['textmem'] ?></option>
+        <option value="Banned" <?php echo $banselect ?>><?php echo $lang['textbanned'] ?></option>
+        </select>
+        </td>
+        <td align="center"><input type="text" size="16" name="cusstatus<?php echo $member['uid'] ?>" value="<?php echo htmlspecialchars(stripslashes($member['customstatus'])) ?>" /></td>
+        <td align="center">
+        <select name="banstatus<?php echo $member['uid'] ?>">
+        <option value="" <?php echo $noban ?>><?php echo $lang['noban'] ?></option>
+        <option value="pm" <?php echo $pmban ?>><?php echo $lang['banpm'] ?></option>
+        <option value="posts" <?php echo $postban ?>><?php echo $lang['banpost'] ?></option>
+        <option value="both" <?php echo $bothban ?>><?php echo $lang['banboth'] ?></option>
+        </select>
+        </td>
+        </tr>
+        <?php
+$readrulesyes = $readrulesno = $staff_disable = '';
+        $sadminselect = $adminselect = $smodselect = '';
+        $modselect = $memselect = $banselect = '';
+        $pmban = $postban = $bothban = $noban = '';
+    }
+    $db->free_result($q1);
+    if ($rowsFound < 1) {
+        ?>
+        <tr bgcolor="<?php echo $THEME['altbg1'] ?>" class="ctrtablerow">
+        <td colspan="9"><?php echo $lang['nouserfound'] ?></td>
+        </tr>
+        <?php
+}
+    ?>
+    <tr bgcolor="<?php echo $THEME['altbg2'] ?>" class="ctrtablerow">
+    <td colspan="9"><?php echo $multipage ?></td>
+    </tr>
+    <tr bgcolor="<?php echo $THEME['altbg2'] ?>" class="ctrtablerow">
+    <td colspan="9">
+    <input type="submit" class="submit" name="membersubmit" value="<?php echo $lang['textsubmitchanges'] ?>" />
+    <input type="hidden" name="srchmem" value="<?php echo $srchmem ?>" />
+    <input type="hidden" name="srchrank" value="<?php echo $srchrank ?>" />
+    <input type="hidden" name="page" value="<?php echo $page ?>" />
+    <input type="hidden" name="srchemail" value="<?php echo $srchemail ?>" />
+    </td>
+    </tr>
+    </table>
+    </td>
+    </tr>
+    </table>
+    <?php echo $shadow2 ?>
     </form>
     </td>
     </tr>
@@ -375,7 +352,7 @@ function processMembers()
 
     $query = $db->query("SELECT MIN(uid) FROM " . X_PREFIX . "members WHERE status = 'Super Administrator'");
     $sa_uid = $db->result($query, 0);
-    $db->freeResult($query);
+    $db->free_result($query);
 
     $start = ($page - 1) * $CONFIG['memberperpage'];
 
@@ -400,7 +377,7 @@ function processMembers()
     }
 
     $q2 = $db->query($sql . " ORDER BY username LIMIT $start, $CONFIG[memberperpage]");
-    while (($mem = $db->fetchArray($q2)) != false) {
+    while ($mem = $db->fetch_array($q2)) {
         $to['status'] = formVar("status" . $mem['uid']);
         if ($to['status'] == '') {
             $to['status'] = 'Member';
@@ -415,7 +392,7 @@ function processMembers()
         $delete = formVar('delete' . $mem['uid']);
         $readrules = formVar('readrules' . $mem['uid']);
 
-        // print_r($delete);
+        //print_r($delete);
 
         if ($pw != '') {
             $newpw = md5($pw);
@@ -440,13 +417,13 @@ function processMembers()
             $un = $db->result($db->query("SELECT username FROM " . X_PREFIX . "members WHERE uid = '$delete'"), 0);
             $db->query("DELETE FROM " . X_PREFIX . "members WHERE uid = '$delete'");
             $queryr = $db->query("SELECT t.tid as ttid, count(p.pid) as postcount FROM " . X_PREFIX . "threads t LEFT JOIN " . X_PREFIX . "posts p ON p.tid = t.tid WHERE t.author = '$un' GROUP BY t.tid");
-            while (($row = $db->fetchArray($queryr)) != false) {
+            while ($row = $db->fetch_array($queryr)) {
                 $q2 = $db->query("SELECT count(pid) FROM " . X_PREFIX . "posts WHERE author = '$un' AND tid = '$row[ttid]'");
                 if ($row['postcount'] == $db->result($q2, 0)) {
                     $rem[] = $row['ttid'];
                 }
             }
-            $db->freeResult($queryr);
+            $db->free_result($queryr);
 
             if (!empty($rem)) {
                 $rem = implode(',', $rem);
@@ -460,10 +437,10 @@ function processMembers()
 
             $rem = array();
             $queryp = $db->query("SELECT pid FROM " . X_PREFIX . "posts WHERE author = '$un'");
-            while (($row = $db->fetchArray($queryp)) != false) {
+            while ($row = $db->fetch_array($queryp)) {
                 $rem[] = $row['pid'];
             }
-            $db->freeResult($queryp);
+            $db->free_result($queryp);
 
             if (!empty($rem)) {
                 $rem = implode(',', $rem);
@@ -487,7 +464,7 @@ function processMembers()
             }
         }
     }
-    $db->freeResult($q2);
+    $db->free_result($q2);
     cp_message($lang['textmembersupdate'], false, '', '</td></tr></table>', 'cp_members.php?action=members', true, false, true);
 }
 
@@ -497,7 +474,7 @@ function processDeletePosts()
 
     $member = getInt('member');
     if ($member > 0) {
-        $memObj = new GaiaBB\Member($member);
+        $memObj = new member($member);
         $retval = $memObj->deletePosts($member);
         if ($retval === true) {
             cp_message($lang['postsDeleted'], false, '', '</td></tr></table>', 'cp_members.php?action=members', true, false, true);

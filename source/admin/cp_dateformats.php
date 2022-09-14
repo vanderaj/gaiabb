@@ -1,16 +1,16 @@
 <?php
 /**
  * GaiaBB
- * Copyright (c) 2009-2021 The GaiaBB Project
+ * Copyright (c) 2011-2022 The GaiaBB Group
  * https://github.com/vanderaj/gaiabb
  *
- * Forked from UltimaBB
+ * Based off UltimaBB
  * Copyright (c) 2004 - 2007 The UltimaBB Group
  * (defunct)
  *
- * Forked from XMB
- * Copyright (c) 2001 - 2021 The XMB Development Team
- * https://forums.xmbforum2.com/
+ * Based off XMB
+ * Copyright (c) 2001 - 2004 The XMB Development Team
+ * http://www.xmbforum.com
  *
  * This file is part of GaiaBB
  *
@@ -28,15 +28,20 @@
  *    along with GaiaBB.  If not, see <http://www.gnu.org/licenses/>.
  *
  **/
-// phpcs:disable PSR1.Files.SideEffects
-if (!defined('ROOT')) {
-    define('ROOT', '../');
-}
+
+define('ROOT', '../');
+define('ROOTINC', '../include/');
+define('ROOTCLASS', '../class/');
 
 require_once ROOT . 'header.php';
-require_once ROOT . 'include/admincp.inc.php';
+require_once ROOTINC . 'admincp.inc.php';
 
-loadtpl('cp_header', 'cp_footer', 'cp_message', 'cp_error');
+loadtpl(
+    'cp_header',
+    'cp_footer',
+    'cp_message',
+    'cp_error'
+);
 
 $shadow = shadowfx();
 $shadow2 = shadowfx2();
@@ -60,55 +65,44 @@ smcwcache();
 function viewPanel($queryd)
 {
     global $THEME, $lang, $shadow2, $oToken, $db;
-    global $gbblva, $self;
+    global $ubblva, $self;
     ?>
     <form method="post" action="cp_dateformats.php">
-        <input type="hidden" name="csrf_token"
-               value="<?php echo $oToken->createToken() ?>"/>
-        <table cellspacing="0px" cellpadding="0px" border="0px" width="100%"
-               align="center">
-            <tr>
-                <td bgcolor="<?php echo $THEME['bordercolor'] ?>">
-                    <table border="0px" cellspacing="<?php echo $THEME['borderwidth'] ?>"
-                           cellpadding="<?php echo $THEME['tablespace'] ?>" width="100%">
-                        <tr class="category">
-                            <td class="title" align="center"><?php echo $lang['textdeleteques'] ?></td>
-                            <td class="title"><?php echo $lang['dateformats'] ?></td>
-                            <td class="title"><?php echo $lang['exdateformat'] ?></td>
-                        </tr>
-                        <?php
-                        while (($dformat = $db->fetchArray($queryd)) != false) {
-                            if ($dformat['did'] != 1) {
-                                ?>
-                                <tr bgcolor="<?php echo $THEME['altbg2'] ?>">
-                                    <td class="ctrtablerow"><input type="checkbox"
-                                                                   name="delete<?php echo $dformat['did'] ?>"
-                                                                   value="<?php echo $dformat['did'] ?>"/></td>
-                                    <td class="tablerow"><input type="text" size="20"
-                                                                name="find<?php echo $dformat['did'] ?>"
-                                                                value="<?php echo $dformat['dateformat'] ?>"/></td>
-                                    <td class="tablerow"><?php echo gmdate(formatDate($dformat['dateformat']), $gbblva + ($self['timeoffset'] * 3600) + $self['daylightsavings']) ?></td>
-                                </tr>
-                                <?php
-                            }
-                        }
-                                $db->freeResult($queryd);
-                        ?>
-                        <tr bgcolor="<?php echo $THEME['altbg1'] ?>" class="ctrtablerow">
-                            <td colspan="3"><?php echo $lang['textnewcode'] ?>&nbsp;<input
-                                        type="text" size="20" name="newfind" value=""/></td>
-                        </tr>
-                        <tr bgcolor="<?php echo $THEME['altbg2'] ?>" class="ctrtablerow">
-                            <td colspan="3"><input type="submit" class="submit"
-                                                   name="datesubmit" value="<?php echo $lang['textsubmitchanges'] ?>"/>&nbsp;<input
-                                        type="submit" class="submit" name="daterestore"
-                                        value="<?php echo $lang['daterestore'] ?>"/></td>
-                        </tr>
-                    </table>
-                </td>
+    <input type="hidden" name="token" value="<?php echo $oToken->get_new_token() ?>" />
+    <table cellspacing="0px" cellpadding="0px" border="0px" width="100%" align="center">
+    <tr>
+    <td bgcolor="<?php echo $THEME['bordercolor'] ?>">
+    <table border="0px" cellspacing="<?php echo $THEME['borderwidth'] ?>" cellpadding="<?php echo $THEME['tablespace'] ?>" width="100%">
+    <tr class="category">
+    <td class="title" align="center"><?php echo $lang['textdeleteques'] ?></td>
+    <td class="title"><?php echo $lang['dateformats'] ?></td>
+    <td class="title"><?php echo $lang['exdateformat'] ?></td>
+    </tr>
+    <?php
+while ($dformat = $db->fetch_array($queryd)) {
+        if ($dformat['did'] != 1) {
+            ?>
+            <tr bgcolor="<?php echo $THEME['altbg2'] ?>">
+            <td class="ctrtablerow"><input type="checkbox" name="delete<?php echo $dformat['did'] ?>" value="<?php echo $dformat['did'] ?>" /></td>
+            <td class="tablerow"><input type="text" size="20" name="find<?php echo $dformat['did'] ?>" value="<?php echo $dformat['dateformat'] ?>" /></td>
+            <td class="tablerow"><?php echo gmdate(formatDate($dformat['dateformat']), $ubblva + ($self['timeoffset'] * 3600) + $self['daylightsavings']) ?></td>
             </tr>
-        </table>
-        <?php echo $shadow2 ?>
+            <?php
+}
+    }
+    $db->free_result($queryd);
+    ?>
+    <tr bgcolor="<?php echo $THEME['altbg1'] ?>" class="ctrtablerow">
+    <td colspan="3"><?php echo $lang['textnewcode'] ?>&nbsp;<input type="text" size="20" name="newfind" value="" /></td>
+    </tr>
+    <tr bgcolor="<?php echo $THEME['altbg2'] ?>" class="ctrtablerow">
+    <td colspan="3"><input type="submit" class="submit" name="datesubmit" value="<?php echo $lang['textsubmitchanges'] ?>" />&nbsp;<input type="submit" class="submit" name="daterestore" value="<?php echo $lang['daterestore'] ?>" /></td>
+    </tr>
+    </table>
+    </td>
+    </tr>
+    </table>
+    <?php echo $shadow2 ?>
     </form>
     </td>
     </tr>
@@ -121,9 +115,9 @@ function doPanel($querydate)
     global $shadow2, $lang, $db, $THEME;
     global $oToken;
 
-    $oToken->assertToken();
+    $oToken->assert_token();
 
-    while (($dformat = $db->fetchArray($querydate)) != false) {
+    while ($dformat = $db->fetch_array($querydate)) {
         $find = "find" . $dformat['did'];
         $find = $db->escape(formVar($find));
         $delete = "delete" . $dformat['did'];
@@ -133,9 +127,7 @@ function doPanel($querydate)
         }
         $db->query("UPDATE " . X_PREFIX . "dateformats SET dateformat='$find' WHERE did='$dformat[did]'");
     }
-    $db->freeResult($querydate);
-
-    $newfind = $db->escape(formVar('newfind'));
+    $db->free_result($querydate);
     if (isset($newfind) && $newfind != '') {
         $db->query("INSERT INTO " . X_PREFIX . "dateformats (`dateformat`) VALUES ('$newfind')");
     }
@@ -168,34 +160,28 @@ function viewDateRestore()
     global $oToken;
     ?>
     <form method="post" action="cp_dateformats.php">
-        <input type="hidden" name="csrf_token"
-               value="<?php echo $oToken->createToken() ?>"/>
-        <table cellspacing="0px" cellpadding="0px" border="0px" width="100%"
-               align="center">
-            <tr>
-                <td bgcolor="<?php echo $THEME['bordercolor'] ?>">
-                    <table border="0px" cellspacing="<?php echo $THEME['borderwidth'] ?>"
-                           cellpadding="<?php echo $THEME['tablespace'] ?>" width="100%">
-                        <tr class="category">
-                            <td class="title"><?php echo $lang['dateformats'] ?></td>
-                        </tr>
-                        <tr bgcolor="<?php echo $THEME['altbg2'] ?>" class="ctrtablerow">
-                            <td><?php echo $lang['daterestoreconfirm'] ?><br/>
-                                <input type="submit" class="submit" name="daterestoresubmit"
-                                       value="<?php echo $lang['textyes'] ?>"/>&nbsp;-&nbsp;<input
-                                        type="submit" class="submit" name="no"
-                                        value="<?php echo $lang['textno'] ?>"/></td>
-                        </tr>
-                    </table>
-                </td>
-            </tr>
-        </table>
-        <?php echo $shadow2 ?>
+    <input type="hidden" name="token" value="<?php echo $oToken->get_new_token() ?>" />
+    <table cellspacing="0px" cellpadding="0px" border="0px" width="100%" align="center">
+    <tr>
+    <td bgcolor="<?php echo $THEME['bordercolor'] ?>">
+    <table border="0px" cellspacing="<?php echo $THEME['borderwidth'] ?>" cellpadding="<?php echo $THEME['tablespace'] ?>" width="100%">
+    <tr class="category">
+    <td class="title"><?php echo $lang['dateformats'] ?></td>
+    </tr>
+    <tr bgcolor="<?php echo $THEME['altbg2'] ?>" class="ctrtablerow">
+    <td><?php echo $lang['daterestoreconfirm'] ?><br /><input type="submit" class="submit" name="daterestoresubmit" value="<?php echo $lang['textyes'] ?>" />&nbsp;-&nbsp;<input type="submit" class="submit" name="no" value="<?php echo $lang['textno'] ?>" /></td>
+    </tr>
+    </table>
+    </td>
+    </tr>
+    </table>
+    <?php echo $shadow2 ?>
     </form>
     </td>
     </tr>
     </table>
     <?php
+
 }
 
 displayAdminPanel();
@@ -208,7 +194,7 @@ if (!in_array($tablename, $tables)) {
 }
 
 $query = $db->query("SELECT * FROM " . X_PREFIX . "dateformats");
-if ($db->numRows($query) < 1) {
+if ($db->num_rows($query) < 1) {
     dateRestoreTable();
 }
 
@@ -222,7 +208,7 @@ if (onSubmit('daterestore')) {
     viewDateRestore();
 }
 if (onSubmit('daterestoresubmit')) {
-    $oToken->assertToken();
+    $oToken->assert_token();
     dateRestoreTable();
 }
 

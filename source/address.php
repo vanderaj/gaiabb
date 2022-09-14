@@ -1,16 +1,16 @@
 <?php
 /**
  * GaiaBB
- * Copyright (c) 2009-2021 The GaiaBB Project
+ * Copyright (c) 2011-2022 The GaiaBB Group
  * https://github.com/vanderaj/gaiabb
  *
- * Forked from UltimaBB
+ * Based off UltimaBB
  * Copyright (c) 2004 - 2007 The UltimaBB Group
  * (defunct)
  *
- * Forked from XMB
- * Copyright (c) 2001 - 2021 The XMB Development Team
- * https://forums.xmbforum2.com/
+ * Based off XMB
+ * Copyright (c) 2001 - 2004 The XMB Development Team
+ * http://www.xmbforum.com
  *
  * This file is part of GaiaBB
  *
@@ -28,9 +28,11 @@
  *    along with GaiaBB.  If not, see <http://www.gnu.org/licenses/>.
  *
  **/
-// phpcs:disable PSR1.Files.SideEffects
-require_once 'header.php';
-require_once ROOT . 'class/address.class.php';
+
+define('ROOT', './');
+
+require_once ROOT . 'header.php';
+require_once ROOTINC . 'address.inc.php';
 
 loadtpl(
     'addresslist_edit_address',
@@ -57,28 +59,37 @@ if (X_GUEST || isset($self['status']) && $self['status'] == 'Banned') {
     error($lang['pmnotloggedin']);
 }
 
-$addr = new GaiaBB\Address();
+$addresses = formArray('addresses', true, false, 'string');
+$delete = formArray('delete', true, false, 'string');
 
-$addresses = getRequestVar('addresses');
+if (empty($addresses) && isset($_GET['addresses'])) {
+    $addresses = $db->escape($_GET['addresses']);
+    $addresses = array($addresses);
+}
+
+if (empty($delete) && isset($_GET['delete'])) {
+    $addresses = $db->escape($_GET['delete']);
+    $addresses = array($delete);
+}
 
 switch ($action) {
     case 'add':
-        $addr->add($addresses);
+        address_add($addresses);
         break;
     case 'edit':
-        $addr->edit();
+        address_edit();
         break;
     case 'delete':
         if (count($delete) > 0) {
-            $addr->delete($delete);
+            address_delete($delete);
         } else {
-            $addr->blistmsg($lang['nomember']);
+            blistmsg($lang['nomember']);
         }
         break;
     case 'add2pm':
-        $addr->addpm();
+        address_addpm();
         break;
     default:
-        $addr->display();
+        address_display();
         break;
 }

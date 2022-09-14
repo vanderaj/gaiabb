@@ -1,16 +1,16 @@
 <?php
 /**
  * GaiaBB
- * Copyright (c) 2009-2021 The GaiaBB Project
+ * Copyright (c) 2011-2022 The GaiaBB Group
  * https://github.com/vanderaj/gaiabb
  *
- * Forked from UltimaBB
+ * Based off UltimaBB
  * Copyright (c) 2004 - 2007 The UltimaBB Group
  * (defunct)
  *
- * Forked from XMB
- * Copyright (c) 2001 - 2021 The XMB Development Team
- * https://forums.xmbforum2.com/
+ * Based off XMB
+ * Copyright (c) 2001 - 2004 The XMB Development Team
+ * http://www.xmbforum.com
  *
  * This file is part of GaiaBB
  *
@@ -28,11 +28,11 @@
  *    along with GaiaBB.  If not, see <http://www.gnu.org/licenses/>.
  *
  **/
- // phpcs:disable PSR1.Files.SideEffects
-define('CACHECONTROL', 'public');
 
-require_once 'header.php';
-require_once ROOT . 'class/csrf.class.php';
+define('CACHECONTROL', 'public');
+define('ROOT', './');
+
+require_once ROOT . 'header.php';
 
 loadtpl('error_nologinsession');
 
@@ -62,7 +62,7 @@ switch ($page) {
     case 'usermaint':
         $fquery = $db->query("SELECT fid FROM " . X_PREFIX . "faq WHERE code = 'usermaint'");
         $theid = $db->result($fquery, 0);
-        $db->freeResult($fquery);
+        $db->free_result($fquery);
         redirect("faq.php?faqid=" . $theid, 0);
         nav('<a href="faq.php">' . $lang['textfaq'] . '</a>');
         nav($lang['textuserman']);
@@ -72,7 +72,7 @@ switch ($page) {
     case 'using':
         $fquery = $db->query("SELECT fid FROM " . X_PREFIX . "faq WHERE code = 'using'");
         $theid = $db->result($fquery, 0);
-        $db->freeResult($fquery);
+        $db->free_result($fquery);
         redirect("faq.php?faqid=" . $theid, 0);
         nav('<a href="faq.php">' . $lang['textfaq'] . '</a>');
         nav($lang['textuseboa']);
@@ -82,7 +82,7 @@ switch ($page) {
     case 'messages':
         $fquery = $db->query("SELECT fid FROM " . X_PREFIX . "faq WHERE code = 'messages'");
         $theid = $db->result($fquery, 0);
-        $db->freeResult($fquery);
+        $db->free_result($fquery);
         redirect("faq.php?faqid=" . $theid, 0);
         nav('<a href="faq.php">' . $lang['textfaq'] . '</a>');
         nav($lang['textpostread']);
@@ -92,7 +92,7 @@ switch ($page) {
     case 'misc':
         $fquery = $db->query("SELECT fid FROM " . X_PREFIX . "faq WHERE code = 'misc'");
         $theid = $db->result($fquery, 0);
-        $db->freeResult($fquery);
+        $db->free_result($fquery);
         redirect("faq.php?faqid=" . $theid, 0);
         nav('<a href="faq.php">' . $lang['textfaq'] . '</a>');
         nav($lang['textmiscfaq']);
@@ -131,12 +131,12 @@ switch ($page) {
 
     case 'forumrules':
         $rquery = $db->query("SELECT * FROM " . X_PREFIX . "faq WHERE type = 'rulesset' LIMIT 0, 1");
-        $orules = $db->fetchArray($rquery);
-        $db->freeResult($rquery);
+        $orules = $db->fetch_array($rquery);
+        $db->free_result($rquery);
 
         $faq .= '
         <form method="post" action="faq.php?page=agreerules">
-        <input type="hidden" name="csrf_token" value="$oToken->createToken()" />
+        <input type="hidden" name="token" value="$oToken->get_new_token()" />
         <table cellspacing="0px" cellpadding="0px" border="0px" width="' . $THEME['tablewidth'] . '" align="center">
         <tr>
         <td bgcolor="' . $THEME['bordercolor'] . '"><table border="0px" cellspacing="' . $THEME['borderwidth'] . '" cellpadding="' . $THEME['tablespace'] . '" width="100%">
@@ -158,7 +158,7 @@ switch ($page) {
     case 'agreerules':
         $faq .= '
         <form method="post" action="faq.php?page=agreerules">
-        <input type="hidden" name="csrf_token" value="$oToken->createToken()" />
+        <input type="hidden" name="token" value="$oToken->get_new_token()" />
         <table cellspacing="0px" cellpadding="0px" border="0px" width="' . $THEME['tablewidth'] . '" align="center">
         <tr>
         <td bgcolor="' . $THEME['bordercolor'] . '"><table border="0px" cellspacing="' . $THEME['borderwidth'] . '" cellpadding="' . $THEME['tablespace'] . '" width="100%">
@@ -168,8 +168,8 @@ switch ($page) {
         if (noSubmit('agreesubmit')) {
             $ref = $flyto != '' ? $flyto : 'index.php';
             $rquery = $db->query("SELECT * FROM " . X_PREFIX . "faq WHERE type = 'rulesset' LIMIT 0, 1");
-            $orules = $db->fetchArray($rquery);
-            $db->freeResult($rquery);
+            $orules = $db->fetch_array($rquery);
+            $db->free_result($rquery);
 
             if (!empty($orules['name']) && !empty($CONFIG['bbrulestxt'])) {
                 $orules['name'] = stripslashes(stripslashes($orules['name']));
@@ -218,7 +218,7 @@ switch ($page) {
             $itemlist = array();
             $i = 0;
             $query = $db->query("SELECT fid, type, name, description, displayorder, fup FROM " . X_PREFIX . "faq WHERE status = 'on' ORDER BY displayorder ASC");
-            while (($selItems = $db->fetchArray($query)) != false) {
+            while ($selItems = $db->fetch_array($query)) {
                 if ($selItems['type'] == 'group') {
                     $groups[$i]['fid'] = $selItems['fid'];
                     $groups[$i]['name'] = $selItems['name'];
@@ -237,7 +237,7 @@ switch ($page) {
                 }
                 $i++;
             }
-            $db->freeResult($query);
+            $db->free_result($query);
 
             foreach ($groups as $group) {
                 $faq .= '
@@ -266,7 +266,7 @@ switch ($page) {
             $itemlist = array();
             $i = 0;
             $query = $db->query("SELECT fid, type, name, description, displayorder, fup, allowsmilies, allowbbcode, allowimgcode, code, view FROM " . X_PREFIX . "faq WHERE (fid = '$faqid' OR fup = '$faqid') AND status = 'on' ORDER BY displayorder ASC");
-            while (($selItems = $db->fetchArray($query)) != false) {
+            while ($selItems = $db->fetch_array($query)) {
                 if ($selItems['type'] == 'group') {
                     $groups[$i]['fid'] = $selItems['fid'];
                     $groups[$i]['name'] = $selItems['name'];
@@ -292,7 +292,7 @@ switch ($page) {
                 }
                 $i++;
             }
-            $db->freeResult($query);
+            $db->free_result($query);
 
             foreach ($groups as $group) {
                 $groupname = stripslashes($group['name']);
@@ -363,7 +363,7 @@ switch ($page) {
                             <td width="30%" class="header">' . $lang['smiliepreview'] . '</td>
                             </tr>';
                             $querysmilie = $db->query("SELECT * FROM " . X_PREFIX . "smilies WHERE type = 'smiley'");
-                            while (($smilie = $db->fetchArray($querysmilie)) != false) {
+                            while ($smilie = $db->fetch_array($querysmilie)) {
                                 $fmsctr++;
                                 if ($fmsctr == 1) {
                                     $faq .= '<tr>';
@@ -375,7 +375,7 @@ switch ($page) {
                                     $fmsctr = 0;
                                 }
                             }
-                            $db->freeResult($querysmilie);
+                            $db->free_result($querysmilie);
                             if ($fmsctr == 1) {
                                 $faq .= '<td width="20%" class="tablerow" bgcolor="' . $THEME['altbg2'] . '"></td><td width="30%" class="tablerow" bgcolor="' . $THEME['altbg2'] . '"></td></tr>';
                             }
@@ -392,7 +392,7 @@ switch ($page) {
                             <td width="33%" class="header">' . $lang['textposts'] . '</td>
                             </tr>';
                             $query = $db->query("SELECT * FROM " . X_PREFIX . "ranks WHERE title !='Moderator' AND title !='Super Moderator' AND title !='Super Administrator' AND title !='Administrator' ORDER BY posts ASC");
-                            while (($ranks = $db->fetchArray($query)) != false) {
+                            while ($ranks = $db->fetch_array($query)) {
                                 $stars = str_repeat('<img src="' . $THEME['imgdir'] . '/star.gif" alt="*" title="*" border="0px" />', $ranks['stars']);
                                 $faq .= '<tr>
                                 <td class="tablerow" bgcolor="' . $THEME['altbg2'] . '">' . $ranks['title'] . '</td>
@@ -401,7 +401,7 @@ switch ($page) {
                                 </tr>';
                                 $stars = '';
                             }
-                            $db->freeResult($query);
+                            $db->free_result($query);
                             $faq .= '</table></td></tr></table>' . $shadow . '<br />';
                         }
                     }

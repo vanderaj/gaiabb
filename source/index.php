@@ -1,16 +1,16 @@
 <?php
 /**
  * GaiaBB
- * Copyright (c) 2009-2021 The GaiaBB Project
+ * Copyright (c) 2011-2022 The GaiaBB Group
  * https://github.com/vanderaj/gaiabb
  *
- * Forked from UltimaBB
+ * Based off UltimaBB
  * Copyright (c) 2004 - 2007 The UltimaBB Group
  * (defunct)
  *
- * Forked from XMB
- * Copyright (c) 2001 - 2021 The XMB Development Team
- * https://forums.xmbforum2.com/
+ * Based off XMB
+ * Copyright (c) 2001 - 2004 The XMB Development Team
+ * http://www.xmbforum.com
  *
  * This file is part of GaiaBB
  *
@@ -28,10 +28,31 @@
  *    along with GaiaBB.  If not, see <http://www.gnu.org/licenses/>.
  *
  **/
-// phpcs:disable PSR1.Files.SideEffects
-require_once 'header.php';
 
-loadtpl('index', 'index_boardoffmsg', 'index_category', 'index_category_spacer', 'index_forum', 'index_forum_lastpost', 'index_forum_nolastpost', 'index_forum_row', 'index_login', 'index_member', 'index_member_avatar', 'index_member_notepad', 'index_member_pm', 'index_news', 'index_stats', 'index_whosonline', 'index_whosonline_iconkey', 'index_whosonline_key', 'index_whosonline_today');
+define('ROOT', './');
+require_once ROOT . 'header.php';
+
+loadtpl(
+    'index',
+    'index_boardoffmsg',
+    'index_category',
+    'index_category_spacer',
+    'index_forum',
+    'index_forum_lastpost',
+    'index_forum_nolastpost',
+    'index_forum_row',
+    'index_login',
+    'index_member',
+    'index_member_avatar',
+    'index_member_notepad',
+    'index_member_pm',
+    'index_news',
+    'index_stats',
+    'index_whosonline',
+    'index_whosonline_iconkey',
+    'index_whosonline_key',
+    'index_whosonline_today'
+);
 
 $shadow = shadowfx();
 $meta = metaTags();
@@ -73,8 +94,8 @@ if ($gid > 0) {
     $CONFIG['whosonlinestatus'] = 'off';
     $CONFIG['indexstats'] = 'off';
     $qcat = $db->query("SELECT name FROM " . X_PREFIX . "forums WHERE fid = '$gid' AND type = 'group' LIMIT 1");
-    $cat = $db->fetchArray($qcat);
-    $db->freeResult($qcat);
+    $cat = $db->fetch_array($qcat);
+    $db->free_result($qcat);
     nav(stripslashes($cat['name']));
     btitle(stripslashes($cat['name']));
 } else {
@@ -83,11 +104,14 @@ if ($gid > 0) {
     btitle($lang['texthome']);
 }
 
-eval('echo "' . template('header') . '";');
+// eval('echo "'.template('header').'";');
+
+eval('$header = "' . template('header') . '";');
+echo $header;
 
 $q = $db->query("SELECT uid, username FROM " . X_PREFIX . "members ORDER BY regdate DESC LIMIT 1");
-$lastmember = $db->fetchArray($q);
-$db->freeResult($q);
+$lastmember = $db->fetch_array($q);
+$db->free_result($q);
 
 $q = $db->query("SELECT COUNT(uid) FROM " . X_PREFIX . "members UNION ALL SELECT COUNT(tid) FROM " . X_PREFIX . "threads UNION ALL SELECT COUNT(pid) FROM " . X_PREFIX . "posts");
 $members = $db->result($q, 0);
@@ -104,7 +128,7 @@ $posts = $db->result($q, 2);
 if ($posts == false) {
     $posts = 0;
 }
-$db->freeResult($q);
+$db->free_result($q);
 
 if (X_MEMBER) {
     $memhtml = '<a href="viewprofile.php?memberid=' . intval($lastmember['uid']) . '"><strong>' . trim($lastmember['username']) . '</strong></a>';
@@ -147,7 +171,7 @@ if ($gid == 0) {
     $onlineRobots = array();
 
     $q = $db->query("SELECT m.status, m.username, m.uid, m.invisible, w.* FROM " . X_PREFIX . "whosonline w LEFT JOIN " . X_PREFIX . "members m ON m.username = w.username ORDER BY w.username ASC");
-    while (($online = $db->fetchArray($q)) != false) {
+    while ($online = $db->fetch_array($q)) {
         switch ($online['username']) {
             case 'xguest123':
                 $guestcount++;
@@ -160,7 +184,7 @@ if ($gid == 0) {
                 if ($online['invisible'] != 0 && X_ADMIN) {
                     $onlineMembers[] = $online;
                     $hiddencount++;
-                } elseif ($online['invisible'] != 0) {
+                } else if ($online['invisible'] != 0) {
                     $hiddencount++;
                 } else {
                     $onlineMembers[] = $online;
@@ -169,7 +193,7 @@ if ($gid == 0) {
                 break;
         }
     }
-    $db->freeResult($q);
+    $db->free_result($q);
 
     $onlinetotal = $guestcount + $robotcount + $membercount + $hiddencount;
     $CONFIG['mostonlinecount'] = (int) $CONFIG['mostonlinecount'];
@@ -371,7 +395,7 @@ if ($gid == 0) {
     $todaymembersnum = 0;
     $todaymembers = array();
     $pre = $suff = $icon = '';
-    while (($memberstoday = $db->fetchArray($q)) != false) {
+    while ($memberstoday = $db->fetch_array($q)) {
         switch ($memberstoday['status']) {
             case 'Super Administrator':
                 if ($THEME['riconstatus'] == 'on') {
@@ -438,7 +462,7 @@ if ($gid == 0) {
             ++$todaymembersnum;
         }
     }
-    $db->freeResult($q);
+    $db->free_result($q);
 
     if ($todaymembersnum == 1) {
         $memontoday = '<strong>' . $todaymembersnum . '</strong>' . $lang['textmembertoday'];
@@ -448,7 +472,7 @@ if ($gid == 0) {
 
     $q = $db->query("SELECT COUNT(*) AS guests FROM " . X_PREFIX . "guestcount WHERE onlinetime >= '$datecut'");
     $gueststoday = $db->result($q, 0);
-    $db->freeResult($q);
+    $db->free_result($q);
     $gueststodaycount = $gueststoday;
 
     if ($gueststodaycount == 0) {
@@ -457,7 +481,7 @@ if ($gid == 0) {
 
     if ($gueststodaycount == 0) {
         $todayguests = $lang['tgvisitno'];
-    } elseif ($gueststodaycount == 1) {
+    } else if ($gueststodaycount == 1) {
         $todayguests = $lang['tgvisit1'];
     } else {
         $todayguests = $lang['tgvisitand'] . ' <strong>' . $gueststodaycount . '</strong>' . $lang['tgvisitcount'];
@@ -465,7 +489,7 @@ if ($gid == 0) {
 
     $q = $db->query("SELECT COUNT(*) AS robots FROM " . X_PREFIX . "robotcount WHERE onlinetime >= '$datecut'");
     $robotstoday = $db->result($q, 0);
-    $db->freeResult($q);
+    $db->free_result($q);
     $robotstodaycount = $robotstoday;
 
     if ($robotstodaycount == 0) {
@@ -474,7 +498,7 @@ if ($gid == 0) {
 
     if ($robotstodaycount == 0) {
         $todayrobots = $lang['trvisitno'];
-    } elseif ($robotstodaycount == 1) {
+    } else if ($robotstodaycount == 1) {
         $todayrobots = $lang['trvisit1'];
     } else {
         $todayrobots = $lang['trvisitand'] . '<strong>' . $robotstodaycount . '</strong>' . $lang['trvisitcount'];
@@ -503,8 +527,8 @@ if ($gid == 0) {
         eval('$newsblock = "' . template('index_news') . '";');
     }
 
-    // XXX - $gid was set to 0 here! (fixed?)
-    if ($gid == 0) {
+    // $gid is set to 0 here !
+    if ($gid = 0) {
         $cq = $db->query("SELECT f.name as cat_name, f.fid as cat_fid, l.uid as lp_uid, l.username as lp_user, l.pid as lp_pid, l.dateline as lp_dateline FROM " . X_PREFIX . "forums f LEFT JOIN " . X_PREFIX . "lastposts l ON l.tid = f.lastpost WHERE type = 'group' ORDER BY displayorder ASC");
     } else {
         $cq = $db->query("SELECT f.*, c.name as cat_name, c.fid as cat_fid, l.uid as lp_uid, l.username as lp_user, l.pid as lp_pid, l.dateline as lp_dateline FROM " . X_PREFIX . "forums f LEFT JOIN " . X_PREFIX . "forums c ON (f.fup = c.fid) LEFT JOIN " . X_PREFIX . "lastposts l ON l.tid = f.lastpost WHERE (c.type = 'group' AND f.type = 'forum' AND c.status = 'on' AND f.status = 'on') OR (f.type = 'forum' AND f.fup = '' AND f.status = 'on') ORDER BY c.displayorder ASC, f.displayorder ASC");
@@ -538,16 +562,16 @@ if ($CONFIG['showsubs'] == 'on') {
     $index_subforums = array();
     if ($gid == 0) {
         $query = $db->query("SELECT fid, fup, name, private, userlist FROM " . X_PREFIX . "forums WHERE status = 'on' AND type = 'sub' ORDER BY fup, displayorder");
-        while (($queryrow = $db->fetchArray($query)) != false) {
+        while ($queryrow = $db->fetch_array($query)) {
             $index_subforums[] = $queryrow;
         }
-        $db->freeResult($query);
+        $db->free_result($query);
     }
 }
 
 $lastcat = 0;
 $forumlist = $cforum = '';
-while (($row = $db->fetchArray($cq)) != false) {
+while ($row = $db->fetch_array($cq)) {
     $cforum = forum($row, 'index_forum');
 
     if ($lastcat != $row['cat_fid'] && !empty($cforum)) {
@@ -556,7 +580,7 @@ while (($row = $db->fetchArray($cq)) != false) {
     }
     $forumlist .= $cforum;
 }
-$db->freeResult($cq);
+$db->free_result($cq);
 
 eval('echo stripslashes("' . template('index') . '");');
 

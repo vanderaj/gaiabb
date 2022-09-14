@@ -1,16 +1,16 @@
 <?php
 /**
  * GaiaBB
- * Copyright (c) 2009-2021 The GaiaBB Project
+ * Copyright (c) 2011-2022 The GaiaBB Group
  * https://github.com/vanderaj/gaiabb
  *
- * Forked from UltimaBB
+ * Based off UltimaBB
  * Copyright (c) 2004 - 2007 The UltimaBB Group
  * (defunct)
  *
- * Forked from XMB
- * Copyright (c) 2001 - 2021 The XMB Development Team
- * https://forums.xmbforum2.com/
+ * Based off XMB
+ * Copyright (c) 2001 - 2004 The XMB Development Team
+ * http://www.xmbforum.com
  *
  * This file is part of GaiaBB
  *
@@ -28,15 +28,41 @@
  *    along with GaiaBB.  If not, see <http://www.gnu.org/licenses/>.
  *
  **/
-// phpcs:disable PSR1.Files.SideEffects
-require_once 'header.php';
 
-require_once ROOT . 'include/mimetypes.inc.php';
-require_once ROOT . 'class/pm.class.php';
-require_once ROOT . 'class/pm.dao.class.php';
-require_once ROOT . 'class/pm.model.class.php';
+define('ROOT', './');
 
-loadtpl('pm_nav', 'pm', 'pm_folderlink', 'pm_inbox', 'pm_outbox', 'pm_drafts', 'pm_row', 'pm_row_none', 'pm_view', 'pm_ignore', 'pm_send', 'pm_send_preview', 'pm_folders', 'pm_main', 'pm_multipage', 'pm_quotabar', 'pm_printable', 'pm_attachmentbox', 'pm_attachment', 'pm_sig', 'pm_trash', 'pm_send_preview_sig', 'pm_attachmentimage', 'functions_smilieinsert', 'functions_smilieinsert_smilie', 'functions_bbcodeinsert', 'functions_bbcode');
+require_once ROOT . 'header.php';
+require_once ROOTINC . 'pm.inc.php';
+
+loadtpl(
+    'pm_nav',
+    'pm',
+    'pm_folderlink',
+    'pm_inbox',
+    'pm_outbox',
+    'pm_drafts',
+    'pm_row',
+    'pm_row_none',
+    'pm_view',
+    'pm_ignore',
+    'pm_send',
+    'pm_send_preview',
+    'pm_folders',
+    'pm_main',
+    'pm_multipage',
+    'pm_quotabar',
+    'pm_printable',
+    'pm_attachmentbox',
+    'pm_attachment',
+    'pm_sig',
+    'pm_trash',
+    'pm_send_preview_sig',
+    'pm_attachmentimage',
+    'functions_smilieinsert',
+    'functions_smilieinsert_smilie',
+    'functions_bbcodeinsert',
+    'functions_bbcode'
+);
 
 $shadow = shadowfx();
 $shadow2 = shadowfx2();
@@ -99,7 +125,7 @@ if ($CONFIG['pmstatus'] == 'off' && isset($self['status']) && $self['status'] ==
     error($lang['pmstatusdisabled'], false, '', '', 'index.php', true, false, true);
 }
 
-$pmCommand = new GaiaBB\PmModel();
+$pmCommand = new pmModel();
 
 $page = getInt('page');
 if (!$page) {
@@ -111,22 +137,20 @@ $folder = getRequestVar('folder');
 if (!empty($folder)) {
     $folder = checkInput($folder);
     $_SESSION['folder'] = $folder;
+} else if (empty($folder) || !isset($folder)) {
+    if ($action == 'view' || $action == 'modif') {
+        $folder = '';
+    }
+    if ($action == '' || !isset($action)) {
+        $folder = 'Inbox';
+        $_SESSION['folder'] = $folder;
+    }
 } else {
-    if (empty($folder) || !isset($folder)) {
-        if ($action == 'view' || $action == 'modif') {
-            $folder = '';
-        }
-        if ($action == '' || !isset($action)) {
-            $folder = 'Inbox';
-            $_SESSION['folder'] = $folder;
-        }
+    if (isset($_SESSION['folder'])) {
+        $folder = $_SESSION['folder'];
     } else {
-        if (isset($_SESSION['folder'])) {
-            $folder = $_SESSION['folder'];
-        } else {
-            $folder = 'Inbox';
-            $_SESSION['folder'] = $folder;
-        }
+        $folder = 'Inbox';
+        $_SESSION['folder'] = $folder;
     }
 }
 
@@ -196,19 +220,19 @@ switch ($action) {
                 $pmCommand->markUnread($pmid, $type);
                 break;
             default:
-                $leftpane = $pmCommand->view($pmid, $folders);
+                $leftpane = $pmCommand->viewFolder($folders);
                 break;
         }
         break;
     case 'mod':
         switch ($modaction) {
             case 'delete':
+
                 if (empty($pm_select)) {
                     error($lang['textnonechosen'], false, '', '', 'pm.php', true, false, true);
                 }
                 $pmCommand->mod_delete($pm_select);
                 break;
-
             case 'move':
                 if (empty($tofolder)) {
                     error($lang['textnofolder'], false, '', '', 'pm.php', true, false, true);
@@ -219,11 +243,9 @@ switch ($action) {
                 }
                 $pmCommand->mod_move($tofolder, $pm_select);
                 break;
-
             case 'markunread':
                 $pmCommand->mod_markUnread($pm_select);
                 break;
-
             default:
                 error($lang['testnothingchos'], false, '', '', 'pm.php', true, false, true);
                 break;
@@ -237,7 +259,7 @@ switch ($action) {
         if (isset($_GET['memberid'])) {
             $memberid = getInt('memberid');
             $gmem_query = $db->query("SELECT username FROM " . X_PREFIX . "members WHERE uid = '$memberid' LIMIT 1");
-            $gmem_array = $db->fetchArray($gmem_query);
+            $gmem_array = $db->fetch_array($gmem_query);
             $username = $gmem_array['username'];
         }
 
@@ -263,8 +285,8 @@ switch ($action) {
         }
 
         $query = $db->query("SELECT * FROM " . X_PREFIX . "pm_attachments WHERE pmid = '$pmid' AND aid = '$aid' AND owner = '$self[username]'");
-        $file = $db->fetchArray($query);
-        $db->freeResult($query);
+        $file = $db->fetch_array($query);
+        $db->free_result($query);
 
         if ($file['filesize'] != strlen($file['attachment'])) {
             error($lang['File_Corrupt'], false, '', '', false, true, false, true);
@@ -284,7 +306,7 @@ switch ($action) {
 
         echo $file['attachment'];
 
-        exit();
+        exit;
         break;
     case 'ignore':
         $leftpane = $pmCommand->viewIgnoreList();
@@ -292,10 +314,10 @@ switch ($action) {
     case 'emptytrash':
         $in = '';
         $iquery = $db->query("SELECT pmid FROM " . X_PREFIX . "pm WHERE folder = 'Trash' AND owner = '$self[username]'");
-        while (($ids = $db->fetchArray($iquery)) != false) {
+        while ($ids = $db->fetch_array($iquery)) {
             $in .= (empty($in)) ? $ids['pmid'] : "," . $ids['pmid'];
         }
-        $db->freeResult($iquery);
+        $db->free_result($iquery);
         $db->query("DELETE FROM " . X_PREFIX . "pm WHERE pmid IN($in)");
         $db->query("DELETE FROM " . X_PREFIX . "pm_attachments WHERE pmid IN($in)");
         message($lang['texttrashemptied'], false, '', '', 'pm.php', true, false, true);

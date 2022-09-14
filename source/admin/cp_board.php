@@ -1,16 +1,16 @@
 <?php
 /**
  * GaiaBB
- * Copyright (c) 2009-2021 The GaiaBB Project
+ * Copyright (c) 2011-2022 The GaiaBB Group
  * https://github.com/vanderaj/gaiabb
  *
- * Forked from UltimaBB
+ * Based off UltimaBB
  * Copyright (c) 2004 - 2007 The UltimaBB Group
  * (defunct)
  *
- * Forked from XMB
- * Copyright (c) 2001 - 2021 The XMB Development Team
- * https://forums.xmbforum2.com/
+ * Based off XMB
+ * Copyright (c) 2001 - 2004 The XMB Development Team
+ * http://www.xmbforum.com
  *
  * This file is part of GaiaBB
  *
@@ -28,16 +28,21 @@
  *    along with GaiaBB.  If not, see <http://www.gnu.org/licenses/>.
  *
  **/
-// phpcs:disable PSR1.Files.SideEffects
-if (!defined('ROOT')) {
-    define('ROOT', '../');
-}
+
+define('ROOT', '../');
+define('ROOTINC', '../include/');
+define('ROOTCLASS', '../class/');
 
 require_once ROOT . 'header.php';
-require_once ROOT . 'include/admincp.inc.php';
-require_once ROOT . 'helper/formHelper.php';
+require_once ROOTINC . 'admincp.inc.php';
+require_once ROOTINC . 'settings.inc.php';
 
-loadtpl('cp_header', 'cp_footer', 'cp_message', 'cp_error');
+loadtpl(
+    'cp_header',
+    'cp_footer',
+    'cp_message',
+    'cp_error'
+);
 
 $shadow = shadowfx();
 $shadow2 = shadowfx2();
@@ -62,37 +67,35 @@ smcwcache();
 /**
  * function() - short description of function
  *
- * TODO: Long description of function
+ * Long description of function
  *
- * @param $varname type,
- *            what it does
- * @return type, what the return does
- *
+ * @param    $varname    type, what it does
+ * @return   type, what the return does
  */
 function viewPanel()
 {
     global $oToken, $CONFIG, $THEME, $lang, $shadow2;
 
     $onselect = $offselect = '';
-    GaiaBB\FormHelper::getSettingOnOffHtml('bbstatus', $onselect, $offselect);
+    settingHTML('bbstatus', $onselect, $offselect);
     $metatag_statuson = $metatag_statusoff = '';
-    GaiaBB\FormHelper::getSettingOnOffHtml('metatag_status', $metatag_statuson, $metatag_statusoff);
+    settingHTML('metatag_status', $metatag_statuson, $metatag_statusoff);
     $pmwelcomestatuson = $pmwelcomestatusoff = '';
-    GaiaBB\FormHelper::getSettingOnOffHtml('pmwelcomestatus', $pmwelcomestatuson, $pmwelcomestatusoff);
+    settingHTML('pmwelcomestatus', $pmwelcomestatuson, $pmwelcomestatusoff);
     $show_full_on = $show_full_off = '';
-    GaiaBB\FormHelper::getSettingOnOffHtml('show_full_info', $show_full_on, $show_full_off);
+    settingHTML('show_full_info', $show_full_on, $show_full_off);
     $comment_on = $comment_off = '';
-    GaiaBB\FormHelper::getSettingOnOffHtml('comment', $comment_on, $comment_off);
+    settingHTML('comment', $comment_on, $comment_off);
     $ipreg_on = $ipreg_off = '';
-    GaiaBB\FormHelper::getSettingOnOffHtml('ipreg', $ipreg_on, $ipreg_off);
+    settingHTML('ipreg', $ipreg_on, $ipreg_off);
     $ipcheck_on = $ipcheck_off = '';
-    GaiaBB\FormHelper::getSettingOnOffHtml('ipcheck', $ipcheck_on, $ipcheck_off);
+    settingHTML('ipcheck', $ipcheck_on, $ipcheck_off);
     $specq_on = $specq_off = '';
-    GaiaBB\FormHelper::getSettingOnOffHtml('specq', $specq_on, $specq_off);
+    settingHTML('specq', $specq_on, $specq_off);
     $predf_on = $predf_off = '';
-    GaiaBB\FormHelper::getSettingOnOffHtml('predformat', $predf_on, $predf_off);
+    settingHTML('predformat', $predf_on, $predf_off);
     $whosoptomized_on = $whosoptomized_off = '';
-    GaiaBB\FormHelper::getSettingOnOffHtml('whosoptomized', $whosoptomized_on, $whosoptomized_off);
+    settingHTML('whosoptomized', $whosoptomized_on, $whosoptomized_off);
 
     $max_attach_sizenew = intval($CONFIG['max_attach_size']) / 1024;
     if ($max_attach_sizenew < 10 || $max_attach_sizenew > 1024) {
@@ -113,52 +116,47 @@ function viewPanel()
     $CONFIG['pmwelcomefrom'] = stripslashes($CONFIG['pmwelcomefrom']);
     ?>
     <form method="post" action="cp_board.php">
-        <input type="hidden" name="csrf_token"
-               value="<?php echo $oToken->createToken() ?>"/>
-        <table cellspacing="0px" cellpadding="0px" border="0px" width="100%"
-               align="center">
-            <tr>
-                <td bgcolor="<?php echo $THEME['bordercolor'] ?>">
-                    <table border="0px" cellspacing="<?php echo $THEME['borderwidth'] ?>"
-                           cellpadding="<?php echo $THEME['tablespace'] ?>" width="100%">
-                        <tr class="category">
-                            <td class="title" colspan="2"><?php echo $lang['admin_main_settings1'] ?></td>
-                        </tr>
-                        <?php
-                        GaiaBB\FormHelper::formTextBox($lang['textsitename'], 'sitenamenew', $CONFIG['sitename'], 50);
-                        GaiaBB\FormHelper::formTextBox($lang['bbname'], 'bbnamenew', $CONFIG['bbname'], 50);
-                        GaiaBB\FormHelper::formTextBox($lang['textsiteurl'], 'siteurlnew', $CONFIG['siteurl'], 50);
-                        GaiaBB\FormHelper::formTextBox($lang['textboardurl'], 'boardurlnew', $CONFIG['boardurl'], 50);
-                        GaiaBB\FormHelper::formTextBox($lang['adminemail'], 'adminemailnew', $CONFIG['adminemail'], 50);
-                        GaiaBB\FormHelper::formTextBox($lang['copyrightnotice'], 'copyrightnew', $CONFIG['copyright'], 50);
-                        GaiaBB\FormHelper::formSelectOnOff($lang['metatag_status'], 'metatag_statusnew', $metatag_statuson, $metatag_statusoff);
-                        GaiaBB\FormHelper::formTextBox($lang['metatag_keywords'], 'metatag_keywordsnew', $CONFIG['metatag_keywords'], 50);
-                        GaiaBB\FormHelper::formTextBox($lang['metatag_description'], 'metatag_descriptionnew', $CONFIG['metatag_description'], 50);
-                        GaiaBB\FormHelper::formSelectOnOff($lang['textbstatus'], 'bbstatusnew', $onselect, $offselect);
-                        GaiaBB\FormHelper::formTextBox2($lang['textbboffreason'], 5, 'bboffreasonnew', 50, $CONFIG['bboffreason']);
-                        GaiaBB\FormHelper::formSelectOnOff($lang['set_show_full_info'], 'show_full_infonew', $show_full_on, $show_full_off);
-                        GaiaBB\FormHelper::formSelectOnOff($lang['set_comment'], 'commentnew', $comment_on, $comment_off);
-                        GaiaBB\FormHelper::formSelectOnOff($lang['set_ipreg'], 'ipregnew', $ipreg_on, $ipreg_off);
-                        GaiaBB\FormHelper::formSelectOnOff($lang['set_ipcheck'], 'ipchecknew', $ipcheck_on, $ipcheck_off);
-                        GaiaBB\FormHelper::formSelectOnOff($lang['set_specq'], 'specqnew', $specq_on, $specq_off);
-                        GaiaBB\FormHelper::formSelectOnOff($lang['set_predformat'], 'predformatnew', $predf_on, $predf_off);
-                        GaiaBB\FormHelper::formSelectOnOff($lang['whosoptomized'], 'whosoptomizednew', $whosoptomized_on, $whosoptomized_off);
-                        GaiaBB\FormHelper::formTextBox($lang['set_max_attach_size'], 'max_attach_sizenew', $max_attach_sizenew, 10);
-                        GaiaBB\FormHelper::formSelectOnOff($lang['pmwelcomestatus'], 'pmwelcomestatusnew', $pmwelcomestatuson, $pmwelcomestatusoff);
-                        GaiaBB\FormHelper::formTextBox($lang['pmwelcomefrom'], 'pmwelcomefromnew', $CONFIG['pmwelcomefrom'], 32);
-                        GaiaBB\FormHelper::formTextBox($lang['pmwelcomesubject'], 'pmwelcomesubjectnew', $CONFIG['pmwelcomesubject'], 32);
-                        GaiaBB\FormHelper::formTextBox2($lang['pmwelcomemessage'], 5, 'pmwelcomemessagenew', 50, $CONFIG['pmwelcomemessage']);
-                        ?>
-                        <tr class="ctrtablerow" bgcolor="<?php echo $THEME['altbg2'] ?>">
-                            <td colspan="2"><input class="submit" type="submit"
-                                                   name="boardsubmit"
-                                                   value="<?php echo $lang['textsubmitchanges'] ?>"/></td>
-                        </tr>
-                    </table>
-                </td>
-            </tr>
-        </table>
-        <?php echo $shadow2 ?>
+    <input type="hidden" name="token" value="<?php echo $oToken->get_new_token() ?>" />
+    <table cellspacing="0px" cellpadding="0px" border="0px" width="100%" align="center">
+    <tr>
+    <td bgcolor="<?php echo $THEME['bordercolor'] ?>">
+    <table border="0px" cellspacing="<?php echo $THEME['borderwidth'] ?>" cellpadding="<?php echo $THEME['tablespace'] ?>" width="100%">
+    <tr class="category">
+    <td class="title" colspan="2"><?php echo $lang['admin_main_settings1'] ?></td>
+    </tr>
+    <?php
+printsetting2($lang['textsitename'], 'sitenamenew', $CONFIG['sitename'], 50);
+    printsetting2($lang['bbname'], 'bbnamenew', $CONFIG['bbname'], 50);
+    printsetting2($lang['textsiteurl'], 'siteurlnew', $CONFIG['siteurl'], 50);
+    printsetting2($lang['textboardurl'], 'boardurlnew', $CONFIG['boardurl'], 50);
+    printsetting2($lang['adminemail'], 'adminemailnew', $CONFIG['adminemail'], 50);
+    printsetting2($lang['copyrightnotice'], 'copyrightnew', $CONFIG['copyright'], 50);
+    printsetting1($lang['metatag_status'], 'metatag_statusnew', $metatag_statuson, $metatag_statusoff);
+    printsetting2($lang['metatag_keywords'], 'metatag_keywordsnew', $CONFIG['metatag_keywords'], 50);
+    printsetting2($lang['metatag_description'], 'metatag_descriptionnew', $CONFIG['metatag_description'], 50);
+    printsetting1($lang['textbstatus'], 'bbstatusnew', $onselect, $offselect);
+    printsetting4($lang['textbboffreason'], 5, 'bboffreasonnew', 50, $CONFIG['bboffreason']);
+    printsetting1($lang['set_show_full_info'], 'show_full_infonew', $show_full_on, $show_full_off);
+    printsetting1($lang['set_comment'], 'commentnew', $comment_on, $comment_off);
+    printsetting1($lang['set_ipreg'], 'ipregnew', $ipreg_on, $ipreg_off);
+    printsetting1($lang['set_ipcheck'], 'ipchecknew', $ipcheck_on, $ipcheck_off);
+    printsetting1($lang['set_specq'], 'specqnew', $specq_on, $specq_off);
+    printsetting1($lang['set_predformat'], 'predformatnew', $predf_on, $predf_off);
+    printsetting1($lang['whosoptomized'], 'whosoptomizednew', $whosoptomized_on, $whosoptomized_off);
+    printsetting2($lang['set_max_attach_size'], 'max_attach_sizenew', $max_attach_sizenew, 10);
+    printsetting1($lang['pmwelcomestatus'], 'pmwelcomestatusnew', $pmwelcomestatuson, $pmwelcomestatusoff);
+    printsetting2($lang['pmwelcomefrom'], 'pmwelcomefromnew', $CONFIG['pmwelcomefrom'], 32);
+    printsetting2($lang['pmwelcomesubject'], 'pmwelcomesubjectnew', $CONFIG['pmwelcomesubject'], 32);
+    printsetting4($lang['pmwelcomemessage'], 5, 'pmwelcomemessagenew', 50, $CONFIG['pmwelcomemessage']);
+    ?>
+    <tr class="ctrtablerow" bgcolor="<?php echo $THEME['altbg2'] ?>">
+    <td colspan="2"><input class="submit" type="submit" name="boardsubmit" value="<?php echo $lang['textsubmitchanges'] ?>" /></td>
+    </tr>
+    </table>
+    </td>
+    </tr>
+    </table>
+    <?php echo $shadow2 ?>
     </form>
     </td>
     </tr>
@@ -169,18 +167,16 @@ function viewPanel()
 /**
  * function() - short description of function
  *
- * TODO: Long description of function
+ * Long description of function
  *
- * @param $varname type,
- *            what it does
- * @return type, what the return does
- *
+ * @param    $varname    type, what it does
+ * @return   type, what the return does
  */
 function doPanel()
 {
     global $oToken, $CONFIG, $THEME, $lang, $shadow2, $db;
 
-    $oToken->assertToken();
+    $oToken->assert_token();
 
     $bbstatusnew = formOnOff('bbstatusnew');
     $metatag_statusnew = formOnOff('metatag_statusnew');

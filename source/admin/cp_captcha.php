@@ -1,16 +1,16 @@
 <?php
 /**
  * GaiaBB
- * Copyright (c) 2009-2021 The GaiaBB Project
+ * Copyright (c) 2011-2022 The GaiaBB Group
  * https://github.com/vanderaj/gaiabb
  *
- * Forked from UltimaBB
+ * Based off UltimaBB
  * Copyright (c) 2004 - 2007 The UltimaBB Group
  * (defunct)
  *
- * Forked from XMB
- * Copyright (c) 2001 - 2021 The XMB Development Team
- * https://forums.xmbforum2.com/
+ * Based off XMB
+ * Copyright (c) 2001 - 2004 The XMB Development Team
+ * http://www.xmbforum.com
  *
  * This file is part of GaiaBB
  *
@@ -28,16 +28,21 @@
  *    along with GaiaBB.  If not, see <http://www.gnu.org/licenses/>.
  *
  **/
-// phpcs:disable PSR1.Files.SideEffects
-if (!defined('ROOT')) {
-    define('ROOT', '../');
-}
+
+define('ROOT', '../');
+define('ROOTINC', '../include/');
+define('ROOTCLASS', '../class/');
 
 require_once ROOT . 'header.php';
-require_once ROOT . 'include/admincp.inc.php';
-require_once ROOT . 'helper/formHelper.php';
+require_once ROOTINC . 'admincp.inc.php';
+require_once ROOTINC . 'settings.inc.php';
 
-loadtpl('cp_header', 'cp_footer', 'cp_message', 'cp_error');
+loadtpl(
+    'cp_header',
+    'cp_footer',
+    'cp_message',
+    'cp_error'
+);
 
 $shadow = shadowfx();
 $shadow2 = shadowfx2();
@@ -62,19 +67,17 @@ smcwcache();
 /**
  * function() - short description of function
  *
- * TODO: Long description of function
+ * Long description of function
  *
- * @param $varname type,
- *            what it does
- * @return type, what the return does
- *
+ * @param    $varname    type, what it does
+ * @return   type, what the return does
  */
 function viewPanel()
 {
     global $CONFIG, $lang, $THEME, $shadow2, $oToken;
 
     $captcha_on = $captcha_off = '';
-    GaiaBB\FormHelper::getSettingOnOffHtml('captcha_status', $captcha_on, $captcha_off);
+    settingHTML('captcha_status', $captcha_on, $captcha_off);
 
     $colmanage[0] = $colmanage[1] = false;
     switch ($CONFIG['captcha_colortype']) {
@@ -89,41 +92,30 @@ function viewPanel()
     $CONFIG['captcha_fontpath'] = stripslashes($CONFIG['captcha_fontpath']);
     ?>
     <form method="post" action="cp_captcha.php">
-        <input type="hidden" name="csrf_token"
-               value="<?php echo $oToken->createToken() ?>"/>
-        <table cellspacing="0px" cellpadding="0px" border="0px" width="100%"
-               align="center">
-            <tr>
-                <td bgcolor="<?php echo $THEME['bordercolor'] ?>">
-                    <table border="0px" cellspacing="<?php echo $THEME['borderwidth'] ?>"
-                           cellpadding="<?php echo $THEME['tablespace'] ?>" width="100%">
-                        <tr class="category">
-                            <td colspan="2" class="title"><?php echo $lang['captcha_settings'] ?></td>
-                        </tr>
-                        <?php
-                        GaiaBB\FormHelper::formSelectOnOff($lang['text_captcha_status'], 'new_status', $captcha_on, $captcha_off);
-                        GaiaBB\FormHelper::formTextBox($lang['text_captcha_attempts_max'], 'new_maxattempts', $CONFIG['captcha_maxattempts'], 2);
-                        GaiaBB\FormHelper::formTextBox($lang['text_captcha_chars_min'], "new_minchars", $CONFIG['captcha_minchars'], 2);
-                        GaiaBB\FormHelper::formTextBox($lang['text_captcha_chars_max'], "new_maxchars", $CONFIG['captcha_maxchars'], 2);
-                        GaiaBB\FormHelper::formSelectList($lang['text_captcha_color_type'], 'new_colortype', array(
-                        $lang['text_captcha_color_type_single'],
-                        $lang['text_captcha_color_type_multiple'],
-                        ), array(
-                        'single',
-                        'multiple',
-                        ), $colmanage, false);
-                        GaiaBB\FormHelper::formTextBox($lang['text_captcha_font_path'], 'new_fontpath', $CONFIG['captcha_fontpath'], 40);
-                        ?>
-                        <tr class="ctrtablerow" bgcolor="<?php echo $THEME['altbg2'] ?>">
-                            <td colspan="2"><input class="submit" type="submit"
-                                                   name="captchasubmit"
-                                                   value="<?php echo $lang['textsubmitchanges'] ?>"/></td>
-                        </tr>
-                    </table>
-                </td>
-            </tr>
-        </table>
-        <?php echo $shadow2 ?>
+    <input type="hidden" name="token" value="<?php echo $oToken->get_new_token() ?>" />
+    <table cellspacing="0px" cellpadding="0px" border="0px" width="100%" align="center">
+    <tr>
+    <td bgcolor="<?php echo $THEME['bordercolor'] ?>">
+    <table border="0px" cellspacing="<?php echo $THEME['borderwidth'] ?>" cellpadding="<?php echo $THEME['tablespace'] ?>" width="100%">
+    <tr class="category">
+    <td colspan="2" class="title"><?php echo $lang['captcha_settings'] ?></td>
+    </tr>
+    <?php
+printsetting1($lang['text_captcha_status'], 'new_status', $captcha_on, $captcha_off);
+    printsetting2($lang['text_captcha_attempts_max'], 'new_maxattempts', $CONFIG['captcha_maxattempts'], 2);
+    printsetting2($lang['text_captcha_chars_min'], "new_minchars", $CONFIG['captcha_minchars'], 2);
+    printsetting2($lang['text_captcha_chars_max'], "new_maxchars", $CONFIG['captcha_maxchars'], 2);
+    printsetting3($lang['text_captcha_color_type'], 'new_colortype', array($lang['text_captcha_color_type_single'], $lang['text_captcha_color_type_multiple']), array('single', 'multiple'), $colmanage, false);
+    printsetting2($lang['text_captcha_font_path'], 'new_fontpath', $CONFIG['captcha_fontpath'], 40);
+    ?>
+    <tr class="ctrtablerow" bgcolor="<?php echo $THEME['altbg2'] ?>">
+    <td colspan="2"><input class="submit" type="submit" name="captchasubmit" value="<?php echo $lang['textsubmitchanges'] ?>" /></td>
+    </tr>
+    </table>
+    </td>
+    </tr>
+    </table>
+    <?php echo $shadow2 ?>
     </form>
     </td>
     </tr>
@@ -134,18 +126,16 @@ function viewPanel()
 /**
  * function() - short description of function
  *
- * TODO: Long description of function
+ * Long description of function
  *
- * @param $varname type,
- *            what it does
- * @return type, what the return does
- *
+ * @param    $varname    type, what it does
+ * @return   type, what the return does
  */
 function doPanel()
 {
     global $lang, $db, $THEME, $oToken;
 
-    $oToken->assertToken();
+    $oToken->assert_token();
 
     $new_status = $db->escape(formVar('new_status'));
     $new_maxattempts = $db->escape(formInt('new_maxattempts'));

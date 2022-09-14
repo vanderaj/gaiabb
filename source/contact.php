@@ -1,16 +1,16 @@
 <?php
 /**
  * GaiaBB
- * Copyright (c) 2009-2021 The GaiaBB Project
+ * Copyright (c) 2011-2022 The GaiaBB Group
  * https://github.com/vanderaj/gaiabb
  *
- * Forked from UltimaBB
+ * Based off UltimaBB
  * Copyright (c) 2004 - 2007 The UltimaBB Group
  * (defunct)
  *
- * Forked from XMB
- * Copyright (c) 2001 - 2021 The XMB Development Team
- * https://forums.xmbforum2.com/
+ * Based off XMB
+ * Copyright (c) 2001 - 2004 The XMB Development Team
+ * http://www.xmbforum.com
  *
  * This file is part of GaiaBB
  *
@@ -28,8 +28,11 @@
  *    along with GaiaBB.  If not, see <http://www.gnu.org/licenses/>.
  *
  **/
-// phpcs:disable PSR1.Files.SideEffects
-require_once 'header.php';
+
+define('ROOT', './');
+
+require_once ROOT . 'header.php';
+require_once ROOT . 'include/validate.inc.php';
 
 loadtpl('contactus');
 
@@ -43,7 +46,7 @@ btitle($lang['contactus']);
 
 eval('echo "' . template('header') . '";');
 
-$oToken->assertToken(false);
+$oToken->assert_token(false);
 
 if ($CONFIG['contactus'] == 'off') {
     error($lang['fnasorry'], false);
@@ -82,24 +85,25 @@ if (onSubmit('contactsubmit')) {
     }
 
     if (empty($CONFIG['adminemail'])) {
+        // The mail class can handle this error, but it'll describe it vaguely
         error($lang['noadminemail'], false, '', '', 'cp_board.php', true, false, true);
     }
 
-    // The mail class can handle this error, but it'll describe it vaguely
     if (empty($CONFIG['bbname'])) {
+        // The mail class can handle this error, but it'll describe it vaguely
         error($lang['nobbname'], false, '', '', 'cp_board.php', true, false, true);
     }
 
     if (!empty($name) && !empty($email) && !empty($CONFIG['adminemail']) && !empty($CONFIG['bbname'])) {
-        $mailSystem->setTo($CONFIG['adminemail']);
-        $mailSystem->setFrom($email, $name);
-        $mailSystem->setSubject('[' . $CONFIG['bbname'] . '] ' . $subject);
-        $mailSystem->setMessage($message);
-        $mailSystem->sendMail();
+        $mailsys->setTo($CONFIG['adminemail']);
+        $mailsys->setFrom($email, $name);
+        $mailsys->setSubject('[' . $CONFIG['bbname'] . '] ' . $subject);
+        $mailsys->setMessage($message);
+        $mailsys->Send();
 
         message($lang['contactsubmitted'], false, '', '', 'index.php', true, false, true);
     }
 }
 
 loadtime();
-eval('echo "' . template('footer') . '";'); // XXX
+eval('echo "' . template('footer') . '";');

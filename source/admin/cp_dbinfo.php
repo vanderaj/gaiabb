@@ -1,16 +1,16 @@
 <?php
 /**
  * GaiaBB
- * Copyright (c) 2009-2021 The GaiaBB Project
+ * Copyright (c) 2011-2022 The GaiaBB Group
  * https://github.com/vanderaj/gaiabb
  *
- * Forked from UltimaBB
+ * Based off UltimaBB
  * Copyright (c) 2004 - 2007 The UltimaBB Group
  * (defunct)
  *
- * Forked from XMB
- * Copyright (c) 2001 - 2021 The XMB Development Team
- * https://forums.xmbforum2.com/
+ * Based off XMB
+ * Copyright (c) 2001 - 2004 The XMB Development Team
+ * http://www.xmbforum.com
  *
  * This file is part of GaiaBB
  *
@@ -28,15 +28,20 @@
  *    along with GaiaBB.  If not, see <http://www.gnu.org/licenses/>.
  *
  **/
-// phpcs:disable PSR1.Files.SideEffects
-if (!defined('ROOT')) {
-    define('ROOT', '../');
-}
+
+define('ROOT', '../');
+define('ROOTINC', '../include/');
+define('ROOTCLASS', '../class/');
 
 require_once ROOT . 'header.php';
-require_once ROOT . 'include/admincp.inc.php';
+require_once ROOTINC . 'admincp.inc.php';
 
-loadtpl('cp_header', 'cp_footer', 'cp_message', 'cp_error');
+loadtpl(
+    'cp_header',
+    'cp_footer',
+    'cp_message',
+    'cp_error'
+);
 
 $shadow = shadowfx();
 $shadow2 = shadowfx2();
@@ -69,38 +74,29 @@ function viewPanel()
     $count = 1;
     $showtables = '';
     foreach ($tables as $tablename) {
-        $showtables .= '<tr><td class="ctrtablerow" bgcolor="' . $THEME['altbg1'] .
-        '" width="10%"><strong>' .
-        $count . '</strong></td><td class="tablerow" bgcolor="' .
-        $THEME['altbg2'] . '"><a href="cp_dbinfo.php?list=fields&amp;tablename=' .
-        $tablename . '&amp;csrf_token=' .
-        $oToken->createToken() . '">' .
-            $tablename . '</a></td></tr>';
+        $showtables .= '<tr><td class="ctrtablerow" bgcolor="' . $THEME['altbg1'] . '" width="10%"><strong>' . $count . '</strong></td><td class="tablerow" bgcolor="' . $THEME['altbg2'] . '"><a href="cp_dbinfo.php?list=fields&amp;tablename=' . $tablename . '&amp;token=' . $oToken->get_new_token() . '">' . $tablename . '</a></td></tr>';
         $showtables .= "\n";
         $count++;
     }
     ?>
-    <table cellspacing="0px" cellpadding="0px" border="0px" width="100%"
-           align="center">
-        <tr>
-            <td bgcolor="<?php echo $THEME['bordercolor'] ?>">
-                <table border="0px" cellspacing="<?php echo $THEME['borderwidth'] ?>"
-                       cellpadding="<?php echo $THEME['tablespace'] ?>" width="100%">
-                    <tr class="category">
-                        <td class="title" colspan="2"><?php echo $lang['tableinformation'] ?>
-                            For <?php echo $dbname ?></td>
-                    </tr>
-                    <tr class="tablerow">
-                        <td bgcolor="<?php echo $THEME['altbg1'] ?>" colspan="2"><?php echo $lang['tabledir'] ?></td>
-                    </tr>
-                    <tr bgcolor="<?php echo $THEME['altbg1'] ?>">
-                        <td class="ctrtablerow"><strong><?php echo $lang['tablenumber'] ?></strong></td>
-                        <td class="tablerow"><strong><?php echo $lang['tablename'] ?></strong></td>
-                    </tr>
-                    <?php echo $showtables ?>
-                </table>
-            </td>
-        </tr>
+    <table cellspacing="0px" cellpadding="0px" border="0px" width="100%" align="center">
+    <tr>
+    <td bgcolor="<?php echo $THEME['bordercolor'] ?>">
+    <table border="0px" cellspacing="<?php echo $THEME['borderwidth'] ?>" cellpadding="<?php echo $THEME['tablespace'] ?>" width="100%">
+    <tr class="category">
+    <td class="title" colspan="2"><?php echo $lang['tableinformation'] ?> For <?php echo $dbname ?></td>
+    </tr>
+    <tr class="tablerow">
+    <td bgcolor="<?php echo $THEME['altbg1'] ?>" colspan="2"><?php echo $lang['tabledir'] ?></td>
+    </tr>
+    <tr bgcolor="<?php echo $THEME['altbg1'] ?>">
+    <td class="ctrtablerow"><strong><?php echo $lang['tablenumber'] ?></strong></td>
+    <td class="tablerow"><strong><?php echo $lang['tablename'] ?></strong></td>
+    </tr>
+    <?php echo $showtables ?>
+    </table>
+    </td>
+    </tr>
     </table>
     <?php echo $shadow2 ?>
     </td>
@@ -114,14 +110,14 @@ function listFields()
     global $shadow2, $lang, $db, $THEME;
     global $oToken;
 
-    $oToken->assertToken();
+    $oToken->assert_token();
 
     $tablename = stripslashes(getRequestVar('tablename'));
 
     $result = $db->query("SELECT * FROM $tablename");
-    $columns = $db->numFields($result);
-    $records = $db->numRows($result);
-    $table = $db->fieldTable($result, 0);
+    $columns = $db->num_fields($result);
+    $records = $db->num_rows($result);
+    $table = $db->field_table($result, 0);
     $count = 1;
     $comma = '';
     if (!$table) {
@@ -129,51 +125,38 @@ function listFields()
     }
     $showfields = '';
     for ($i = 0; $i < $columns; $i++) {
-        $type = $db->fieldType($result, $i);
-        $name = $db->fieldName($result, $i);
-        $length = $db->fieldLen($result, $i);
-        $flags = $db->fieldFlags($result, $i);
+        $type = $db->field_type($result, $i);
+        $name = $db->field_name($result, $i);
+        $length = $db->field_len($result, $i);
+        $flags = $db->field_flags($result, $i);
         $comma = ', ';
 
-        $showfields .= '<tr><td class="ctrtablerow" bgcolor="' .
-            $THEME['altbg1'] . '" width="10%"><strong>' .
-            $count . '</strong></td><td class="tablerow" bgcolor="' .
-            $THEME['altbg2'] . '">' .
-            $name . '</td><td class="tablerow" bgcolor="' .
-            $THEME['altbg1'] . '">' .
-            $type . '</td><td class="tablerow" bgcolor="' .
-            $THEME['altbg2'] . '">' .
-            $length . '</td><td class="tablerow" bgcolor="' . $THEME['altbg1'] . '">' .
-            $flags . '</td></tr>';
+        $showfields .= '<tr><td class="ctrtablerow" bgcolor="' . $THEME['altbg1'] . '" width="10%"><strong>' . $count . '</strong></td><td class="tablerow" bgcolor="' . $THEME['altbg2'] . '">' . $name . '</td><td class="tablerow" bgcolor="' . $THEME['altbg1'] . '">' . $type . '</td><td class="tablerow" bgcolor="' . $THEME['altbg2'] . '">' . $length . '</td><td class="tablerow" bgcolor="' . $THEME['altbg1'] . '">' . $flags . '</td></tr>';
         $showfields .= "\n";
         $count++;
     }
-    $db->freeResult($result);
+    $db->free_result($result);
     ?>
-    <table cellspacing="0px" cellpadding="0px" border="0px" width="100%"
-           align="center">
-        <tr>
-            <td bgcolor="<?php echo $THEME['bordercolor'] ?>">
-                <table border="0px" cellspacing="<?php echo $THEME['borderwidth'] ?>"
-                       cellpadding="<?php echo $THEME['tablespace'] ?>" width="100%">
-                    <tr class="category">
-                        <td class="title" colspan="5"><?php echo $lang['fieldinformation'] ?>
-                            For <?php echo $table ?></td>
-                    </tr>
-                    <tr class="tablerow" bgcolor="<?php echo $THEME['altbg1'] ?>">
-                        <td colspan="5"><a href="cp_dbinfo.php"><?php echo $lang['returndblist'] ?></a></td>
-                    </tr>
-                    <tr bgcolor="<?php echo $THEME['altbg1'] ?>">
-                        <td class="ctrtablerow"><strong><?php echo $lang['fieldnumber'] ?></strong></td>
-                        <td class="tablerow"><strong><?php echo $lang['fieldname'] ?></strong></td>
-                        <td class="tablerow"><strong><?php echo $lang['fieldtype'] ?></strong></td>
-                        <td class="tablerow"><strong><?php echo $lang['fieldlength'] ?></strong></td>
-                        <td class="tablerow"><strong><?php echo $lang['fieldflags'] ?></strong></td>
-                    </tr>
-                    <?php echo $showfields ?>
-                </table>
-            </td>
-        </tr>
+    <table cellspacing="0px" cellpadding="0px" border="0px" width="100%" align="center">
+    <tr><td bgcolor="<?php echo $THEME['bordercolor'] ?>">
+    <table border="0px" cellspacing="<?php echo $THEME['borderwidth'] ?>" cellpadding="<?php echo $THEME['tablespace'] ?>" width="100%">
+    <tr class="category">
+    <td class="title" colspan="5"><?php echo $lang['fieldinformation'] ?> For <?php echo $table ?></td>
+    </tr>
+    <tr class="tablerow" bgcolor="<?php echo $THEME['altbg1'] ?>">
+    <td colspan="5"><a href="cp_dbinfo.php"><?php echo $lang['returndblist'] ?></a></td>
+    </tr>
+    <tr bgcolor="<?php echo $THEME['altbg1'] ?>">
+    <td class="ctrtablerow"><strong><?php echo $lang['fieldnumber'] ?></strong></td>
+    <td class="tablerow"><strong><?php echo $lang['fieldname'] ?></strong></td>
+    <td class="tablerow"><strong><?php echo $lang['fieldtype'] ?></strong></td>
+    <td class="tablerow"><strong><?php echo $lang['fieldlength'] ?></strong></td>
+    <td class="tablerow"><strong><?php echo $lang['fieldflags'] ?></strong></td>
+    </tr>
+    <?php echo $showfields ?>
+    </table>
+    </td>
+    </tr>
     </table>
     <?php echo $shadow2 ?>
     </td>
