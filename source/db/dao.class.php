@@ -45,7 +45,7 @@ class DataAccessObject
      * @param    $varname    type, what it does
      * @return   type, what the return does
      */
-    public function DataAccessObject()
+    public function __construct()
     {
     }
 

@@ -45,7 +45,7 @@ class pm
 {
     public $uid;
 
-    public function pm()
+    public function __construct()
     {
         $this->uid = 0;
     }

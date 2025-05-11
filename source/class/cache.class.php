@@ -39,6 +39,10 @@ class cacheable
     public $prefix;
     public $expiry;
 
+    public function __construct()
+    {
+    }
+
     public function cacheable($prefix, $maxlife)
     {
         global $onlinetime;

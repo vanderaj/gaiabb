@@ -35,7 +35,7 @@ if (!defined('IN_PROGRAM') && (defined('DEBUG') && DEBUG == false)) {
 
 class post
 {
-    public function post()
+    public function __construct()
     {
     }
 

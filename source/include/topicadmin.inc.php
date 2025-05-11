@@ -35,7 +35,7 @@ if (!defined('IN_PROGRAM') && (defined('DEBUG') && DEBUG == false)) {
 
 class mod
 {
-    public function mod()
+    public function __construct()
     {
         global $lang, $action;
 

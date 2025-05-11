@@ -41,7 +41,7 @@ class MailSys
     private $email;
 
     // Instantiate the class
-    public function MailSys()
+    public function __construct()
     {
         $this->email = new \SendGrid\Mail\Mail();
 

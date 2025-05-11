@@ -94,7 +94,7 @@ class member
     public $uid;
     public $extracol = array();
 
-    public function member($memberId = 0)
+    public function __construct($memberId = 0)
     {
         if ($memberId == 0) {
             // create a new member object... in memory

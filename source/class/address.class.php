@@ -35,7 +35,7 @@ if (!defined('IN_PROGRAM') && (defined('DEBUG') && DEBUG == false)) {
 
 class address
 {
-    public function address()
+    public function __construct()
     {
     }
 

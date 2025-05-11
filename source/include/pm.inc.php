@@ -36,7 +36,7 @@ if (!defined('IN_PROGRAM') && (defined('DEBUG') && DEBUG == false)) {
 
 class pmDAO
 {
-    public function pmDAO()
+    public function __construct()
     {
 
     }
@@ -68,7 +68,7 @@ class pmDAO
 
 class pmModel
 {
-    public function pmModel()
+    public function __construct()
     {
     }
 

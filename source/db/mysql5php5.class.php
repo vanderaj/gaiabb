@@ -68,7 +68,7 @@ class mysql5Php5 extends DataAccessObject
      * @param    $varname    type, what it does
      * @return   type, what the return does
      */
-    public function mysql5Php5()
+    public function __construct()
     {
         $this->db = '';
         $this->conn = null;

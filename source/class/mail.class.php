@@ -45,7 +45,7 @@ class MailSys
     public $smtp_conn;
 
     // Instantiate the class
-    public function MailSys()
+    public function __construct()
     {
         $OS = substr(PHP_OS, 0, 3);
         define('GAIABB_OS', $OS);
