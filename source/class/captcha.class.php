@@ -94,7 +94,7 @@ class captcha
         {
             $handle = fopen($this->font_locations[$i],"r");
             $c_wid = fread($handle,11);
-            $this->font_widths[$i] = ord($c_wid{8})+ord($c_wid{9})+ord($c_wid{10});
+            $this->font_widths[$i] = ord($c_wid[8])+ord($c_wid[9])+ord($c_wid[10]);
             fclose($handle);
         }
 
@@ -200,11 +200,11 @@ class captcha
         {
             if (mt_rand(0,4)>=2)
             {
-                $this->word .= $consonants{mt_rand(0,strlen($consonants)-1)};
+                $this->word .= $consonants[mt_rand(0,strlen($consonants)-1)];
             }
             else
             {
-                $this->word .= $mixed{mt_rand(0,strlen($mixed)-1)};
+                $this->word .= $mixed[mt_rand(0,strlen($mixed)-1)];
             }
         }
         $_SESSION['word_hash'] = md5(strtolower($this->word));
@@ -310,7 +310,7 @@ class captcha
 
             $j = mt_rand(0,sizeof($this->font_locations)-1);
             $font = ImageLoadFont($this->font_locations[$j]);
-            ImageString($this->im2, $font, $this->word_start_x+(25*$i), $this->word_start_y, $this->word{$i}, $text_colour2);
+            ImageString($this->im2, $font, $this->word_start_x+(25*$i), $this->word_start_y, $this->word[$i], $text_colour2);
         }
         $this->font_pixelwidth = $this->font_widths[$j];
     }
