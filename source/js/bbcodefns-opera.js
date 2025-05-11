@@ -25,7 +25,6 @@
  *
  *    You should have received a copy of the GNU General Public License
  *    along with GaiaBB.  If not, see <http://www.gnu.org/licenses/>.
- *
  **/
 
 var URL_REGEXP_GOES_HERE = new RegExp('(.*)://(.*)');
@@ -45,7 +44,8 @@ if (defmode == 'advanced') {
     advmode = false;
 }
 
-function chmode(switchMode) {
+function chmode(switchMode)
+{
     if (switchMode == 1) {
         advmode = false;
         normalmode = false;
@@ -64,7 +64,8 @@ function chmode(switchMode) {
     }
 }
 
-function AddText(bbFirst, bbLast, text, el) {
+function AddText(bbFirst, bbLast, text, el)
+{
     var len = el.textLength;
     var start = el.selectionStart;
     var end = el.selectionEnd;
@@ -74,7 +75,8 @@ function AddText(bbFirst, bbLast, text, el) {
     el.focus();
 }
 
-function wrapText(prePend, apPend, el) {
+function wrapText(prePend, apPend, el)
+{
     var len = el.textLength;
     var start = el.selectionStart;
     var end = el.selectionEnd;
@@ -85,7 +87,8 @@ function wrapText(prePend, apPend, el) {
     el.focus();
 }
 
-function hasSelection(el) {
+function hasSelection(el)
+{
     if (el.selectionEnd - el.selectionStart > 0) {
         return true;
     } else {
@@ -93,11 +96,13 @@ function hasSelection(el) {
     }
 }
 
-function fetchSelection(el) {
+function fetchSelection(el)
+{
     return el.value.substring(el.selectionStart, el.selectionEnd);
 }
 
-function email() {
+function email()
+{
     if (helpmode) {
         alert(bbcode_help_email);
     } else if (advmode) {
@@ -176,7 +181,8 @@ function email() {
     }
 }
 
-function chsize(size) {
+function chsize(size)
+{
     if (helpmode) {
         alert(bbcode_help_size);
     } else if (advmode) {
@@ -204,7 +210,8 @@ function chsize(size) {
     }
 }
 
-function chfont(font) {
+function chfont(font)
+{
     if (helpmode) {
         alert(bbcode_help_font);
     } else if (advmode) {
@@ -232,7 +239,8 @@ function chfont(font) {
     }
 }
 
-function chcolor(color) {
+function chcolor(color)
+{
     if (helpmode) {
         alert(bbcode_help_color);
     } else if (advmode) {
@@ -260,7 +268,8 @@ function chcolor(color) {
     }
 }
 
-function bold() {
+function bold()
+{
     if (helpmode) {
         alert(bbcode_help_bold);
     } else if (advmode) {
@@ -288,7 +297,8 @@ function bold() {
     }
 }
 
-function italicize() {
+function italicize()
+{
     if (helpmode) {
         alert(bbcode_help_italic);
     } else if (advmode) {
@@ -316,7 +326,8 @@ function italicize() {
     }
 }
 
-function underline() {
+function underline()
+{
     if (helpmode) {
         alert(bbcode_help_underline);
     } else if (advmode) {
@@ -344,7 +355,8 @@ function underline() {
     }
 }
 
-function center() {
+function center()
+{
     if (helpmode) {
         alert(bbcode_help_center);
     } else if (advmode) {
@@ -372,7 +384,8 @@ function center() {
     }
 }
 
-function image() {
+function image()
+{
     if (helpmode) {
         alert(bbcode_help_image);
     } else if (advmode) {
@@ -400,7 +413,8 @@ function image() {
     }
 }
 
-function quote() {
+function quote()
+{
     if (helpmode) {
         alert(bbcode_help_quote);
     } else if (advmode) {
@@ -428,7 +442,8 @@ function quote() {
     }
 }
 
-function code() {
+function code()
+{
     if (helpmode) {
         alert(bbcode_help_code);
     } else if (advmode) {
@@ -456,7 +471,8 @@ function code() {
     }
 }
 
-function hyperlink() {
+function hyperlink()
+{
     if (helpmode) {
         alert(bbcode_help_link);
     } else if (advmode) {
@@ -536,7 +552,8 @@ function hyperlink() {
     }
 }
 
-function list() {
+function list()
+{
     if (helpmode) {
         alert(bbcode_help_list);
     } else if (advmode) {
@@ -616,6 +633,7 @@ function list() {
     }
 }
 
-function storeCaret(textEl) {
+function storeCaret(textEl)
+{
     return undefined;
 }

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * GaiaBB
  * Copyright (c) 2009-2021 The GaiaBB Project
@@ -22,8 +23,8 @@
  *
  *    You should have received a copy of the GNU General Public License
  *    along with GaiaBB.  If not, see <http://www.gnu.org/licenses/>.
- *
  **/
+
 // phpcs:disable PSR1.Files.SideEffects
 if (!defined('IN_PROGRAM') && (defined('DEBUG') && DEBUG == false)) {
     exit('This file is not designed to be called directly');
@@ -34,10 +35,9 @@ if (!defined('IN_PROGRAM') && (defined('DEBUG') && DEBUG == false)) {
  *
  * TODO: Long description of function
  *
- * @param $varname type,
- *            what it does
+ * @param  $varname type,
+ *                  what it does
  * @return type, what the return does
- *
  */
 function view_convert_backup($path, $boardType = "XMB")
 {
@@ -70,10 +70,9 @@ function view_convert_backup($path, $boardType = "XMB")
  *
  * TODO: Long description of function
  *
- * @param $varname type,
- *            what it does
+ * @param  $varname type,
+ *                  what it does
  * @return type, what the return does
- *
  */
 function view_convert_index($path)
 {
@@ -104,10 +103,9 @@ function view_convert_index($path)
  *
  * TODO: Long description of function
  *
- * @param $varname type,
- *            what it does
+ * @param  $varname type,
+ *                  what it does
  * @return type, what the return does
- *
  */
 function view_convert_details($path, $boardtype = 'XMB')
 {
@@ -223,10 +221,9 @@ function view_convert_details($path, $boardtype = 'XMB')
  *
  * TODO: Long description of function
  *
- * @param $varname type,
- *            what it does
+ * @param  $varname type,
+ *                  what it does
  * @return type, what the return does
- *
  */
 function view_convert_action($boardtype = 'XMB')
 {
@@ -288,10 +285,9 @@ function view_convert_action($boardtype = 'XMB')
  *
  * TODO: Long description of function
  *
- * @param $varname type,
- *            what it does
+ * @param  $varname type,
+ *                  what it does
  * @return type, what the return does
- *
  */
 function view_convert_complete($boardtype = 'XMB')
 {
@@ -304,10 +300,9 @@ function view_convert_complete($boardtype = 'XMB')
  *
  * TODO: Long description of function
  *
- * @param $varname type,
- *            what it does
+ * @param  $varname type,
+ *                  what it does
  * @return type, what the return does
- *
  */
 function view_convert_warncomplete($boardtype = 'XMB')
 {

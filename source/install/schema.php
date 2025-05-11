@@ -1,4 +1,5 @@
 <?php
+
 /**
  * GaiaBB
  * Copyright (c) 2009-2021 The GaiaBB Project
@@ -23,12 +24,13 @@
  *    You should have received a copy of the GNU General Public License
  *    along with GaiaBB.  If not, see <http://www.gnu.org/licenses/>.
  *
- * @category    Forum software
- * @package     gaiabb-installer
- * @author      Andrew van der Stock vanderaj@gmail.com
- * @license     GNU GPL v3 or later
- * @link        https://github.com/vanderaj/gaiabb
+ * @category Forum software
+ * @package  gaiabb-installer
+ * @author   Andrew van der Stock vanderaj@gmail.com
+ * @license  GNU GPL v3 or later
+ * @link     https://github.com/vanderaj/gaiabb
  **/
+
 // phpcs:disable PSR1.Files.SideEffects
 if (!defined('IN_PROGRAM') && (defined('DEBUG') && DEBUG == false)) {
     exit('This file is not designed to be called directly');
@@ -41,12 +43,14 @@ require_once 'common.model.php';
 function schema_create_addresses($db, $tablepre)
 {
     $db->query("DROP TABLE IF EXISTS `" . $tablepre . "addresses`");
-    $db->query("CREATE TABLE `" . $tablepre . "addresses` (
+    $db->query(
+        "CREATE TABLE `" . $tablepre . "addresses` (
         `username` varchar(32) NOT NULL DEFAULT '',
         `addressname` varchar(32) NOT NULL DEFAULT '',
         KEY `addressname` (`addressname`),
 		KEY `username` (`username`)
-    ) ENGINE=MyISAM");
+    ) ENGINE=MyISAM"
+    );
 }
 
 /**
@@ -54,8 +58,8 @@ function schema_create_addresses($db, $tablepre)
  *
  * TODO: Long description of function
  *
- * @param    $varname    type, what it does
- * @return   type, what the return does
+ * @param  $varname    type, what it does
+ * @return type, what the return does
  */
 // Note to data modellers.
 //
@@ -66,7 +70,8 @@ function schema_create_addresses($db, $tablepre)
 function schema_create_adminlogs($db, $tablepre)
 {
     $db->query("DROP TABLE IF EXISTS `" . $tablepre . "adminlogs`");
-    $db->query("CREATE TABLE `" . $tablepre . "adminlogs` (
+    $db->query(
+        "CREATE TABLE `" . $tablepre . "adminlogs` (
     	`uid` int(7) NOT NULL DEFAULT '0',
     	`username` varchar(32) NOT NULL DEFAULT '',
         `action` TEXT NOT NULL DEFAULT '',
@@ -77,13 +82,15 @@ function schema_create_adminlogs($db, $tablepre)
         KEY `action` (`action`(8)),
         KEY `fid` (`fid`)
         ) ENGINE=MyISAM
-    ");
+    "
+    );
 }
 
 function schema_create_attachments($db, $tablepre)
 {
     $db->query("DROP TABLE IF EXISTS `" . $tablepre . "attachments`");
-    $db->query("CREATE TABLE `" . $tablepre . "attachments` (
+    $db->query(
+        "CREATE TABLE `" . $tablepre . "attachments` (
         `aid` int(10) NOT NULL auto_increment,
         `tid` int(10) NOT NULL DEFAULT '0',
         `pid` int(10) NOT NULL DEFAULT '0',
@@ -100,13 +107,15 @@ function schema_create_attachments($db, $tablepre)
         KEY `filesize` (`filesize`(8)),
         KEY `downloads` (`downloads`),
         KEY `filename` (`filename`(8))
-        ) ENGINE=MyISAM");
+        ) ENGINE=MyISAM"
+    );
 }
 
 function schema_create_banned($db, $tablepre)
 {
     $db->query("DROP TABLE IF EXISTS `" . $tablepre . "banned`");
-    $db->query("CREATE TABLE `" . $tablepre . "banned` (
+    $db->query(
+        "CREATE TABLE `" . $tablepre . "banned` (
         `ip1` smallint(3) NOT NULL DEFAULT '0',
         `ip2` smallint(3) NOT NULL DEFAULT '0',
         `ip3` smallint(3) NOT NULL DEFAULT '0',
@@ -119,7 +128,8 @@ function schema_create_banned($db, $tablepre)
         KEY `ip3` (`ip3`),
         KEY `ip4` (`ip4`)
         ) ENGINE=MyISAM
-    ");
+    "
+    );
 }
 
 /**
@@ -127,37 +137,42 @@ function schema_create_banned($db, $tablepre)
  *
  * TODO: Long description of function
  *
- * @param    $varname    type, what it does
- * @return   type, what the return does
+ * @param  $varname type, what it does
+ * @return type, what the return does
  */
 function schema_create_dateformats($db, $tablepre)
 {
     $db->query("DROP TABLE IF EXISTS `" . $tablepre . "dateformats`");
-    $db->query("CREATE TABLE `" . $tablepre . "dateformats` (
+    $db->query(
+        "CREATE TABLE `" . $tablepre . "dateformats` (
         `dateformat` varchar(10) NOT NULL DEFAULT '',
         `did` int(3) NOT NULL auto_increment,
         PRIMARY KEY  (`did`)
         ) ENGINE=MyISAM
-    ");
+    "
+    );
 }
 
 function schema_create_favorites($db, $tablepre)
 {
     $db->query("DROP TABLE IF EXISTS `" . $tablepre . "favorites`");
-    $db->query("CREATE TABLE `" . $tablepre . "favorites` (
+    $db->query(
+        "CREATE TABLE `" . $tablepre . "favorites` (
         `tid` int(10) NOT NULL DEFAULT '0',
         `username` varchar(32) NOT NULL DEFAULT '',
         `type` varchar(32) NOT NULL DEFAULT '',
         KEY `tid` (`tid`),
         KEY `username` (`username`(8))
         ) ENGINE=MyISAM
-    ");
+    "
+    );
 }
 
 function schema_create_forums($db, $tablepre)
 {
     $db->query("DROP TABLE IF EXISTS `" . $tablepre . "forums`");
-    $db->query("CREATE TABLE `" . $tablepre . "forums` (
+    $db->query(
+        "CREATE TABLE `" . $tablepre . "forums` (
         `type` varchar(15) NOT NULL DEFAULT '',
         `fid` smallint(6) NOT NULL auto_increment,
         `name` varchar(50) NOT NULL DEFAULT '',
@@ -202,7 +217,8 @@ function schema_create_forums($db, $tablepre)
         KEY `status` (`status`),
         KEY `lastpost` (`lastpost`)
         ) ENGINE=MyISAM
-    ");
+    "
+    );
 }
 
 /**
@@ -210,19 +226,21 @@ function schema_create_forums($db, $tablepre)
  *
  * TODO: Long description of function
  *
- * @param    $varname    type, what it does
- * @return   type, what the return does
+ * @param  $varname type, what it does
+ * @return type, what the return does
  */
 function schema_create_guestcount($db, $tablepre)
 {
     $db->query("DROP TABLE IF EXISTS `" . $tablepre . "guestcount`");
-    $db->query("CREATE TABLE `" . $tablepre . "guestcount` (
+    $db->query(
+        "CREATE TABLE `" . $tablepre . "guestcount` (
         `ipaddress` varchar(15) NOT NULL DEFAULT '',
         `onlinetime` int(10) NOT NULL DEFAULT '0',
         KEY `ipaddress` (`ipaddress`),
         KEY `onlinetime` (`onlinetime`)
         ) ENGINE=MyISAM
-    ");
+    "
+    );
 }
 
 /**
@@ -230,13 +248,14 @@ function schema_create_guestcount($db, $tablepre)
  *
  * TODO: Long description of function
  *
- * @param    $varname    type, what it does
- * @return   type, what the return does
+ * @param  $varname type, what it does
+ * @return type, what the return does
  */
 function schema_create_faq($db, $tablepre)
 {
     $db->query("DROP TABLE IF EXISTS `" . $tablepre . "faq`");
-    $db->query("CREATE TABLE `" . $tablepre . "faq` (
+    $db->query(
+        "CREATE TABLE `" . $tablepre . "faq` (
         `type` varchar(15) NOT NULL DEFAULT '',
         `fid` smallint(6) NOT NULL auto_increment,
         `name` text NOT NULL DEFAULT '',
@@ -255,13 +274,15 @@ function schema_create_faq($db, $tablepre)
         KEY `status` (`status`),
         KEY `displayorder` (`displayorder`)
         ) ENGINE=MyISAM
-    ");
+    "
+    );
 }
 
 function schema_create_lastposts($db, $tablepre)
 {
     $db->query("DROP TABLE IF EXISTS `" . $tablepre . "lastposts`");
-    $db->query("CREATE TABLE `" . $tablepre . "lastposts` (
+    $db->query(
+        "CREATE TABLE `" . $tablepre . "lastposts` (
 		`tid` int(7) NOT NULL DEFAULT '0',
 		`uid` int(5) NOT NULL DEFAULT '0',
 		`username` varchar(255) NOT NULL DEFAULT '',
@@ -269,13 +290,15 @@ function schema_create_lastposts($db, $tablepre)
 		`pid` int(8) NOT NULL DEFAULT '0',
 		KEY `tid` (`tid`)
 		) ENGINE=MyISAM
-	");
+	"
+    );
 }
 
 function schema_create_members($db, $tablepre)
 {
     $db->query("DROP TABLE IF EXISTS `" . $tablepre . "members`");
-    $db->query("CREATE TABLE `" . $tablepre . "members` (
+    $db->query(
+        "CREATE TABLE `" . $tablepre . "members` (
         `uid` int(32) NOT NULL auto_increment,
         `username` varchar(32) NOT NULL DEFAULT '',
         `password` varchar(32) NOT NULL DEFAULT '',
@@ -339,13 +362,15 @@ function schema_create_members($db, $tablepre)
         KEY `invisible` (`invisible`),
         KEY `threadnum` (`threadnum`)
         ) ENGINE=MyISAM
-    ");
+    "
+    );
 }
 
 function schema_create_modlogs($db, $tablepre)
 {
     $db->query("DROP TABLE IF EXISTS `" . $tablepre . "modlogs`");
-    $db->query("CREATE TABLE `" . $tablepre . "modlogs` (
+    $db->query(
+        "CREATE TABLE `" . $tablepre . "modlogs` (
 	        `uid` int(7) NOT NULL DEFAULT '0',
 			`username` varchar(32) NOT NULL DEFAULT '',
 	        `action` varchar(64) NOT NULL DEFAULT '',
@@ -356,7 +381,8 @@ function schema_create_modlogs($db, $tablepre)
 	        KEY `action` (`action`(8)),
 	        KEY `fid` (`fid`)
 	        ) ENGINE=MyISAM
-	    ");
+	    "
+    );
 }
 
 /**
@@ -364,13 +390,14 @@ function schema_create_modlogs($db, $tablepre)
  *
  * TODO: Long description of function
  *
- * @param    $varname    type, what it does
- * @return   type, what the return does
+ * @param  $varname type, what it does
+ * @return type, what the return does
  */
 function schema_create_pluglinks($db, $tablepre)
 {
     $db->query("DROP TABLE IF EXISTS `" . $tablepre . "pluglinks`");
-    $db->query("CREATE TABLE `" . $tablepre . "pluglinks` (
+    $db->query(
+        "CREATE TABLE `" . $tablepre . "pluglinks` (
         `id` SMALLINT(6) NOT NULL auto_increment,
         `name` text NOT NULL DEFAULT '',
         `url` text NOT NULL DEFAULT '',
@@ -381,13 +408,15 @@ function schema_create_pluglinks($db, $tablepre)
         KEY `status` (`status`),
         KEY `displayorder` (`displayorder`)
         ) ENGINE=MyISAM
-    ");
+    "
+    );
 }
 
 function schema_create_posts($db, $tablepre)
 {
     $db->query("DROP TABLE IF EXISTS `" . $tablepre . "posts`");
-    $db->query("CREATE TABLE `" . $tablepre . "posts` (
+    $db->query(
+        "CREATE TABLE `" . $tablepre . "posts` (
         `fid` smallint(6) NOT NULL DEFAULT '0',
         `tid` int(10) NOT NULL DEFAULT '0',
         `pid` int(10) NOT NULL auto_increment,
@@ -406,13 +435,15 @@ function schema_create_posts($db, $tablepre)
         KEY `dateline` (`dateline`),
         KEY `author` (`author`(8))
         ) ENGINE=MyISAM
-    ");
+    "
+    );
 }
 
 function schema_create_ranks($db, $tablepre)
 {
     $db->query("DROP TABLE IF EXISTS `" . $tablepre . "ranks`");
-    $db->query("CREATE TABLE `" . $tablepre . "ranks` (
+    $db->query(
+        "CREATE TABLE `" . $tablepre . "ranks` (
         `title` varchar(100) NOT NULL DEFAULT '',
         `posts` int(100) DEFAULT NULL,
         `id` smallint(5) NOT NULL auto_increment,
@@ -422,20 +453,23 @@ function schema_create_ranks($db, $tablepre)
         PRIMARY KEY  (`id`),
         KEY `title` (`title`)
         ) ENGINE=MyISAM
-    ");
+    "
+    );
 }
 
 function schema_create_restricted($db, $tablepre)
 {
     $db->query("DROP TABLE IF EXISTS `" . $tablepre . "restricted`");
-    $db->query("CREATE TABLE `" . $tablepre . "restricted` (
+    $db->query(
+        "CREATE TABLE `" . $tablepre . "restricted` (
         `name` varchar(32) NOT NULL DEFAULT '',
         `id` smallint(6) NOT NULL auto_increment,
         `case_sensitivity` enum('0','1') NOT NULL DEFAULT '1',
         `partial` enum('0','1') NOT NULL DEFAULT '1',
         PRIMARY KEY  (`id`)
         ) ENGINE=MyISAM
-    ");
+    "
+    );
 }
 
 /**
@@ -449,13 +483,15 @@ function schema_create_restricted($db, $tablepre)
 function schema_create_robotcount($db, $tablepre)
 {
     $db->query("DROP TABLE IF EXISTS `" . $tablepre . "robotcount`");
-    $db->query("CREATE TABLE `" . $tablepre . "robotcount` (
+    $db->query(
+        "CREATE TABLE `" . $tablepre . "robotcount` (
         `ipaddress` varchar(15) NOT NULL DEFAULT '',
         `onlinetime` int(10) NOT NULL DEFAULT '0',
         KEY `ipaddress` (`ipaddress`),
         KEY `onlinetime` (`onlinetime`)
         ) ENGINE=MyISAM
-    ");
+    "
+    );
 }
 
 /**
@@ -463,20 +499,22 @@ function schema_create_robotcount($db, $tablepre)
  *
  * TODO: Long description of function
  *
- * @param    $varname    type, what it does
- * @return   type, what the return does
+ * @param  $varname type, what it does
+ * @return type, what the return does
  */
 function schema_create_robots($db, $tablepre)
 {
     $db->query("DROP TABLE IF EXISTS `" . $tablepre . "robots`");
-    $db->query("CREATE TABLE `" . $tablepre . "robots` (
+    $db->query(
+        "CREATE TABLE `" . $tablepre . "robots` (
         `robot_id` mediumint(9) NOT NULL auto_increment,
         `robot_string` varchar(50) NOT NULL DEFAULT '',
         `robot_fullname` varchar(50) NOT NULL DEFAULT '',
         PRIMARY KEY  (`robot_id`),
         UNIQUE KEY `bot_string` (`robot_string`)
         ) ENGINE=MyISAM
-    ");
+    "
+    );
 }
 
 /**
@@ -484,31 +522,35 @@ function schema_create_robots($db, $tablepre)
  *
  * TODO: Long description of function
  *
- * @param    $varname    type, what it does
- * @return   type, what the return does
+ * @param  $varname type, what it does
+ * @return type, what the return does
  */
 function schema_create_settings($db, $tablepre)
 {
     $db->query("DROP TABLE IF EXISTS `" . $tablepre . "settings`");
-    $db->query("CREATE TABLE `" . $tablepre . "settings` (
+    $db->query(
+        "CREATE TABLE `" . $tablepre . "settings` (
 			`config_name` varchar(200) NOT NULL DEFAULT '',
 			`config_value` varchar(200) NOT NULL DEFAULT '',
 			PRIMARY KEY (`config_name`)
 		) ENGINE=MyISAM
-	");
+	"
+    );
 }
 
 function schema_create_smilies($db, $tablepre)
 {
     $db->query("DROP TABLE IF EXISTS `" . $tablepre . "smilies`");
-    $db->query("CREATE TABLE `" . $tablepre . "smilies` (
+    $db->query(
+        "CREATE TABLE `" . $tablepre . "smilies` (
         `type` varchar(15) NOT NULL DEFAULT '',
         `code` varchar(40) NOT NULL DEFAULT '',
         `url` varchar(40) NOT NULL DEFAULT '',
         `id` smallint(6) NOT NULL auto_increment,
         PRIMARY KEY  (`id`)
         ) ENGINE=MyISAM
-    ");
+    "
+    );
 }
 
 /**
@@ -516,39 +558,44 @@ function schema_create_smilies($db, $tablepre)
  *
  * TODO: Long description of function
  *
- * @param    $varname    type, what it does
- * @return   type, what the return does
+ * @param  $varname type, what it does
+ * @return type, what the return does
  */
 function schema_create_subscriptions($db, $tablepre)
 {
     $db->query("DROP TABLE IF EXISTS `" . $tablepre . "subscriptions`");
-    $db->query("CREATE TABLE `" . $tablepre . "subscriptions` (
+    $db->query(
+        "CREATE TABLE `" . $tablepre . "subscriptions` (
         `tid` int(10) NOT NULL DEFAULT '0',
         `username` varchar(32) NOT NULL DEFAULT '',
         `type` varchar(32) NOT NULL DEFAULT '',
         KEY `tid` (`tid`),
         KEY `username` (`username`(8))
         ) ENGINE=MyISAM
-    ");
+    "
+    );
 }
 
 function schema_create_templates($db, $tablepre)
 {
     $db->query("DROP TABLE IF EXISTS `" . $tablepre . "templates`");
-    $db->query("CREATE TABLE `" . $tablepre . "templates` (
+    $db->query(
+        "CREATE TABLE `" . $tablepre . "templates` (
   				`id` smallint(6) NOT NULL AUTO_INCREMENT,
   				`name` varchar(32) NOT NULL DEFAULT '',
   				`template` text NOT NULL,
   				PRIMARY KEY (`id`),
   				KEY `name` (`name`)
 				) ENGINE=MyISAM
-    ");
+    "
+    );
 }
 
 function schema_create_themes($db, $tablepre)
 {
     $db->query("DROP TABLE IF EXISTS `" . $tablepre . "themes`");
-    $db->query("CREATE TABLE `" . $tablepre . "themes` (
+    $db->query(
+        "CREATE TABLE `" . $tablepre . "themes` (
         `themeid` smallint(3) NOT NULL auto_increment,
         `name` varchar(32) NOT NULL DEFAULT '',
         `bgcolor` varchar(25) NOT NULL DEFAULT '',
@@ -593,13 +640,15 @@ function schema_create_themes($db, $tablepre)
         PRIMARY KEY  (`themeid`),
         KEY `name` (`name`)
         ) ENGINE=MyISAM
-    ");
+    "
+    );
 }
 
 function schema_create_threads($db, $tablepre)
 {
     $db->query("DROP TABLE IF EXISTS `" . $tablepre . "threads`");
-    $db->query("CREATE TABLE `" . $tablepre . "threads` (
+    $db->query(
+        "CREATE TABLE `" . $tablepre . "threads` (
         `tid` int(10) NOT NULL auto_increment,
         `fid` smallint(6) NOT NULL DEFAULT '0',
         `subject` varchar(128) NOT NULL DEFAULT '',
@@ -616,13 +665,15 @@ function schema_create_threads($db, $tablepre)
         KEY `author` (`author`(8)),
         KEY `closed` (`closed`)
         ) ENGINE=MyISAM
-    ");
+    "
+    );
 }
 
 function schema_create_pm($db, $tablepre)
 {
     $db->query("DROP TABLE IF EXISTS `" . $tablepre . "pm`");
-    $db->query("CREATE TABLE `" . $tablepre . "pm` (
+    $db->query(
+        "CREATE TABLE `" . $tablepre . "pm` (
 				  `pmid` bigint(10) NOT NULL AUTO_INCREMENT,
 				  `msgto` varchar(32) NOT NULL DEFAULT '',
 				  `msgfrom` varchar(32) NOT NULL DEFAULT '',
@@ -644,7 +695,8 @@ function schema_create_pm($db, $tablepre)
 				  KEY `readstatus` (`readstatus`),
 				  KEY `owner` (`owner`(8))
 				) ENGINE=MyISAM
-    ");
+    "
+    );
 }
 
 /**
@@ -652,13 +704,14 @@ function schema_create_pm($db, $tablepre)
  *
  * TODO: Long description of function
  *
- * @param    $varname    type, what it does
- * @return   type, what the return does
+ * @param  $varname type, what it does
+ * @return type, what the return does
  */
 function schema_create_pm_attachments($db, $tablepre)
 {
     $db->query("DROP TABLE IF EXISTS `" . $tablepre . "pm_attachments`");
-    $db->query("CREATE TABLE `" . $tablepre . "pm_attachments` (
+    $db->query(
+        "CREATE TABLE `" . $tablepre . "pm_attachments` (
 				  `aid` int(10) NOT NULL AUTO_INCREMENT,
 				  `pmid` int(10) NOT NULL DEFAULT '0',
 				  `filename` varchar(120) NOT NULL DEFAULT '',
@@ -674,7 +727,8 @@ function schema_create_pm_attachments($db, $tablepre)
 				  KEY `filesize` (`filesize`(8)),
 				  KEY `filename` (`filename`(8))
 				) ENGINE=MyISAM
-    ");
+    "
+    );
 }
 
 /**
@@ -682,13 +736,14 @@ function schema_create_pm_attachments($db, $tablepre)
  *
  * TODO: Long description of function
  *
- * @param    $varname    type, what it does
- * @return   type, what the return does
+ * @param  $varname type, what it does
+ * @return type, what the return does
  */
 function schema_create_vote_tables($db, $tablepre)
 {
     $db->query("DROP TABLE IF EXISTS `" . $tablepre . "vote_desc`");
-    $db->query("CREATE TABLE `" . $tablepre . "vote_desc` (
+    $db->query(
+        "CREATE TABLE `" . $tablepre . "vote_desc` (
 				  `vote_id` mediumint(8) unsigned NOT NULL AUTO_INCREMENT,
 				  `topic_id` mediumint(8) unsigned NOT NULL DEFAULT '0',
 				  `vote_text` text NOT NULL,
@@ -697,10 +752,12 @@ function schema_create_vote_tables($db, $tablepre)
 				  PRIMARY KEY (`vote_id`),
 				  KEY `topic_id` (`topic_id`)
 				  ) ENGINE=MyISAM
-    ");
+    "
+    );
 
     $db->query("DROP TABLE IF EXISTS `" . $tablepre . "vote_results`");
-    $db->query("CREATE TABLE `" . $tablepre . "vote_results` (
+    $db->query(
+        "CREATE TABLE `" . $tablepre . "vote_results` (
         `vote_id` mediumint(8) unsigned NOT NULL DEFAULT '0',
         `vote_option_id` tinyint(4) unsigned NOT NULL DEFAULT '0',
         `vote_option_text` varchar(255) NOT NULL DEFAULT '',
@@ -708,10 +765,12 @@ function schema_create_vote_tables($db, $tablepre)
         KEY `vote_option_id` (`vote_option_id`),
         KEY `vote_id` (`vote_id`)
         ) ENGINE=MyISAM
-    ");
+    "
+    );
 
     $db->query("DROP TABLE IF EXISTS `" . $tablepre . "vote_voters`");
-    $db->query("CREATE TABLE `" . $tablepre . "vote_voters` (
+    $db->query(
+        "CREATE TABLE `" . $tablepre . "vote_voters` (
         `vote_id` mediumint(8) unsigned NOT NULL DEFAULT '0',
         `vote_user_id` mediumint(8) NOT NULL DEFAULT '0',
         `vote_user_ip` char(8) NOT NULL DEFAULT '',
@@ -719,13 +778,15 @@ function schema_create_vote_tables($db, $tablepre)
         KEY `vote_user_id` (`vote_user_id`),
         KEY `vote_user_ip` (`vote_user_ip`)
         ) ENGINE=MyISAM
-    ");
+    "
+    );
 }
 
 function schema_create_whosonline($db, $tablepre)
 {
     $db->query("DROP TABLE IF EXISTS `" . $tablepre . "whosonline`");
-    $db->query("CREATE TABLE `" . $tablepre . "whosonline` (
+    $db->query(
+        "CREATE TABLE `" . $tablepre . "whosonline` (
         `username` varchar(32) NOT NULL DEFAULT '',
         `ip` varchar(15) NOT NULL DEFAULT '',
         `time` int(10) NOT NULL DEFAULT '0',
@@ -737,20 +798,23 @@ function schema_create_whosonline($db, $tablepre)
         KEY `time` (`time`),
         KEY `invisible` (`invisible`)
         ) ENGINE=MyISAM
-    ");
+    "
+    );
 }
 
 function schema_create_words($db, $tablepre)
 {
     $db->query("DROP TABLE IF EXISTS `" . $tablepre . "words`");
-    $db->query("CREATE TABLE `" . $tablepre . "words` (
+    $db->query(
+        "CREATE TABLE `" . $tablepre . "words` (
         `find` varchar(60) NOT NULL DEFAULT '',
         `replace1` varchar(60) NOT NULL DEFAULT '',
         `id` smallint(6) NOT NULL auto_increment,
         PRIMARY KEY  (`id`),
         KEY `find` (`find`)
         ) ENGINE=MyISAM
-    ");
+    "
+    );
 }
 
 /**
@@ -758,8 +822,8 @@ function schema_create_words($db, $tablepre)
  *
  * TODO: Long description of function
  *
- * @param    $varname    type, what it does
- * @return   type, what the return does
+ * @param  $varname type, what it does
+ * @return type, what the return does
  */
 function schema_insert_dateformats($db, $tablepre)
 {
@@ -771,8 +835,8 @@ function schema_insert_dateformats($db, $tablepre)
  *
  * TODO: Long description of function
  *
- * @param    $varname    type, what it does
- * @return   type, what the return does
+ * @param  $varname type, what it does
+ * @return type, what the return does
  */
 function schema_insert_faq($db, $tablepre)
 {
@@ -978,12 +1042,13 @@ function schema_insert_settings($db, $tablepre)
  *
  * TODO: Long description of function
  *
- * @param    $varname    type, what it does
- * @return   type, what the return does
+ * @param  $varname type, what it does
+ * @return type, what the return does
  */
 function schema_insert_robots($db, $tablepre)
 {
-    $db->query("INSERT INTO `" . $tablepre . "robots` VALUES
+    $db->query(
+        "INSERT INTO `" . $tablepre . "robots` VALUES
         (1,'acme.spider','Acme Spider'),
         (2,'ahoythehomepagefinder','Ahoy! The Homepage Finder'),
         (3,'alkaline','Alkaline'),
@@ -1373,7 +1438,8 @@ function schema_insert_robots($db, $tablepre)
         (390,'e-societyrobot','e-societyrobot'),
         (391,'enterprise_search','enterprise search'),
         (392,'seekbot','seekbot')
-    ");
+    "
+    );
 }
 
 /**
@@ -1381,8 +1447,8 @@ function schema_insert_robots($db, $tablepre)
  *
  * This function inserts the default ProBlue theme
  *
- * @param    $db        the database connection
- * @param    $tablepre  the table prefix
+ * @param $db       the database connection
+ * @param $tablepre the table prefix
  */
 function schema_insert_themes($db, $tablepre)
 {
@@ -1460,8 +1526,8 @@ function schema_insert_themes($db, $tablepre)
  *
  * TODO: Long description of function
  *
- * @param    $varname    type, what it does
- * @return   type, what the return does
+ * @param  $varname type, what it does
+ * @return type, what the return does
  */
 function schema_insert_smilies($db, $tablepre)
 {
@@ -1514,8 +1580,8 @@ function schema_insert_smilies($db, $tablepre)
  *
  * TODO: Long description of function
  *
- * @param    $varname    type, what it does
- * @return   type, what the return does
+ * @param  $varname type, what it does
+ * @return type, what the return does
  */
 function create_tables($db, $tablepre, $prgBar, $start, $incr = 0.05)
 {
@@ -1646,8 +1712,8 @@ function create_tables($db, $tablepre, $prgBar, $start, $incr = 0.05)
  *
  * TODO: Long description of function
  *
- * @param    $varname    type, what it does
- * @return   type, what the return does
+ * @param  $varname type, what it does
+ * @return type, what the return does
  */
 function insert_data($db, $tablepre, $prgbar, $start, $incr)
 {
@@ -1705,8 +1771,8 @@ function insert_data($db, $tablepre, $prgbar, $start, $incr)
  *
  * TODO: Long description of function
  *
- * @param    $varname    type, what it does
- * @return   type, what the return does
+ * @param  $varname type, what it does
+ * @return type, what the return does
  */
 function reset_settings($db, $tablepre)
 {
@@ -1728,8 +1794,8 @@ function reset_settings($db, $tablepre)
  *
  * TODO: Long description of function
  *
- * @param    $varname    type, what it does
- * @return   type, what the return does
+ * @param  $varname type, what it does
+ * @return type, what the return does
  */
 function reset_templates($db, $tablepre)
 {
@@ -1754,8 +1820,8 @@ function reset_templates($db, $tablepre)
  *
  * TODO: Long description of function
  *
- * @param    $varname    type, what it does
- * @return   type, what the return does
+ * @param  $varname type, what it does
+ * @return type, what the return does
  */
 function check_db_api($database)
 {
@@ -1781,8 +1847,8 @@ function check_db_api($database)
  *
  * TODO: Long description of function
  *
- * @param    $varname    type, what it does
- * @return   type, what the return does
+ * @param  $varname    type, what it does
+ * @return type, what the return does
  */
 // Check if the admin account is named after one of several administration users (sa, root, etc)
 function is_priv_db_user($admin)

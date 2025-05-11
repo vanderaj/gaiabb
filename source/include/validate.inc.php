@@ -1,4 +1,5 @@
 <?php
+
 /**
  * GaiaBB
  * Copyright (c) 2011-2022 The GaiaBB Group
@@ -26,7 +27,6 @@
  *
  *    You should have received a copy of the GNU General Public License
  *    along with GaiaBB.  If not, see <http://www.gnu.org/licenses/>.
- *
  **/
 
 // check to ensure no direct viewing of page
@@ -44,27 +44,28 @@ if (!defined('IN_PROGRAM') && (defined('DEBUG') && DEBUG == false)) {
  *
  * As each page has many old and new, and only one token slot in the session,
  * there is a way to re-seed the session.
- * @author   ajv
+ *
+ * @author  ajv
  * @package GaiaBB
- * @license  GPL
+ * @license GPL
  */
 class page_token
 {
     /**
      * @access private
-     * @var mixed
+     * @var    mixed
      */
     public $pageToken;
 
     /**
      * @access private
-     * @var mixed
+     * @var    mixed
      */
     public $sessionToken;
 
     /**
      * @access public
-     * @var string
+     * @var    string
      */
     public $newToken;
 
@@ -84,8 +85,8 @@ class page_token
     /**
      * Sets the 'token' SESSION variable
      *
-     * @param   string   $token   the token to set the 'token' variable as
-     * @return   string   the token that was retrieved
+     * @param  string $token the token to set the 'token' variable as
+     * @return string   the token that was retrieved
      */
     public function set_session_token($token)
     {
@@ -96,7 +97,7 @@ class page_token
     /**
      * Retrieves the 'token' REQUEST variable
      *
-     * @return   string   the token that was retrieved
+     * @return string   the token that was retrieved
      */
     public function get_page_token()
     {
@@ -106,7 +107,7 @@ class page_token
     /**
      * Retrieves the 'token' SESSION variable
      *
-     * @return   mixed   the token that was retrieved if it's set, false otherwise
+     * @return mixed   the token that was retrieved if it's set, false otherwise
      */
     public function get_session_token()
     {
@@ -116,7 +117,7 @@ class page_token
     /**
      * Retrieves the a new token generated at initialization
      *
-     * @return   string   the new token
+     * @return string   the new token
      */
     public function get_new_token()
     {
@@ -126,7 +127,7 @@ class page_token
     /**
      * Checks for valid token. Error's if there is not one.
      *
-     * @return   boolean   true no matter what
+     * @return boolean   true no matter what
      */
     public function assert_token()
     {
@@ -147,10 +148,10 @@ class page_token
  *
  * This function used to be used by XMB 1.9.1 and its use is now
  *
- * @param   string   $varname   the variable to sanitize
- * @param   boolean   $striptags   remove HTML and PHP tags from the input
- * @return   string   the "safe" string
- * @deprecated   discouraged in favor of using the correct formXXX / getXXX functions from this file
+ * @param      string  $varname   the variable to sanitize
+ * @param      boolean $striptags remove HTML and PHP tags from the input
+ * @return     string   the "safe" string
+ * @deprecated discouraged in favor of using the correct formXXX / getXXX functions from this file
  */
 function checkInput($varname, $striptags = true)
 {
@@ -183,10 +184,10 @@ function checkInput($varname, $striptags = true)
 /**
  * Make the input string safe for output
  *
- * @param   string   $output   the string to make safe
- * @param   string   $word   specific word to make safe, like "javascript"
- * @param   boolean   $stripslashes   do slashes need stripping?
- * @return   string   the "safe" string
+ * @param  string  $output       the string to make safe
+ * @param  string  $word         specific word to make safe, like "javascript"
+ * @param  boolean $stripslashes do slashes need stripping?
+ * @return string   the "safe" string
  */
 function checkOutput($output, $word = '', $stripslashes = true)
 {
@@ -206,9 +207,9 @@ if (!function_exists('htmlspecialchars_decode')) {
     /**
      * Decodes Html special characters
      *
-     * @param   string   $string   the string to be decoded
-     * @param   integer   $type   the quote style
-     * @return   string   the decoded string
+     * @param  string  $string the string to be decoded
+     * @param  integer $type   the quote style
+     * @return string   the decoded string
      */
     function htmlspecialchars_decode($string, $type = ENT_QUOTES)
     {
@@ -221,9 +222,9 @@ if (!function_exists('htmlentities_decode')) {
     /**
      * Decodes Html entities
      *
-     * @param   string   $string   the string to be decoded
-     * @param   integer   $type   the quote style
-     * @return   string   the decoded string
+     * @param  string  $string the string to be decoded
+     * @param  integer $type   the quote style
+     * @return string   the decoded string
      */
     function htmlentities_decode($string, $type = ENT_QUOTES)
     {
@@ -275,7 +276,7 @@ function validateTpp()
 /**
  * Checks if the supplied filename is valid
  *
- * @return   boolean   true if the filename is valid, false otherwise
+ * @return boolean   true if the filename is valid, false otherwise
  */
 function isValidFilename($filename)
 {
@@ -285,7 +286,7 @@ function isValidFilename($filename)
 /**
  * Checks if the supplied email address is valid
  *
- * @return   boolean   true if the e-mail address is valid, false otherwise
+ * @return boolean   true if the e-mail address is valid, false otherwise
  */
 function isValidEmail($addr)
 {
@@ -313,7 +314,7 @@ function isValidEmail($addr)
  *
  * Looks in the form post data for a named submit
  *
- * @return   boolean   true if the submit is present, false otherwise
+ * @return boolean   true if the submit is present, false otherwise
  */
 function onSubmit($submitname)
 {
@@ -331,7 +332,7 @@ function onSubmit($submitname)
  *
  * Looks for pre-form post data for a named submit
  *
- * @return   boolean   true if the no submit is present, false otherwise
+ * @return boolean   true if the no submit is present, false otherwise
  */
 function noSubmit($submitname)
 {
@@ -341,10 +342,10 @@ function noSubmit($submitname)
 /**
  * Retrieve a POST variable and sanitizes it
  *
- * @param   string   $varname   name of the variable in $_POST
- * @param   boolean   $striptags   do a striptags to remove HTML tags
- * @param   boolean   $quotes   do a htmlspecialchars to sanitize input for XSS
- * @return   string   the "safe" string if the variable is available, empty otherwise
+ * @param  string  $varname   name of the variable in $_POST
+ * @param  boolean $striptags do a striptags to remove HTML tags
+ * @param  boolean $quotes    do a htmlspecialchars to sanitize input for XSS
+ * @return string   the "safe" string if the variable is available, empty otherwise
  */
 function formVar($varname, $striptags = true, $quotes = false)
 {
@@ -374,11 +375,11 @@ function formVar($varname, $striptags = true, $quotes = false)
  * This function always returns an array. It will be an empty array if there's
  * no data or variable to be returned.
  *
- * @param   string   $varname   name of the variable in $_POST
- * @param   boolean   $striptags   strings only: do a striptags to remove HTML tags
- * @param   boolean   $quotes   strings only: do a htmlspecialchars to sanitize input for XSS
- * @param   string   $type   'string' or 'int' to specify what needs to be done to the values
- * @return   array   the array found for $varname, empty otherwise
+ * @param  string  $varname   name of the variable in $_POST
+ * @param  boolean $striptags strings only: do a striptags to remove HTML tags
+ * @param  boolean $quotes    strings only: do a htmlspecialchars to sanitize input for XSS
+ * @param  string  $type      'string' or 'int' to specify what needs to be done to the values
+ * @return array   the array found for $varname, empty otherwise
  */
 function formArray($varname, $striptags = true, $quotes = false, $type = 'string')
 {
@@ -421,10 +422,10 @@ function formArray($varname, $striptags = true, $quotes = false, $type = 'string
 /**
  * Retrieve a GET variable and sanitize it
  *
- * @param   string   $varname   name of the variable in $_GET
- * @param   boolean   $striptags   do a striptags to remove HTML tags
- * @param   boolean   $quotes   do a htmlspecialchars to sanitize input for XSS
- * @return   string   the "safe" string if the variable is available, empty otherwise
+ * @param  string  $varname   name of the variable in $_GET
+ * @param  boolean $striptags do a striptags to remove HTML tags
+ * @param  boolean $quotes    do a htmlspecialchars to sanitize input for XSS
+ * @return string   the "safe" string if the variable is available, empty otherwise
  */
 function getVar($varname, $striptags = true, $quotes = true)
 {
@@ -445,8 +446,8 @@ function getVar($varname, $striptags = true, $quotes = true)
 /**
  * Retrieve a GET integer and sanitize it
  *
- * @param   string   $varname   name of the variable in $_GET
- * @return   integer   the "safe" integer if the variable is available, zero otherwise
+ * @param  string $varname name of the variable in $_GET
+ * @return integer   the "safe" integer if the variable is available, zero otherwise
  */
 function getInt($varname)
 {
@@ -460,8 +461,8 @@ function getInt($varname)
 /**
  * Retrieve a REQUEST integer and sanitize it
  *
- * @param   string   $varname   name of the variable in $_REQUEST
- * @return   integer   the "safe" integer if the variable is available, zero otherwise
+ * @param  string $varname name of the variable in $_REQUEST
+ * @return integer   the "safe" integer if the variable is available, zero otherwise
  */
 function getRequestInt($varname)
 {
@@ -475,8 +476,8 @@ function getRequestInt($varname)
 /**
  * Retrieve a REQUEST variable
  *
- * @param   string   $varname   name of the variable in $_REQUEST
- * @return   mixed   the value of $varname, false otherwise
+ * @param  string $varname name of the variable in $_REQUEST
+ * @return mixed   the value of $varname, false otherwise
  */
 function getRequestVar($varname)
 {
@@ -486,9 +487,9 @@ function getRequestVar($varname)
 /**
  * Retrieve a POST integer and sanitize it
  *
- * @param   string   $varname   name of the variable in $_POST
- * @param   boolean   $setZero   should the return be set to zero if the variable doesnt exist?
- * @return   mixed   the "safe" integer or zero, empty string otherwise
+ * @param  string  $varname name of the variable in $_POST
+ * @param  boolean $setZero should the return be set to zero if the variable doesnt exist?
+ * @return mixed   the "safe" integer or zero, empty string otherwise
  */
 function formInt($varname, $setZero = true)
 {
@@ -512,8 +513,8 @@ function formInt($varname, $setZero = true)
  * and returns false if no elements or not existent, and an array of
  * one or more integers if it does exist.
  *
- * @param   string   $varname   the form field to find and sanitize
- * @return   mixed   false if not set or no elements, an array() of integers otherwise
+ * @param  string $varname the form field to find and sanitize
+ * @return mixed   false if not set or no elements, an array() of integers otherwise
  */
 function getFormArrayInt($varname, $doCount = true)
 {
@@ -537,8 +538,8 @@ function getFormArrayInt($varname, $doCount = true)
 /**
  * Sanitizes a global integer
  *
- * @param   string   $varname   name of the variable
- * @return   integer   the "safe" integer if available, zero otherwise
+ * @param  string $varname name of the variable
+ * @return integer   the "safe" integer if available, zero otherwise
  */
 function valInt($varname)
 {
@@ -552,8 +553,8 @@ function valInt($varname)
 /**
  * Retrieve a POST variable and check it for on value
  *
- * @param   string   $varname   name of the variable in $_POST
- * @return   string   on if set to on, off otherwise
+ * @param  string $varname name of the variable in $_POST
+ * @return string   on if set to on, off otherwise
  */
 function formOnOff($varname)
 {
@@ -566,8 +567,8 @@ function formOnOff($varname)
 /**
  * Retrieve a POST variable and check it for yes value
  *
- * @param   string   $varname   name of the variable in $_POST
- * @return   string   yes if set to yes, no otherwise
+ * @param  string $varname name of the variable in $_POST
+ * @return string   yes if set to yes, no otherwise
  */
 function formYesNo($varname)
 {
@@ -580,9 +581,9 @@ function formYesNo($varname)
 /**
  * Retrieve a POST variable and check it for yes value
  *
- * @param   string   $varname   name of the variable
- * @param   boolean   $glob   is this variable also a global?
- * @return   string   yes if set to yes, no otherwise
+ * @param  string  $varname name of the variable
+ * @param  boolean $glob    is this variable also a global?
+ * @return string   yes if set to yes, no otherwise
  */
 function valYesNo($varname, $glob = true)
 {
@@ -599,8 +600,8 @@ function valYesNo($varname, $glob = true)
 /**
  * Sanitizes a POST integer and checks it for 1 value
  *
- * @param   string   $varname   name of the variable in $_POST
- * @return   integer   1 if set to 1, 0 otherwise
+ * @param  string $varname name of the variable in $_POST
+ * @return integer   1 if set to 1, 0 otherwise
  */
 function form10($varname)
 {
@@ -610,8 +611,8 @@ function form10($varname)
 /**
  * Sanitizes a POST integer and checks it for 3600 value
  *
- * @param   string   $varname   name of the variable in $_POST
- * @return   integer   3600 if set to 3600, 0 otherwise
+ * @param  string $varname name of the variable in $_POST
+ * @return integer   3600 if set to 3600, 0 otherwise
  */
 function form3600($varname)
 {
@@ -621,8 +622,8 @@ function form3600($varname)
 /**
  * Retrieve a POST boolean variable and check it for true value
  *
- * @param   string   $varname   name of the variable in $_POST
- * @return   boolean   true if set to true, false otherwise
+ * @param  string $varname name of the variable in $_POST
+ * @return boolean   true if set to true, false otherwise
  */
 function formBool($varname)
 {
@@ -635,9 +636,9 @@ function formBool($varname)
 /**
  * Check if a variable is checked
  *
- * @param   string   $varname   name of the variable
- * @param   string   $compare   is $compare equal to $varname?
- * @return   string   checked html if $compare is equal to $varname, empty otherwise
+ * @param  string $varname name of the variable
+ * @param  string $compare is $compare equal to $varname?
+ * @return string   checked html if $compare is equal to $varname, empty otherwise
  */
 function isChecked($varname, $compare = 'yes')
 {
@@ -647,8 +648,8 @@ function isChecked($varname, $compare = 'yes')
 /**
  * Clean up some HTML
  *
- * @param   array   $matches   matches from preg_replace_callback in checkInput()
- * @return   string   the "safe" string
+ * @param  array $matches matches from preg_replace_callback in checkInput()
+ * @return string   the "safe" string
  */
 function cleanHtml($matches)
 {
@@ -659,8 +660,8 @@ function cleanHtml($matches)
 /**
  * Replace easier date formats into PHP date formats
  *
- * @param   string   $format   the easier date format
- * @return   string   the PHP date format
+ * @param  string $format the easier date format
+ * @return string   the PHP date format
  */
 function formatDate($format)
 {

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * GaiaBB
  * Copyright (c) 2011-2022 The GaiaBB Group
@@ -26,7 +27,6 @@
  *
  *    You should have received a copy of the GNU General Public License
  *    along with GaiaBB.  If not, see <http://www.gnu.org/licenses/>.
- *
  **/
 
 define('ROOT', '../');
@@ -40,7 +40,8 @@ loadtpl(
     'cp_header',
     'cp_footer',
     'cp_message',
-    'cp_error');
+    'cp_error'
+);
 
 $shadow = shadowfx();
 $shadow2 = shadowfx2();
@@ -66,8 +67,8 @@ smcwcache();
  *
  * Long description of function
  *
- * @param    $varname    type, what it does
- * @return   type, what the return does
+ * @param  $varname type, what it does
+ * @return type, what the return does
  */
 function viewPanel()
 {
@@ -135,8 +136,8 @@ function viewPanel()
  *
  * Long description of function
  *
- * @param    $varname    type, what it does
- * @return   type, what the return does
+ * @param  $varname type, what it does
+ * @return type, what the return does
  */
 function doDelete()
 {
@@ -203,8 +204,8 @@ function doDelete()
  *
  * Long description of function
  *
- * @param    $varname    type, what it does
- * @return   type, what the return does
+ * @param  $varname type, what it does
+ * @return type, what the return does
  */
 function doSearch()
 {
@@ -228,7 +229,7 @@ function doSearch()
     <td width="5%"><?php echo $lang['textdownloads'] ?></td>
     </tr>
     <?php
-$restriction = $orderby = '';
+    $restriction = $orderby = '';
     $forumprune = formInt('forumprune');
     if ($forumprune != 0) {
         $restriction .= "AND p.fid=$forumprune ";
@@ -283,9 +284,9 @@ $restriction = $orderby = '';
         $attachsize = strlen($attachment['attachment']);
         if ($attachsize >= 1073741824) {
             $attachsize = round($attachsize / 1073741824 * 100) / 100 . "gb";
-        } else if ($attachsize >= 1048576) {
+        } elseif ($attachsize >= 1048576) {
             $attachsize = round($attachsize / 1048576 * 100) / 100 . "mb";
-        } else if ($attachsize >= 1024) {
+        } elseif ($attachsize >= 1024) {
             $attachsize = round($attachsize / 1024 * 100) / 100 . "kb";
         } else {
             $attachsize = $attachsize . "b";
@@ -303,7 +304,7 @@ $restriction = $orderby = '';
         <td bgcolor="<?php echo $THEME['altbg2'] ?>" class="tablerow" valign="top" align="center"><?php echo $attachment['downloads'] ?></td>
         </tr>
         <?php
-}
+    }
     $db->free_result($query);
     ?>
     <tr class="ctrtablerow" bgcolor="<?php echo $THEME['altbg2'] ?>">

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * GaiaBB
  * Copyright (c) 2011-2022 The GaiaBB Group
@@ -26,7 +27,6 @@
  *
  *    You should have received a copy of the GNU General Public License
  *    along with GaiaBB.  If not, see <http://www.gnu.org/licenses/>.
- *
  **/
 
 define('ROOT', '../');
@@ -147,7 +147,7 @@ function doPanel()
         </td>
         </tr>
         <?php
-$xn = strtoupper($explode[$num]);
+        $xn = strtoupper($explode[$num]);
         if (strpos($xn, 'SELECT') !== false || strpos($xn, 'SHOW') !== false || strpos($xn, 'EXPLAIN') !== false || strpos($xn, 'DESCRIBE') !== false) {
             dump_query($query, true);
         } else {
@@ -161,7 +161,7 @@ $xn = strtoupper($explode[$num]);
         <?php echo $shadow2 ?>
         <br />
         <?php
-}
+    }
     ?>
     <table cellspacing="0px" cellpadding="0px" border="0px" width="100%" align="center">
     <tr>

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * GaiaBB
  * Copyright (c) 2009-2021 The GaiaBB Project
@@ -22,8 +23,8 @@
  *
  *    You should have received a copy of the GNU General Public License
  *    along with GaiaBB.  If not, see <http://www.gnu.org/licenses/>.
- *
  **/
+
 // phpcs:disable PSR1.Files.SideEffects
 if (!defined('IN_PROGRAM') && (defined('DEBUG') && DEBUG == false)) {
     exit('This file is not designed to be called directly');
@@ -33,9 +34,8 @@ if (!defined('IN_PROGRAM') && (defined('DEBUG') && DEBUG == false)) {
  * print_error() - print an error on screen
  *
  * @param $head - the header to display
- * @param $msg - the message to display
- * @param $die - boolean, true if you need to stop
- *
+ * @param $msg  - the message to display
+ * @param $die  - boolean, true if you need to stop
  */
 function print_error($head, $msg, $die = true)
 {
@@ -69,8 +69,7 @@ function print_error($head, $msg, $die = true)
  * Sets the value of the progress bar
  *
  * @param $thebar - the progress bar
- * @param $value - the percentage value
- *
+ * @param $value  - the percentage value
  */
 function setBar($thebar, $value)
 {
@@ -83,7 +82,6 @@ function setBar($thebar, $value)
  * Set the colour of the progress bar
  *
  * @param $theBar progress bar
- *
  */
 function setCol($theBar, $color)
 {
@@ -94,7 +92,6 @@ function setCol($theBar, $color)
  * view_config() - Output the forum configuration
  *
  * Display the forum configuration
- *
  */
 function view_config($path)
 {
@@ -148,10 +145,9 @@ function view_config($path)
  *
  * TODO: Long description of function
  *
- * @param $varname type,
- *            what it does
+ * @param  $varname type,
+ *                  what it does
  * @return type, what the return does
- *
  */
 function view_config_screen($path, $config)
 {
@@ -182,7 +178,6 @@ function view_config_screen($path, $config)
  *
  * @param
  *            config string, a line delimeted file ready to be downloaded
- *
  */
 function view_config_download($config)
 {
@@ -202,10 +197,9 @@ function view_config_download($config)
  *
  * TODO: Long description of function
  *
- * @param $varname type,
- *            what it does
+ * @param  $varname type,
+ *                  what it does
  * @return type, what the return does
- *
  */
 function view_eula($path)
 {
@@ -271,10 +265,9 @@ function view_eula($path)
  *
  * TODO: Long description of function
  *
- * @param $varname type,
- *            what it does
+ * @param  $varname type,
+ *                  what it does
  * @return type, what the return does
- *
  */
 function view_backup($path, $boardType = "GaiaBB")
 {
@@ -307,10 +300,9 @@ function view_backup($path, $boardType = "GaiaBB")
  *
  * TODO: Long description of function
  *
- * @param $varname type,
- *            what it does
+ * @param  $varname type,
+ *                  what it does
  * @return type, what the return does
- *
  */
 function view_admin($path)
 {
@@ -402,10 +394,9 @@ function view_admin($path)
  *
  * TODO: Long description of function
  *
- * @param $varname type,
- *            what it does
+ * @param  $varname type,
+ *                  what it does
  * @return type, what the return does
- *
  */
 function top_box($header = 'CHANGE ME')
 {
@@ -427,10 +418,9 @@ function top_box($header = 'CHANGE ME')
  *
  * TODO: Long description of function
  *
- * @param $varname type,
- *            what it does
+ * @param  $varname type,
+ *                  what it does
  * @return type, what the return does
- *
  */
 function view_default_index()
 {
@@ -466,10 +456,9 @@ function view_default_index()
  *
  * TODO: Long description of function
  *
- * @param $varname type,
- *            what it does
+ * @param  $varname type,
+ *                  what it does
  * @return type, what the return does
- *
  */
 function viewHeader($title, $path)
 {
@@ -604,10 +593,9 @@ function viewHeader($title, $path)
  *
  * TODO: Long description of function
  *
- * @param $varname type,
- *            what it does
+ * @param  $varname type,
+ *                  what it does
  * @return type, what the return does
- *
  */
 function viewFooter()
 {
@@ -654,10 +642,9 @@ function viewFooter()
  *
  * TODO: Long description of function
  *
- * @param $varname type,
- *            what it does
+ * @param  $varname type,
+ *                  what it does
  * @return type, what the return does
- *
  */
 function view_database($path)
 {
@@ -755,10 +742,9 @@ function view_database($path)
  *
  * TODO: Long description of function
  *
- * @param $varname type,
- *            what it does
+ * @param  $varname type,
+ *                  what it does
  * @return type, what the return does
- *
  */
 function viewShadow()
 {
@@ -778,8 +764,8 @@ function viewShadow()
  *
  * TODO: Long description of function
  *
- * @param    $varname    type, what it does
- * @return   type, what the return does
+ * @param  $varname    type, what it does
+ * @return type, what the return does
  */
 // Control output buffering. Call with true for normal PHP behavior, call with false
 // when you want PHP to send data to the user whenever echo or whatever is called.

@@ -25,15 +25,16 @@
  *
  *    You should have received a copy of the GNU General Public License
  *    along with GaiaBB.  If not, see <http://www.gnu.org/licenses/>.
- *
  **/
 
-function viewset(FieldID) {
+function viewset(FieldID)
+{
     layer = document.getElementById(FieldID);
     layer.className = ((layer.className == "shown") ? "hidden" : "shown");
 }
 
-function setCheckboxes(the_form, the_elements, do_check) {
+function setCheckboxes(the_form, the_elements, do_check)
+{
     var elts = document.forms[the_form].elements[the_elements]
     var elts_cnt = elts.length;
 
@@ -46,7 +47,8 @@ function setCheckboxes(the_form, the_elements, do_check) {
     return true;
 }
 
-function invertSelection(the_form, element_name) {
+function invertSelection(the_form, element_name)
+{
     var elements = document.forms[the_form].elements[element_name];
     var count = elements.length;
 
@@ -54,8 +56,7 @@ function invertSelection(the_form, element_name) {
         for (var i = 0; i < count; i++) {
             if (elements[i].checked == true) {
                 elements[i].checked = false;
-            }
-            else {
+            } else {
                 elements[i].checked = true;
             }
         }

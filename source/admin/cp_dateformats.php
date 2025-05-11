@@ -1,4 +1,5 @@
 <?php
+
 /**
  * GaiaBB
  * Copyright (c) 2011-2022 The GaiaBB Group
@@ -26,7 +27,6 @@
  *
  *    You should have received a copy of the GNU General Public License
  *    along with GaiaBB.  If not, see <http://www.gnu.org/licenses/>.
- *
  **/
 
 define('ROOT', '../');
@@ -79,7 +79,7 @@ function viewPanel($queryd)
     <td class="title"><?php echo $lang['exdateformat'] ?></td>
     </tr>
     <?php
-while ($dformat = $db->fetch_array($queryd)) {
+    while ($dformat = $db->fetch_array($queryd)) {
         if ($dformat['did'] != 1) {
             ?>
             <tr bgcolor="<?php echo $THEME['altbg2'] ?>">
@@ -88,7 +88,7 @@ while ($dformat = $db->fetch_array($queryd)) {
             <td class="tablerow"><?php echo gmdate(formatDate($dformat['dateformat']), $ubblva + ($self['timeoffset'] * 3600) + $self['daylightsavings']) ?></td>
             </tr>
             <?php
-}
+        }
     }
     $db->free_result($queryd);
     ?>
@@ -181,7 +181,6 @@ function viewDateRestore()
     </tr>
     </table>
     <?php
-
 }
 
 displayAdminPanel();

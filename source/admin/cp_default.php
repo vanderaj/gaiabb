@@ -1,4 +1,5 @@
 <?php
+
 /**
  * GaiaBB
  * Copyright (c) 2011-2022 The GaiaBB Group
@@ -26,7 +27,6 @@
  *
  *    You should have received a copy of the GNU General Public License
  *    along with GaiaBB.  If not, see <http://www.gnu.org/licenses/>.
- *
  **/
 
 define('ROOT', '../');
@@ -258,7 +258,7 @@ function viewPanel()
     <td bgcolor="<?php echo $THEME['altbg2'] ?>"><?php echo $themelist ?></td>
     </tr>
     <?php
-printsetting2($lang['textppp'], 'postperpagenew', $CONFIG['postperpage'], 3);
+    printsetting2($lang['textppp'], 'postperpagenew', $CONFIG['postperpage'], 3);
     printsetting2($lang['texttpp'], 'topicperpagenew', $CONFIG['topicperpage'], 3);
     printsetting2($lang['textmpp'], 'memberperpagenew', $CONFIG['memberperpage'], 3);
     printsetting2($lang['customposts'], 'custompostsnew', $CONFIG['customposts'], 3);
@@ -287,7 +287,7 @@ printsetting2($lang['textppp'], 'postperpagenew', $CONFIG['postperpage'], 3);
     <td bgcolor="<?php echo $THEME['altbg2'] ?>"><?php echo $timeformatlist ?></td>
     </tr>
     <?php
-if ($CONFIG['predformat'] == 'on') {
+    if ($CONFIG['predformat'] == 'on') {
         $df = "<tr class=\"tablerow\">\n\t<td bgcolor=\"$THEME[altbg1]\">$lang[dateformat1]</td>\n";
     } else {
         $df = "<tr class=\"tablerow\">\n\t<td bgcolor=\"$THEME[altbg1]\">$lang[dateformat2]</td>\n";

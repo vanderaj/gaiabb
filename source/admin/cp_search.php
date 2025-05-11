@@ -1,4 +1,5 @@
 <?php
+
 /**
  * GaiaBB
  * Copyright (c) 2011-2022 The GaiaBB Group
@@ -26,7 +27,6 @@
  *
  *    You should have received a copy of the GNU General Public License
  *    along with GaiaBB.  If not, see <http://www.gnu.org/licenses/>.
- *
  **/
 
 define('ROOT', '../');
@@ -187,7 +187,7 @@ function doPanel()
     <td colspan="2"><font color="<?php echo $THEME['cattext'] ?>"><strong><?php echo $found ?></strong> <?php echo $lang['beenfound'] ?></td>
     </tr>
     <?php
-foreach ($list as $num => $val) {
+    foreach ($list as $num => $val) {
         ?>
         <tr class="tablerow" width="5%">
         <td align="left" bgcolor="<?php echo $THEME['altbg2'] ?>">
@@ -198,7 +198,7 @@ foreach ($list as $num => $val) {
         </td>
         </tr>
         <?php
-}
+    }
     ?>
     </table>
     </td>

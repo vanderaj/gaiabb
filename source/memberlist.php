@@ -1,4 +1,5 @@
 <?php
+
 /**
  * GaiaBB
  * Copyright (c) 2011-2022 The GaiaBB Group
@@ -26,7 +27,6 @@
  *
  *    You should have received a copy of the GNU General Public License
  *    along with GaiaBB.  If not, see <http://www.gnu.org/licenses/>.
- *
  **/
 
 define('ROOT', './');
@@ -150,7 +150,7 @@ switch ($action) {
         if ($order != 'username' && $order != 'postnum' && $order != 'status' && $order != 'threadnum' && $order != 'lastvisit') {
             $orderby = 'uid';
             $order = 'uid';
-        } else if ($order == 'status') {
+        } elseif ($order == 'status') {
             $orderby = "if (status = 'Super Administrator',1, if (status = 'Administrator', 2, if (status = 'Super Moderator', 3, if (status = 'Moderator', 4, if (status = 'member', 5, if (status = 'banned', 6, 7))))))";
         } else {
             $orderby = $db->escape($order);
@@ -201,7 +201,6 @@ switch ($action) {
             $q = implode(' AND', $where);
             $num = $db->result($db->query("SELECT COUNT(uid) FROM " . X_PREFIX . "members WHERE $q"), 0);
             $qmem = $db->query("SELECT * FROM " . X_PREFIX . "members WHERE $q ORDER BY $orderby $desc LIMIT $start_limit, $CONFIG[memberperpage]");
-
         } else {
             $num = $db->result($db->query("SELECT COUNT(uid) FROM " . X_PREFIX . "members $ltrqry"), 0);
             $qmem = $db->query("SELECT * FROM " . X_PREFIX . "members $ltrqry ORDER BY $orderby $desc LIMIT $start_limit, $CONFIG[memberperpage]");
@@ -239,8 +238,7 @@ switch ($action) {
                     $member['firstname'] = stripslashes($member['firstname']);
                     $member['lastname'] = censor($member['lastname']);
                     $member['lastname'] = stripslashes($member['lastname']);
-
-                } else if (empty($member['firstname']) || empty($member['lastname']) && $member['showname'] == 'no') {
+                } elseif (empty($member['firstname']) || empty($member['lastname']) && $member['showname'] == 'no') {
                     $member['firstname'] = $lang['profilenoinformation'];
                     $member['lastname'] = '';
                 }

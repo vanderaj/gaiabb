@@ -1,4 +1,5 @@
 <?php
+
 /**
  * GaiaBB
  * Copyright (c) 2011-2022 The GaiaBB Group
@@ -26,7 +27,6 @@
  *
  *    You should have received a copy of the GNU General Public License
  *    along with GaiaBB.  If not, see <http://www.gnu.org/licenses/>.
- *
  **/
 
 define('ROOT', './');
@@ -137,7 +137,7 @@ $folder = getRequestVar('folder');
 if (!empty($folder)) {
     $folder = checkInput($folder);
     $_SESSION['folder'] = $folder;
-} else if (empty($folder) || !isset($folder)) {
+} elseif (empty($folder) || !isset($folder)) {
     if ($action == 'view' || $action == 'modif') {
         $folder = '';
     }
@@ -227,7 +227,6 @@ switch ($action) {
     case 'mod':
         switch ($modaction) {
             case 'delete':
-
                 if (empty($pm_select)) {
                     error($lang['textnonechosen'], false, '', '', 'pm.php', true, false, true);
                 }

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * GaiaBB
  * Copyright (c) 2011-2022 The GaiaBB Group
@@ -26,7 +27,6 @@
  *
  *    You should have received a copy of the GNU General Public License
  *    along with GaiaBB.  If not, see <http://www.gnu.org/licenses/>.
- *
  **/
 
 if (!defined('IN_PROGRAM') && (defined('DEBUG') && DEBUG == false)) {
@@ -56,15 +56,15 @@ function printsetting2($setname, $varname, $value, $size, $pass = false)
     <tr class="tablerow">
     <td bgcolor="<?php echo $THEME['altbg1'] ?>" width="50%"><?php echo $setname ?></td>
     <?php
-if ($pass) {
+    if ($pass) {
         ?>
         <td bgcolor="<?php echo $THEME['altbg2'] ?>" width="50%"><input type="password" AUTOCOMPLETE="off" size="<?php echo $size ?>" value="<?php echo $value ?>" name="<?php echo $varname ?>" /></td>
         <?php
-} else {
+    } else {
         ?>
         <td bgcolor="<?php echo $THEME['altbg2'] ?>" width="50%"><input type="text"  size="<?php echo $size ?>" value="<?php echo $value ?>" name="<?php echo $varname ?>" /></td>
         <?php
-}
+    }
     ?>
     </tr>
     <?php

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * GaiaBB
  * Copyright (c) 2011-2022 The GaiaBB Group
@@ -26,7 +27,6 @@
  *
  *    You should have received a copy of the GNU General Public License
  *    along with GaiaBB.  If not, see <http://www.gnu.org/licenses/>.
- *
  **/
 
 if (!defined('IN_PROGRAM') && (defined('DEBUG') && DEBUG == false)) {
@@ -98,9 +98,9 @@ class attachment
     {
         if ($bytes >= 1073741824) {
             $bytes = round($bytes / 1073741824 * 100) / 100 . "gb";
-        } else if ($bytes >= 1048576) {
+        } elseif ($bytes >= 1048576) {
             $bytes = round($bytes / 1048576 * 100) / 100 . "mb";
-        } else if ($bytes >= 1024) {
+        } elseif ($bytes >= 1024) {
             $bytes = round($bytes / 1024 * 100) / 100 . "kb";
         } else {
             $bytes = $bytes . "b";
@@ -154,7 +154,7 @@ class attachment
 
                     if ($CONFIG['viewattach'] == 'no' && X_GUEST) {
                         eval("\$post['message'] .= \"" . template('viewtopic_post_attachment_none') . "\";");
-                    } else if ($CONFIG['attachimgpost'] == 'on' && ($extention == 'jpg' || $extention == 'jpeg' || $extention == 'gif' || $extention == 'png' || $extention == 'bmp')) {
+                    } elseif ($CONFIG['attachimgpost'] == 'on' && ($extention == 'jpg' || $extention == 'jpeg' || $extention == 'gif' || $extention == 'png' || $extention == 'bmp')) {
                         if ($attach['fileheight'] != '' && $attach['filewidth'] != '') {
                             $CONFIG['max_attheight'] = (int) $CONFIG['max_attheight'];
                             $CONFIG['max_attwidth'] = (int) $CONFIG['max_attwidth'];
@@ -163,7 +163,7 @@ class attachment
                             if (($attach['fileheight'] <= $CONFIG['max_attheight']) && ($attach['filewidth'] <= $CONFIG['max_attwidth'])) {
                                 $n_height = $attach['fileheight'];
                                 $n_width = $attach['filewidth'];
-                            } else if (($w_ratio * $attach['fileheight']) < $CONFIG['max_attheight']) {
+                            } elseif (($w_ratio * $attach['fileheight']) < $CONFIG['max_attheight']) {
                                 $n_height = ceil($w_ratio * $attach['fileheight']);
                                 $n_width = $CONFIG['max_attwidth'];
                             } else {

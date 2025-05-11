@@ -1,4 +1,5 @@
 <?php
+
 /**
  * GaiaBB
  * Copyright (c) 2011-2022 The GaiaBB Group
@@ -26,7 +27,6 @@
  *
  *    You should have received a copy of the GNU General Public License
  *    along with GaiaBB.  If not, see <http://www.gnu.org/licenses/>.
- *
  **/
 
 define('ROOT', '../');
@@ -84,7 +84,7 @@ function viewPanel()
     <td class="title" align="center"><?php echo $lang['textavatar'] ?></td>
     </tr>
     <?php
-$avatarno = $avataryes = '';
+    $avatarno = $avataryes = '';
     $query = $db->query("SELECT * FROM " . X_PREFIX . "ranks ORDER BY id");
     while ($rank = $db->fetch_array($query)) {
         $staff_disable = '';
@@ -131,7 +131,6 @@ $avatarno = $avataryes = '';
         <td><input type="text" name="avaurl[<?php echo $rank['id'] ?>]" value="<?php echo stripslashes($rank['avatarrank']); ?>" size="20" /></td>
         </tr>
         <?php
-
     }
     $db->free_result($query);
     ?>
@@ -162,7 +161,6 @@ $avatarno = $avataryes = '';
     </tr>
     </table>
     <?php
-
 }
 
 function doPanel()

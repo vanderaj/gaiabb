@@ -1,4 +1,5 @@
 <?php
+
 /**
  * GaiaBB
  * Copyright (c) 2011-2022 The GaiaBB Group
@@ -26,7 +27,6 @@
  *
  *    You should have received a copy of the GNU General Public License
  *    along with GaiaBB.  If not, see <http://www.gnu.org/licenses/>.
- *
  **/
 
 define('ROOT', '../');
@@ -95,7 +95,6 @@ function viewPanel()
     </tr>
     </table>
     <?php
-
 }
 
 function doPanel()
@@ -106,7 +105,7 @@ function doPanel()
 
     $start = true;
     set_time_limit(180);
-    
+
     $tables = $db->getTables();
     $q = array();
     ?>
@@ -115,7 +114,7 @@ function doPanel()
     <td bgcolor="<?php echo $THEME['bordercolor'] ?>">
     <table border="0px" cellspacing="<?php echo $THEME['borderwidth'] ?>" cellpadding="<?php echo $THEME['tablespace'] ?>" width="100%">
     <?php
-foreach ($tables as $key => $val) {
+    foreach ($tables as $key => $val) {
         if ($start) {
             dump_query($db->query('OPTIMIZE TABLE `' . $val . '`'));
             $start = false;

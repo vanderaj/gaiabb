@@ -1,4 +1,5 @@
 <?php
+
 /**
  * GaiaBB
  * Copyright (c) 2009-2021 The GaiaBB Project
@@ -22,8 +23,8 @@
  *
  *    You should have received a copy of the GNU General Public License
  *    along with GaiaBB.  If not, see <http://www.gnu.org/licenses/>.
- *
  **/
+
 // phpcs:disable PSR1.Files.SideEffects
 define('IN_PROGRAM', true);
 
@@ -95,7 +96,7 @@ switch ($path) {
                 }
                 viewFooter();
                 exit();
-                break;
+            break;
             default:
                 redirect('index.php', 0, X_REDIRECT_HEADER);
                 break;
@@ -133,7 +134,7 @@ switch ($path) {
                 }
                 viewFooter();
                 exit();
-                break;
+            break;
             default:
                 redirect('index.php', 0, X_REDIRECT_HEADER);
                 break;
@@ -170,7 +171,7 @@ switch ($path) {
                     viewFooter();
                     exit();
                 }
-            // deliberate fall-through - DO NOT CHANGE
+                // deliberate fall-through - DO NOT CHANGE
             case 'conf':
                 viewHeader('Repairing GaiaBB', $path);
                 $prgbar = view_repair_action();
@@ -183,7 +184,7 @@ switch ($path) {
                 }
                 viewFooter();
                 exit();
-                break;
+            break;
             default:
                 redirect('index.php', 0, X_REDIRECT_HEADER);
                 break;
@@ -221,7 +222,7 @@ switch ($path) {
                 }
                 viewFooter();
                 exit();
-                break;
+            break;
             default:
                 redirect('index.php', 0, X_REDIRECT_HEADER);
                 break;

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * GaiaBB
  * Copyright (c) 2009-2021 The GaiaBB Project
@@ -22,8 +23,8 @@
  *
  *    You should have received a copy of the GNU General Public License
  *    along with GaiaBB.  If not, see <http://www.gnu.org/licenses/>.
- *
  **/
+
 // phpcs:disable PSR1.Files.SideEffects
 if (!defined('IN_PROGRAM') && (defined('DEBUG') && DEBUG == false)) {
     exit('This file is not designed to be called directly');
@@ -37,10 +38,9 @@ require_once 'dbhost.class.php';
  *
  * TODO: Long description of function
  *
- * @param $varname type,
- *            what it does
+ * @param  $varname type,
+ *                  what it does
  * @return type, what the return does
- *
  */
 function process_convert_index($path)
 {
@@ -55,10 +55,9 @@ function process_convert_index($path)
  *
  * TODO: Long description of function
  *
- * @param $varname type,
- *            what it does
+ * @param  $varname type,
+ *                  what it does
  * @return type, what the return does
- *
  */
 function process_convert_details($path)
 {
@@ -83,7 +82,7 @@ function convert_forum($path, $prgbar)
     $database = $pconnect = $dbname = $dbhost = '';
     $tablepre = $dbuser = $dbpw = '';
 
-    require_once 'config.php';
+    include_once 'config.php';
     if ($database == 'DBTYPE' || !file_exists(ROOT . "db/$database.php")) {
         setCol($prgbar, '#ff0000');
         print_error(
@@ -91,7 +90,7 @@ function convert_forum($path, $prgbar)
             'Please ensure that you have successfully installed GaiaBB prior to running this conversion.'
         );
     }
-    require_once "../db/mariadb.class.php";
+    include_once "../db/mariadb.class.php";
 
     setBar($prgbar, 0.05);
 

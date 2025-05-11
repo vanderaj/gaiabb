@@ -25,10 +25,10 @@
  *
  *    You should have received a copy of the GNU General Public License
  *    along with GaiaBB.  If not, see <http://www.gnu.org/licenses/>.
- *
  **/
 
-function setCheckboxes(the_form, the_elements, do_check) {
+function setCheckboxes(the_form, the_elements, do_check)
+{
     var elts = document.forms[the_form].elements[the_elements]
     var elts_cnt = elts.length;
     if (elts_cnt) {
@@ -39,31 +39,30 @@ function setCheckboxes(the_form, the_elements, do_check) {
     return true;
 }
 
-function invertSelection(the_form, element_name) {
+function invertSelection(the_form, element_name)
+{
     var elements = document.forms[the_form].elements[element_name];
     var count = elements.length;
     if (count) {
         for (var i = 0; i < count; i++) {
             if (elements[i].checked == true) {
                 elements[i].checked = false;
-            }
-            else {
+            } else {
                 elements[i].checked = true;
             }
         }
-    }
-    else {
+    } else {
         if (elements.checked == true) {
             elements.checked = false;
-        }
-        else {
+        } else {
             elements.checked = true;
         }
     }
     return true;
 }
 
-function setCheckboxes(the_form, do_check) {
+function setCheckboxes(the_form, do_check)
+{
     var elts = document.forms[the_form].elements['pm_select[]']
     var elts_cnt = elts.length;
     if (elts_cnt) {
@@ -74,7 +73,8 @@ function setCheckboxes(the_form, do_check) {
     return true;
 }
 
-function Popup(url, window_name, window_width, window_height) {
+function Popup(url, window_name, window_width, window_height)
+{
     settings =
         "toolbar=no,location=yes,directories=no," +
         "status=yes,menubar=yes,scrollbars=yes," +
@@ -82,22 +82,22 @@ function Popup(url, window_name, window_width, window_height) {
     NewWindow = window.open(url, window_name, settings);
 }
 
-function icon(theicon) {
+function icon(theicon)
+{
     AddText('', '', theicon, messageElement);
 }
 
 var aBookOpen = false;
 var aBookLink = '';
-function aBook() {
+function aBook()
+{
     if (aBookOpen == true) {
         aBookLink.close();
         aBookOpen = false;
-    }
-    else {
+    } else {
         if (typeof sendMode === "undefined" || sendMode != true) {
             aBookLink = window.open('address.php', 'aBook', "toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=yes,resizable=yes,width=450,height=400");
-        }
-        else {
+        } else {
             aBookLink = window.open('address.php?action=add2pm', 'aBook', "toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=yes,resizable=yes,width=450,height=400");
         }
         aBookOpen = true;
@@ -106,12 +106,12 @@ function aBook() {
     return false;
 }
 
-function textCounter(field, cntfield, maxlimit) {
+function textCounter(field, cntfield, maxlimit)
+{
     count = document.getElementById(cntfield);
     if (field.value.length > maxlimit) {
         field.value = field.value.substring(0, maxlimit);
-    }
-    else {
+    } else {
         count.innerHTML = field.value.length;
     }
 }

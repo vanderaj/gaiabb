@@ -1,4 +1,5 @@
 <?php
+
 /**
  * GaiaBB
  * Copyright (c) 2011-2022 The GaiaBB Group
@@ -26,7 +27,6 @@
  *
  *    You should have received a copy of the GNU General Public License
  *    along with GaiaBB.  If not, see <http://www.gnu.org/licenses/>.
- *
  **/
 
 define('ROOT', './');
@@ -85,7 +85,7 @@ if ($posts == false) {
 $db->free_result($q);
 
 $query = $db->query("SELECT regdate FROM " . X_PREFIX . "members ORDER BY regdate LIMIT 0, 1");
-$days = ($onlinetime-@$db->result($query, 0)) / 86400;
+$days = ($onlinetime - @$db->result($query, 0)) / 86400;
 if ($days > 0) {
     $membersday = number_format(($members / $days), 2);
 } else {
@@ -182,7 +182,6 @@ $info = $db->fetch_array($query);
 $db->free_result($query);
 
 if ($info['Total'] > 0) {
-
     if (X_MEMBER) {
         $membesthtml = '<a href="viewprofile.php?memberid=' . intval($info['uid']) . '"><strong>' . trim($info['username']) . '</strong></a>';
     } else {

@@ -12,7 +12,6 @@ class Upgrade
      * __construct() - constructor for Upgrade base class
      *
      * Constructor
-     *
      */
     public function __construct($indb, $in_prgbar)
     {
@@ -31,8 +30,8 @@ class Upgrade
      *
      * TODO: Long description of function
      *
-     * @param $varname type,
-     *            what it does
+     * @param  $varname type,
+     *                  what it does
      * @return type, what the return does
      */
     public function columnExists($table, $column)
@@ -47,8 +46,8 @@ class Upgrade
      *
      * TODO: Long description of function
      *
-     * @param $varname type,
-     *            what it does
+     * @param  $varname type,
+     *                  what it does
      * @return type, what the return does
      */
     public function tableExists($table)
@@ -63,8 +62,8 @@ class Upgrade
      *
      * Test if a named database index is present
      *
-     * @param string $table         Table name to test
-     * @param string $indexname     Index name to test
+     * @param  string $table     Table name to test
+     * @param  string $indexname Index name to test
      * @return boolean              true if the index exists, false if not
      **/
     public function indexExists($table, $indexname)
@@ -79,8 +78,8 @@ class Upgrade
      *
      * TODO: Long description of function
      *
-     * @param $varname type,
-     *            what it does
+     * @param  $varname type,
+     *                  what it does
      * @return type, what the return does
      */
     public function renameTables($prg)
@@ -93,8 +92,8 @@ class Upgrade
      *
      * TODO: Long description of function
      *
-     * @param $varname type,
-     *            what it does
+     * @param  $varname type,
+     *                  what it does
      * @return type, what the return does
      */
     public function addTables($prg)
@@ -107,8 +106,8 @@ class Upgrade
      *
      * TODO: Long description of function
      *
-     * @param $varname type,
-     *            what it does
+     * @param  $varname type,
+     *                  what it does
      * @return type, what the return does
      */
     public function deleteTables($prg)
@@ -121,8 +120,8 @@ class Upgrade
      *
      * TODO: Long description of function
      *
-     * @param $varname type,
-     *            what it does
+     * @param  $varname type,
+     *                  what it does
      * @return type, what the return does
      */
     public function alterTables($prg)
@@ -135,8 +134,8 @@ class Upgrade
      *
      * TODO: Long description of function
      *
-     * @param $varname type,
-     *            what it does
+     * @param  $varname type,
+     *                  what it does
      * @return type, what the return does
      */
     public function migrateData($prg)
@@ -149,8 +148,8 @@ class Upgrade
      *
      * TODO: Long description of function
      *
-     * @param $varname type,
-     *            what it does
+     * @param  $varname type,
+     *                  what it does
      * @return type, what the return does
      */
     public function migrateSettings($prg)

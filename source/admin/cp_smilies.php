@@ -1,4 +1,5 @@
 <?php
+
 /**
  * GaiaBB
  * Copyright (c) 2011-2022 The GaiaBB Group
@@ -26,7 +27,6 @@
  *
  *    You should have received a copy of the GNU General Public License
  *    along with GaiaBB.  If not, see <http://www.gnu.org/licenses/>.
- *
  **/
 
 define('ROOT', '../');
@@ -95,7 +95,7 @@ function viewPanel()
         <td bgcolor="<?php echo $THEME['altbg2'] ?>" class="ctrtablerow"><img src="../<?php echo $THEME['smdir'] ?>/<?php echo $smilie['url'] ?>" alt="<?php echo $smilie['code'] ?>" title="<?php echo $smilie['code'] ?>" /></td>
         </tr>
         <?php
-}
+    }
     $db->free_result($query);
     ?>
     <tr bgcolor="<?php echo $THEME['altbg1'] ?>" class="tablerow">

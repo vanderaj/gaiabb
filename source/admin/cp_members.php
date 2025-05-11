@@ -1,4 +1,5 @@
 <?php
+
 /**
  * GaiaBB
  * Copyright (c) 2011-2022 The GaiaBB Group
@@ -26,7 +27,6 @@
  *
  *    You should have received a copy of the GNU General Public License
  *    along with GaiaBB.  If not, see <http://www.gnu.org/licenses/>.
- *
  **/
 
 define('ROOT', '../');
@@ -197,7 +197,7 @@ function viewMembers()
     <td colspan="9"><?php echo $multipage ?></td>
     </tr>
     <?php
-while ($member = $db->fetch_array($q1)) {
+    while ($member = $db->fetch_array($q1)) {
         $readrulesyes = $readrulesno = '';
         switch ($member['readrules']) {
             case 'yes':
@@ -305,7 +305,7 @@ while ($member = $db->fetch_array($q1)) {
         </td>
         </tr>
         <?php
-$readrulesyes = $readrulesno = $staff_disable = '';
+        $readrulesyes = $readrulesno = $staff_disable = '';
         $sadminselect = $adminselect = $smodselect = '';
         $modselect = $memselect = $banselect = '';
         $pmban = $postban = $bothban = $noban = '';
@@ -317,7 +317,7 @@ $readrulesyes = $readrulesno = $staff_disable = '';
         <td colspan="9"><?php echo $lang['nouserfound'] ?></td>
         </tr>
         <?php
-}
+    }
     ?>
     <tr bgcolor="<?php echo $THEME['altbg2'] ?>" class="ctrtablerow">
     <td colspan="9"><?php echo $multipage ?></td>

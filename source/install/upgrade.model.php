@@ -1,4 +1,5 @@
 <?php
+
 /**
  * GaiaBB
  * Copyright (c) 2009-2021 The GaiaBB Project
@@ -22,8 +23,8 @@
  *
  *    You should have received a copy of the GNU General Public License
  *    along with GaiaBB.  If not, see <http://www.gnu.org/licenses/>.
- *
  **/
+
 // phpcs:disable PSR1.Files.SideEffects
 if (!defined('IN_PROGRAM') && (defined('DEBUG') && DEBUG == false)) {
     exit('This file is not designed to be called directly');
@@ -34,10 +35,9 @@ if (!defined('IN_PROGRAM') && (defined('DEBUG') && DEBUG == false)) {
  *
  * TODO: Long description of function
  *
- * @param $varname type,
- *            what it does
+ * @param  $varname type,
+ *                  what it does
  * @return type, what the return does
- *
  */
 function process_upgrade_config()
 {
@@ -51,10 +51,9 @@ require_once "upgrade.ultimabb.php";
  *
  * TODO: Long description of function
  *
- * @param $varname type,
- *            what it does
+ * @param  $varname type,
+ *                  what it does
  * @return type, what the return does
- *
  */
 function upgrade_forum($path, $prgbar)
 {
@@ -106,12 +105,12 @@ function upgrade_forum($path, $prgbar)
     $dbuser = '';
     $dbpw = '';
 
-    require_once 'config.php';
+    include_once 'config.php';
     if ($database == 'DBTYPE' || !file_exists(ROOT . "db/$database.php")) {
         setCol($prgbar, '#ff0000');
         print_error('Database connection', 'Please ensure that config.php has been successfully written prior to running this install.');
     }
-    require_once "../db/mariadb.class.php";
+    include_once "../db/mariadb.class.php";
 
     setBar($prgbar, 0.05);
 

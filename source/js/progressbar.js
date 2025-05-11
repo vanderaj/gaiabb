@@ -40,7 +40,8 @@
 
 var MWJ_progBar = 0;
 
-function getRefToDivNest(divID, oDoc) {
+function getRefToDivNest(divID, oDoc)
+{
     if (!oDoc) {
         oDoc = document;
     }
@@ -63,7 +64,8 @@ function getRefToDivNest(divID, oDoc) {
     return document[divID];
 }
 
-function progressBar(oBt, oBc, oBg, oBa, oWi, oHi, oDr) {
+function progressBar(oBt, oBc, oBg, oBa, oWi, oHi, oDr)
+{
     MWJ_progBar++;
     this.id = 'MWJ_progBar' + MWJ_progBar;
     this.dir = oDr;
@@ -72,34 +74,41 @@ function progressBar(oBt, oBc, oBg, oBa, oWi, oHi, oDr) {
     this.amt = 0;
     // write the bar as a layer in an ilayer in two tables giving the border
     document
-        .write('<table border="0" cellspacing="0" cellpadding="'
+        .write(
+            '<table border="0" cellspacing="0" cellpadding="'
             + oBt
             + '"><tr><td bgcolor="'
             + oBc
             + '">'
             + '<table border="0" cellspacing="0" cellpadding="0"><tr><td height="'
-            + oHi + '" width="' + oWi + '" bgcolor="' + oBg + '">');
+            + oHi + '" width="' + oWi + '" bgcolor="' + oBg + '">'
+        );
     if (document.layers) {
-        document.write('<ilayer height="' + oHi + '" width="' + oWi
+        document.write(
+            '<ilayer height="' + oHi + '" width="' + oWi
             + '"><layer bgcolor="' + oBa + '" name="MWJ_progBar'
-            + MWJ_progBar + '"></layer></ilayer>');
+            + MWJ_progBar + '"></layer></ilayer>'
+        );
     } else {
         document
-            .write('<div style="position:relative;top:0px;left:0px;height:'
+            .write(
+                '<div style="position:relative;top:0px;left:0px;height:'
                 + oHi
                 + 'px;width:'
                 + oWi
                 + 'px;">'
                 + '<div style="position:absolute;top:0px;left:0px;height:0px;width:0px;font-size:1px;background-color:'
                 + oBa + ';" id="MWJ_progBar' + MWJ_progBar
-                + '"></div></div>');
+                + '"></div></div>'
+            );
     }
     document.write('</td></tr></table></td></tr></table>\n');
     this.setBar = resetBar; // doing this inline causes unexpected bugs in early
     // NS4
     this.setCol = setColour;
 }
-function resetBar(a, b) {
+function resetBar(a, b)
+{
     // work out the required size and use various methods to enforce it
     this.amt = (typeof (b) == 'undefined') ? a : b ? (this.amt + a)
         : (this.amt - a);
@@ -134,7 +143,8 @@ function resetBar(a, b) {
     theDiv.left = ((this.dir != 3) ? 0 : this.width - theWidth) + oPix;
     theDiv.top = ((this.dir != 4) ? 0 : this.height - theHeight) + oPix;
 }
-function setColour(a) {
+function setColour(a)
+{
     // change all the different colour styles
     var theDiv = getRefToDivNest(this.id);
     if (theDiv.style) {

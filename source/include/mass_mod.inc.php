@@ -1,4 +1,5 @@
 <?php
+
 /**
  * GaiaBB
  * Copyright (c) 2011-2022 The GaiaBB Group
@@ -26,7 +27,6 @@
  *
  *    You should have received a copy of the GNU General Public License
  *    along with GaiaBB.  If not, see <http://www.gnu.org/licenses/>.
- *
  **/
 
 // check to ensure no direct viewing of page
@@ -53,7 +53,7 @@ $moveto = formInt('moveto');
 
 if ($action) {
     $action = $action;
-} else if ($mass_mod) {
+} elseif ($mass_mod) {
     $action = $mass_mod;
 }
 
@@ -337,7 +337,6 @@ switch ($action) {
                     $ntid = $db->insert_id();
                     $db->query("INSERT INTO " . X_PREFIX . "posts (fid, tid, author, message, subject) VALUES ('$info[fid]', '$ntid', '$info[author]', '$info[tid]', '$info[subject]')");
                     $db->query("INSERT INTO " . X_PREFIX . "lastposts (tid, uid, username, dateline, pid) SELECT '$ntid', uid, username, dateline, pid FROM " . X_PREFIX . "lastposts WHERE tid = '$info[tid]'");
-
                 }
             }
 

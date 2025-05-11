@@ -1,4 +1,5 @@
 <?php
+
 /**
  * GaiaBB
  * Copyright (c) 2011-2022 The GaiaBB Group
@@ -26,7 +27,6 @@
  *
  *    You should have received a copy of the GNU General Public License
  *    along with GaiaBB.  If not, see <http://www.gnu.org/licenses/>.
- *
  **/
 
 if (!defined('IN_PROGRAM') && (defined('DEBUG') && DEBUG == false)) {
@@ -62,7 +62,7 @@ function address_add($addresses)
     foreach ($addresses as $key => $address) {
         if ($address == $self['username']) {
             blistmsg($lang['addresswarnaddself']);
-        } else if (empty($address) || (strlen(trim($address)) == 0)) {
+        } elseif (empty($address) || (strlen(trim($address)) == 0)) {
             blistmsg($lang['noaddressselected'], '', true);
         } else {
             $address = addslashes($address);
@@ -137,7 +137,7 @@ function address_addpm()
             } else {
                 eval("\$addresses['online'] .= \"" . template('address_pm_inv') . "\";");
             }
-        } else if ($address['username'] != '') {
+        } elseif ($address['username'] != '') {
             eval("\$addresses['online'] .= \"" . template('address_pm_on') . "\";");
         } else {
             eval("\$addresses['offline']   .= \"" . template('address_pm_off') . "\";");

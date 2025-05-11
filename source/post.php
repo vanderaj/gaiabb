@@ -1,4 +1,5 @@
 <?php
+
 /**
  * GaiaBB
  * Copyright (c) 2011-2022 The GaiaBB Group
@@ -26,7 +27,6 @@
  *
  *    You should have received a copy of the GNU General Public License
  *    along with GaiaBB.  If not, see <http://www.gnu.org/licenses/>.
- *
  **/
 
 define('CACHECONTROL', 'private');
@@ -884,7 +884,6 @@ switch ($action) {
                     }
 
                     message($lang['deletepostmsg'], false, '', '', 'viewtopic.php?tid=' . $tid . '&page=' . $topicpages, true, false, true);
-
                 } elseif ($isfirstpost['pid'] == $pid) {
                     $query = $db->query("SELECT pid FROM " . X_PREFIX . "posts WHERE tid = '$tid'");
                     $numrows = $db->num_rows($query);
@@ -969,12 +968,12 @@ switch ($action) {
 
             if (isset($previewpost)) {
                 $postinfo = array(
-                    "usesig" => $usesig,
-                    "bbcodeoff" => $bbcodeoff,
-                    "smileyoff" => $smileyoff,
-                    "message" => $message,
-                    "subject" => $subject,
-                    'icon' => $posticon,
+                "usesig" => $usesig,
+                "bbcodeoff" => $bbcodeoff,
+                "smileyoff" => $smileyoff,
+                "message" => $message,
+                "subject" => $subject,
+                'icon' => $posticon,
                 );
                 $query = $db->query("SELECT filename, filesize, downloads FROM " . X_PREFIX . "attachments WHERE pid = '$pid' AND tid = '$tid'");
                 if ($db->num_rows($query) > 0) {
@@ -1340,7 +1339,7 @@ switch ($action) {
         }
         break;
     case 'captcha':
-        require_once ROOTCLASS . 'captcha.class.php';
+        include_once ROOTCLASS . 'captcha.class.php';
         $captcha = new captcha();
         break;
     default:

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * GaiaBB
  * Copyright (c) 2011-2022 The GaiaBB Group
@@ -26,7 +27,6 @@
  *
  *    You should have received a copy of the GNU General Public License
  *    along with GaiaBB.  If not, see <http://www.gnu.org/licenses/>.
- *
  **/
 
 define('ROOT', './');
@@ -193,7 +193,7 @@ switch ($action) {
         break;
 }
 
-$userObj = new userObj;
+$userObj = new userObj();
 
 switch ($action) {
     case 'quicktheme':
@@ -367,9 +367,9 @@ switch ($action) {
 
         if (empty($subadd) && noSubmit('subsubmit')) {
             $userObj->viewSubscriptions();
-        } else if (!empty($subadd) && noSubmit('subsubmit')) {
+        } elseif (!empty($subadd) && noSubmit('subsubmit')) {
             $userObj->submitAddSubscription($subadd);
-        } else if (empty($subadd) && onSubmit('subsubmit')) {
+        } elseif (empty($subadd) && onSubmit('subsubmit')) {
             $userObj->submitManageSubscriptions();
         }
         break;

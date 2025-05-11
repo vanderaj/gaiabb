@@ -1,4 +1,5 @@
 <?php
+
 /**
  * GaiaBB
  * Copyright (c) 2011-2022 The GaiaBB Group
@@ -26,7 +27,6 @@
  *
  *    You should have received a copy of the GNU General Public License
  *    along with GaiaBB.  If not, see <http://www.gnu.org/licenses/>.
- *
  **/
 
 define('ROOT', '../');
@@ -125,7 +125,7 @@ function doPanel()
     global $oToken, $CONFIG, $self;
 
     set_time_limit(0);
-    
+
     ignore_user_abort(1);
     ob_implicit_flush(1);
 
@@ -197,7 +197,6 @@ function doPanel()
         $db->free_result($query);
     }
     cp_message($lang['newslettersubmit'], false, '', '</td></tr></table>', 'index.php', true, false, true);
-
 }
 
 displayAdminPanel();

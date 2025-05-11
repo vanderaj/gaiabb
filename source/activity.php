@@ -1,4 +1,5 @@
 <?php
+
 /**
  * GaiaBB
  * Copyright (c) 2011-2022 The GaiaBB Group
@@ -26,7 +27,6 @@
  *
  *    You should have received a copy of the GNU General Public License
  *    along with GaiaBB.  If not, see <http://www.gnu.org/licenses/>.
- *
  **/
 
 define('ROOT', './');
@@ -196,7 +196,6 @@ while ($thread = $db->fetch_array($query)) {
     $dalast = trim($thread['lp_dateline']);
 
     if ($thread['lp_user'] != $lang['textanonymous'] && $thread['lp_user'] != '') {
-
         if (X_MEMBER) {
             $lastpostauthor = '<a href="viewprofile.php?memberid=' . intval($thread['lp_uid']) . '"><strong>' . trim($thread['lp_user']) . '</strong></a>';
         } else {
@@ -219,7 +218,7 @@ while ($thread = $db->fetch_array($query)) {
 
     if ($thread['replies'] >= $CONFIG['hottopic']) {
         $folder = 'hot_folder.gif';
-    } else if ($thread['pollopts'] == 1) {
+    } elseif ($thread['pollopts'] == 1) {
         $folder = 'folder_poll.gif';
     } else {
         $folder = 'folder.gif';
@@ -229,9 +228,9 @@ while ($thread = $db->fetch_array($query)) {
 
     if (($oT = strpos($oldtopics, '|' . $lastPid . '|')) === false && $thread['replies'] >= $CONFIG['hottopic'] && $lastvisit < $dalast) {
         $folder = 'hot_red_folder.gif';
-    } else if ($lastvisit < $dalast && $oT === false && $thread['pollopts'] == 1) {
+    } elseif ($lastvisit < $dalast && $oT === false && $thread['pollopts'] == 1) {
         $folder = 'folder_new_poll.gif';
-    } else if ($lastvisit < $dalast && $oT === false) {
+    } elseif ($lastvisit < $dalast && $oT === false) {
         $folder = 'red_folder.gif';
     } else {
         $folder = $folder;

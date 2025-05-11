@@ -1,4 +1,5 @@
 <?php
+
 /**
  * GaiaBB
  * Copyright (c) 2011-2022 The GaiaBB Group
@@ -26,7 +27,6 @@
  *
  *    You should have received a copy of the GNU General Public License
  *    along with GaiaBB.  If not, see <http://www.gnu.org/licenses/>.
- *
  **/
 
 define('ROOT', '../');
@@ -97,7 +97,7 @@ function viewPanel()
     <td colspan="2" class="title"><?php echo $lang['photo_main_settings'] ?></td>
     </tr>
     <?php
-printsetting1($lang['photostatus'], 'photostatusnew', $photoon, $photooff);
+    printsetting1($lang['photostatus'], 'photostatusnew', $photoon, $photooff);
     printsetting3($lang['photo_Whoupload'], 'photo_whocanuploadnew', array($lang['textoff'], $lang['photo_Upall'], $lang['photo_Upstaff']), array('off', 'all', 'staff'), $avuchecked, false);
     printsetting2($lang['photo_Filesize'], 'photo_filesizenew', $CONFIG['photo_filesize'], 5);
     printsetting2($lang['photo_Wdimensions'], 'photo_max_widthnew', $CONFIG['photo_max_width'], 4);

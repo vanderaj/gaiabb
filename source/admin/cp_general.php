@@ -1,4 +1,5 @@
 <?php
+
 /**
  * GaiaBB
  * Copyright (c) 2011-2022 The GaiaBB Group
@@ -26,7 +27,6 @@
  *
  *    You should have received a copy of the GNU General Public License
  *    along with GaiaBB.  If not, see <http://www.gnu.org/licenses/>.
- *
  **/
 
 define('ROOT', '../');
@@ -191,7 +191,7 @@ function viewPanel()
     <td class="title" colspan="2"><?php echo $lang['admin_main_settings3'] ?></td>
     </tr>
     <?php
-printsetting1($lang['textsearchstatus'], 'searchstatusnew', $searchon, $searchoff);
+    printsetting1($lang['textsearchstatus'], 'searchstatusnew', $searchon, $searchoff);
     printsetting1($lang['textfaqstatus'], 'faqstatusnew', $faqon, $faqoff);
     printsetting1($lang['topicactivitystatus'], 'topicactivity_statusnew', $topicon, $topicoff);
     printsetting1($lang['textstatsstatus'], 'statsnew', $statson, $statsoff);
@@ -212,7 +212,7 @@ printsetting1($lang['textsearchstatus'], 'searchstatusnew', $searchon, $searchof
     <td class="title" colspan="2"><?php echo $lang['admin_main_settings4'] ?></td>
     </tr>
     <?php
-printsetting1($lang['whosonline_on'], 'whosonlinestatusnew', $whosonlineon, $whosonlineoff);
+    printsetting1($lang['whosonline_on'], 'whosonlinestatusnew', $whosonlineon, $whosonlineoff);
     printsetting1($lang['whosonlinetoday'], 'whosonlinetodaynew', $whosonlinetodayon, $whosonlinetodayoff);
     printsetting2($lang['smtotal'], 'smtotalnew', $CONFIG['smtotal'], 5);
     printsetting2($lang['smcols'], 'smcolsnew', $CONFIG['smcols'], 5);
@@ -232,7 +232,7 @@ printsetting1($lang['whosonline_on'], 'whosonlinestatusnew', $whosonlineon, $who
     <td class="title" colspan="2"><?php echo $lang['admin_main_settings5'] ?></td>
     </tr>
     <?php
-printsetting1($lang['reg_on'], 'regstatusnew', $regon, $regoff);
+    printsetting1($lang['reg_on'], 'regstatusnew', $regon, $regoff);
     printsetting3($lang['notifyonreg'], 'notifyonregnew', array($lang['textoff'], $lang['viapm'], $lang['viaemail']), array('off', 'pm', 'email'), $notifycheck, false);
     printsetting4($lang['notify'], 5, 'usernamenotifynew', 50, $CONFIG['usernamenotify']);
     printsetting1($lang['textreggedonly'], 'regviewonlynew', $regonlyon, $regonlyoff);
@@ -248,7 +248,7 @@ printsetting1($lang['reg_on'], 'regstatusnew', $regon, $regoff);
     <td class="title" colspan="2"><?php echo $lang['admin_main_settings6'] ?></td>
     </tr>
     <?php
-printsetting2($lang['texthottopic'], 'hottopicnew', $CONFIG['hottopic'], 3);
+    printsetting2($lang['texthottopic'], 'hottopicnew', $CONFIG['hottopic'], 3);
     printsetting1($lang['bbinsert'], 'bbinsertnew', $bbinserton, $bbinsertoff);
     printsetting1($lang['smileyinsert'], 'smileyinsertnew', $smileyinserton, $smileyinsertoff);
     printsetting3($lang['footer_options'], 'new_footer_options', $names, $values, $checked);

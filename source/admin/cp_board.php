@@ -1,4 +1,5 @@
 <?php
+
 /**
  * GaiaBB
  * Copyright (c) 2011-2022 The GaiaBB Group
@@ -26,7 +27,6 @@
  *
  *    You should have received a copy of the GNU General Public License
  *    along with GaiaBB.  If not, see <http://www.gnu.org/licenses/>.
- *
  **/
 
 define('ROOT', '../');
@@ -69,8 +69,8 @@ smcwcache();
  *
  * Long description of function
  *
- * @param    $varname    type, what it does
- * @return   type, what the return does
+ * @param  $varname type, what it does
+ * @return type, what the return does
  */
 function viewPanel()
 {
@@ -125,7 +125,7 @@ function viewPanel()
     <td class="title" colspan="2"><?php echo $lang['admin_main_settings1'] ?></td>
     </tr>
     <?php
-printsetting2($lang['textsitename'], 'sitenamenew', $CONFIG['sitename'], 50);
+    printsetting2($lang['textsitename'], 'sitenamenew', $CONFIG['sitename'], 50);
     printsetting2($lang['bbname'], 'bbnamenew', $CONFIG['bbname'], 50);
     printsetting2($lang['textsiteurl'], 'siteurlnew', $CONFIG['siteurl'], 50);
     printsetting2($lang['textboardurl'], 'boardurlnew', $CONFIG['boardurl'], 50);
@@ -169,8 +169,8 @@ printsetting2($lang['textsitename'], 'sitenamenew', $CONFIG['sitename'], 50);
  *
  * Long description of function
  *
- * @param    $varname    type, what it does
- * @return   type, what the return does
+ * @param  $varname type, what it does
+ * @return type, what the return does
  */
 function doPanel()
 {

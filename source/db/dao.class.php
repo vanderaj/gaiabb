@@ -1,4 +1,5 @@
 <?php
+
 /**
  * GaiaBB
  * Copyright (c) 2011-2022 The GaiaBB Group
@@ -26,7 +27,6 @@
  *
  *    You should have received a copy of the GNU General Public License
  *    along with GaiaBB.  If not, see <http://www.gnu.org/licenses/>.
- *
  **/
 
 // check to ensure no direct viewing of page
@@ -36,14 +36,13 @@ if (!defined('IN_PROGRAM') && (defined('DEBUG') && DEBUG == false)) {
 
 class DataAccessObject
 {
-
     /**
      * function() - short description of function
      *
      * Long description of function
      *
-     * @param    $varname    type, what it does
-     * @return   type, what the return does
+     * @param  $varname type, what it does
+     * @return type, what the return does
      */
     public function __construct()
     {
@@ -54,8 +53,8 @@ class DataAccessObject
      *
      * Long description of function
      *
-     * @param    $varname    type, what it does
-     * @return   type, what the return does
+     * @param  $varname type, what it does
+     * @return type, what the return does
      */
     public function connect($dbhost = "localhost", $dbuser, $dbpw, $dbname, $pconnect = 0, $force_db = false)
     {
@@ -66,8 +65,8 @@ class DataAccessObject
      *
      * Long description of function
      *
-     * @param    $varname    type, what it does
-     * @return   type, what the return does
+     * @param  $varname type, what it does
+     * @return type, what the return does
      */
     public function panic($head, $msg)
     {
@@ -78,8 +77,8 @@ class DataAccessObject
      *
      * Long description of function
      *
-     * @param    $varname    type, what it does
-     * @return   type, what the return does
+     * @param  $varname type, what it does
+     * @return type, what the return does
      */
     public function view_header($title = "Data Abstraction Layer")
     {
@@ -151,15 +150,15 @@ class DataAccessObject
         </table>
         <br />
         <?php
-}
+    }
 
     /**
      * function() - short description of function
      *
      * Long description of function
      *
-     * @param    $varname    type, what it does
-     * @return   type, what the return does
+     * @param  $varname type, what it does
+     * @return type, what the return does
      */
     public function view_footer()
     {
@@ -182,15 +181,15 @@ class DataAccessObject
         </body>
         </html>
         <?php
-}
+    }
 
     /**
      * function() - short description of function
      *
      * Long description of function
      *
-     * @param    $varname    type, what it does
-     * @return   type, what the return does
+     * @param  $varname type, what it does
+     * @return type, what the return does
      */
     public function view_shadow()
     {
@@ -201,15 +200,15 @@ class DataAccessObject
         </tr>
         </table>
         <?php
-}
+    }
 
     /**
      * function() - short description of function
      *
      * Long description of function
      *
-     * @param    $varname    type, what it does
-     * @return   type, what the return does
+     * @param  $varname type, what it does
+     * @return type, what the return does
      */
     public function select_db($database)
     {
@@ -220,8 +219,8 @@ class DataAccessObject
      *
      * Long description of function
      *
-     * @param    $varname    type, what it does
-     * @return   type, what the return does
+     * @param  $varname type, what it does
+     * @return type, what the return does
      */
     public function find_database()
     {
@@ -232,8 +231,8 @@ class DataAccessObject
      *
      * Long description of function
      *
-     * @param    $varname    type, what it does
-     * @return   type, what the return does
+     * @param  $varname type, what it does
+     * @return type, what the return does
      */
     public function error()
     {
@@ -244,8 +243,8 @@ class DataAccessObject
      *
      * Long description of function
      *
-     * @param    $varname    type, what it does
-     * @return   type, what the return does
+     * @param  $varname type, what it does
+     * @return type, what the return does
      */
     public function free_result($query = null)
     {
@@ -256,8 +255,8 @@ class DataAccessObject
      *
      * Long description of function
      *
-     * @param    $varname    type, what it does
-     * @return   type, what the return does
+     * @param  $varname type, what it does
+     * @return type, what the return does
      */
     public function fetch_array($query, $type = SQL_ASSOC)
     {
@@ -268,8 +267,8 @@ class DataAccessObject
      *
      * Long description of function
      *
-     * @param    $varname    type, what it does
-     * @return   type, what the return does
+     * @param  $varname type, what it does
+     * @return type, what the return does
      */
     public function field_type($result, $field)
     {
@@ -280,8 +279,8 @@ class DataAccessObject
      *
      * Long description of function
      *
-     * @param    $varname    type, what it does
-     * @return   type, what the return does
+     * @param  $varname type, what it does
+     * @return type, what the return does
      */
     public function field_name($result, $field)
     {
@@ -292,8 +291,8 @@ class DataAccessObject
      *
      * Long description of function
      *
-     * @param    $varname    type, what it does
-     * @return   type, what the return does
+     * @param  $varname type, what it does
+     * @return type, what the return does
      */
     public function field_len($result, $field)
     {
@@ -304,8 +303,8 @@ class DataAccessObject
      *
      * Long description of function
      *
-     * @param    $varname    type, what it does
-     * @return   type, what the return does
+     * @param  $varname type, what it does
+     * @return type, what the return does
      */
     public function field_flags($result, $field)
     {
@@ -316,8 +315,8 @@ class DataAccessObject
      *
      * Long description of function
      *
-     * @param    $varname    type, what it does
-     * @return   type, what the return does
+     * @param  $varname type, what it does
+     * @return type, what the return does
      */
     public function field_table($result, $field)
     {
@@ -328,8 +327,8 @@ class DataAccessObject
      *
      * Long description of function
      *
-     * @param    $varname    type, what it does
-     * @return   type, what the return does
+     * @param  $varname type, what it does
+     * @return type, what the return does
      */
     public function query($sql)
     {
@@ -340,8 +339,8 @@ class DataAccessObject
      *
      * Long description of function
      *
-     * @param    $varname    type, what it does
-     * @return   type, what the return does
+     * @param  $varname type, what it does
+     * @return type, what the return does
      */
     public function fetch_tables($dbname = null)
     {
@@ -352,8 +351,8 @@ class DataAccessObject
      *
      * Long description of function
      *
-     * @param    $varname    type, what it does
-     * @return   type, what the return does
+     * @param  $varname type, what it does
+     * @return type, what the return does
      */
     public function result($query, $row = 0, $field = null)
     {
@@ -364,8 +363,8 @@ class DataAccessObject
      *
      * Long description of function
      *
-     * @param    $varname    type, what it does
-     * @return   type, what the return does
+     * @param  $varname type, what it does
+     * @return type, what the return does
      */
     public function num_rows($query)
     {
@@ -376,8 +375,8 @@ class DataAccessObject
      *
      * Long description of function
      *
-     * @param    $varname    type, what it does
-     * @return   type, what the return does
+     * @param  $varname type, what it does
+     * @return type, what the return does
      */
     public function num_fields($query)
     {
@@ -388,8 +387,8 @@ class DataAccessObject
      *
      * Long description of function
      *
-     * @param    $varname    type, what it does
-     * @return   type, what the return does
+     * @param  $varname type, what it does
+     * @return type, what the return does
      */
     public function insert_id()
     {
@@ -400,8 +399,8 @@ class DataAccessObject
      *
      * Long description of function
      *
-     * @param    $varname    type, what it does
-     * @return   type, what the return does
+     * @param  $varname type, what it does
+     * @return type, what the return does
      */
     public function fetch_row($query)
     {
@@ -410,8 +409,8 @@ class DataAccessObject
     /**
      * time() - create a SQL timestamp
      *
-     * @param    $time, optional, an arbitrary point in time
-     * @return   string, the left padded timestamp suitable for SQL queries
+     * @param  $time, optional, an arbitrary point in time
+     * @return string, the left padded timestamp suitable for SQL queries
      */
     public function time($time = null)
     {
@@ -428,8 +427,8 @@ class DataAccessObject
      *
      * Long description of function
      *
-     * @param    $varname    type, what it does
-     * @return   type, what the return does
+     * @param  $varname type, what it does
+     * @return type, what the return does
      */
     public function start_timer()
     {
@@ -440,8 +439,8 @@ class DataAccessObject
      *
      * Long description of function
      *
-     * @param    $varname    type, what it does
-     * @return   type, what the return does
+     * @param  $varname type, what it does
+     * @return type, what the return does
      */
     public function stop_timer()
     {
@@ -452,8 +451,8 @@ class DataAccessObject
      *
      * Long description of function
      *
-     * @param    $varname    type, what it does
-     * @return   type, what the return does
+     * @param  $varname type, what it does
+     * @return type, what the return does
      */
     public function getTables()
     {
@@ -464,8 +463,8 @@ class DataAccessObject
      *
      * Long description of function
      *
-     * @param    $varname    type, what it does
-     * @return   type, what the return does
+     * @param  $varname type, what it does
+     * @return type, what the return does
      */
     public function close()
     {
@@ -476,8 +475,8 @@ class DataAccessObject
      *
      * Long description of function
      *
-     * @param    $varname    type, what it does
-     * @return   type, what the return does
+     * @param  $varname type, what it does
+     * @return type, what the return does
      */
     public function getVersion()
     {
@@ -492,8 +491,8 @@ class DataAccessObject
      *
      * Long description of function
      *
-     * @param    $varname    type, what it does
-     * @return   type, what the return does
+     * @param  $varname type, what it does
+     * @return type, what the return does
      */
     public function escape($str, $length = -1)
     {

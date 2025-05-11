@@ -1,4 +1,5 @@
 <?php
+
 /**
  * GaiaBB
  * Copyright (c) 2011-2022 The GaiaBB Group
@@ -26,7 +27,6 @@
  *
  *    You should have received a copy of the GNU General Public License
  *    along with GaiaBB.  If not, see <http://www.gnu.org/licenses/>.
- *
  **/
 
 define('ROOT', './');
@@ -94,7 +94,7 @@ if (isset($forum['type']) && $forum['type'] == 'sub') {
     if (!privfcheck($fup['private'], $fup['userlist'])) {
         error($lang['privforummsg']);
     }
-} else if (isset($forum['type']) && $forum['type'] != 'forum') {
+} elseif (isset($forum['type']) && $forum['type'] != 'forum') {
     error($lang['textnoforum']);
 }
 
@@ -108,7 +108,7 @@ pwverify($forum['password'], 'viewforum.php?fid=' . $fid, $fid, true);
 if (isset($forum['type']) && $forum['type'] == 'forum') {
     nav(stripslashes($forum['name']));
     btitle(stripslashes($forum['name']));
-} else if (isset($forum['type']) && $forum['type'] == 'sub') {
+} elseif (isset($forum['type']) && $forum['type'] == 'sub') {
     nav('<a href="viewforum.php?fid=' . intval($fup['fid']) . '">' . stripslashes($fup['name']) . '</a>');
     nav(stripslashes($forum['name']));
     btitle(stripslashes($fup['name']));
@@ -299,7 +299,7 @@ $viewforum_thread = 'viewforum_thread';
 $status1 = '';
 if (X_STAFF && isset($self['status']) && $self['status'] != 'Moderator') {
     $status1 = 'Moderator';
-} else if (isset($self['status']) && $self['status'] == 'Moderator') {
+} elseif (isset($self['status']) && $self['status'] == 'Moderator') {
     $status1 = modcheck($forum['moderator']);
 }
 
@@ -350,7 +350,7 @@ while ($thread = $db->fetch_array($querytop)) {
 
     if ($thread['replies'] >= $CONFIG['hottopic']) {
         $folder = 'hot_folder.gif';
-    } else if ($thread['pollopts'] == 1) {
+    } elseif ($thread['pollopts'] == 1) {
         $folder = 'folder_poll.gif';
     } else {
         $folder = 'folder.gif';
@@ -360,9 +360,9 @@ while ($thread = $db->fetch_array($querytop)) {
 
     if (($oT = strpos($oldtopics, '|' . $lastPid . '|')) === false && $thread['replies'] >= $CONFIG['hottopic'] && $lastvisit < $dalast) {
         $folder = 'hot_red_folder.gif';
-    } else if ($lastvisit < $dalast && $oT === false && $thread['pollopts'] == 1) {
+    } elseif ($lastvisit < $dalast && $oT === false && $thread['pollopts'] == 1) {
         $folder = 'folder_new_poll.gif';
-    } else if ($lastvisit < $dalast && $oT === false) {
+    } elseif ($lastvisit < $dalast && $oT === false) {
         $folder = 'red_folder.gif';
     } else {
         $folder = $folder;

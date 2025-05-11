@@ -1,4 +1,5 @@
 <?php
+
 /**
  * GaiaBB
  * Copyright (c) 2009-2021 The GaiaBB Project
@@ -22,8 +23,8 @@
  *
  *    You should have received a copy of the GNU General Public License
  *    along with GaiaBB.  If not, see <http://www.gnu.org/licenses/>.
- *
  **/
+
 // phpcs:disable PSR1.Files.SideEffects
 
 namespace GaiaBB;
@@ -42,7 +43,7 @@ class UpgradeUltimaBB extends Upgrade
      *
      * GaiaBB has same table names as UltimaBB
      *
-     * @param $prg - progress percentage
+     * @param  $prg - progress percentage
      * @return boolean - completed
      */
     public function renameTables($prg)
@@ -57,7 +58,7 @@ class UpgradeUltimaBB extends Upgrade
      *
      * GaiaBB checks to see if FAQ tables exist and puts them back if not
      *
-     * @param $prg - progress percentage
+     * @param  $prg - progress percentage
      * @return boolean - completed
      */
     public function addTables($prg)
@@ -104,7 +105,7 @@ class UpgradeUltimaBB extends Upgrade
      *
      * GaiaBB removes a calendar and events from the UltimaBB database
      *
-     * @param $prg - progress percentage
+     * @param  $prg - progress percentage
      * @return boolean - completed
      */
     public function deleteTables($prg)
@@ -138,7 +139,7 @@ class UpgradeUltimaBB extends Upgrade
      *
      * Change the schema from UltimaBB to GaiaBB's
      *
-     * @param $prg - progress percentage
+     * @param  $prg - progress percentage
      * @return boolean - completed
      */
     public function alterTables($prg)
@@ -394,7 +395,7 @@ class UpgradeUltimaBB extends Upgrade
                 $this->db->query($query);
                 setBar($this->prgbar, $this->prgbar);
                 $this->prgbar += 0.05;
-                
+
                 $query = "ALTER TABLE `" . X_PREFIX . "threads` CONVERT TO CHARACTER SET utf8mb4";
                 $this->db->query($query);
                 setBar($this->prgbar, $this->prgbar);
@@ -414,7 +415,7 @@ class UpgradeUltimaBB extends Upgrade
                 $this->db->query($query);
                 setBar($this->prgbar, $this->prgbar);
                 $this->prgbar += 0.05;
-                
+
                 $query = "ALTER TABLE `" . X_PREFIX . "whosonline` CONVERT TO CHARACTER SET utf8mb4";
                 $this->db->query($query);
                 setBar($this->prgbar, $this->prgbar);
@@ -443,7 +444,7 @@ class UpgradeUltimaBB extends Upgrade
      *
      * As UltimaBB and GaiaBB are close cousins, main thing is to reset templates
      *
-     * @param $prg - progress percentage
+     * @param  $prg - progress percentage
      * @return boolean - completed
      */
     public function migrateData($prg)
@@ -463,7 +464,7 @@ class UpgradeUltimaBB extends Upgrade
      *
      * As UltimaBB and GaiaBB are close cousins, nothing to do
      *
-     * @param $prg - progress percentage
+     * @param  $prg - progress percentage
      * @return boolean - completed
      */
     public function migrateSettings($prg)

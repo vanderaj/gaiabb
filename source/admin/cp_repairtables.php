@@ -1,4 +1,5 @@
 <?php
+
 /**
  * GaiaBB
  * Copyright (c) 2011-2022 The GaiaBB Group
@@ -26,7 +27,6 @@
  *
  *    You should have received a copy of the GNU General Public License
  *    along with GaiaBB.  If not, see <http://www.gnu.org/licenses/>.
- *
  **/
 
 define('ROOT', '../');
@@ -113,7 +113,7 @@ function doPanel()
     <td bgcolor="<?php echo $THEME['bordercolor'] ?>">
     <table border="0px" cellspacing="<?php echo $THEME['borderwidth'] ?>" cellpadding="<?php echo $THEME['tablespace'] ?>" width="100%">
     <?php
-foreach ($tables as $key => $val) {
+    foreach ($tables as $key => $val) {
         if ($start) {
             dump_query($db->query('REPAIR TABLE `' . $val . '`'));
             $start = false;

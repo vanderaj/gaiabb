@@ -4,7 +4,6 @@ namespace GaiaBB;
 
 class Convert
 {
-
     private $fromDbHost;
 
     private $toDbHost;
@@ -16,8 +15,8 @@ class Convert
      *
      * TODO: Long description of function
      *
-     * @param $varname type,
-     *            what it does
+     * @param  $varname type,
+     *                  what it does
      * @return type, what the return does
      */
     public function __construct(&$prgbar, $fromDb, $toDb)
@@ -32,8 +31,8 @@ class Convert
      *
      * TODO: Long description of function
      *
-     * @param $varname type,
-     *            what it does
+     * @param  $varname type,
+     *                  what it does
      * @return type, what the return does
      */
     public function close()
@@ -45,8 +44,8 @@ class Convert
      *
      * TODO: Long description of function
      *
-     * @param $varname type,
-     *            what it does
+     * @param  $varname type,
+     *                  what it does
      * @return type, what the return does
      */
     public function init()
@@ -76,8 +75,8 @@ class Convert
      *
      * TODO: Long description of function
      *
-     * @param $varname type,
-     *            what it does
+     * @param  $varname type,
+     *                  what it does
      * @return type, what the return does
      */
     public function isAuth()
@@ -89,8 +88,8 @@ class Convert
      *
      * TODO: Long description of function
      *
-     * @param $varname type,
-     *            what it does
+     * @param  $varname type,
+     *                  what it does
      * @return type, what the return does
      */
     public function disableBoards()
@@ -102,8 +101,8 @@ class Convert
      *
      * TODO: Long description of function
      *
-     * @param $varname type,
-     *            what it does
+     * @param  $varname type,
+     *                  what it does
      * @return type, what the return does
      */
     public function settings()
@@ -115,8 +114,8 @@ class Convert
      *
      * TODO: Long description of function
      *
-     * @param $varname type,
-     *            what it does
+     * @param  $varname type,
+     *                  what it does
      * @return type, what the return does
      */
     public function members()
@@ -128,8 +127,8 @@ class Convert
      *
      * TODO: Long description of function
      *
-     * @param $varname type,
-     *            what it does
+     * @param  $varname type,
+     *                  what it does
      * @return type, what the return does
      */
     public function forums()
@@ -141,8 +140,8 @@ class Convert
      *
      * TODO: Long description of function
      *
-     * @param $varname type,
-     *            what it does
+     * @param  $varname type,
+     *                  what it does
      * @return type, what the return does
      */
     public function threads()
@@ -154,8 +153,8 @@ class Convert
      *
      * TODO: Long description of function
      *
-     * @param $varname type,
-     *            what it does
+     * @param  $varname type,
+     *                  what it does
      * @return type, what the return does
      */
     public function posts()
@@ -167,8 +166,8 @@ class Convert
      *
      * TODO: Long description of function
      *
-     * @param $varname type,
-     *            what it does
+     * @param  $varname type,
+     *                  what it does
      * @return type, what the return does
      */
     public function polls()
@@ -180,8 +179,8 @@ class Convert
      *
      * TODO: Long description of function
      *
-     * @param $varname type,
-     *            what it does
+     * @param  $varname type,
+     *                  what it does
      * @return type, what the return does
      */
     public function ranks()
@@ -193,8 +192,8 @@ class Convert
      *
      * TODO: Long description of function
      *
-     * @param $varname type,
-     *            what it does
+     * @param  $varname type,
+     *                  what it does
      * @return type, what the return does
      */
     public function attachments()
@@ -206,8 +205,8 @@ class Convert
      *
      * TODO: Long description of function
      *
-     * @param $varname type,
-     *            what it does
+     * @param  $varname type,
+     *                  what it does
      * @return type, what the return does
      */
     public function addresses()
@@ -219,8 +218,8 @@ class Convert
      *
      * TODO: Long description of function
      *
-     * @param $varname type,
-     *            what it does
+     * @param  $varname type,
+     *                  what it does
      * @return type, what the return does
      */
     public function favorites()
@@ -232,8 +231,8 @@ class Convert
      *
      * TODO: Long description of function
      *
-     * @param $varname type,
-     *            what it does
+     * @param  $varname type,
+     *                  what it does
      * @return type, what the return does
      */
     public function subscriptions()
@@ -245,8 +244,8 @@ class Convert
      *
      * TODO: Long description of function
      *
-     * @param $varname type,
-     *            what it does
+     * @param  $varname type,
+     *                  what it does
      * @return type, what the return does
      */
     public function censors()
@@ -258,8 +257,8 @@ class Convert
      *
      * TODO: Long description of function
      *
-     * @param $varname type,
-     *            what it does
+     * @param  $varname type,
+     *                  what it does
      * @return type, what the return does
      */
     public function banned()
@@ -271,8 +270,8 @@ class Convert
      *
      * TODO: Long description of function
      *
-     * @param $varname type,
-     *            what it does
+     * @param  $varname type,
+     *                  what it does
      * @return type, what the return does
      */
     public function messages()

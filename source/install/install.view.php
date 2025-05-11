@@ -1,4 +1,5 @@
 <?php
+
 /**
  * GaiaBB
  * Copyright (c) 2009-2021 The GaiaBB Project
@@ -22,8 +23,8 @@
  *
  *    You should have received a copy of the GNU General Public License
  *    along with GaiaBB.  If not, see <http://www.gnu.org/licenses/>.
- *
  **/
+
 // phpcs:disable PSR1.Files.SideEffects
 if (!defined('IN_PROGRAM') && (defined('DEBUG') && DEBUG == false)) {
     exit('This file is not designed to be called directly');
@@ -34,10 +35,9 @@ if (!defined('IN_PROGRAM') && (defined('DEBUG') && DEBUG == false)) {
  *
  * TODO: Long description of function
  *
- * @param $varname type,
- *            what it does
+ * @param  $varname type,
+ *                  what it does
  * @return type, what the return does
- *
  */
 function view_install_index()
 {
@@ -100,10 +100,9 @@ function view_install_index()
  *
  * TODO: Long description of function
  *
- * @param $varname type,
- *            what it does
+ * @param  $varname type,
+ *                  what it does
  * @return type, what the return does
- *
  */
 function view_install_complete()
 {
@@ -116,10 +115,9 @@ function view_install_complete()
  *
  * TODO: Long description of function
  *
- * @param $varname type,
- *            what it does
+ * @param  $varname type,
+ *                  what it does
  * @return type, what the return does
- *
  */
 function view_install_warncomplete()
 {

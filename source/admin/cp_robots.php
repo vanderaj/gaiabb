@@ -1,4 +1,5 @@
 <?php
+
 /**
  * GaiaBB
  * Copyright (c) 2011-2022 The GaiaBB Group
@@ -26,7 +27,6 @@
  *
  *    You should have received a copy of the GNU General Public License
  *    along with GaiaBB.  If not, see <http://www.gnu.org/licenses/>.
- *
  **/
 
 define('ROOT', '../');
@@ -113,7 +113,7 @@ function viewSearchPanel()
     <td class="title"><?php echo $lang['textrobotagent'] ?></td>
     </tr>
     <?php
-$srchbot = $db->escape(formVar('srchbot'));
+    $srchbot = $db->escape(formVar('srchbot'));
     if (!empty($srchbot)) {
         $srchbot = "WHERE robot_fullname LIKE '%" . $srchbot . "%' ";
     }
@@ -126,7 +126,7 @@ $srchbot = $db->escape(formVar('srchbot'));
         <td><input type="text" size="20" name="robotagent<?php echo $robot['robot_id'] ?>" value="<?php echo $robot['robot_string'] ?>" /></td>
         </tr>
         <?php
-}
+    }
     ?>
     <tr>
     <td bgcolor="<?php echo $THEME['altbg2'] ?>" colspan="4">&nbsp;</td>

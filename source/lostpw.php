@@ -1,4 +1,5 @@
 <?php
+
 /**
  * GaiaBB
  * Copyright (c) 2011-2022 The GaiaBB Group
@@ -26,7 +27,6 @@
  *
  *    You should have received a copy of the GNU General Public License
  *    along with GaiaBB.  If not, see <http://www.gnu.org/licenses/>.
- *
  **/
 
 define('CACHECONTROL', 'nocache');
@@ -37,7 +37,7 @@ require_once ROOT . 'header.php';
 loadtpl('lostpw');
 
 $shadow = shadowfx();
-$meta = metaTags();
+$meta   = metaTags();
 
 smcwcache();
 
@@ -56,11 +56,11 @@ if (noSubmit('lostpwsubmit')) {
     eval('echo stripslashes("' . template('lostpw') . '");');
 } else {
     $username = $db->escape(formVar('username'));
-    $email = formVar('email');
+    $email    = formVar('email');
 
-    $query = $db->query("SELECT username, email, pwdate FROM " . X_PREFIX . "members WHERE (username = '$username' and status != 'Banned')");
+    $query  = $db->query("SELECT username, email, pwdate FROM " . X_PREFIX . "members WHERE (username = '$username' and status != 'Banned')");
     $member = $db->fetch_array($query);
-    $rows = $db->num_rows($query);
+    $rows   = $db->num_rows($query);
     $db->free_result($query);
 
     if ($rows == 1 && strtolower($email) === strtolower(stripslashes($member['email']))) {
@@ -74,7 +74,7 @@ if (noSubmit('lostpwsubmit')) {
 
     $email = stripslashes($member['email']); // SMTP functions cannot handle database escaped e-mail addresses
 
-    $chars = '23456789abcdefghjkmnpqrstuvwxyz';
+    $chars   = '23456789abcdefghjkmnpqrstuvwxyz';
     $newpass = '';
     mt_srand((double) microtime() * 1000000);
     $max = mt_rand(8, 12);
@@ -94,22 +94,23 @@ if (noSubmit('lostpwsubmit')) {
 
     $messagebody = $lang['textyourpwis'] . "\n\n" . $member['username'] . "\n" . $newpass;
 
-    if (empty($CONFIG['adminemail'])) // The mail class can handle this error, but it'll describe it vaguely {
-    error($lang['noadminemail'], false, '', '', 'admin/cp_board.php', true, false, true);
+    if (empty($CONFIG['adminemail'])) {
+        // The mail class can handle this error, but it'll describe it vaguely
+        error($lang['noadminemail'], false, '', '', 'admin/cp_board.php', true, false, true);
+    }
 }
 
-if (empty($CONFIG['bbname'])) // The mail class can handle this error, but it'll describe it vaguely {
-error($lang['nobbname'], false, '', '', 'admin/cp_board.php', true, false, true);
+if (empty($CONFIG['bbname'])) {
+    // The mail class can handle this error, but it'll describe it vaguely {
+    error($lang['nobbname'], false, '', '', 'admin/cp_board.php', true, false, true);
 }
 
-    $mailsys->setTo($email);
-    $mailsys->setSubject($lang['textyourpw']);
-    $mailsys->setMessage($messagebody);
-    $mailsys->Send();
+$mailsys->setTo($email);
+$mailsys->setSubject($lang['textyourpw']);
+$mailsys->setMessage($messagebody);
+$mailsys->Send();
 
-    message($lang['emailpw'], false, '', '', 'index.php', true, false, true);
+message($lang['emailpw'], false, '', '', 'index.php', true, false, true);
 
-}
-
-    loadtime();
-    eval('echo "' . template('footer') . '";');
+loadtime();
+eval('echo "' . template('footer') . '";');

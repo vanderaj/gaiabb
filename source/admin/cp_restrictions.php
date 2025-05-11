@@ -1,4 +1,5 @@
 <?php
+
 /**
  * GaiaBB
  * Copyright (c) 2011-2022 The GaiaBB Group
@@ -26,7 +27,6 @@
  *
  *    You should have received a copy of the GNU General Public License
  *    along with GaiaBB.  If not, see <http://www.gnu.org/licenses/>.
- *
  **/
 
 define('ROOT', '../');
@@ -80,10 +80,9 @@ function viewPanel()
     <td class="title" align="center"><?php echo $lang['restrictpartialmatch'] ?></td>
     </tr>
     <?php
-$query = $db->query("SELECT * FROM " . X_PREFIX . "restricted ORDER BY id");
+    $query = $db->query("SELECT * FROM " . X_PREFIX . "restricted ORDER BY id");
     $rowsFound = $db->num_rows($query);
     while ($restricted = $db->fetch_array($query)) {
-
         $case_check = $partial_check = '';
         if ($restricted['case_sensitivity'] == 1) {
             $case_check = $cheHTML;
@@ -97,7 +96,7 @@ $query = $db->query("SELECT * FROM " . X_PREFIX . "restricted ORDER BY id");
         <tr class="ctrtablerow" bgcolor="<?php echo $THEME['altbg2'] ?>">
         <td>
         <?php
-printsetting6("delete" . $restricted['id'], $restricted['id'], '', '');
+        printsetting6("delete" . $restricted['id'], $restricted['id'], '', '');
         ?>
         </td>
         <td>
@@ -105,17 +104,17 @@ printsetting6("delete" . $restricted['id'], $restricted['id'], '', '');
         </td>
         <td>
         <?php
-printsetting6("case" . $restricted['id'], 'on', $case_check, '');
+        printsetting6("case" . $restricted['id'], 'on', $case_check, '');
         ?>
         </td>
         <td>
         <?php
-printsetting6("partial" . $restricted['id'], 'on', $partial_check, '');
+        printsetting6("partial" . $restricted['id'], 'on', $partial_check, '');
         ?>
         </td>
         </tr>
         <?php
-}
+    }
     $db->free_result($query);
     if ($rowsFound < 1) {
         ?>
@@ -123,7 +122,7 @@ printsetting6("partial" . $restricted['id'], 'on', $partial_check, '');
         <td colspan="4"><?php echo $lang['pluglinknone'] ?></td>
         </tr>
         <?php
-}
+    }
     ?>
     <tr>
     <td bgcolor="<?php echo $THEME['altbg2'] ?>" colspan="4"><span class="smalltxt"><?php echo $lang['newrestrictionwhy'] ?><br /><?php echo $lang['newrestriction'] ?></span></td>
@@ -136,12 +135,12 @@ printsetting6("partial" . $restricted['id'], 'on', $partial_check, '');
     <td><input type="text" size="30" name="newname" value="" /></td>
     <td>
     <?php
-printsetting6('newcase', 'on', $cheHTML, '');
+    printsetting6('newcase', 'on', $cheHTML, '');
     ?>
     </td>
     <td>
     <?php
-printsetting6('newpartial', 'on', $cheHTML, '');
+    printsetting6('newpartial', 'on', $cheHTML, '');
     ?>
     </td>
     </tr>

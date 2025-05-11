@@ -1,4 +1,5 @@
 <?php
+
 /**
  * GaiaBB
  * Copyright (c) 2011-2022 The GaiaBB Group
@@ -26,7 +27,6 @@
  *
  *    You should have received a copy of the GNU General Public License
  *    along with GaiaBB.  If not, see <http://www.gnu.org/licenses/>.
- *
  **/
 
 // check to ensure no direct viewing of page
@@ -39,8 +39,8 @@ if (!defined('IN_PROGRAM') && (defined('DEBUG') && DEBUG == false)) {
  *
  * Control XSS and censored words when you need to display a URL safely
  *
- * @param   string   $url   URL to convert to displayable text
- * @return   string   the sanitized url
+ * @param  string $url URL to convert to displayable text
+ * @return string   the sanitized url
  */
 function url_to_text($url)
 {
@@ -92,7 +92,7 @@ function url_to_text($url)
             $url = substr($url, 0, strpos($url, '?'));
             $url .= '?tid=' . $tid;
         }
-    } else if (false !== strpos($url, 'fid') && false === strpos($url, "/post.php")) {
+    } elseif (false !== strpos($url, 'fid') && false === strpos($url, "/post.php")) {
         $temp = explode('?', $url);
         $urls = explode('&', $temp[1]);
         foreach ($urls as $key => $val) {
@@ -110,63 +110,63 @@ function url_to_text($url)
             }
             $db->free_result($query);
         }
-    } else if (false !== strpos($url, '/usercp.php')) {
+    } elseif (false !== strpos($url, '/usercp.php')) {
         $location = $lang['onlineusercp'];
-    } else if (
-        false !== strpos($url, '/admin/cp_analyzetables.php') ||
-        false !== strpos($url, '/admin/cp_attachments.php') ||
-        false !== strpos($url, '/admin/cp_avatars.php') ||
-        false !== strpos($url, '/admin/cp_board.php') ||
-        false !== strpos($url, '/admin/cp_captcha.php') ||
-        false !== strpos($url, '/admin/cp_censors.php') ||
-        false !== strpos($url, '/admin/cp_checktables.php') ||
-        false !== strpos($url, '/admin/cp_closethreads.php') ||
-        false !== strpos($url, '/admin/cp_dateformats.php') ||
-        false !== strpos($url, '/admin/cp_default.php') ||
-        false !== strpos($url, '/admin/cp_deleteoldpms.php') ||
-        false !== strpos($url, '/admin/cp_emptymodlogs.php') ||
-        false !== strpos($url, '/admin/cp_emptyadminlogs.php') ||
-        false !== strpos($url, '/admin/cp_fixattachments.php') ||
-        false !== strpos($url, '/admin/cp_fixftotals.php') ||
-        false !== strpos($url, '/admin/cp_fixlastposts.php') ||
-        false !== strpos($url, '/admin/cp_fixmposts.php') ||
-        false !== strpos($url, '/admin/cp_fixmthreads.php') ||
-        false !== strpos($url, '/admin/cp_fixsmilies.php') ||
-        false !== strpos($url, '/admin/cp_fixfavorites.php') ||
-        false !== strpos($url, '/admin/cp_fixorphanedposts.php') ||
-        false !== strpos($url, '/admin/cp_fixsubscriptions.php') ||
-        false !== strpos($url, '/admin/cp_fixttotals.php') ||
-        false !== strpos($url, '/admin/cp_forums.php') ||
-        false !== strpos($url, '/admin/cp_general.php') ||
-        false !== strpos($url, '/admin/cp_inactivemembers.php') ||
-        false !== strpos($url, '/admin/cp_ipban.php') ||
-        false !== strpos($url, '/admin/cp_logs.php') ||
-        false !== strpos($url, '/admin/cp_members.php') ||
-        false !== strpos($url, '/admin/cp_moderators.php') ||
-        false !== strpos($url, '/admin/cp_news.php') ||
-        false !== strpos($url, '/admin/cp_newsletter.php') ||
-        false !== strpos($url, '/admin/cp_notepad.php') ||
-        false !== strpos($url, '/admin/cp_onlinedump.php') ||
-        false !== strpos($url, '/admin/cp_optimizetables.php') ||
-        false !== strpos($url, '/admin/cp_photos.php') ||
-        false !== strpos($url, '/admin/cp_pluglinks.php') ||
-        false !== strpos($url, '/admin/cp_posticons.php') ||
-        false !== strpos($url, '/admin/cp_ranks.php') ||
-        false !== strpos($url, '/admin/cp_rawsql.php') ||
-        false !== strpos($url, '/admin/cp_reguser.php') ||
-        false !== strpos($url, '/admin/cp_rename.php') ||
-        false !== strpos($url, '/admin/cp_repairtables.php') ||
-        false !== strpos($url, '/admin/cp_restrictions.php') ||
-        false !== strpos($url, '/admin/cp_robots.php') ||
-        false !== strpos($url, '/admin/cp_search.php') ||
-        false !== strpos($url, '/admin/cp_smilies.php') ||
-        false !== strpos($url, '/admin/cp_smtp.php') ||
-        false !== strpos($url, '/admin/cp_templates.php') ||
-        false !== strpos($url, '/admin/cp_themes.php') ||
-        false !== strpos($url, '/admin/cp_pmdump.php') ||
-        false !== strpos($url, '/admin/cp_updatemoods.php') ||
-        false !== strpos($url, '/admin/index.php') ||
-        false !== strpos($url, '/editprofile.php')
+    } elseif (
+        false !== strpos($url, '/admin/cp_analyzetables.php')
+        || false !== strpos($url, '/admin/cp_attachments.php')
+        || false !== strpos($url, '/admin/cp_avatars.php')
+        || false !== strpos($url, '/admin/cp_board.php')
+        || false !== strpos($url, '/admin/cp_captcha.php')
+        || false !== strpos($url, '/admin/cp_censors.php')
+        || false !== strpos($url, '/admin/cp_checktables.php')
+        || false !== strpos($url, '/admin/cp_closethreads.php')
+        || false !== strpos($url, '/admin/cp_dateformats.php')
+        || false !== strpos($url, '/admin/cp_default.php')
+        || false !== strpos($url, '/admin/cp_deleteoldpms.php')
+        || false !== strpos($url, '/admin/cp_emptymodlogs.php')
+        || false !== strpos($url, '/admin/cp_emptyadminlogs.php')
+        || false !== strpos($url, '/admin/cp_fixattachments.php')
+        || false !== strpos($url, '/admin/cp_fixftotals.php')
+        || false !== strpos($url, '/admin/cp_fixlastposts.php')
+        || false !== strpos($url, '/admin/cp_fixmposts.php')
+        || false !== strpos($url, '/admin/cp_fixmthreads.php')
+        || false !== strpos($url, '/admin/cp_fixsmilies.php')
+        || false !== strpos($url, '/admin/cp_fixfavorites.php')
+        || false !== strpos($url, '/admin/cp_fixorphanedposts.php')
+        || false !== strpos($url, '/admin/cp_fixsubscriptions.php')
+        || false !== strpos($url, '/admin/cp_fixttotals.php')
+        || false !== strpos($url, '/admin/cp_forums.php')
+        || false !== strpos($url, '/admin/cp_general.php')
+        || false !== strpos($url, '/admin/cp_inactivemembers.php')
+        || false !== strpos($url, '/admin/cp_ipban.php')
+        || false !== strpos($url, '/admin/cp_logs.php')
+        || false !== strpos($url, '/admin/cp_members.php')
+        || false !== strpos($url, '/admin/cp_moderators.php')
+        || false !== strpos($url, '/admin/cp_news.php')
+        || false !== strpos($url, '/admin/cp_newsletter.php')
+        || false !== strpos($url, '/admin/cp_notepad.php')
+        || false !== strpos($url, '/admin/cp_onlinedump.php')
+        || false !== strpos($url, '/admin/cp_optimizetables.php')
+        || false !== strpos($url, '/admin/cp_photos.php')
+        || false !== strpos($url, '/admin/cp_pluglinks.php')
+        || false !== strpos($url, '/admin/cp_posticons.php')
+        || false !== strpos($url, '/admin/cp_ranks.php')
+        || false !== strpos($url, '/admin/cp_rawsql.php')
+        || false !== strpos($url, '/admin/cp_reguser.php')
+        || false !== strpos($url, '/admin/cp_rename.php')
+        || false !== strpos($url, '/admin/cp_repairtables.php')
+        || false !== strpos($url, '/admin/cp_restrictions.php')
+        || false !== strpos($url, '/admin/cp_robots.php')
+        || false !== strpos($url, '/admin/cp_search.php')
+        || false !== strpos($url, '/admin/cp_smilies.php')
+        || false !== strpos($url, '/admin/cp_smtp.php')
+        || false !== strpos($url, '/admin/cp_templates.php')
+        || false !== strpos($url, '/admin/cp_themes.php')
+        || false !== strpos($url, '/admin/cp_pmdump.php')
+        || false !== strpos($url, '/admin/cp_updatemoods.php')
+        || false !== strpos($url, '/admin/index.php')
+        || false !== strpos($url, '/editprofile.php')
     ) {
         if (!X_ADMIN) {
             $location = $lang['onlineindex'];
@@ -174,15 +174,15 @@ function url_to_text($url)
         } else {
             $location = $lang['onlinecp'];
         }
-    } else if (false !== strpos($url, '/index.php')) {
+    } elseif (false !== strpos($url, '/index.php')) {
         $location = $lang['onlineindex'];
-    } else if (false !== strpos($url, '/register.php')) {
+    } elseif (false !== strpos($url, '/register.php')) {
         if (false !== strpos($url, 'action=reg') || false !== strpos($url, 'action=captcha')) {
             $location = $lang['onlinereg'];
-        } else if (false !== strpos($url, 'action=coppa')) {
+        } elseif (false !== strpos($url, 'action=coppa')) {
             $location = $lang['onlinecoppa'];
         }
-    } else if (false !== strpos($url, '/faq.php')) {
+    } elseif (false !== strpos($url, '/faq.php')) {
         if (false !== strpos($url, 'page=admin') || false !== strpos($url, 'page=rulesedit')) {
             if (!X_ADMIN) {
                 $location = $lang['onlineindex'];
@@ -190,12 +190,12 @@ function url_to_text($url)
             } else {
                 $location = $lang['onlinecp'];
             }
-        } else if (false !== strpos($url, 'page=forumrules')) {
+        } elseif (false !== strpos($url, 'page=forumrules')) {
             $location = $lang['onlineviewrules'];
         } else {
             $location = $lang['onlinefaq'];
         }
-    } else if (false !== strpos($url, '/viewprofile.php')) {
+    } elseif (false !== strpos($url, '/viewprofile.php')) {
         $temp = explode('?', $url);
         $urls = explode('&', $temp[1]);
         foreach ($urls as $argument) {
@@ -206,7 +206,7 @@ function url_to_text($url)
             }
         }
         eval("\$location = \"$lang[onlineviewpro]\";");
-    } else if (false !== strpos($url, '/email.php')) {
+    } elseif (false !== strpos($url, '/email.php')) {
         $temp = explode('?', $url);
         $urls = explode('&', $temp[1]);
         foreach ($urls as $argument) {
@@ -215,52 +215,52 @@ function url_to_text($url)
             }
         }
         eval("\$location = \"$lang[emailmemonline]\";");
-    } else if (false !== strpos($url, '/memberlist.php')) {
+    } elseif (false !== strpos($url, '/memberlist.php')) {
         if (false !== strpos($url, 'action=list')) {
             $location = $lang['onlinememlist'];
         }
-    } else if (false !== strpos($url, '/post.php')) {
+    } elseif (false !== strpos($url, '/post.php')) {
         if (false !== strpos($url, 'action=edit')) {
             $location = $lang['onlinepostedit'];
-        } else if (false !== strpos($url, 'action=newthread')) {
+        } elseif (false !== strpos($url, 'action=newthread')) {
             $location = $lang['onlinepostnewthread'];
-        } else if (false !== strpos($url, 'action=reply')) {
+        } elseif (false !== strpos($url, 'action=reply')) {
             $location = $lang['onlinepostreply'];
         }
-    } else if (false !== strpos($url, '/search.php')) {
+    } elseif (false !== strpos($url, '/search.php')) {
         $location = $lang['onlinesearch'];
-    } else if (false !== strpos($url, '/smilies.php')) {
+    } elseif (false !== strpos($url, '/smilies.php')) {
         $location = $lang['onlinesmilies'];
-    } else if (false !== strpos($url, '/logout.php')) {
+    } elseif (false !== strpos($url, '/logout.php')) {
         $location = $lang['onlinelogout'];
-    } else if (false !== strpos($url, '/viewonline.php')) {
+    } elseif (false !== strpos($url, '/viewonline.php')) {
         $location = $lang['onlinewhosonline'];
-    } else if (false !== strpos($url, '/lostpw.php')) {
+    } elseif (false !== strpos($url, '/lostpw.php')) {
         $location = $lang['onlinelostpw'];
-    } else if (false !== strpos($url, '/login.php')) {
+    } elseif (false !== strpos($url, '/login.php')) {
         $location = $lang['onlinelogin'];
-    } else if (false !== strpos($url, '/stats.php')) {
+    } elseif (false !== strpos($url, '/stats.php')) {
         $location = $lang['onlinestats'];
-    } else if (false !== strpos($url, '/activity.php')) {
+    } elseif (false !== strpos($url, '/activity.php')) {
         $location = $lang['topicactivityonline'];
-    } else if (
-        false !== strpos($url, '/topicadmin.php') ||
-        false !== strpos($url, '/mod/index.php') ||
-        false !== strpos($url, '/mod/mod_censors.php') ||
-        false !== strpos($url, '/mod/mod_checktables.php') ||
-        false !== strpos($url, '/mod/mod_fixftotals.php') ||
-        false !== strpos($url, '/mod/mod_fixlastposts.php') ||
-        false !== strpos($url, '/mod/mod_fixmtotals.php') ||
-        false !== strpos($url, '/mod/mod_fixorphanedattachments.php') ||
-        false !== strpos($url, '/mod/mod_fixorphanedfavorites.php') ||
-        false !== strpos($url, '/mod/mod_foxorphanedposts.php') ||
-        false !== strpos($url, '/mod/mod_fixorphanedthreads.php') ||
-        false !== strpos($url, '/mod/mod_fixttotals.php') ||
-        false !== strpos($url, '/mod/mod_members.php') ||
-        false !== strpos($url, '/mod/mod_newsletter.php') ||
-        false !== strpos($url, '/mod/mod_search.php') ||
-        false !== strpos($url, '/mod/mod_updatemoods.php') ||
-        false !== strpos($url, '/mod/mod_whosonlinedump.php')
+    } elseif (
+        false !== strpos($url, '/topicadmin.php')
+        || false !== strpos($url, '/mod/index.php')
+        || false !== strpos($url, '/mod/mod_censors.php')
+        || false !== strpos($url, '/mod/mod_checktables.php')
+        || false !== strpos($url, '/mod/mod_fixftotals.php')
+        || false !== strpos($url, '/mod/mod_fixlastposts.php')
+        || false !== strpos($url, '/mod/mod_fixmtotals.php')
+        || false !== strpos($url, '/mod/mod_fixorphanedattachments.php')
+        || false !== strpos($url, '/mod/mod_fixorphanedfavorites.php')
+        || false !== strpos($url, '/mod/mod_foxorphanedposts.php')
+        || false !== strpos($url, '/mod/mod_fixorphanedthreads.php')
+        || false !== strpos($url, '/mod/mod_fixttotals.php')
+        || false !== strpos($url, '/mod/mod_members.php')
+        || false !== strpos($url, '/mod/mod_newsletter.php')
+        || false !== strpos($url, '/mod/mod_search.php')
+        || false !== strpos($url, '/mod/mod_updatemoods.php')
+        || false !== strpos($url, '/mod/mod_whosonlinedump.php')
     ) {
         if (!X_STAFF) {
             $location = $lang['onlineindex'];
@@ -268,18 +268,18 @@ function url_to_text($url)
         } else {
             $location = $lang['onlinetopicadmin'];
         }
-    } else if (false !== strpos($url, '/contact.php')) {
+    } elseif (false !== strpos($url, '/contact.php')) {
         $location = $lang['contactonline'];
-    } else if (false !== strpos($url, '/pm.php')) {
+    } elseif (false !== strpos($url, '/pm.php')) {
         if (false !== strpos($url, 'action=send')) {
             $location = $lang['onlinepmsend'];
-        } else if (false !== strpos($url, 'action=delete')) {
+        } elseif (false !== strpos($url, 'action=delete')) {
             $location = $lang['onlinepmdelete'];
-        } else if (false !== strpos($url, 'action=ignore') || false !== strpos($url, 'action=ignoresubmit')) {
+        } elseif (false !== strpos($url, 'action=ignore') || false !== strpos($url, 'action=ignoresubmit')) {
             $location = $lang['onlinepmignore'];
-        } else if (false !== strpos($url, 'action=view')) {
+        } elseif (false !== strpos($url, 'action=view')) {
             $location = $lang['onlinepmview'];
-        } else if (false !== strpos($url, 'action=folders')) {
+        } elseif (false !== strpos($url, 'action=folders')) {
             $location = $lang['onlinemanagefolders'];
         }
         if (!X_SADMIN) {

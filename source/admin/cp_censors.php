@@ -1,4 +1,5 @@
 <?php
+
 /**
  * GaiaBB
  * Copyright (c) 2011-2022 The GaiaBB Group
@@ -26,7 +27,6 @@
  *
  *    You should have received a copy of the GNU General Public License
  *    along with GaiaBB.  If not, see <http://www.gnu.org/licenses/>.
- *
  **/
 
 define('ROOT', '../');
@@ -68,8 +68,8 @@ smcwcache();
  *
  * Long description of function
  *
- * @param    $varname    type, what it does
- * @return   type, what the return does
+ * @param  $varname type, what it does
+ * @return type, what the return does
  */
 function viewPanel()
 {
@@ -87,7 +87,7 @@ function viewPanel()
     <td align="center" class="title"><?php echo $lang['textcensorreplace'] ?></td>
     </tr>
     <?php
-$query = $db->query("SELECT * FROM " . X_PREFIX . "words ORDER BY id");
+    $query = $db->query("SELECT * FROM " . X_PREFIX . "words ORDER BY id");
     $rowsFound = $db->num_rows($query);
     while ($censor = $db->fetch_array($query)) {
         ?>
@@ -97,7 +97,7 @@ $query = $db->query("SELECT * FROM " . X_PREFIX . "words ORDER BY id");
         <td><input type="text" size="20" name="replace<?php echo $censor['id'] ?>" value="<?php echo $censor['replace1'] ?>" /></td>
         </tr>
         <?php
-}
+    }
     $db->free_result($query);
 
     if ($rowsFound < 1) {
@@ -106,7 +106,7 @@ $query = $db->query("SELECT * FROM " . X_PREFIX . "words ORDER BY id");
         <td colspan="3"><?php echo $lang['textnone'] ?></td>
         </tr>
         <?php
-}
+    }
     ?>
     <tr bgcolor="<?php echo $THEME['altbg2'] ?>" class="ctrtablerow">
     <td><strong><?php echo $lang['textnewcode'] ?></strong></td>
@@ -133,8 +133,8 @@ $query = $db->query("SELECT * FROM " . X_PREFIX . "words ORDER BY id");
  *
  * Long description of function
  *
- * @param    $varname    type, what it does
- * @return   type, what the return does
+ * @param  $varname type, what it does
+ * @return type, what the return does
  */
 function doPanel()
 {

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * GaiaBB
  * Copyright (c) 2011-2022 The GaiaBB Group
@@ -26,7 +27,6 @@
  *
  *    You should have received a copy of the GNU General Public License
  *    along with GaiaBB.  If not, see <http://www.gnu.org/licenses/>.
- *
  **/
 
 // check to ensure no direct viewing of page
@@ -170,29 +170,29 @@ function BDayDisplay()
 
     if ($bday[0] == '') {
         $sel0 = $selHTML;
-    } else if ($bday[0] == $lang['textjan']) {
+    } elseif ($bday[0] == $lang['textjan']) {
         $sel1 = $selHTML;
-    } else if ($bday[0] == $lang['textfeb']) {
+    } elseif ($bday[0] == $lang['textfeb']) {
         $sel2 = $selHTML;
-    } else if ($bday[0] == $lang['textmar']) {
+    } elseif ($bday[0] == $lang['textmar']) {
         $sel3 = $selHTML;
-    } else if ($bday[0] == $lang['textapr']) {
+    } elseif ($bday[0] == $lang['textapr']) {
         $sel4 = $selHTML;
-    } else if ($bday[0] == $lang['textmay']) {
+    } elseif ($bday[0] == $lang['textmay']) {
         $sel5 = $selHTML;
-    } else if ($bday[0] == $lang['textjun']) {
+    } elseif ($bday[0] == $lang['textjun']) {
         $sel6 = $selHTML;
-    } else if ($bday[0] == $lang['textjul']) {
+    } elseif ($bday[0] == $lang['textjul']) {
         $sel7 = $selHTML;
-    } else if ($bday[0] == $lang['textaug']) {
+    } elseif ($bday[0] == $lang['textaug']) {
         $sel8 = $selHTML;
-    } else if ($bday[0] == $lang['textsep']) {
+    } elseif ($bday[0] == $lang['textsep']) {
         $sel9 = $selHTML;
-    } else if ($bday[0] == $lang['textoct']) {
+    } elseif ($bday[0] == $lang['textoct']) {
         $sel10 = $selHTML;
-    } else if ($bday[0] == $lang['textnov']) {
+    } elseif ($bday[0] == $lang['textnov']) {
         $sel11 = $selHTML;
-    } else if ($bday[0] == $lang['textdec']) {
+    } elseif ($bday[0] == $lang['textdec']) {
         $sel12 = $selHTML;
     }
 
@@ -712,7 +712,6 @@ class userObj
         }
 
         if ($email != $member->record['email']) {
-
             $newpass = $get = $max = $chars = '';
 
             $chars = "23456789abcdefghjkmnpqrstuvwxyz";
@@ -762,7 +761,7 @@ class userObj
 
             if (($CONFIG['photo_whocanupload'] == 'all') && X_MEMBER) {
                 eval('$photohidden = "' . template('usercp_photohidden') . '";');
-            } else if (($CONFIG['photo_whocanupload'] == 'staff') && X_STAFF) {
+            } elseif (($CONFIG['photo_whocanupload'] == 'staff') && X_STAFF) {
                 eval('$photohidden = "' . template('usercp_photohidden') . '";');
             }
         }
@@ -813,7 +812,7 @@ class userObj
                 $size = @getimagesize($photo);
                 if ($size === false) {
                     error($lang['pic_not_located'], false);
-                } else if (($size[0] > $max_size[0] && $max_size[0] > 0) || ($size[1] > $max_size[1] && $max_size[1] > 0) && !X_ADMIN) {
+                } elseif (($size[0] > $max_size[0] && $max_size[0] > 0) || ($size[1] > $max_size[1] && $max_size[1] > 0) && !X_ADMIN) {
                     error($lang['photo_too_big'] . $CONFIG['max_photo_size'] . $lang['photo_Pixels'], false);
                 }
             }
@@ -851,7 +850,7 @@ class userObj
             $type = $size[2];
 
             set_time_limit(30);
-            
+
             $imginfo = getimagesize($tmppath);
             $type = $imginfo[2];
 
@@ -887,7 +886,7 @@ class userObj
             if ($width > $CONFIG['photo_max_width']) {
                 $newwidth = $CONFIG['photo_new_width'];
                 $newheight = ($newwidth / $width) * $height;
-            } else if ($height > $CONFIG['photo_max_height']) {
+            } elseif ($height > $CONFIG['photo_max_height']) {
                 $newheight = $CONFIG['photo_new_height'];
                 $newwidth = ($newheight / $height) * $width;
             }
@@ -923,7 +922,6 @@ class userObj
         }
 
         if (onSubmit('photosubmit') && isset($_POST['photodel']) != 1 && empty($_POST['newphoto']) && empty($_FILES['photofile']['name'])) {
-
             $db->query("UPDATE " . X_PREFIX . "members SET photo = '$self[photo]' WHERE uid = '" . $self['uid'] . "'");
         }
         if (isset($_POST['photodel']) && isset($_POST['photodel']) == 1 && empty($_FILES['photofile']['name'])) {
@@ -1075,7 +1073,7 @@ class userObj
      *
      * User has changed their signature.
      *
-     * @return   does not return if error, redirects on success
+     * @return does not return if error, redirects on success
      */
     public function submitSignature()
     {
@@ -1208,7 +1206,6 @@ class userObj
 
         $avatar = '';
         if (!isset($_FILES['avatarfile']['name']) || !$_FILES['avatarfile']['tmp_name'] || empty($_FILES['avatarfile']['name'])) {
-
             $avatar = $db->escape(formVar('newavatar'), -1, true);
 
             $max_size = explode('x', $CONFIG['max_avatar_size']);
@@ -1216,8 +1213,7 @@ class userObj
                 $size = @getimagesize($avatar);
                 if ($size === false) {
                     error($lang['pic_not_located'], false);
-
-                } else if (($size[0] > $max_size[0] && $max_size[0] > 0) || ($size[1] > $max_size[1] && $max_size[1] > 0) && !X_ADMIN) {
+                } elseif (($size[0] > $max_size[0] && $max_size[0] > 0) || ($size[1] > $max_size[1] && $max_size[1] > 0) && !X_ADMIN) {
                     error($lang['avatar_too_big'] . $CONFIG['max_avatar_size'] . $lang['Avatar_Pixels'], false);
                 }
             }
@@ -1255,7 +1251,7 @@ class userObj
             $type = $size[2];
 
             set_time_limit(30);
-            
+
             $imginfo = getimagesize($tmppath);
             $type = $imginfo[2];
 
@@ -1291,7 +1287,7 @@ class userObj
             if ($width > $CONFIG['avatar_max_width']) {
                 $newwidth = $CONFIG['avatar_new_width'];
                 $newheight = ($newwidth / $width) * $height;
-            } else if ($height > $CONFIG['avatar_max_height']) {
+            } elseif ($height > $CONFIG['avatar_max_height']) {
                 $newheight = $CONFIG['avatar_new_height'];
                 $newwidth = ($newheight / $height) * $width;
             }
@@ -1493,7 +1489,7 @@ class userObj
 
         if ($total > 0) {
             $submitbutton = '<tr><td class="ctrtablerow" bgcolor="' . $THEME['altbg2'] . '" colspan="2"><input type="submit" name="avatarsubmit" value="' . $lang['updateavatar'] . '" /></td></tr>';
-        } else if ($total < 0) {
+        } elseif ($total < 0) {
             error($lang['noavatarsinfolder'], false);
         }
         eval('$output = "' . template('usercp_gallery') . '";');
@@ -1528,7 +1524,7 @@ class userObj
             $size = getimagesize($avatar);
             if ($size === false) {
                 $self['avatar'] = '';
-            } else if (($size[0] > $max_size[0] && $max_size[0] > 0) || ($size[1] > $max_size[1] && $max_size[1] > 0) && !X_ADMIN) {
+            } elseif (($size[0] > $max_size[0] && $max_size[0] > 0) || ($size[1] > $max_size[1] && $max_size[1] > 0) && !X_ADMIN) {
                 error($lang['avatar_too_big'] . $CONFIG['max_avatar_size'] . $lang['avatarpixels'], false);
             }
         }
@@ -1722,16 +1718,16 @@ class userObj
         switch ($member['status']) {
             case 'Administrator';
                 $limit = "title = '$member[status]'";
-                break;
+            break;
             case 'Super Administrator';
                 $limit = "title = '$member[status]'";
-                break;
+            break;
             case 'Super Moderator';
                 $limit = "title = '$member[status]'";
-                break;
+            break;
             case 'Moderator';
                 $limit = "title = '$member[status]'";
-                break;
+            break;
             default:
                 $limit = "posts <= '$member[postnum]' AND title != 'Super Administrator' AND title != 'Administrator' AND title != 'Super Moderator' AND title != 'Super Moderator' AND title != 'Moderator'";
                 break;

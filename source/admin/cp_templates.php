@@ -1,4 +1,5 @@
 <?php
+
 /**
  * GaiaBB
  * Copyright (c) 2011-2022 The GaiaBB Group
@@ -26,7 +27,6 @@
  *
  *    You should have received a copy of the GNU General Public License
  *    along with GaiaBB.  If not, see <http://www.gnu.org/licenses/>.
- *
  **/
 
 define('ROOT', '../');
@@ -153,7 +153,7 @@ if ($action == 'templates') {
         </tr>
         </table>
         <?php
-}
+    }
 
     if (onSubmit('restore')) {
         ?>
@@ -182,7 +182,7 @@ if ($action == 'templates') {
         </tr>
         </table>
         <?php
-}
+    }
 
     if (onSubmit('restoresubmit')) {
         if (!file_exists('./templates.ubb')) {
@@ -221,7 +221,7 @@ if ($action == 'templates') {
         <td class="title"><?php echo $lang['templates'] ?></td>
         </tr>
         <?php
-$query = $db->query("SELECT * FROM " . X_PREFIX . "templates WHERE id = '$tid' ORDER BY name");
+        $query = $db->query("SELECT * FROM " . X_PREFIX . "templates WHERE id = '$tid' ORDER BY name");
         $template = $db->fetch_array($query);
         $template['template'] = stripslashes(htmlspecialchars($template['template']));
         ?>
@@ -244,7 +244,7 @@ $query = $db->query("SELECT * FROM " . X_PREFIX . "templates WHERE id = '$tid' O
         </tr>
         </table>
         <?php
-}
+    }
 
     if (onSubmit('editsubmit')) {
         $templatenew = addslashes(trim($templatenew));
@@ -296,7 +296,7 @@ $query = $db->query("SELECT * FROM " . X_PREFIX . "templates WHERE id = '$tid' O
         </tr>
         </table>
         <?php
-}
+    }
 
     if (onSubmit('deletesubmit')) {
         $db->query("DELETE FROM " . X_PREFIX . "templates WHERE id = '$tid'");
@@ -318,7 +318,7 @@ $query = $db->query("SELECT * FROM " . X_PREFIX . "templates WHERE id = '$tid' O
         <td class="title" colspan="2"><?php echo $lang['templates'] ?></td>
         </tr>
         <?php
-$query = $db->query("SELECT * FROM " . X_PREFIX . "templates WHERE id = '$tid' ORDER BY name");
+        $query = $db->query("SELECT * FROM " . X_PREFIX . "templates WHERE id = '$tid' ORDER BY name");
         $template_info = $db->fetch_array($query);
         ?>
         <tr class="tablerow">
@@ -342,7 +342,7 @@ $query = $db->query("SELECT * FROM " . X_PREFIX . "templates WHERE id = '$tid' O
         </tr>
         </table>
         <?php
-}
+    }
 
     if (onSubmit('renamesubmit') && noSubmit('rename')) {
         $check_newname = $db->query("SELECT name FROM " . X_PREFIX . "templates WHERE name = '$new_name'");
@@ -381,7 +381,7 @@ $query = $db->query("SELECT * FROM " . X_PREFIX . "templates WHERE id = '$tid' O
         </tr>
         </table>
         <?php
-}
+    }
 
     if (onSubmit('backup_curyes')) {
         if (!is_writable('./templates/')) {
@@ -428,7 +428,7 @@ $query = $db->query("SELECT * FROM " . X_PREFIX . "templates WHERE id = '$tid' O
         </tr>
         </table>
         <?php
-}
+    }
 
     if (onSubmit('restore_curyes')) {
         if (!file_exists('./templates/templates-current.ubb')) {
@@ -496,7 +496,7 @@ $query = $db->query("SELECT * FROM " . X_PREFIX . "templates WHERE id = '$tid' O
         </tr>
         </table>
         <?php
-}
+    }
 }
 
 loadtime();

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * GaiaBB
  * Copyright (c) 2011-2022 The GaiaBB Group
@@ -26,7 +27,6 @@
  *
  *    You should have received a copy of the GNU General Public License
  *    along with GaiaBB.  If not, see <http://www.gnu.org/licenses/>.
- *
  **/
 
 define('ROOT', '../');
@@ -103,7 +103,7 @@ function viewPanel()
     <td colspan="2" class="title"><?php echo $lang['textbbrules'] ?></td>
     </tr>
     <?php
-$ruleson = $rulesoff = '';
+    $ruleson = $rulesoff = '';
     settingHTML('bbrules', $ruleson, $rulesoff);
 
     $queryg = $db->query("SELECT * FROM " . X_PREFIX . "faq WHERE type = 'rulesset'");
@@ -112,19 +112,19 @@ $ruleson = $rulesoff = '';
 
     if ($frules['allowsmilies'] == 'yes') {
         $checked1 = $cheHTML;
-    } else if ($frules['allowsmilies'] == 'no') {
+    } elseif ($frules['allowsmilies'] == 'no') {
         $checked1 = '';
     }
 
     if ($frules['allowbbcode'] == 'yes') {
         $checked2 = $cheHTML;
-    } else if ($frules['allowbbcode'] == 'no') {
+    } elseif ($frules['allowbbcode'] == 'no') {
         $checked2 = '';
     }
 
     if ($frules['allowimgcode'] == 'yes') {
         $checked3 = $cheHTML;
-    } else if ($frules['allowimgcode'] == 'no') {
+    } elseif ($frules['allowimgcode'] == 'no') {
         $checked3 = '';
     }
 
@@ -190,13 +190,15 @@ function doPanel()
     $bbrulesnew = formOnOff('bbrulesnew');
     $bbrulestxtnew = $db->escape(formVar('bbrulestxtnew'));
 
-    $db->query("UPDATE " . X_PREFIX . "faq SET
+    $db->query(
+        "UPDATE " . X_PREFIX . "faq SET
         name = '$namenew',
         allowsmilies = '$allowsmiliesnew',
         allowbbcode = '$allowbbcodenew',
         allowimgcode = '$allowimgcodenew'
         WHERE type = 'rulesset'
-    ");
+    "
+    );
 
     $db->query("UPDATE " . X_PREFIX . "settings SET config_value = '$bbrulesnew' WHERE config_name = 'bbrules' LIMIT 1");
     $db->query("UPDATE " . X_PREFIX . "settings SET config_value = '$bbrulestxtnew' WHERE config_name = 'bbrulestxt' LIMIT 1");

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * GaiaBB
  * Copyright (c) 2011-2022 The GaiaBB Group
@@ -26,7 +27,6 @@
  *
  *    You should have received a copy of the GNU General Public License
  *    along with GaiaBB.  If not, see <http://www.gnu.org/licenses/>.
- *
  **/
 
 define('ROOT', '../');
@@ -108,7 +108,6 @@ function doPanel()
             $db->query("DELETE FROM " . X_PREFIX . "smilies WHERE code = '" . $smilies['code'] . "' ORDER BY id DESC LIMIT " . ($smilies['count'] - 1) . "");
             $i++;
         }
-
     }
     $db->free_result($query);
     cp_message($lang['fixsmiliesmsg'], false, '', '</td></tr></table>', 'index.php', true, false, true);

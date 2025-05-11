@@ -1,4 +1,5 @@
 <?php
+
 /**
  * GaiaBB
  * Copyright (c) 2011-2022 The GaiaBB Group
@@ -26,7 +27,6 @@
  *
  *    You should have received a copy of the GNU General Public License
  *    along with GaiaBB.  If not, see <http://www.gnu.org/licenses/>.
- *
  **/
 
 define('ROOT', '../');
@@ -91,7 +91,7 @@ function viewPanel()
             $groups[$i]['status'] = $selItems['status'];
             $groups[$i]['fup'] = $selItems['fup'];
             $groups[$i]['code'] = $selItems['code'];
-        } else if ($selItems['type'] == 'item') {
+        } elseif ($selItems['type'] == 'item') {
             $id = (empty($selItems['fup'])) ? 0 : $selItems['fup'];
             $items[$id][$i]['fid'] = $selItems['fid'];
             $items[$id][$i]['name'] = $selItems['name'];
@@ -131,7 +131,7 @@ function viewPanel()
     <td class="title"><?php echo $lang['faq_I'] ?></td>
     </tr>
     <?php
-foreach ($items['0'] as $item) {
+    foreach ($items['0'] as $item) {
         $on = $off = '';
         if ($item['status'] == 'on') {
             $on = $selHTML;
@@ -147,7 +147,7 @@ foreach ($items['0'] as $item) {
         <option value="on" <?php echo $on ?>><?php echo $lang['texton'] ?></option><option value="off" <?php echo $off ?>><?php echo $lang['textoff'] ?></option></select>
         &nbsp; <select name="moveto<?php echo $item['fid'] ?>"><option value="" selected="selected">-<?php echo $lang['textnone'] ?>-</option>
         <?php
-foreach ($groups as $moveforum) {
+        foreach ($groups as $moveforum) {
             echo '<option value="' . $moveforum['fid'] . '">' . stripslashes($moveforum['name']) . '</option>';
         }
         ?>
@@ -155,7 +155,7 @@ foreach ($groups as $moveforum) {
         <a title="<?php echo stripslashes($item['name']) ?>" href="cp_faq.php?fdetails=<?php echo $item['fid'] ?>"><?php echo $lang['faq_F'] ?></a></td>
         </tr>
         <?php
-}
+    }
 
     foreach ($groups as $group) {
         $on = $off = '';
@@ -178,7 +178,7 @@ foreach ($groups as $moveforum) {
         </td>
         </tr>
         <?php
-if (array_key_exists($group['fid'], $items)) {
+        if (array_key_exists($group['fid'], $items)) {
             foreach ($items[$group['fid']] as $item) {
                 $on = $off = '';
                 if ($item['status'] == 'on') {
@@ -195,7 +195,7 @@ if (array_key_exists($group['fid'], $items)) {
                 <option value="on" <?php echo $on ?>><?php echo $lang['texton'] ?></option><option value="off" <?php echo $off ?>><?php echo $lang['textoff'] ?></option></select>
                 &nbsp; <select name="moveto<?php echo $item['fid'] ?>"><option value="">-<?php echo $lang['textnone'] ?>-</option>
                 <?php
-foreach ($groups as $moveforum) {
+                foreach ($groups as $moveforum) {
                     if ($moveforum['fid'] == $item['fup']) {
                         $curgroup = $selHTML;
                     } else {
@@ -208,7 +208,7 @@ foreach ($groups as $moveforum) {
                 <a title="<?php echo stripslashes($item['name']) ?>" href="cp_faq.php?fdetails=<?php echo $item['fid'] ?>"><?php echo $lang['faq_F'] ?></a></td>
                 </tr>
                 <?php
-}
+            }
         }
     }
     ?>
@@ -242,7 +242,7 @@ foreach ($groups as $moveforum) {
     <option value="on"><?php echo $lang['texton'] ?></option><option value="off"><?php echo $lang['textoff'] ?></option></select>
     &nbsp; <select name="newffup"><option value="" selected="selected">-<?php echo $lang['textnone'] ?>-</option>
     <?php
-foreach ($groups as $group) {
+    foreach ($groups as $group) {
         echo '<option value="' . $group['fid'] . '">' . stripslashes($group['name']) . '</option>';
     }
     ?>
@@ -279,7 +279,7 @@ function dogDetailsPanel($gdetails)
     <td class="title" colspan="2"><?php echo $lang['faq_E'] ?></td>
     </tr>
     <?php
-$queryg = $db->query("SELECT fid, name, status, displayorder, code FROM " . X_PREFIX . "faq WHERE fid = '$gdetails'");
+    $queryg = $db->query("SELECT fid, name, status, displayorder, code FROM " . X_PREFIX . "faq WHERE fid = '$gdetails'");
     $group = $db->fetch_array($queryg);
     $db->free_result($queryg);
 
@@ -288,11 +288,11 @@ $queryg = $db->query("SELECT fid, name, status, displayorder, code FROM " . X_PR
     $ic00 = $ic01 = $ic02 = $ic03 = $ic04 = '';
     if ($group['code'] == 'usermaint') {
         $ic01 = $selHTML;
-    } else if ($group['code'] == 'using') {
+    } elseif ($group['code'] == 'using') {
         $ic02 = $selHTML;
-    } else if ($group['code'] == 'messages') {
+    } elseif ($group['code'] == 'messages') {
         $ic03 = $selHTML;
-    } else if ($group['code'] == 'misc') {
+    } elseif ($group['code'] == 'misc') {
         $ic04 = $selHTML;
     } else {
         $ic00 = $selHTML;
@@ -380,7 +380,7 @@ function dofDetailsPanel($fdetails)
     <td class="title" colspan="2"><?php echo $lang['faq_E'] ?></td>
     </tr>
     <?php
-$queryg = $db->query("SELECT * FROM " . X_PREFIX . "faq WHERE fid = '$fdetails'");
+    $queryg = $db->query("SELECT * FROM " . X_PREFIX . "faq WHERE fid = '$fdetails'");
     $item = $db->fetch_array($queryg);
     $db->free_result($queryg);
 
@@ -405,9 +405,9 @@ $queryg = $db->query("SELECT * FROM " . X_PREFIX . "faq WHERE fid = '$fdetails'"
     $ic00 = $ic01 = $ic02 = $ic03 = '';
     if ($item['view'] == 1) {
         $ic01 = $selHTML;
-    } else if ($item['view'] == 2) {
+    } elseif ($item['view'] == 2) {
         $ic02 = $selHTML;
-    } else if ($item['view'] == 3) {
+    } elseif ($item['view'] == 3) {
         $ic03 = $selHTML;
     } else {
         $ic00 = $selHTML;
@@ -567,14 +567,14 @@ $gdetails = getRequestInt('gdetails');
 if ($fdetails > 0) {
     if (noSubmit('faqsubmit')) {
         dofDetailsPanel($fdetails);
-    } else if (onSubmit('faqsubmit')) {
+    } elseif (onSubmit('faqsubmit')) {
         $oToken->assert_token();
         faqSubmit($fdetails);
     }
-} else if ($gdetails > 0) {
+} elseif ($gdetails > 0) {
     if (noSubmit('faqsubmit')) {
         dogDetailsPanel($gdetails);
-    } else if (onSubmit('faqsubmit')) {
+    } elseif (onSubmit('faqsubmit')) {
         $oToken->assert_token();
         dogDetails($gdetails);
     }

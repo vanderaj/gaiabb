@@ -1,4 +1,5 @@
 <?php
+
 /**
  * GaiaBB
  * Copyright (c) 2011-2022 The GaiaBB Group
@@ -26,12 +27,11 @@
  *
  *    You should have received a copy of the GNU General Public License
  *    along with GaiaBB.  If not, see <http://www.gnu.org/licenses/>.
- *
  **/
 
 // check to ensure no direct viewing of page
 if (!defined('IN_PROGRAM') && (defined('DEBUG') && DEBUG == false)) {
-//     exit('This file is not designed to be called directly');
+    //     exit('This file is not designed to be called directly');
 }
 
 /*

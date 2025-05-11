@@ -1,4 +1,5 @@
 <?php
+
 /**
  * GaiaBB
  * Copyright (c) 2011-2022 The GaiaBB Group
@@ -26,7 +27,6 @@
  *
  *    You should have received a copy of the GNU General Public License
  *    along with GaiaBB.  If not, see <http://www.gnu.org/licenses/>.
- *
  **/
 
 define('ROOT', '../');
@@ -109,7 +109,7 @@ if ($action == 'themes') {
         <td class="title" align="center"><?php echo $lang['status'] ?></td>
         </tr>
         <?php
-// altered theme code to produce a 20x speed increase
+        // altered theme code to produce a 20x speed increase
         $themeMem = array(0 => 0);
         $tq = $db->query("SELECT theme, COUNT(theme) as cnt FROM " . X_PREFIX . "members GROUP BY theme");
         while ($t = $db->fetch_array($tq)) {
@@ -143,7 +143,7 @@ if ($action == 'themes') {
             <td bgcolor="<?php echo $THEME['altbg2'] ?>" class="ctrtablerow"><?php echo $themeinfo['themestatus'] ?></td>
             </tr>
             <?php
-}
+        }
         $db->free_result($query);
         ?>
         <tr bgcolor="<?php echo $THEME['altbg1'] ?>" class="tablerow">
@@ -185,7 +185,7 @@ if ($action == 'themes') {
         </tr>
         </table>
         <?php
-} else if (onSubmit('importsubmit') && isset($_FILES['themefile']['tmp_name'])) {
+    } elseif (onSubmit('importsubmit') && isset($_FILES['themefile']['tmp_name'])) {
         $themebits = readFileAsINI($_FILES['themefile']['tmp_name']);
         if (!is_array($themebits)) {
             $themebits = (array) $themebits;
@@ -201,7 +201,7 @@ if ($action == 'themes') {
             if ($key == 'themeid') {
                 $val = '';
                 continue; // Jump over the identity row for MySQL 5.0
-            } else if ($key == 'name') {
+            } elseif ($key == 'name') {
                 $name = $val;
             }
             $keysql[] = $key;
@@ -223,7 +223,7 @@ if ($action == 'themes') {
         } else {
             cp_message($lang['textthemeimportsuccess'], false, '', '</td></tr></table>', 'cp_themes.php?action=themes');
         }
-    } else if (onSubmit('themesubmit')) {
+    } elseif (onSubmit('themesubmit')) {
         $number_of_themes = $db->result($db->query("SELECT count(themeid) FROM " . X_PREFIX . "themes"), 0);
         if (isset($theme_delete) && count($theme_delete) >= $number_of_themes) {
             cp_error($lang['delete_all_themes'], false, '', '</td></tr></table>', 'cp_themes.php?action=themes');
@@ -244,7 +244,7 @@ if ($action == 'themes') {
             $db->query("UPDATE " . X_PREFIX . "themes SET name = '$name' WHERE themeid = '$themeid'");
         }
         cp_message($lang['themeupdate'], false, '', '</td></tr></table>', 'cp_themes.php?action=themes');
-    } else if (isset($single) && $single != 'submit' && $single != 'anewtheme1') {
+    } elseif (isset($single) && $single != 'submit' && $single != 'anewtheme1') {
         $query = $db->query("SELECT * FROM " . X_PREFIX . "themes WHERE themeid = '$single'");
         $themedata = $db->fetch_array($query);
         $db->free_result($query);
@@ -567,7 +567,7 @@ if ($action == 'themes') {
         </tr>
         </table>
         <?php
-} else if (isset($single) && $single == 'anewtheme1') {
+    } elseif (isset($single) && $single == 'anewtheme1') {
         ?>
         <form method="post" action="cp_themes.php?action=themes&amp;single=submit">
         <input type="hidden" name="token" value="<?php echo $oToken->get_new_token() ?>" />
@@ -790,7 +790,7 @@ if ($action == 'themes') {
         </tr>
         </table>
         <?php
-} else if (isset($single) && $single == 'submit' && !isset($newtheme)) {
+    } elseif (isset($single) && $single == 'submit' && !isset($newtheme)) {
         $namenew = addslashes(trim($namenew));
         $bgcolornew = addslashes(trim($bgcolornew));
         $altbg1new = addslashes(trim($altbg1new));
@@ -834,7 +834,8 @@ if ($action == 'themes') {
         $threadoptsnew = ($threadoptsnew == 'image') ? 'image' : 'text';
         $outertablenew = ($outertablenew == 'none') ? 'none' : ($outertablenew == 'round' ? 'round' : 'square');
 
-        $db->query("UPDATE " . X_PREFIX . "themes SET
+        $db->query(
+            "UPDATE " . X_PREFIX . "themes SET
             name = '$namenew',
             bgcolor = '$bgcolornew',
             altbg1 = '$altbg1new',
@@ -876,12 +877,13 @@ if ($action == 'themes') {
             highlight = '$highlightnew',
             space_cats = '$space_catsnew'
             WHERE themeid = '$orig'
-        ");
+        "
+        );
         if (isset($themestatusnew) && $themestatusnew != 'on') {
             $db->query("UPDATE " . X_PREFIX . "members SET theme = '0' WHERE theme = '$orig'");
         }
         cp_message($lang['themeupdate'], false, '', '</td></tr></table>', 'cp_themes.php?action=themes');
-    } else if (isset($single) && $single == 'submit' && isset($newtheme)) {
+    } elseif (isset($single) && $single == 'submit' && isset($newtheme)) {
         $namenew = addslashes(trim($namenew));
         $bgcolornew = addslashes(trim($bgcolornew));
         $altbg1new = addslashes(trim($altbg1new));

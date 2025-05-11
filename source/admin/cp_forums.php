@@ -1,4 +1,5 @@
 <?php
+
 /**
  * GaiaBB
  * Copyright (c) 2011-2022 The GaiaBB Group
@@ -26,7 +27,6 @@
  *
  *    You should have received a copy of the GNU General Public License
  *    along with GaiaBB.  If not, see <http://www.gnu.org/licenses/>.
- *
  **/
 
 define('ROOT', '../');
@@ -83,8 +83,7 @@ function viewPanel()
             $groups[$i]['displayorder'] = $selForums['displayorder'];
             $groups[$i]['status'] = $selForums['status'];
             $groups[$i]['fup'] = $selForums['fup'];
-        } else
-        if ($selForums['type'] == 'forum') {
+        } elseif ($selForums['type'] == 'forum') {
             $id = ($selForums['fup'] == '') ? 0 : $selForums['fup'];
             $forums[$id][$i]['fid'] = $selForums['fid'];
             $forums[$id][$i]['name'] = htmlspecialchars($selForums['name']);
@@ -93,8 +92,7 @@ function viewPanel()
             $forums[$id][$i]['fup'] = $selForums['fup'];
             $forumlist[$i]['fid'] = $selForums['fid'];
             $forumlist[$i]['name'] = $selForums['name'];
-        } else
-        if ($selForums['type'] == 'sub') {
+        } elseif ($selForums['type'] == 'sub') {
             $subs[$selForums['fup']][$i]['fid'] = $selForums['fid'];
             $subs[$selForums['fup']][$i]['name'] = htmlspecialchars($selForums['name']);
             $subs[$selForums['fup']][$i]['displayorder'] = $selForums['displayorder'];
@@ -115,7 +113,7 @@ function viewPanel()
     <td class="category"><font color="<?php echo $THEME['cattext'] ?>"><strong><?php echo $lang['textforumopts'] ?></strong></font></td>
     </tr>
     <?php
-foreach ($forums[0] as $forum) {
+    foreach ($forums[0] as $forum) {
         $on = $off = '';
         switch ($forum['status']) {
             case 'on':
@@ -146,7 +144,7 @@ foreach ($forums[0] as $forum) {
         <a href="cp_forums.php?fdetails=<?php echo $forum['fid'] ?>"><?php echo $lang['textmoreopts'] ?></a></td>
         </tr>
         <?php
-if (array_key_exists($forum['fid'], $subs)) {
+        if (array_key_exists($forum['fid'], $subs)) {
             foreach ($subs[$forum['fid']] as $subforum) {
                 $on = $off = '';
                 switch ($subforum['status']) {
@@ -169,7 +167,7 @@ if (array_key_exists($forum['fid'], $subs)) {
                 </select> &nbsp;
                 <select name="moveto<?php echo $subforum['fid'] ?>">
                 <?php
-foreach ($forumlist as $moveforum) {
+                foreach ($forumlist as $moveforum) {
                     if ($subforum['fup'] == $moveforum['fid']) {
                         echo '<option value="' . $moveforum['fid'] . '" selected="selected">' . stripslashes($moveforum['name']) . '</option>';
                     } else {
@@ -181,7 +179,7 @@ foreach ($forumlist as $moveforum) {
                 <a href="cp_forums.php?fdetails=<?php echo $subforum['fid'] ?>"><?php echo $lang['textmoreopts'] ?></a></td>
                 </tr>
                 <?php
-}
+            }
         }
     }
     foreach ($groups as $group) {
@@ -201,10 +199,9 @@ foreach ($forumlist as $moveforum) {
         <tr bgcolor="<?php echo $THEME['altbg1'] ?>" class="tablerow">
         <td class="smalltxt">
         <?php
-if (count($groups) != '1') {
+        if (count($groups) != '1') {
             ?>
             <input type="checkbox" name="delete<?php echo $group['fid'] ?>" value="<?php echo $group['fid'] ?>" />                     <?php
-
         }
         ?>
         <input type="text" name="name<?php echo $group['fid'] ?>" value="<?php echo stripslashes($group['name']) ?>" />
@@ -216,7 +213,7 @@ if (count($groups) != '1') {
         </td>
         </tr>
         <?php
-if (array_key_exists($group['fid'], $forums)) {
+        if (array_key_exists($group['fid'], $forums)) {
             foreach ($forums[$group['fid']] as $forum) {
                 $on = $off = '';
                 switch ($forum['status']) {
@@ -236,7 +233,7 @@ if (array_key_exists($group['fid'], $forums)) {
                 <option value="on" <?php echo $on ?>><?php echo $lang['texton'] ?></option><option value="off" <?php echo $off ?>><?php echo $lang['textoff'] ?></option></select>
                 &nbsp; <select name="moveto<?php echo $forum['fid'] ?>">
                 <?php
-foreach ($groups as $moveforum) {
+                foreach ($groups as $moveforum) {
                     if ($moveforum['fid'] == $forum['fup']) {
                         $curgroup = $selHTML;
                     } else {
@@ -249,7 +246,7 @@ foreach ($groups as $moveforum) {
                 <a href="cp_forums.php?fdetails=<?php echo $forum['fid'] ?>"><?php echo $lang['textmoreopts'] ?></a></td>
                 </tr>
                 <?php
-if (array_key_exists($forum['fid'], $subs)) {
+                if (array_key_exists($forum['fid'], $subs)) {
                     foreach ($subs[$forum['fid']] as $forum) {
                         $on = $off = '';
                         switch ($forum['status']) {
@@ -271,7 +268,7 @@ if (array_key_exists($forum['fid'], $subs)) {
                         </select>
                         &nbsp; <select name="moveto<?php echo $forum['fid'] ?>">
                         <?php
-foreach ($forumlist as $moveforum) {
+                        foreach ($forumlist as $moveforum) {
                             if ($moveforum['fid'] == $forum['fup']) {
                                 echo '<option value="' . $moveforum['fid'] . '" selected="selected">' . stripslashes($moveforum['name']) . '</option>';
                             } else {
@@ -283,7 +280,6 @@ foreach ($forumlist as $moveforum) {
                         <a href="cp_forums.php?fdetails=<?php echo $forum['fid'] ?>"><?php echo $lang['textmoreopts'] ?></a></td>
                         </tr>
                         <?php
-
                     }
                 }
             }
@@ -310,11 +306,11 @@ foreach ($forumlist as $moveforum) {
     <option value="off"><?php echo $lang['textoff'] ?></option>
     </select>
     <?php
-if (!empty($groups)) {
+    if (!empty($groups)) {
         ?>
         &nbsp; <select name="newffup">
         <?php
-foreach ($groups as $group) {
+        foreach ($groups as $group) {
             echo '<option value="' . $group['fid'] . '">' . stripslashes($group['name']) . '</option>';
         }
     }
@@ -329,17 +325,17 @@ foreach ($groups as $group) {
     <option value="off"><?php echo $lang['textoff'] ?></option>
     </select>
     <?php
-if (!empty($forumlist)) {
+    if (!empty($forumlist)) {
         ?>
         &nbsp; <select name="newsubfup">
         <?php
-foreach ($forumlist as $group) {
+        foreach ($forumlist as $group) {
             echo '<option value="' . $group['fid'] . '">' . stripslashes($group['name']) . '</option>';
         }
         ?>
         </select>
         <?php
-}
+    }
     ?>
     </td>
     </tr>
@@ -373,7 +369,7 @@ function viewDetailsPanel($fdetails)
     <td class="category" colspan="2"><font color="<?php echo $THEME['cattext'] ?>"><strong><?php echo $lang['textforumopts'] ?></strong></font></td>
     </tr>
     <?php
-$queryg = $db->query("SELECT * FROM " . X_PREFIX . "forums WHERE fid = '$fdetails'");
+    $queryg = $db->query("SELECT * FROM " . X_PREFIX . "forums WHERE fid = '$fdetails'");
     $forum = $db->fetch_array($queryg);
     $db->free_result($queryg);
     $themelist = array();
@@ -615,7 +611,7 @@ $queryg = $db->query("SELECT * FROM " . X_PREFIX . "forums WHERE fid = '$fdetail
     <td bgcolor="<?php echo $THEME['altbg1'] ?>" valign="top"><?php echo $lang['textallow'] ?></td>
     <td bgcolor="<?php echo $THEME['altbg2'] ?>" class="smalltxt">
     <?php
-printsetting6('allowsmiliesnew', 'yes', $checked1, $lang['textsmilies']);
+    printsetting6('allowsmiliesnew', 'yes', $checked1, $lang['textsmilies']);
     printsetting6('allowbbcodenew', 'yes', $checked2, $lang['textbbcode']);
     printsetting6('allowimgcodenew', 'yes', $checked3, $lang['textimgcode']);
     printsetting6('attachstatusnew', 'on', $checked4, $lang['attachments']);
@@ -629,7 +625,7 @@ printsetting6('allowsmiliesnew', 'yes', $checked1, $lang['textsmilies']);
     <td bgcolor="<?php echo $THEME['altbg2'] ?>"><?php echo $themelist ?></td>
     </tr>
     <?php
-printsetting1($lang['markthreadstatus'], 'mt_statusnew', $markthreadson, $markthreadsoff);
+    printsetting1($lang['markthreadstatus'], 'mt_statusnew', $markthreadson, $markthreadsoff);
     printsetting4($lang['markthreadopen'], 4, 'mt_opennew', 50, $forum['mt_open']);
     printsetting4($lang['markthreadclose'], 4, 'mt_closenew', 50, $forum['mt_close']);
     printsetting4($lang['topicsubjectprefixes'], 5, 'subjectprefixesnew', 50, $forum['subjectprefixes']);
@@ -695,7 +691,7 @@ printsetting1($lang['markthreadstatus'], 'mt_statusnew', $markthreadson, $markth
     </td>
     </tr>
     <?php
-printsetting4($lang['textuserlist'], 5, 'userlistnew', 50, $forum['userlist']);
+    printsetting4($lang['textuserlist'], 5, 'userlistnew', 50, $forum['userlist']);
     printsetting2($lang['forumpw'], 'passwordnew', $forum['password'], 20);
     ?>
     <tr class="tablerow">
@@ -727,11 +723,11 @@ function doPanel($fdetails)
         $queryforum = $db->query("SELECT fid, type FROM " . X_PREFIX . "forums WHERE type = 'forum' OR type = 'sub'");
         $db->query("DELETE FROM " . X_PREFIX . "forums WHERE name = ''");
         while ($forum = $db->fetch_array($queryforum)) {
-            $displayorder = "displayorder".$forum['fid'];
+            $displayorder = "displayorder" . $forum['fid'];
             $displayorder = formInt($displayorder);
-            $name = "name".$forum['fid'];
+            $name = "name" . $forum['fid'];
             $name = $db->escape(decode_entities(formVar($name)));
-            $self['status'] = "status".$forum['fid'];
+            $self['status'] = "status" . $forum['fid'];
             $self['status'] = $db->escape(decode_entities(formVar($self['status'])));
             $delete = "delete$forum[fid]";
             $delete = formInt($delete);
@@ -848,7 +844,8 @@ function doPanel($fdetails)
         $postperm4 = formInt('postperm4');
 
         $subjectprefixesnew = $db->escape(decode_entities(formVar('subjectprefixesnew')));
-        $db->query("UPDATE " . X_PREFIX . "forums SET
+        $db->query(
+            "UPDATE " . X_PREFIX . "forums SET
             name = '$namenew',
             description = '$descnew',
             allowsmilies = '$allowsmiliesnew',
@@ -877,7 +874,8 @@ function doPanel($fdetails)
             mpfa = '$mpfanew',
             postcount = '$postcountnew'
             WHERE fid = '$fdetails'
-        ");
+        "
+        );
 
         $delete = formInt('delete');
         if ($delete > 0) {

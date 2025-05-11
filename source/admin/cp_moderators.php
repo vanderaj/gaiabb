@@ -1,4 +1,5 @@
 <?php
+
 /**
  * GaiaBB
  * Copyright (c) 2011-2022 The GaiaBB Group
@@ -26,7 +27,6 @@
  *
  *    You should have received a copy of the GNU General Public License
  *    along with GaiaBB.  If not, see <http://www.gnu.org/licenses/>.
- *
  **/
 
 define('ROOT', '../');
@@ -77,7 +77,7 @@ function viewPanel()
     <td><strong><font color="<?php echo $THEME['cattext'] ?>"><?php echo $lang['textmoderator'] ?></font></strong></td>
     </tr>
     <?php
-$oldfid = 0;
+    $oldfid = 0;
     $query = $db->query("SELECT f.moderator, f.name, f.fid, c.name as cat_name, c.fid as cat_fid FROM " . X_PREFIX . "forums f LEFT JOIN " . X_PREFIX . "forums c ON (f.fup = c.fid) WHERE (c.type = 'group' AND f.type = 'forum') OR (f.type = 'forum' AND f.fup = '') ORDER BY c.displayorder, f.displayorder");
     while ($forum = $db->fetch_array($query)) {
         if ($oldfid != $forum['cat_fid']) {
@@ -87,14 +87,14 @@ $oldfid = 0;
             <td colspan="2"><strong><?php echo stripslashes($forum['cat_name']) ?></strong></td>
             </tr>
             <?php
-}
+        }
         ?>
         <tr bgcolor="<?php echo $THEME['altbg2'] ?>" class="tablerow">
         <td><?php echo stripslashes($forum['name']) ?></td>
         <td><input type="text" name="mod[<?php echo $forum['fid'] ?>]" value="<?php echo stripslashes($forum['moderator']) ?>" /></td>
         </tr>
         <?php
-$querys = $db->query("SELECT name, fid, moderator FROM " . X_PREFIX . "forums WHERE fup = '$forum[fid]' AND type = 'sub'");
+        $querys = $db->query("SELECT name, fid, moderator FROM " . X_PREFIX . "forums WHERE fup = '$forum[fid]' AND type = 'sub'");
         while ($sub = $db->fetch_array($querys)) {
             ?>
             <tr bgcolor="<?php echo $THEME['altbg2'] ?>" class="tablerow">
@@ -102,7 +102,7 @@ $querys = $db->query("SELECT name, fid, moderator FROM " . X_PREFIX . "forums WH
             <td><input type="text" name="mod[<?php echo $sub['fid'] ?>]" value="<?php echo stripslashes($sub['moderator']) ?>" /></td>
             </tr>
             <?php
-}
+        }
         $db->free_result($querys);
     }
     $db->free_result($query);

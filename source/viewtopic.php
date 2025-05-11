@@ -1,4 +1,5 @@
 <?php
+
 /**
  * GaiaBB
  * Copyright (c) 2011-2022 The GaiaBB Group
@@ -26,7 +27,6 @@
  *
  *    You should have received a copy of the GNU General Public License
  *    along with GaiaBB.  If not, see <http://www.gnu.org/licenses/>.
- *
  **/
 
 if (isset($GET['action']) && $_GET['action'] == 'attachment') {
@@ -67,7 +67,7 @@ if ($goto == 'lastpost') {
         $query = $db->query("SELECT pid FROM " . X_PREFIX . "lastposts WHERE tid = '$tid' LIMIT 1");
         $pid = $db->result($query, 0);
         $db->free_result($query);
-    } else if ($fid > 0) {
+    } elseif ($fid > 0) {
         $query = $db->query("SELECT f.lastpost as tid, l.pid FROM " . X_PREFIX . "forums f LEFT JOIN " . X_PREFIX . "lastposts l ON l.tid = f.lastpost WHERE fid = '$fid' LIMIT 1");
         $lastpost = $db->fetch_array($query);
         $db->free_result($query);
@@ -173,7 +173,7 @@ $lastPid = isset($thread['lp_pid']) ? $thread['lp_pid'] : 0;
 $oldtopics = isset($_COOKIE['oldtopics']) ? $_COOKIE['oldtopics'] : '';
 if (!$oldtopics) {
     put_cookie('oldtopics', '|' . $lastPid . '|', $onlinetime + 600, $cookiepath, $cookiedomain, false, X_SET_HEADER);
-} else if (false === strpos($oldtopics, '|' . $lastPid . '|')) {
+} elseif (false === strpos($oldtopics, '|' . $lastPid . '|')) {
     $expire = $onlinetime + 600;
     $oldtopics .= $lastPid . '|';
     put_cookie('oldtopics', $oldtopics, $expire, $cookiepath, $cookiedomain, false, X_SET_HEADER);
@@ -215,7 +215,7 @@ if (isset($forum['type']) && $forum['type'] == 'forum') {
     nav(stripslashes($thread['subject']));
     btitle(stripslashes($forum['name']));
     btitle(stripslashes($thread['subject']));
-} else if (isset($forum['type']) && isset($forum['type']) == 'sub') {
+} elseif (isset($forum['type']) && isset($forum['type']) == 'sub') {
     nav('<a href="viewforum.php?fid=' . $fup['fid'] . '">' . stripslashes($fup['name']) . '</a>');
     nav('<a href="viewforum.php?fid=' . $fid . '">' . stripslashes($forum['name']) . '</a>');
     nav(stripslashes($thread['subject']));
@@ -674,7 +674,7 @@ if (empty($action)) {
                 $rank['title'] = $rankinfo['title'];
                 $rank['stars'] = $rankinfo['stars'];
                 $rank['avatarrank'] = $rankinfo['avatarrank'];
-            } else if ($post['status'] == 'Banned') {
+            } elseif ($post['status'] == 'Banned') {
                 $rank['allowavatars'] = 'no';
                 $rank['title'] = $lang['textbanned'];
                 $rank['stars'] = 0;
@@ -883,7 +883,7 @@ if (empty($action)) {
                 $post['sig'] = censor($post['sig']);
                 $post['sig'] = postify($post['sig'], 'no', 'no', $forum['allowsmilies'], $CONFIG['sigbbcode'], $forum['allowimgcode']);
                 eval("\$post['message'] .= \"" . template('viewtopic_post_sig') . "\";");
-            } else if (empty($post['sig'])) {
+            } elseif (empty($post['sig'])) {
                 $usesig = false;
                 eval("\$post['message'] .= \"" . template('viewtopic_post_nosig') . "\";");
             }
@@ -969,7 +969,7 @@ if (empty($action)) {
     loadtime();
     eval('echo "' . template('footer') . '";');
     exit;
-} else if ($action == 'attachment' && isset($forum['attachstatus']) && $forum['attachstatus'] != 'off' && $pid > 0 && $tid > 0 && $aid > 0) {
+} elseif ($action == 'attachment' && isset($forum['attachstatus']) && $forum['attachstatus'] != 'off' && $pid > 0 && $tid > 0 && $aid > 0) {
     pwverify($forum['password'], 'viewtopic.php?tid=' . $tid, $fid, true);
     if (X_GUEST && $CONFIG['viewattach'] == 'no') {
         error($lang['Download_Halt_Msg']);
@@ -1004,7 +1004,7 @@ if (empty($action)) {
 
     echo $file['attachment'];
     exit;
-} else if ($action == 'printable') {
+} elseif ($action == 'printable') {
     pwverify($forum['password'], 'viewtopic.php?tid=' . $tid, $fid, true);
 
     $querypost = $db->query("SELECT p.*, m.*,w.time FROM " . X_PREFIX . "posts p LEFT JOIN " . X_PREFIX . "members m ON m.username = p.author LEFT JOIN " . X_PREFIX . "whosonline w ON p.author = w.username WHERE p.fid = '$fid' AND p.tid = '$tid' ORDER BY p.pid $self[psorting] LIMIT $start_limit, " . $self['ppp']);

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * GaiaBB
  * Copyright (c) 2011-2022 The GaiaBB Group
@@ -26,7 +27,6 @@
  *
  *    You should have received a copy of the GNU General Public License
  *    along with GaiaBB.  If not, see <http://www.gnu.org/licenses/>.
- *
  **/
 
 define('ROOT', '../');
@@ -80,7 +80,7 @@ function viewPanel()
     <td class="title" align="center"><?php echo $lang['textadded'] ?></td>
     </tr>
     <?php
-$query = $db->query("SELECT * FROM " . X_PREFIX . "banned ORDER BY dateline");
+    $query = $db->query("SELECT * FROM " . X_PREFIX . "banned ORDER BY dateline");
     $rowsFound = $db->num_rows($query);
     while ($ipaddress = $db->fetch_array($query)) {
         for ($i = 1; $i <= 4; ++$i) {
@@ -99,7 +99,7 @@ $query = $db->query("SELECT * FROM " . X_PREFIX . "banned ORDER BY dateline");
         <td><?php echo $ipdate ?></td>
         </tr>
         <?php
-}
+    }
     $db->free_result($query);
 
     $query = $db->query("SELECT id FROM " . X_PREFIX . "banned WHERE (ip1 = '$ips[0]' OR ip1 = '-1') AND (ip2 = '$ips[1]' OR ip2 = '-1') AND (ip3 = '$ips[2]' OR ip3 = '-1') AND (ip4 = '$ips[3]' OR ip4 = '-1')");
@@ -117,7 +117,7 @@ $query = $db->query("SELECT * FROM " . X_PREFIX . "banned ORDER BY dateline");
         <td colspan="4"><?php echo $lang['textnone'] ?></td>
         </tr>
         <?php
-}
+    }
     ?>
     <tr class="tablerow">
     <td bgcolor="<?php echo $THEME['altbg1'] ?>" colspan="4"><span class="smalltxt"><?php echo $lang['currentip'] ?> <strong><?php echo $onlineip ?></strong><?php echo $warning ?><br /><?php echo $lang['multipnote'] ?></span></td>

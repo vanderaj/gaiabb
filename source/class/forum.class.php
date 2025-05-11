@@ -1,4 +1,5 @@
 <?php
+
 /**
  * GaiaBB
  * Copyright (c) 2011-2022 The GaiaBB Group
@@ -26,7 +27,6 @@
  *
  *    You should have received a copy of the GNU General Public License
  *    along with GaiaBB.  If not, see <http://www.gnu.org/licenses/>.
- *
  **/
 
 if (!defined('IN_PROGRAM') && (defined('DEBUG') && DEBUG == false)) {
@@ -68,7 +68,7 @@ class Forum
         global $db;
 
         set_time_limit(0);
-        
+
         // Forums
         $query = $db->query("SELECT fid FROM " . X_PREFIX . "forums ORDER BY fid DESC");
         while ($forums = $db->fetch_array($query)) {

@@ -25,10 +25,10 @@
  *
  *    You should have received a copy of the GNU General Public License
  *    along with GaiaBB.  If not, see <http://www.gnu.org/licenses/>.
- *
  **/
 
-function Popup(url, window_name, window_width, window_height) {
+function Popup(url, window_name, window_width, window_height)
+{
     settings =
         "toolbar=no,location=yes,directories=no," +
         "status=yes,menubar=yes,scrollbars=yes," +
@@ -36,15 +36,16 @@ function Popup(url, window_name, window_width, window_height) {
     NewWindow = window.open(url, window_name, settings);
 }
 
-function icon(theicon) {
+function icon(theicon)
+{
     AddText(theicon, messageElement);
 }
 
-function AddText(text, el) {
+function AddText(text, el)
+{
     if (el.createTextRange && el.caretPos) {
         el.caretPos.text = (el.caretPos.text.charAt(el.caretPos.text.length - 1) == ' ' ? text + ' ' : text);
-    }
-    else {
+    } else {
         el.value += text;
     }
     el.focus();

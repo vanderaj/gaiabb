@@ -1,4 +1,5 @@
 <?php
+
 /**
  * GaiaBB
  * Copyright (c) 2009-2021 The GaiaBB Project
@@ -22,8 +23,8 @@
  *
  *    You should have received a copy of the GNU General Public License
  *    along with GaiaBB.  If not, see <http://www.gnu.org/licenses/>.
- *
  **/
+
 // phpcs:disable PSR1.Files.SideEffects
 if (!defined('IN_PROGRAM') && (defined('DEBUG') && DEBUG == false)) {
     exit('This file is not designed to be called directly');
@@ -69,8 +70,8 @@ require_once '../include/functions.inc.php';
 define('DEBUG', true);
 
 if (DEBUG) {
-    error_reporting(E_ALL || E_STRICT || E_DEPRECATED);
-    define('X_SADMIN', 1); // Danger Will Robinson!
+    error_reporting(E_ALL);
+    // define('X_SADMIN', 1); // Danger Will Robinson!
     $debug_log = array();
 } else {
     // Production

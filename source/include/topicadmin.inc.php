@@ -1,4 +1,5 @@
 <?php
+
 /**
  * GaiaBB
  * Copyright (c) 2011-2022 The GaiaBB Group
@@ -26,7 +27,6 @@
  *
  *    You should have received a copy of the GNU General Public License
  *    along with GaiaBB.  If not, see <http://www.gnu.org/licenses/>.
- *
  **/
 
 if (!defined('IN_PROGRAM') && (defined('DEBUG') && DEBUG == false)) {
@@ -155,7 +155,7 @@ class mod
 
         if ($closed == 'yes') {
             $lang['textclosethread'] = $lang['textopenthread'];
-        } else if (empty($closed)) {
+        } elseif (empty($closed)) {
             $lang['textclosethread'] = $lang['textclosethread'];
         }
         eval('echo stripslashes("' . template('topicadmin_openclose') . '");');
@@ -193,7 +193,6 @@ class mod
                 $ntid = $db->insert_id();
                 $db->query("INSERT INTO " . X_PREFIX . "posts (fid, tid, author, message, subject) VALUES ('$info[fid]', '$ntid', '$info[author]', '$info[tid]', '$info[subject]')");
                 $db->query("INSERT INTO " . X_PREFIX . "lastposts (tid, uid, username, dateline, pid) SELECT '$ntid', uid, username, dateline, pid FROM " . X_PREFIX . "lastposts WHERE tid = '$info[tid]'");
-
             }
         } else {
             error($lang['errormovingthreads'], false);
@@ -230,7 +229,7 @@ class mod
 
         if ($topped == 1) {
             $db->query("UPDATE " . X_PREFIX . "threads SET topped = '0' WHERE tid = '$tid' AND fid = '$fid'");
-        } else if ($topped == 0) {
+        } elseif ($topped == 0) {
             $db->query("UPDATE " . X_PREFIX . "threads SET topped = '1' WHERE tid = '$tid' AND fid = '$fid'");
         }
         $act = ($topped ? 'untop' : 'top');
@@ -317,7 +316,6 @@ class mod
             $db->query("INSERT INTO " . X_PREFIX . "threads (tid, fid, subject, icon, views, replies, author, closed, topped) VALUES ('', '$fid', '$subject', '', '0', '0', '" . $self['username'] . "', '', '')");
             $newtid = $db->insert_id();
             $db->query("INSERT INTO " . X_PREFIX . "lastposts (tid, uid, username, dateline, pid) VALUES ('$newtid', '-', '-', '-', '-')");
-
         }
 
         if (isset($newmove)) {
@@ -751,7 +749,7 @@ class mod
         <tr bgcolor="<?php echo $THEME['altbg2'] ?>">
         <td class="tablerow"><?php echo $lang['textyesip'] ?> <strong><?php echo $ipinfo['useip'] ?></strong> - <?php echo gethostbyaddr($ipinfo['useip']) ?>
         <?php
-if (X_ADMIN) {
+        if (X_ADMIN) {
             $ip = explode('.', $ipinfo['useip']);
             $query = $db->query("SELECT * FROM " . X_PREFIX . "banned WHERE(ip1 = '$ip[0]' OR ip1 = '-1') AND(ip2 = '$ip[1]' OR ip2 = '-1') AND(ip3 = '$ip[2]' OR ip3 = '-1') AND(ip4 = '$ip[3]' OR ip4 = '-1')");
             $result = $db->fetch_array($query);
@@ -791,7 +789,7 @@ if (X_ADMIN) {
             <td class="tablerow">
             <div align="center"><input type="submit" class="submit" name="ipbansubmit" value="<?php echo $buttontext ?>" /></div>
             <?php
-}
+        }
         echo '</td></tr></table></td></tr></table></form>';
     }
 

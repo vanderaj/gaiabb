@@ -1,4 +1,5 @@
 <?php
+
 /**
  * GaiaBB
  * Copyright (c) 2011-2022 The GaiaBB Group
@@ -26,7 +27,6 @@
  *
  *    You should have received a copy of the GNU General Public License
  *    along with GaiaBB.  If not, see <http://www.gnu.org/licenses/>.
- *
  **/
 
 // check to ensure no direct viewing of page
@@ -65,8 +65,8 @@ class mysql5Php5 extends DataAccessObject
      *
      * Long description of function
      *
-     * @param    $varname    type, what it does
-     * @return   type, what the return does
+     * @param  $varname type, what it does
+     * @return type, what the return does
      */
     public function __construct()
     {
@@ -80,13 +80,12 @@ class mysql5Php5 extends DataAccessObject
      *
      * Long description of function
      *
-     * @param    $varname    type, what it does
-     * @return   type, what the return does
+     * @param  $varname type, what it does
+     * @return type, what the return does
      */
     public function connect($dbhost = "localhost", $dbuser, $dbpw, $dbname, $pconnect = 0, $force_db = false, $new_link = false, $tablepre = '')
     {
-        try
-        {
+        try {
             if (!empty($tablepre)) {
                 $this->tablepre = $tablepre;
             } else {
@@ -123,9 +122,9 @@ class mysql5Php5 extends DataAccessObject
     /**
      * panic() - an fatal error has occured. Stop right now
      *
-     * @param    $head   string, the heading of the warning
-     * @param    $msg    string, the message to display
-     * @return   Does not return
+     * @param  $head string, the heading of the warning
+     * @param  $msg  string, the message to display
+     * @return Does not return
      */
     public function panic($head, $msg)
     {
@@ -147,21 +146,21 @@ class mysql5Php5 extends DataAccessObject
         <td class="category"><font color="#000000"><strong><?php echo $head ?></strong></font></td>
         </tr>
         <tr>
-	<?php
-if (DEBUG) {
+        <?php
+        if (DEBUG) {
             ?>
         <td class="tablerow" bgcolor="#ffffff" align="left"><?php echo $msg->getMessage() ?></td>
-	<?php
-} else {?>
+            <?php
+        } else {?>
         <td class="tablerow" bgcolor="#ffffff" align="left">A suffusion of yellow. Please wait a few minutes and try again</td>
-	<?php }?>
+        <?php }?>
         </tr>
         </table>
         </td>
         </tr>
         </table>
         <?php
-$this->view_shadow();
+        $this->view_shadow();
 
         // DEBUG mode is a security issue, but with panic() we have no database context
         // => no X_SADMIN, so no error messages possible. So this code warns of bad things
@@ -207,7 +206,7 @@ $this->view_shadow();
             <tr>
             <td class="tablerow" bgcolor="#ffffff" align="left">Stack trace:<br />
             <?php
-$traces = explode('#', $msg->getTraceAsString());
+            $traces = explode('#', $msg->getTraceAsString());
             foreach ($traces as $trace) {
                 echo $trace . '<br />';
             }
@@ -219,24 +218,23 @@ $traces = explode('#', $msg->getTraceAsString());
             </tr>
             </table>
             <?php
-$this->view_shadow();
+            $this->view_shadow();
         } // end debug
         ?>
         <?php
-$this->view_footer();
+        $this->view_footer();
         exit;
     }
 
     /**
      * select_db() - select the database
      *
-     * @param    $database   string - the database name to select
-     * @return   true if success, exits if not (this is a panic)
+     * @param  $database string - the database name to select
+     * @return true if success, exits if not (this is a panic)
      */
     public function select_db($database)
     {
-        try
-        {
+        try {
             $this->db = $database;
             if ($this->conn->select_db($this->db) === false) {
                 throw new Exception("Could not locate the database. Please check the configuration.");
@@ -262,7 +260,7 @@ $this->view_footer();
      * As this is checked for every page, we only check for the settings
      * table. If the others aren't present, then we can't help that
      *
-     * @return   bool, true if success, false if fail
+     * @return bool, true if success, false if fail
      */
     public function find_database()
     {
@@ -279,7 +277,7 @@ $this->view_footer();
      *
      * If the link doesn't exist, we test for the connect error
      *
-     * @return   string, the error message
+     * @return string, the error message
      */
     public function error()
     {
@@ -295,8 +293,8 @@ $this->view_footer();
      * This frees up needed resources on intensive pages, like post.php
      * Call me often
      *
-     * @param    $result  A result set requiring to be freed
-     * @return   bool, true = success, false = failure
+     * @param  $result A result set requiring to be freed
+     * @return bool, true = success, false = failure
      */
     public function free_result($result = null)
     {
@@ -317,14 +315,14 @@ $this->view_footer();
      *
      * Use this to gather results from previous queries
      *
-     * @param    $result result set from a previously executed query
-     * @return   array of results, or null if no more results or false if no previous result set
+     * @param  $result result set from a previously executed query
+     * @return array of results, or null if no more results or false if no previous result set
      */
     public function fetch_array($query, $type = MYSQLI_ASSOC)
     {
         if ($query !== null || $query !== false) {
             return $query->fetch_array($type);
-        } else if ($this->result != null && $this->result !== true && $this->result !== false) {
+        } elseif ($this->result != null && $this->result !== true && $this->result !== false) {
             return $this->result->fetch_array($type);
         }
 
@@ -336,9 +334,9 @@ $this->view_footer();
      *
      * This is primarily used by the dbinfo admin panel
      *
-     * @param    $result     MySQL 5 query result resource
-     * @param    $field      int, the field you'd like the type of
-     * @return   string, the field name, false fail
+     * @param  $result MySQL 5 query result resource
+     * @param  $field  int, the field you'd like the type of
+     * @return string, the field name, false fail
      */
     public function field_type($result, $field)
     {
@@ -352,9 +350,9 @@ $this->view_footer();
      *
      * This is primarily used by the dbinfo admin panel
      *
-     * @param    $result     MySQL 5 query result resource
-     * @param    $field      int, the field you'd like the name of
-     * @return   string, the field name, false fail
+     * @param  $result MySQL 5 query result resource
+     * @param  $field  int, the field you'd like the name of
+     * @return string, the field name, false fail
      */
     public function field_name($result, $field)
     {
@@ -368,9 +366,9 @@ $this->view_footer();
      *
      * This is primarily used by the dbinfo admin panel
      *
-     * @param    $result     MySQL 5 query result resource
-     * @param    $field      int, the field you'd like the length of
-     * @return   string, the field name, false fail
+     * @param  $result MySQL 5 query result resource
+     * @param  $field  int, the field you'd like the length of
+     * @return string, the field name, false fail
      */
     public function field_len($result, $field)
     {
@@ -384,9 +382,9 @@ $this->view_footer();
      *
      * This is primarily used by the dbinfo admin panel
      *
-     * @param    $result     MySQL 5 query result resource
-     * @param    $field      int, the field you'd like the flags of
-     * @return   string, the field name, false fail
+     * @param  $result MySQL 5 query result resource
+     * @param  $field  int, the field you'd like the flags of
+     * @return string, the field name, false fail
      */
     public function field_flags($result, $field)
     {
@@ -400,9 +398,9 @@ $this->view_footer();
      *
      * This is primarily used by the dbinfo admin panel
      *
-     * @param    $result     MySQL 5 query result resource
-     * @param    $field      int, the field you'd like the tablename of
-     * @return   string, the field name, false fail
+     * @param  $result MySQL 5 query result resource
+     * @param  $field  int, the field you'd like the tablename of
+     * @return string, the field name, false fail
      */
     public function field_table($result, $field)
     {
@@ -420,13 +418,12 @@ $this->view_footer();
      * lots of queries in GaiaBB, so we need this for a while
      * yet.
      *
-     * @param    $sql    the SQL query
-     * @return   result set if good, false if bad
+     * @param  $sql the SQL query
+     * @return result set if good, false if bad
      */
     public function query($sql)
     {
-        try
-        {
+        try {
             $this->queryStr = $sql;
 
             if (!$this->conn) {
@@ -458,10 +455,10 @@ $this->view_footer();
     /**
      * result() - return a single value from a single value query
      *
-     * @param    $result, record set obtained from a previous query
-     * @param    $row, the row to use. Typically, it's 0
-     * @param    $field, the named field you'd like back
-     * @return   a mixed result based upon the query, false if no data
+     * @param  $result, record set obtained from a previous query
+     * @param  $row,    the row to use. Typically, it's 0
+     * @param  $field,  the named field you'd like back
+     * @return a mixed result based upon the query, false if no data
      */
     public function result($result, $row = 0, $field = null)
     {
@@ -487,14 +484,14 @@ $this->view_footer();
     /**
      * num_rows() - return the number of rows in a query
      *
-     * @param    $result  result resource
-     * @return   int, number of rows, false if failed
+     * @param  $result result resource
+     * @return int, number of rows, false if failed
      */
     public function num_rows($result)
     {
         if ($result) {
             return $result->num_rows;
-        } else if ($this->result) {
+        } elseif ($this->result) {
             return $this->result->num_rows;
         }
         return false;
@@ -503,14 +500,14 @@ $this->view_footer();
     /**
      * num_fields() - return the number of fields in a query
      *
-     * @param    $result  the result from the previous successful query
-     * @return   int, number of fields, false if failed
+     * @param  $result the result from the previous successful query
+     * @return int, number of fields, false if failed
      */
     public function num_fields($result)
     {
         if ($result !== null && $result !== false) {
             return $result->field_count;
-        } else if ($this->result !== null && $this->result !== false) {
+        } elseif ($this->result !== null && $this->result !== false) {
             return $this->result->field_count;
         }
         return false;
@@ -519,7 +516,7 @@ $this->view_footer();
     /**
      * insert_id() - find the row ID of the last query
      *
-     * @return   int if success, false if fail
+     * @return int if success, false if fail
      */
     public function insert_id()
     {
@@ -532,7 +529,7 @@ $this->view_footer();
     /**
      * getNextId() - find the next auto_increment value for any given table
      *
-     * @return   int if success, false if fail
+     * @return int if success, false if fail
      */
     public function getNextId($table = '')
     {
@@ -550,14 +547,14 @@ $this->view_footer();
     /**
      * fetch_row() - fetch a row from the result set
      *
-     * @param    $result, result set from the user
-     * @return   array of strings, the row
+     * @param  $result, result set from the user
+     * @return array of strings, the row
      */
     public function fetch_row($result)
     {
         if ($result) {
             return $result->fetch_row();
-        } else if ($this->result) {
+        } elseif ($this->result) {
             return $this->result->fetch_row();
         }
         return false;
@@ -566,7 +563,7 @@ $this->view_footer();
     /**
      * stop_timer() - start the query timer
      *
-     * @return   always returns true
+     * @return always returns true
      */
     public function start_timer()
     {
@@ -578,7 +575,7 @@ $this->view_footer();
     /**
      * stop_timer() - stop the query timer
      *
-     * @return   double, the number of seconds taken for this set of queries
+     * @return double, the number of seconds taken for this set of queries
      */
     public function stop_timer()
     {
@@ -598,14 +595,13 @@ $this->view_footer();
      * is not as fast as you'd like. Avoid using this function in
      * high performance situations
      *
-     * @param    $database   string, the database name
-     * @return   array of strings, a list of tables
+     * @param  $database string, the database name
+     * @return array of strings, a list of tables
      */
     public function getTables()
     {
         $tables = array();
-        try
-        {
+        try {
             if (!$this->conn) {
                 throw new Exception("Not connected to the database");
             }
@@ -641,7 +637,6 @@ $this->view_footer();
      * This frees up a connection if you're done with it
      * But when a page is exited, that happens anyway, so
      * don't get too worried about calling me
-     *
      */
     public function close()
     {
@@ -656,7 +651,7 @@ $this->view_footer();
     /**
      * version() - Find the version of the MySQL Server
      *
-     * @return   string, the version in "5.x.x" format
+     * @return string, the version in "5.x.x" format
      */
     public function getVersion()
     {
@@ -671,16 +666,16 @@ $this->view_footer();
      *
      * Basic SQL injection prevention
      *
-     * @param    $str    string, data to be sanitized
-     * @param    $length int, max length of the data (this function will truncate it to that)
-     * @return   string, the sanitized string
+     * @param  $str    string, data to be sanitized
+     * @param  $length int, max length of the data (this function will truncate it to that)
+     * @return string, the sanitized string
      */
     public function escape($str, $length = -1, $like = false)
     {
         if ($str == null || $str == '') {
             return '';
         }
-        
+
         if ($length != -1 && strlen($str) >= $length) {
             $str = substr($str, 0, $length);
         }
@@ -694,7 +689,7 @@ $this->view_footer();
         // Get rid of two more suspects only used in LIKE clauses.
         if ($like == false) {
             $str = str_replace('%', '\%', $str);
-//            $str = str_replace('_', '\_', $str);
+            //            $str = str_replace('_', '\_', $str);
         }
         // Encode the data
         if ($this->conn) {
@@ -707,8 +702,7 @@ $this->view_footer();
 
     public function insertAttachment($table, $aid, $tid, $pid, $filename, $filetype, $filesize, $fileheight, $filewidth, &$attachment, $downloads = 0)
     {
-        try
-        {
+        try {
             $insert_sql = "INSERT INTO " . $table . " (aid, tid, pid, filename, filetype, filesize, fileheight, filewidth, attachment, downloads) VALUES (?,?,?,?,?,?,?,?,?,?)";
 
             $statement = $this->conn->prepare($insert_sql);

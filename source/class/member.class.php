@@ -1,4 +1,5 @@
 <?php
+
 /**
  * GaiaBB
  * Copyright (c) 2011-2022 The GaiaBB Group
@@ -26,7 +27,6 @@
  *
  *    You should have received a copy of the GNU General Public License
  *    along with GaiaBB.  If not, see <http://www.gnu.org/licenses/>.
- *
  **/
 
 if (!defined('IN_PROGRAM') && (defined('DEBUG') && DEBUG == false)) {
@@ -216,7 +216,6 @@ class member
         $username = $db->result($query);
         $db->free_result($query);
         return $username;
-
     }
 
     public function findUidByUsername($username)
@@ -542,8 +541,8 @@ class member
      *
      * To encourage UID only stuff, there will not be a deleteByName() method.
      *
-     * @param   integer   $uid   the UID of the user you'd like to delete (optional)
-     * @return   mixed   the query resource if $uid is set, false otherwise
+     * @param  integer $uid the UID of the user you'd like to delete (optional)
+     * @return mixed   the query resource if $uid is set, false otherwise
      */
     public function delete($uid = 0)
     {
@@ -571,7 +570,7 @@ class member
 
         // Needs a lot of time
         set_time_limit(0);
-        
+
         // Find all posts from the user, and delete them
         $query = $db->query("DELETE FROM " . X_PREFIX . "posts WHERE author = '" . $db->escape($this->record['username']) . "'");
         $this->dirty = true;
@@ -712,7 +711,7 @@ class member
 
         // we're good to go, rename user
         set_time_limit(180);
-        
+
         $db->query("UPDATE " . X_PREFIX . "members SET username = '$userto' WHERE username = '$userfrom'");
         $db->query("UPDATE " . X_PREFIX . "addresses SET username = '$userto' WHERE username = '$userfrom'");
         $db->query("UPDATE " . X_PREFIX . "addresses SET addressname = '$userto' WHERE addressname = '$userfrom'");

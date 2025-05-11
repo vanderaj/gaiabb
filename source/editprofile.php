@@ -1,4 +1,5 @@
 <?php
+
 /**
  * GaiaBB
  * Copyright (c) 2011-2022 The GaiaBB Group
@@ -26,7 +27,6 @@
  *
  *    You should have received a copy of the GNU General Public License
  *    along with GaiaBB.  If not, see <http://www.gnu.org/licenses/>.
- *
  **/
 
 define('ROOT', './');
@@ -335,7 +335,7 @@ if (onSubmit('editsubmit')) {
         $size = getimagesize($avatar);
         if ($size === false) {
             $avatar = '';
-        } else if (($size[0] > $max_size[0] && $max_size[0] > 0) || ($size[1] > $max_size[1] && $max_size[1] > 0) && ! X_ADMIN) {
+        } elseif (($size[0] > $max_size[0] && $max_size[0] > 0) || ($size[1] > $max_size[1] && $max_size[1] > 0) && ! X_ADMIN) {
             error($lang['avatar_too_big'] . $CONFIG['max_avatar_size'] . $lang['Avatar_Pixels'], false);
         }
     }
@@ -407,7 +407,7 @@ if (onSubmit('editsubmit')) {
         if ($width > $CONFIG['avatar_max_width']) {
             $newwidth  = $CONFIG['avatar_new_width'];
             $newheight = ($newwidth / $width) * $height;
-        } else if ($height > $CONFIG['avatar_max_height']) {
+        } elseif ($height > $CONFIG['avatar_max_height']) {
             $newheight = $CONFIG['avatar_new_height'];
             $newwidth  = ($newheight / $height) * $width;
         }
@@ -458,7 +458,7 @@ if (onSubmit('editsubmit')) {
         $size = getimagesize($photo);
         if ($size === false) {
             $photo = '';
-        } else if (($size[0] > $max_size[0] && $max_size[0] > 0) || ($size[1] > $max_size[1] && $max_size[1] > 0) && ! X_ADMIN) {
+        } elseif (($size[0] > $max_size[0] && $max_size[0] > 0) || ($size[1] > $max_size[1] && $max_size[1] > 0) && ! X_ADMIN) {
             error($lang['photo_too_big'] . $CONFIG['max_photo_size'] . $lang['photo_Pixels'], false);
         }
     }
@@ -530,7 +530,7 @@ if (onSubmit('editsubmit')) {
         if ($width > $CONFIG['photo_max_width']) {
             $newwidth  = $CONFIG['photo_new_width'];
             $newheight = ($newwidth / $width) * $height;
-        } else if ($height > $CONFIG['photo_max_height']) {
+        } elseif ($height > $CONFIG['photo_max_height']) {
             $newheight = $CONFIG['photo_new_height'];
             $newwidth  = ($newheight / $height) * $width;
         }
@@ -576,7 +576,8 @@ if (onSubmit('editsubmit')) {
         $db->query("UPDATE " . X_PREFIX . "members SET photo = '' WHERE uid = '$memberid'");
     }
 
-    $db->query("UPDATE " . X_PREFIX . "members SET
+    $db->query(
+        "UPDATE " . X_PREFIX . "members SET
         email = '$email',
         site = '$site',
         aim = '$aim',
@@ -612,7 +613,8 @@ if (onSubmit('editsubmit')) {
         blog = '$blog',
         expview = '$expview'
         WHERE uid = '$memberid'
-    ");
+    "
+    );
 
     $newpassword   = trim(formVar('newpassword'));
     $newpasswordcf = trim(formVar('newpasswordcf'));

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * GaiaBB
  * Copyright (c) 2011-2022 The GaiaBB Group
@@ -26,7 +27,6 @@
  *
  *    You should have received a copy of the GNU General Public License
  *    along with GaiaBB.  If not, see <http://www.gnu.org/licenses/>.
- *
  **/
 
 define('ROOT', './');
@@ -159,7 +159,7 @@ while ($online = $db->fetch_array($q)) {
                 }
                 break;
         }
-    } else if ($online['username'] == 'xrobot123') {
+    } elseif ($online['username'] == 'xrobot123') {
         if ($THEME['riconstatus'] == 'on') {
             $icon = '<img src="' . $THEME['ricondir'] . '/online_robot.gif" alt="' . $lang['textrobot1'] . '" title="' . $lang['textrobot1'] . '" border="0px" />';
             $online['username'] = $icon . '' . $username;

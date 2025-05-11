@@ -1,4 +1,5 @@
 <?php
+
 /**
  * GaiaBB
  * Copyright (c) 2011-2022 The GaiaBB Group
@@ -26,7 +27,6 @@
  *
  *    You should have received a copy of the GNU General Public License
  *    along with GaiaBB.  If not, see <http://www.gnu.org/licenses/>.
- *
  **/
 
 define('ROOT', '../');
@@ -88,7 +88,7 @@ function viewPanel()
     <td colspan="2" class="category"><strong><font color="<?php echo $THEME['cattext'] ?>"><?php echo $lang['Smtp_Settings'] ?></font></strong></td>
     </tr>
     <?php
-printsetting1($lang['Smtp_Status'], 'smtp_statusnew', $smtp_statuson, $smtp_statusoff);
+    printsetting1($lang['Smtp_Status'], 'smtp_statusnew', $smtp_statuson, $smtp_statusoff);
     printsetting2($lang['Smtp_Server'], 'smtpServernew', $CONFIG['smtpServer'], 50);
     printsetting2($lang['Smtp_Port_Number'], 'smtpportnew', $CONFIG['smtpport'], 4);
     printsetting2($lang['Smtp_Timeout'], 'smtptimeoutnew', $CONFIG['smtptimeout'], 3);

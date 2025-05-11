@@ -1,4 +1,5 @@
 <?php
+
 /**
  * GaiaBB
  * Copyright (c) 2009-2021 The GaiaBB Project
@@ -22,8 +23,8 @@
  *
  *    You should have received a copy of the GNU General Public License
  *    along with GaiaBB.  If not, see <http://www.gnu.org/licenses/>.
- *
  **/
+
 // phpcs:disable PSR1.Files.SideEffects
 
 namespace GaiaBB;
@@ -32,7 +33,6 @@ define('X_CONVERT', 'xmb19x');
 
 class Xmb19x extends Convert
 {
-
     public function __construct()
     {
     }
@@ -42,8 +42,8 @@ class Xmb19x extends Convert
      *
      * TODO: Long description of function
      *
-     * @param $varname type,
-     *            what it does
+     * @param  $varname type,
+     *                  what it does
      * @return type, what the return does
      */
     public function disableBoards()
@@ -67,8 +67,8 @@ class Xmb19x extends Convert
      *
      * TODO: Long description of function
      *
-     * @param $varname type,
-     *            what it does
+     * @param  $varname type,
+     *                  what it does
      * @return type, what the return does
      */
     public function isAuth()
@@ -98,8 +98,8 @@ class Xmb19x extends Convert
      *
      * TODO: Long description of function
      *
-     * @param $varname type,
-     *            what it does
+     * @param  $varname type,
+     *                  what it does
      * @return type, what the return does
      */
     public function members()
@@ -113,7 +113,8 @@ class Xmb19x extends Convert
         $this->toDbHost->query("TRUNCATE " . X_PREFIX . "members");
 
         while (($row = $this->fromDbHost->fetchArray($memfromquery)) != false) {
-            $meminsert = $this->toDbHost->query("INSERT INTO `" . X_PREFIX . "members` (
+            $meminsert = $this->toDbHost->query(
+                "INSERT INTO `" . X_PREFIX . "members` (
             uid,
             username,
             password,
@@ -189,7 +190,8 @@ class Xmb19x extends Convert
             '" . $this->toDbHost->escape($row['u2ufolders']) . "',
             '" . $this->toDbHost->escape($row['saveogu2u']) . "',
             '" . $this->toDbHost->escape($row['emailonu2u']) . "'
-          )");
+          )"
+            );
 
             if ($meminsert === false) {
                 setCol($this->prgbar, '#ff0000');
@@ -205,8 +207,8 @@ class Xmb19x extends Convert
      *
      * TODO: Long description of function
      *
-     * @param $varname type,
-     *            what it does
+     * @param  $varname type,
+     *                  what it does
      * @return type, what the return does
      */
     public function posts()
@@ -234,8 +236,8 @@ class Xmb19x extends Convert
      *
      * TODO: Long description of function
      *
-     * @param $varname type,
-     *            what it does
+     * @param  $varname type,
+     *                  what it does
      * @return type, what the return does
      */
     public function polls()
@@ -323,8 +325,8 @@ class Xmb19x extends Convert
      *
      * TODO: Long description of function
      *
-     * @param $varname type,
-     *            what it does
+     * @param  $varname type,
+     *                  what it does
      * @return type, what the return does
      */
     public function ranks()
@@ -365,8 +367,8 @@ class Xmb19x extends Convert
      *
      * TODO: Long description of function
      *
-     * @param $varname type,
-     *            what it does
+     * @param  $varname type,
+     *                  what it does
      * @return type, what the return does
      */
     public function threads()
@@ -394,8 +396,8 @@ class Xmb19x extends Convert
      *
      * TODO: Long description of function
      *
-     * @param $varname type,
-     *            what it does
+     * @param  $varname type,
+     *                  what it does
      * @return type, what the return does
      */
     public function forums()
@@ -452,8 +454,8 @@ class Xmb19x extends Convert
      *
      * TODO: Long description of function
      *
-     * @param $varname type,
-     *            what it does
+     * @param  $varname type,
+     *                  what it does
      * @return type, what the return does
      */
     public function attachments()
@@ -506,8 +508,8 @@ class Xmb19x extends Convert
      *
      * TODO: Long description of function
      *
-     * @param $varname type,
-     *            what it does
+     * @param  $varname type,
+     *                  what it does
      * @return type, what the return does
      */
     public function addresses()
@@ -535,8 +537,8 @@ class Xmb19x extends Convert
      *
      * TODO: Long description of function
      *
-     * @param $varname type,
-     *            what it does
+     * @param  $varname type,
+     *                  what it does
      * @return type, what the return does
      */
     public function favorites()
@@ -564,8 +566,8 @@ class Xmb19x extends Convert
      *
      * TODO: Long description of function
      *
-     * @param $varname type,
-     *            what it does
+     * @param  $varname type,
+     *                  what it does
      * @return type, what the return does
      */
     public function subscriptions()
@@ -593,8 +595,8 @@ class Xmb19x extends Convert
      *
      * TODO: Long description of function
      *
-     * @param $varname type,
-     *            what it does
+     * @param  $varname type,
+     *                  what it does
      * @return type, what the return does
      */
     public function censors()
@@ -622,8 +624,8 @@ class Xmb19x extends Convert
      *
      * TODO: Long description of function
      *
-     * @param $varname type,
-     *            what it does
+     * @param  $varname type,
+     *                  what it does
      * @return type, what the return does
      */
     public function banned()
@@ -651,8 +653,8 @@ class Xmb19x extends Convert
      *
      * TODO: Long description of function
      *
-     * @param $varname type,
-     *            what it does
+     * @param  $varname type,
+     *                  what it does
      * @return type, what the return does
      */
     public function settings()
@@ -686,9 +688,9 @@ class Xmb19x extends Convert
     /**
      * XMB on / off to new schema
      *
-     * @param string $varname
+     * @param  string  $varname
      *            name of the variable
-     * @param boolean $glob
+     * @param  boolean $glob
      *            is this variable also a global?
      * @return string yes if set to yes, no otherwise
      */
@@ -705,8 +707,8 @@ class Xmb19x extends Convert
      *
      * TODO: Long description of function
      *
-     * @param $varname type,
-     *            what it does
+     * @param  $varname type,
+     *                  what it does
      * @return type, what the return does
      */
     public function messages()
@@ -734,8 +736,8 @@ class Xmb19x extends Convert
      *
      * TODO: Long description of function
      *
-     * @param $varname type,
-     *            what it does
+     * @param  $varname type,
+     *                  what it does
      * @return type, what the return does
      */
     public function finish()

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * GaiaBB
  * Copyright (c) 2011-2022 The GaiaBB Group
@@ -26,7 +27,6 @@
  *
  *    You should have received a copy of the GNU General Public License
  *    along with GaiaBB.  If not, see <http://www.gnu.org/licenses/>.
- *
  **/
 
 define('ROOT', './');
@@ -184,7 +184,7 @@ if ($gid == 0) {
                 if ($online['invisible'] != 0 && X_ADMIN) {
                     $onlineMembers[] = $online;
                     $hiddencount++;
-                } else if ($online['invisible'] != 0) {
+                } elseif ($online['invisible'] != 0) {
                     $hiddencount++;
                 } else {
                     $onlineMembers[] = $online;
@@ -481,7 +481,7 @@ if ($gid == 0) {
 
     if ($gueststodaycount == 0) {
         $todayguests = $lang['tgvisitno'];
-    } else if ($gueststodaycount == 1) {
+    } elseif ($gueststodaycount == 1) {
         $todayguests = $lang['tgvisit1'];
     } else {
         $todayguests = $lang['tgvisitand'] . ' <strong>' . $gueststodaycount . '</strong>' . $lang['tgvisitcount'];
@@ -498,7 +498,7 @@ if ($gid == 0) {
 
     if ($robotstodaycount == 0) {
         $todayrobots = $lang['trvisitno'];
-    } else if ($robotstodaycount == 1) {
+    } elseif ($robotstodaycount == 1) {
         $todayrobots = $lang['trvisit1'];
     } else {
         $todayrobots = $lang['trvisitand'] . '<strong>' . $robotstodaycount . '</strong>' . $lang['trvisitcount'];

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * GaiaBB
  * Copyright (c) 2011-2022 The GaiaBB Group
@@ -26,7 +27,6 @@
  *
  *    You should have received a copy of the GNU General Public License
  *    along with GaiaBB.  If not, see <http://www.gnu.org/licenses/>.
- *
  **/
 
 define('ROOT', '../');
@@ -85,7 +85,7 @@ function viewPanel()
     <td class="title" align="center"><?php echo $lang['pluglinkstatus'] ?></td>
     </tr>
     <?php
-$plugs = $db->query("SELECT * FROM " . X_PREFIX . "pluglinks ORDER BY displayorder ASC");
+    $plugs = $db->query("SELECT * FROM " . X_PREFIX . "pluglinks ORDER BY displayorder ASC");
     $rowsFound = $db->num_rows($plugs);
     while ($pluginfo = $db->fetch_array($plugs)) {
         $on = $off = '';
@@ -112,7 +112,7 @@ $plugs = $db->query("SELECT * FROM " . X_PREFIX . "pluglinks ORDER BY displayord
         </td>
         </tr>
         <?php
-}
+    }
     $db->free_result($plugs);
     if ($rowsFound < 1) {
         ?>
@@ -120,7 +120,7 @@ $plugs = $db->query("SELECT * FROM " . X_PREFIX . "pluglinks ORDER BY displayord
         <td bgcolor="<?php echo $THEME['altbg1'] ?>" class="ctrtablerow" colspan="6"><?php echo $lang['pluglinknone'] ?></td>
         </tr>
         <?php
-}
+    }
     ?>
     <tr class="category">
     <td class="title" colspan="6"><?php echo $lang['pluglinkcreate'] ?></td>
@@ -178,14 +178,16 @@ function doPanel()
             $db->query("DELETE FROM " . X_PREFIX . "pluglinks WHERE id = '$delete'");
         }
 
-        $db->query("UPDATE " . X_PREFIX . "pluglinks SET
+        $db->query(
+            "UPDATE " . X_PREFIX . "pluglinks SET
             name = '$name',
             url = '$url',
             img = '$img',
             displayorder = '$displayorder',
             status = '$status'
             WHERE id = '$pluginfo[id]'
-        ");
+        "
+        );
     }
     $db->free_result($plugs);
 

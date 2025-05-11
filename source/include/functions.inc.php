@@ -1,4 +1,5 @@
 <?php
+
 /**
  * GaiaBB
  * Copyright (c) 2011-2022 The GaiaBB Group
@@ -26,7 +27,6 @@
  *
  *    You should have received a copy of the GNU General Public License
  *    along with GaiaBB.  If not, see <http://www.gnu.org/licenses/>.
- *
  **/
 
 if (!defined('IN_PROGRAM') && (defined('DEBUG') && DEBUG == false)) {
@@ -196,7 +196,7 @@ function check_image_size($matches)
         if (($height <= $CONFIG['bbc_maxht']) && ($width <= $CONFIG['bbc_maxwd'])) {
             $n_height = $height;
             $n_width = $width;
-        } else if (($w_ratio * $height) < $CONFIG['bbc_maxht']) {
+        } elseif (($w_ratio * $height) < $CONFIG['bbc_maxht']) {
             $n_height = ceil($w_ratio * $height);
             $n_width = $CONFIG['bbc_maxwd'];
         } else {
@@ -213,9 +213,9 @@ function check_image_size($matches)
 function decode_entities($text)
 {
     if (!empty($text)) {
-        $text = html_entity_decode($text, ENT_QUOTES, "ISO-8859-1"); #NOTE: UTF-8 does not work!
-        $text = preg_replace('/&#(\d+);/m', "chr(\\1)", $text); #decimal notation
-        $text = preg_replace('/&#x([a-f0-9]+);/mi', "chr(0x\\1)", $text); #hex notation
+        $text = html_entity_decode($text, ENT_QUOTES, "ISO-8859-1"); // NOTE: UTF-8 does not work!
+        $text = preg_replace('/&#(\d+);/m', "chr(\\1)", $text); // decimal notation
+        $text = preg_replace('/&#x([a-f0-9]+);/mi', "chr(0x\\1)", $text); // hex notation
     }
     return $text;
 }
@@ -236,7 +236,6 @@ function postify($message, $smileyoff = 'no', $bbcodeoff = 'no', $allowsmilies =
     $smiliesallow = ($allowsmilies == 'yes' || $allowsmilies == 'on') ? (($smileyoff != 'off' && $smileyoff != 'yes') ? true : false) : false;
 
     if ($bballow) {
-
         if ($ismood == 'yes') {
             $message = str_replace(array('[poem]', '[/poem]', '[quote]', '[/quote]', '[code]', '[/code]', '[list]', '[/list]', '[list=1]', '[list=a]', '[list=A]', '[/list=1]', '[/list=a]', '[/list=A]'), '', $message);
         }
@@ -277,7 +276,7 @@ function postify($message, $smileyoff = 'no', $bbcodeoff = 'no', $allowsmilies =
             $check = substr_count($message, $value) - substr_count($message, $end[$key]);
             if ($check > 0) {
                 $message = $message . str_repeat($end[$key], $check);
-            } else if ($check < 0) {
+            } elseif ($check < 0) {
                 $message = str_repeat($value, abs($check)) . $message;
             }
         }
@@ -369,7 +368,7 @@ function postify($message, $smileyoff = 'no', $bbcodeoff = 'no', $allowsmilies =
         $replacements[] = '<font color="\1">\2</font>';
 
         // $patterns[] = "#\[size=([+-]?[0-9]{1,2})\](.*?)\[/size\]#Ssie";
-//        $replacements[] = '"<font style=\"font-size: ".createAbsFSizeFromRel(\'$1\').";\">".stripslashes(\'$2\')."</font>"';
+        //        $replacements[] = '"<font style=\"font-size: ".createAbsFSizeFromRel(\'$1\').";\">".stripslashes(\'$2\')."</font>"';
 
         $pattern_size = "#\[size=([+-]?[0-9]{1,2})\](.*?)\[/size\]#Ssi";
         $nessage = preg_replace_callback($pattern_size, 'fixSize', $message);
@@ -451,7 +450,7 @@ function postify($message, $smileyoff = 'no', $bbcodeoff = 'no', $allowsmilies =
         foreach ($find_code as $key => $value) {
             if (isset($checkcode) && $checkcode > 0) {
                 $message = $message . str_repeat("[/code]", $checkcode);
-            } else if (isset($checkcode) && $checkcode < 0) {
+            } elseif (isset($checkcode) && $checkcode < 0) {
                 $message = str_repeat("[code]", abs($checkcode)) . $message;
             }
         }
@@ -534,7 +533,6 @@ function forum($forum, $template)
                         $forum['moderator'][] = '<option value="viewprofile.php?memberid=' . intval($lparray['uid']) . '">' . trim($moderators[$num]) . '</option>';
                     } else {
                         $forum['moderator'][] = '<option value="viewprofile.php?memberid=' . intval($mcheck) . '">' . trim($moderators[$num]) . '</option>';
-
                     }
                 } else {
                     $forum['moderator'][] = '<option value="' . $moderators[$num] . '" disabled="disabled">' . trim($moderators[$num]) . '</option>';
@@ -585,11 +583,11 @@ function multi($num, $perpage, $page, $mpurl, $strict = false)
             } else {
                 $to = 3;
             }
-        } else if ($page == $pages) {
+        } elseif ($page == $pages) {
             $to = $pages;
-        } else if ($page == $pages - 1) {
+        } elseif ($page == $pages - 1) {
             $to = $page + 1;
-        } else if ($page == $pages - 2) {
+        } elseif ($page == $pages - 2) {
             $to = $page + 2;
         } else {
             $to = $page + 3;
@@ -630,7 +628,7 @@ function multi($num, $perpage, $page, $mpurl, $strict = false)
         } else {
             $multipage .= '&nbsp;&nbsp;<strong>' . $pages . '</strong>';
         }
-    } else if ($strict !== true) {
+    } elseif ($strict !== true) {
         return false;
     }
 
@@ -858,9 +856,11 @@ function loadtime()
 
     $footerstuff['querydump'] = '';
     if (DEBUG && DEBUGLEVEL > 0) {
-        if ((DEBUGLEVEL == 1 && X_SADMIN) ||
-            (DEBUGLEVEL == 2 && X_MEMBER) ||
-            DEBUGLEVEL == 3) {
+        if (
+            (DEBUGLEVEL == 1 && X_SADMIN)
+            || (DEBUGLEVEL == 2 && X_MEMBER)
+            || DEBUGLEVEL == 3
+        ) {
             $stuff = array();
             $stuff[] = '<table style="width: 97%;"><tr><td style="width: 2em;">#</td><td style="width: 8em;">Duration:</td><td>Query:</td></tr>';
             foreach ($db->querylist as $key => $val) {
@@ -932,7 +932,7 @@ function redirect($path, $timeout = 2, $type = X_REDIRECT_HEADER)
         setTimeout("redirect();", <?php echo ($timeout * 1000) ?>);
         </script>
         <?php
-} else {
+    } else {
         if ($timeout == 0) {
             header("Location: $path");
         } else {
@@ -1162,10 +1162,10 @@ function postperm(&$forums, $type)
                         break;
                     case 4:
                         return false;
-                        break;
+                    break;
                     default:
                         return false;
-                        break;
+                    break;
                 }
             }
             break;
@@ -1184,7 +1184,7 @@ function postperm(&$forums, $type)
                 switch ($perm) {
                     case 1:
                         return true;
-                        break;
+                    break;
                     case 5:
                         if (X_MEMBER) {
                             return true;
@@ -1203,7 +1203,7 @@ function postperm(&$forums, $type)
                     case 4:
                     default:
                         return false;
-                        break;
+                    break;
                 }
             }
             break;
@@ -1628,7 +1628,7 @@ function dump_query($resource, $header = true)
             ?>
             <tr class="category" bgcolor="<?php echo $THEME['altbg2'] ?>" align="center">
             <?php
-for ($i = 0; $i < $count; $i++) {
+            for ($i = 0; $i < $count; $i++) {
                 echo '<td align="left">';
                 echo '<strong><font color=' . $THEME['cattext'] . '>' . $db->field_name($resource, $i) . '</font></strong>';
                 echo '</td>';
@@ -1640,7 +1640,7 @@ for ($i = 0; $i < $count; $i++) {
             ?>
             <tr bgcolor="<?php echo $THEME['altbg1'] ?>" class="ctrtablerow">
             <?php
-for ($i = 0; $i < $count; $i++) {
+            for ($i = 0; $i < $count; $i++) {
                 echo '<td align="left">';
 
                 if (trim($a[$i]) == '') {
@@ -1698,7 +1698,7 @@ function put_cookie($name, $value = null, $expire = null, $path = null, $domain 
             setcookie(<?php echo $name ?>, <?php echo $value ?>, <?php echo $expire ?>, <?php echo $path ?>, <?php echo $domain ?>, <?php echo $secure ?>);
         </script>
         <?php
-return true;
+        return true;
     }
 }
 
@@ -1848,7 +1848,7 @@ function forumList($selectname = 'srchfid', $multiple = false, $allowall = true)
 
     if ($allowall) {
         $forumselect[] = '<option value="all" ' . $selHTML . '>' . $lang['textallforumsandsubs'] . '</option>';
-    } else if (!$allowall && !$multiple) {
+    } elseif (!$allowall && !$multiple) {
         $forumselect[] = '<option value="" disabled="disabled" ' . $selHTML . '>' . $lang['textforum'] . '</option>';
     }
 
@@ -1951,9 +1951,11 @@ function securityChecks()
 
     // Checks the IP-format, if it's not a IPv4, nor a IPv6 type, it will be blocked, safe to remove....
     if ($CONFIG['ipcheck'] == 'on') {
-        if (!preg_match("/^([0-9]{1,3}\.){3}[0-9]{1,3}$/i", $onlineip) &&
-            !preg_match("/^([a-z,0-9]{0,4}:){5}[a-z,0-9]{0,4}$/i", $onlineip) &&
-            !stristr($onlineip, ':::::')) {
+        if (
+            !preg_match("/^([0-9]{1,3}\.){3}[0-9]{1,3}$/i", $onlineip)
+            && !preg_match("/^([a-z,0-9]{0,4}:){5}[a-z,0-9]{0,4}$/i", $onlineip)
+            && !stristr($onlineip, ':::::')
+        ) {
             exit("Access to this website is currently not possible as your hostname/IP appears suspicous.");
         }
     }
@@ -1988,8 +1990,8 @@ function is_ip($ip)
  * number between 1..n to the user. This function's job is to turn that
  * returned number back into a partial filename in a safe way.
  *
- * @param    $instance   integer, the value from the user
- * @return   string, partial filename useful for stashing in the settings array
+ * @param  $instance integer, the value from the user
+ * @return string, partial filename useful for stashing in the settings array
  */
 function findLangName($instance)
 {
@@ -2173,11 +2175,11 @@ function getPlugLinks()
 function shortenString($string, $len = 100, $shortType = X_SHORTEN_SOFT, $ps = '...')
 {
     if (strlen($string) > $len) {
-        if (($shortType&X_SHORTEN_SOFT) === X_SHORTEN_SOFT) {
+        if (($shortType & X_SHORTEN_SOFT) === X_SHORTEN_SOFT) {
             $string = preg_replace('#^(.{0,' . $len . '})([\W].*)#', '\1' . $ps, $string);
         }
 
-        if ((strlen($string) > $len + strlen($ps)) && (($shortType&X_SHORTEN_HARD) === X_SHORTEN_HARD)) {
+        if ((strlen($string) > $len + strlen($ps)) && (($shortType & X_SHORTEN_HARD) === X_SHORTEN_HARD)) {
             $string = substr($string, 0, $len) . $ps;
         }
         return $string;

@@ -25,7 +25,6 @@
  *
  *    You should have received a copy of the GNU General Public License
  *    along with GaiaBB.  If not, see <http://www.gnu.org/licenses/>.
- *
  **/
 
 var isInit = false;
@@ -33,13 +32,15 @@ var attachNode = '';
 var layer = '';
 var clicked = 0;
 
-function init() {
+function init()
+{
     attachNode = document.getElementById('address_add');
     layer = document.getElementById('addresses');
     isInit = true;
 }
 
-function add() {
+function add()
+{
     if (!isInit) {
         init();
     }
@@ -47,8 +48,7 @@ function add() {
     if (++clicked >= 10) {
         window.alert("Max 10 addresses");
         return false;
-    }
-    else {
+    } else {
         var newChild = layer.appendChild(attachNode.cloneNode(true));
         newChild.childNodes[1].value = '';
     }

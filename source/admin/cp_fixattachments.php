@@ -1,4 +1,5 @@
 <?php
+
 /**
  * GaiaBB
  * Copyright (c) 2011-2022 The GaiaBB Group
@@ -26,7 +27,6 @@
  *
  *    You should have received a copy of the GNU General Public License
  *    along with GaiaBB.  If not, see <http://www.gnu.org/licenses/>.
- *
  **/
 
 define('ROOT', '../');
@@ -111,7 +111,6 @@ function doPanel()
         $percent = 100 / ($count2 / $count);
     }
     cp_message($count . ' ' . $lang['tool_of'] . ' ' . $count2 . ' (' . $percent . '%) ' . $lang['tool_attachments'], false, '', '</td></tr></table>', 'index.php', true, false, true);
-
 }
 
 displayAdminPanel();

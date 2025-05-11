@@ -1,4 +1,5 @@
 <?php
+
 /**
  * GaiaBB
  * Copyright (c) 2011-2022 The GaiaBB Group
@@ -26,7 +27,6 @@
  *
  *    You should have received a copy of the GNU General Public License
  *    along with GaiaBB.  If not, see <http://www.gnu.org/licenses/>.
- *
  **/
 
 define('ROOT', '../');
@@ -94,7 +94,6 @@ function viewPanel()
     </tr>
     </table>
     <?php
-
 }
 
 function doPanel()
@@ -106,7 +105,6 @@ function doPanel()
     $memObj = new member();
     $memObj->fixThreadTotals();
     cp_message($lang['tool_memthread'], false, '', '</td></tr></table>', 'index.php', true, false, true);
-
 }
 
 displayAdminPanel();

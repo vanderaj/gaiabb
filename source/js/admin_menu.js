@@ -25,7 +25,6 @@
  *
  *    You should have received a copy of the GNU General Public License
  *    along with GaiaBB.  If not, see <http://www.gnu.org/licenses/>.
- *
  **/
 
 var strIDs = getCookie('UltimaBBAdminMenu');
@@ -41,7 +40,8 @@ if (strIDs && (strIDs != '')) {
     }
 }
 
-function setCookie(name, value, expires, path, domain, secure) {
+function setCookie(name, value, expires, path, domain, secure)
+{
     var curCookie = name + "=" + escape(value) +
         ((expires) ? "; expires=" + expires.toGMTString() : "") +
         ((path) ? "; path=" + path : "") +
@@ -50,23 +50,28 @@ function setCookie(name, value, expires, path, domain, secure) {
     document.cookie = curCookie;
 }
 
-function getCookie(name) {
+function getCookie(name)
+{
     var dc = document.cookie;
     var prefix = name + "=";
     var begin = dc.indexOf("; " + prefix);
     if (begin == -1) {
         begin = dc.indexOf(prefix);
-        if (begin != 0) return null;
-    }
-    else
+        if (begin != 0) {
+            return null;
+        }
+    } else {
         begin += 2;
+    }
     var end = document.cookie.indexOf(";", begin);
-    if (end == -1)
+    if (end == -1) {
         end = dc.length;
+    }
     return unescape(dc.substring(begin + prefix.length, end));
 }
 
-function getIdsOfElements(els) {
+function getIdsOfElements(els)
+{
     ids = [];
     for (var i = 0; i < els.length; i++) {
         ids[i] = els[i].id;
@@ -74,19 +79,21 @@ function getIdsOfElements(els) {
     return ids;
 }
 
-function getElementsByClassName(classname) {
+function getElementsByClassName(classname)
+{
     var a = [];
     var re = new RegExp('\\b' + classname + '\\b');
     var els;
     if (typeof (document.all) != 'undefined') {
         els = document.all;
-    }
-    else {
+    } else {
         els = document.getElementsByTagName("*");
     }
 
     for (var n = 0; n < els.length; n++) {
-        if (re.test(els[n].className)) a.push(els[n]);
+        if (re.test(els[n].className)) {
+            a.push(els[n]);
+        }
     }
 
     return a;

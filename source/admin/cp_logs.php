@@ -1,4 +1,5 @@
 <?php
+
 /**
  * GaiaBB
  * Copyright (c) 2011-2022 The GaiaBB Group
@@ -26,7 +27,6 @@
  *
  *    You should have received a copy of the GNU General Public License
  *    along with GaiaBB.  If not, see <http://www.gnu.org/licenses/>.
- *
  **/
 
 define('ROOT', '../');
@@ -79,7 +79,7 @@ function viewModLogPanel($page)
     <td><strong><font color="<?php echo $THEME['cattext'] ?>"><?php echo $lang['actiontxt'] ?></font></strong></td>
     </tr>
     <?php
-$count = $db->result($db->query("SELECT count(fid) FROM " . X_PREFIX . "modlogs WHERE NOT (fid = '0' AND tid = '0')"), 0);
+    $count = $db->result($db->query("SELECT count(fid) FROM " . X_PREFIX . "modlogs WHERE NOT (fid = '0' AND tid = '0')"), 0);
 
     if (!isset($page) || $page < 1) {
         $page = 1;
@@ -96,7 +96,7 @@ $count = $db->result($db->query("SELECT count(fid) FROM " . X_PREFIX . "modlogs 
         $time = gmdate($self['timecode'], $recordinfo['date'] + ($self['timeoffset'] * 3600) + $self['daylightsavings']);
         if ($recordinfo['tid'] > 0 && $recordinfo['action'] != 'delete' && trim($recordinfo['subject']) != '') {
             $url = '<a href="../viewtopic.php?tid=' . $recordinfo['tid'] . '" target="_blank">' . stripslashes($recordinfo['subject']) . '</a>';
-        } else if ($recordinfo['action'] == 'delete') {
+        } elseif ($recordinfo['action'] == 'delete') {
             $recordinfo['action'] = '<strong>' . $recordinfo['action'] . '</strong>';
             $url = '&nbsp;';
         } else {
@@ -110,7 +110,7 @@ $count = $db->result($db->query("SELECT count(fid) FROM " . X_PREFIX . "modlogs 
         <td class="tablerow" bgcolor="<?php echo $THEME['altbg1'] ?>"><?php echo $recordinfo['action'] ?></td>
         </tr>
         <?php
-}
+    }
     $db->free_result($query);
 
     if ($count > $current) {
@@ -141,7 +141,7 @@ $count = $db->result($db->query("SELECT count(fid) FROM " . X_PREFIX . "modlogs 
         <td colspan="4"><?php echo $firstpage ?> <?php echo $prevpage ?> <?php echo $random_var ?> <?php echo $nextpage ?> <?php echo $lastpage ?></td>
         </tr>
         <?php
-} else {
+    } else {
         if ($page > 1) {
             $prevpage = '<a href="cp_logs.php?action=modlog&amp;page=' . ($page - 1) . '">&laquo; ' . $lang['prevpage'] . '</a>';
         }
@@ -163,7 +163,7 @@ $count = $db->result($db->query("SELECT count(fid) FROM " . X_PREFIX . "modlogs 
         <td colspan="4"><?php echo $firstpage ?> <?php echo $prevpage ?> <?php echo $random_var ?> <?php echo $nextpage ?></td>
         </tr>
         <?php
-}
+    }
 
     if ($count == 0) {
         ?>
@@ -171,7 +171,7 @@ $count = $db->result($db->query("SELECT count(fid) FROM " . X_PREFIX . "modlogs 
         <td colspan="4"><?php echo $lang['nologspresent'] ?></td>
         </tr>
         <?php
-}
+    }
     ?>
     </table>
     </td>
@@ -205,7 +205,7 @@ function viewAdminLogPanel($page)
     <td><?php echo $lang['textip'] ?>:</td>
     </tr>
     <?php
-$count = $db->result($db->query("SELECT count(fid) FROM " . X_PREFIX . "adminlogs WHERE (fid = '0' AND tid = '0')"), 0);
+    $count = $db->result($db->query("SELECT count(fid) FROM " . X_PREFIX . "adminlogs WHERE (fid = '0' AND tid = '0')"), 0);
 
     if (!isset($page) || $page < 1) {
         $page = 1;
@@ -237,7 +237,7 @@ $count = $db->result($db->query("SELECT count(fid) FROM " . X_PREFIX . "adminlog
         <td class="tablerow" bgcolor="<?php echo $THEME['altbg1'] ?>"><?php echo $action[0] ?></td>
         </tr>
         <?php
-}
+    }
     $db->free_result($query);
 
     if ($count > $current) {
@@ -268,7 +268,7 @@ $count = $db->result($db->query("SELECT count(fid) FROM " . X_PREFIX . "adminlog
         <td colspan="5"><?php echo $firstpage ?> <?php echo $prevpage ?> <?php echo $random_var ?> <?php echo $nextpage ?> <?php echo $lastpage ?></td>
         </tr>
         <?php
-} else {
+    } else {
         if ($page == 1) {
             $prevpage = '';
         } else {
@@ -284,7 +284,7 @@ $count = $db->result($db->query("SELECT count(fid) FROM " . X_PREFIX . "adminlog
         <td colspan="5"><?php echo $firstpage ?> <?php echo $prevpage ?> <?php echo $random_var ?> <?php echo $nextpage ?></td>
         </tr>
         <?php
-}
+    }
 
     if ($count == 0) {
         ?>
@@ -292,7 +292,7 @@ $count = $db->result($db->query("SELECT count(fid) FROM " . X_PREFIX . "adminlog
         <td colspan="5"><?php echo $lang['nologspresent'] ?></td>
         </tr>
         <?php
-}
+    }
     ?>
     </table>
     </td>
@@ -315,7 +315,7 @@ if ($page < 1) {
 
 if ($action == 'modlog') {
     viewModLogPanel($page);
-} else if ($action == 'cplog') {
+} elseif ($action == 'cplog') {
     viewAdminLogPanel($page);
 }
 

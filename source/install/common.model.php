@@ -1,4 +1,5 @@
 <?php
+
 /**
  * GaiaBB
  * Copyright (c) 2009-2021 The GaiaBB Project
@@ -22,8 +23,8 @@
  *
  *    You should have received a copy of the GNU General Public License
  *    along with GaiaBB.  If not, see <http://www.gnu.org/licenses/>.
- *
  **/
+
 // phpcs:disable PSR1.Files.SideEffects
 use GaiaBB\MariaDB;
 
@@ -37,7 +38,6 @@ if (!defined('IN_PROGRAM') && (defined('DEBUG') && DEBUG == false)) {
  * This will work as long as the DNS is good.
  *
  * @return type, the board's URL from headers
- *
  */
 function get_boardurl()
 {
@@ -70,10 +70,9 @@ function get_boardurl()
  *
  * TODO: Long description of function
  *
- * @param $varname type,
- *            what it does
+ * @param  $varname type,
+ *                  what it does
  * @return type, what the return does
- *
  */
 function get_config()
 {
@@ -94,10 +93,9 @@ function get_config()
  *
  * TODO: Long description of function
  *
- * @param $varname type,
- *            what it does
+ * @param  $varname type,
+ *                  what it does
  * @return type, what the return does
- *
  */
 function create_config($config)
 {
@@ -124,10 +122,9 @@ function create_config($config)
  *
  * TODO: Long description of function
  *
- * @param $varname type,
+ * @param  $varname type,
  *            what it does
  * @return type, what the return does
- *
  */
 // Create the select list for the database
 function get_db_array()
@@ -145,10 +142,9 @@ function get_db_array()
  *
  * TODO: Long description of function
  *
- * @param $varname type,
- *            what it does
+ * @param  $varname type,
+ *                  what it does
  * @return type, what the return does
- *
  */
 function get_databases()
 {
@@ -169,10 +165,9 @@ function get_databases()
  *
  * TODO: Long description of function
  *
- * @param $varname type,
- *            what it does
+ * @param  $varname type,
+ *                  what it does
  * @return type, what the return does
- *
  */
 function check_folders()
 {
@@ -237,10 +232,9 @@ function find_nonwritable_folders()
  *
  * TODO: Long description of function
  *
- * @param $varname type,
- *            what it does
+ * @param  $varname type,
+ *                  what it does
  * @return type, what the return does
- *
  */
 function check_files()
 {
@@ -399,10 +393,9 @@ function check_files()
  *
  * TODO: Long description of function
  *
- * @param $varname type,
+ * @param  $varname type,
  *            what it does
  * @return type, what the return does
- *
  */
 // Check to see if there is an existing board already configured
 function isInstalled($db = false)
@@ -415,12 +408,12 @@ function isInstalled($db = false)
         $dbname = 'DBNAME';
         $dbpw = '';
         $pconnect = false;
-        require_once ROOT . 'config.php';
+        include_once ROOT . 'config.php';
 
         if ($dbname !== "DBNAME" && file_exists(ROOT . 'db/mariadb.class.php')) {
             // Okay, it's safe to check the database as per config.php
             define('X_PREFIX', $tablepre);
-            require_once ROOT . 'db/mariadb.class.php';
+            include_once ROOT . 'db/mariadb.class.php';
 
             $db = new GaiaBB\MariaDB();
             $db->connect($dbhost, $dbuser, $dbpw, $dbname, $pconnect, false);
@@ -446,10 +439,9 @@ function isInstalled($db = false)
  *
  * TODO: Long description of function
  *
- * @param $varname type,
- *            what it does
+ * @param  $varname type,
+ *                  what it does
  * @return type, what the return does
- *
  */
 function is_admin($db, $tablepre)
 {
@@ -474,10 +466,9 @@ function is_admin($db, $tablepre)
  *
  * TODO: Long description of function
  *
- * @param $varname type,
- *            what it does
+ * @param  $varname type,
+ *                  what it does
  * @return type, what the return does
- *
  */
 function is_admin_pw_same()
 {
@@ -501,10 +492,9 @@ function is_admin_pw_same()
  *
  * TODO: Long description of function
  *
- * @param $varname type,
- *            what it does
+ * @param  $varname type,
+ *                  what it does
  * @return type, what the return does
- *
  */
 function process_admin_creds($path)
 {
@@ -523,10 +513,9 @@ function process_admin_creds($path)
  *
  * TODO: Long description of function
  *
- * @param $varname type,
- *            what it does
+ * @param  $varname type,
+ *                  what it does
  * @return type, what the return does
- *
  */
 function process_db($path)
 {
@@ -560,10 +549,9 @@ function process_db($path)
  *
  * TODO: Long description of function
  *
- * @param $varname type,
- *            what it does
+ * @param  $varname type,
+ *                  what it does
  * @return type, what the return does
- *
  */
 function process_config($path)
 {
@@ -623,10 +611,9 @@ function process_config($path)
  *
  * TODO: Long description of function
  *
- * @param $varname type,
- *            what it does
+ * @param  $varname type,
+ *                  what it does
  * @return type, what the return does
- *
  */
 function process_backup($path)
 {
@@ -641,10 +628,9 @@ function process_backup($path)
  *
  * TODO: Long description of function
  *
- * @param $varname type,
- *            what it does
+ * @param  $varname type,
+ *                  what it does
  * @return type, what the return does
- *
  */
 function createsa($db, $tablepre)
 {
@@ -666,10 +652,9 @@ function createsa($db, $tablepre)
  *
  * TODO: Long description of function
  *
- * @param $varname type,
- *            what it does
+ * @param  $varname type,
+ *                  what it does
  * @return type, what the return does
- *
  */
 function disable_gbb($db, $tablepre)
 {

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * GaiaBB
  * Copyright (c) 2009-2021 The GaiaBB Project
@@ -22,8 +23,8 @@
  *
  *    You should have received a copy of the GNU General Public License
  *    along with GaiaBB.  If not, see <http://www.gnu.org/licenses/>.
- *
  **/
+
 // phpcs:disable PSR1.Files.SideEffects
 if (!defined('IN_PROGRAM') && (defined('DEBUG') && DEBUG == false)) {
     exit('This file is not designed to be called directly');
@@ -34,10 +35,9 @@ if (!defined('IN_PROGRAM') && (defined('DEBUG') && DEBUG == false)) {
  *
  * TODO: Long description of function
  *
- * @param $varname type,
- *            what it does
+ * @param  $varname type,
+ *                  what it does
  * @return type, what the return does
- *
  */
 function install_forum($prgbar)
 {
@@ -95,19 +95,21 @@ function install_forum($prgbar)
         print_error('Configuration file', 'Please ensure that config.php has been successfully written prior to running this install.');
     }
 
-    require '../config.php';
+    include '../config.php';
 
     if ($dbname == 'DBNAME') {
         setCol($prgbar, '#ff0000');
 
         if (DEBUG) {
-            echo "<pre>" . var_export(array(
+            echo "<pre>" . var_export(
+                array(
                 $dbname,
                 $dbpw,
                 $dbhost,
                 $tablepre,
                 $dbuser,
-            )) . "</pre>";
+                )
+            ) . "</pre>";
         }
 
         print_error('Database connection', 'The config file seems to be the default. Have you configured it correctly?');
@@ -117,18 +119,20 @@ function install_forum($prgbar)
         setCol($prgbar, '#ff0000');
 
         if (DEBUG) {
-            echo "<pre>" . var_export(array(
+            echo "<pre>" . var_export(
+                array(
                 $dbname,
                 $dbpw,
                 $dbhost,
                 $tablepre,
                 $dbuser,
-            )) . "</pre>";
+                )
+            ) . "</pre>";
         }
 
         print_error('Database connection', 'The database file ' . 'db/' . $database . '.php does not exist. Please try again');
     }
-    require_once '../db/mariadb.class.php';
+    include_once '../db/mariadb.class.php';
 
     setBar($prgbar, 0.3);
 

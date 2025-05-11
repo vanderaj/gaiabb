@@ -1,4 +1,5 @@
 <?php
+
 /**
  * GaiaBB
  * Copyright (c) 2011-2022 The GaiaBB Group
@@ -26,7 +27,6 @@
  *
  *    You should have received a copy of the GNU General Public License
  *    along with GaiaBB.  If not, see <http://www.gnu.org/licenses/>.
- *
  **/
 
 // check to ensure no direct viewing of page
@@ -38,7 +38,6 @@ class pmDAO
 {
     public function __construct()
     {
-
     }
 
     public function insert_pm($to, $from, $to_uid, $from_uid, $type, $owner, $folder, $subject, $message, $isRead, $isSent, $usepmsig)
@@ -143,7 +142,8 @@ class pmModel
 
                     if (isset($_FILES['attach']) && ($attachedfile = $this->getAttachment($_FILES['attach'], $CONFIG['pmattachstatus'], $CONFIG['max_attach_size'])) !== false) {
                         $next_pmid = $db->result($db->query("SELECT last_insert_id(pmid+1) FROM " . X_PREFIX . "pm ORDER BY pmid DESC LIMIT 0,1"), 0);
-                        $db->query("INSERT INTO " . X_PREFIX . "pm_attachments (aid, pmid, filename, filetype, filesize, fileheight, filewidth, attachment, owner) VALUES " .
+                        $db->query(
+                            "INSERT INTO " . X_PREFIX . "pm_attachments (aid, pmid, filename, filetype, filesize, fileheight, filewidth, attachment, owner) VALUES " .
                             "('', '" . $next_pmid . "', " .
                             "'" . $db->escape($filename) . "', " .
                             "'" . $db->escape($filetype) . "', " .
@@ -151,7 +151,8 @@ class pmModel
                             "'" . intval($fileheight) . "', " .
                             "'" . intval($filewidth) . "', " .
                             "'" . $db->escape($attachedfile) . "', " .
-                            "'" . $db->escape($username) . "')");
+                            "'" . $db->escape($username) . "')"
+                        );
                     }
                 }
 
@@ -160,7 +161,8 @@ class pmModel
                 if (isset($self['saveogpm']) && $self['saveogpm'] == 'yes') {
                     $pm1 = $pm_dao->insert_pm($username, $self['username'], $usr_uid, $self['uid'], 'outgoing', $self['username'], 'Outbox', $subject, $message, 'no', 'yes', $usepmsig);
                     if (isset($_FILES['attach']) && ($attachedfile = $this->getAttachment($_FILES['attach'], $CONFIG['pmattachstatus'], $CONFIG['max_attach_size'])) !== false) {
-                        $db->query("INSERT INTO " . X_PREFIX . "pm_attachments (aid, pmid, filename, filetype, filesize, fileheight, filewidth, attachment, owner) VALUES " .
+                        $db->query(
+                            "INSERT INTO " . X_PREFIX . "pm_attachments (aid, pmid, filename, filetype, filesize, fileheight, filewidth, attachment, owner) VALUES " .
                             "(''," .
                             "'" . $pm1 . "'",
                             "'" . $db->escape($filename) . "', " .
@@ -169,7 +171,8 @@ class pmModel
                             "'" . intval($fileheight) . "', " .
                             "'" . intval($filewidth) . "', " .
                             "'" . $db->escape($attachedfile) . "', " .
-                            "'" . $db->escape($self['username']) . "')");
+                            "'" . $db->escape($self['username']) . "')"
+                        );
                     }
                 }
 
@@ -225,7 +228,7 @@ class pmModel
         if ($usesig == 'yes') {
             $usesigcheck = $cheHTML;
             $pmcheckhtml = '<br /><input type="checkbox" name="usesig" value="yes" ' . $usesigcheck . ' /> ' . $lang['textusesig'];
-        } else if (isset($self['sig']) && !empty($self['sig'])) {
+        } elseif (isset($self['sig']) && !empty($self['sig'])) {
             $usesigcheck = $cheHTML;
             $pmcheckhtml = '<br /><input type="checkbox" name="usesig" value="yes" ' . $usesigcheck . ' /> ' . $lang['textusesig'];
         } else {
@@ -293,14 +296,14 @@ class pmModel
                 if ($forward == 'yes') {
                     $subject = $lang['textfwd'] . ' ' . $subject;
                     $message = '[quote][i]' . $lang['origpostedby'] . ' ' . $quote['msgfrom'] . "[/i]\n" . $message . '[/quote]';
-                } else if ($reply == 'yes') {
+                } elseif ($reply == 'yes') {
                     $subject = $lang['textre'] . ' ' . $subject;
                     $message = '[quote]' . $message . '[/quote]';
                     $username = $quote['msgfrom'];
                 }
             }
             $db->free_result($query);
-        } else if (onSubmit('previewsubmit')) {
+        } elseif (onSubmit('previewsubmit')) {
             if (empty($message)) {
                 error($lang['pmempty'], false, '', '', false, true, false, true);
             }
@@ -344,7 +347,7 @@ class pmModel
 
             if ($pm['type'] == 'incoming') {
                 $db->query("UPDATE " . X_PREFIX . "pm SET readstatus = 'yes' WHERE pmid = $pm[pmid] OR (pmid = $pm[pmid]+1 AND type = 'outgoing' AND msgto = '$self[username]')");
-            } else if ($pm['type'] == 'draft') {
+            } elseif ($pm['type'] == 'draft') {
                 $db->query("UPDATE " . X_PREFIX . "pm SET readstatus = 'yes' WHERE pmid = $pm[pmid]");
             }
 
@@ -365,7 +368,7 @@ class pmModel
             if ($pm['type'] == 'draft') {
                 $sendoptions = '<input type="radio" name="mod" value="send" /> ' . $lang['textpm'] . '<br />';
                 $delchecked = $cheHTML;
-            } else if ($pm['msgfrom'] != $self['username']) {
+            } elseif ($pm['msgfrom'] != $self['username']) {
                 $sendoptions = '<input type="radio" name="mod" value="reply" ' . $cheHTML . ' /> ' . $lang['textreply'] . '<br /><input type="radio" name="mod" value="forward" /> ' . $lang['textforward'] . '<br />';
             } else {
                 $delchecked = $cheHTML;
@@ -376,9 +379,9 @@ class pmModel
                 $attachsize = $pm['filesize'];
                 if ($attachsize >= 1073741824) {
                     $attachsize = round($attachsize / 1073741824 * 100) / 100 . 'gb';
-                } else if ($attachsize >= 1048576) {
+                } elseif ($attachsize >= 1048576) {
                     $attachsize = round($attachsize / 1048576 * 100) / 100 . 'mb';
-                } else if ($attachsize >= 1024) {
+                } elseif ($attachsize >= 1024) {
                     $attachsize = round($attachsize / 1024 * 100) / 100 . 'kb';
                 } else {
                     $attachsize = $attachsize . 'b';
@@ -395,7 +398,7 @@ class pmModel
                         if (($pm['fileheight'] <= $CONFIG['max_attheight']) && ($pm['filewidth'] <= $CONFIG['max_attwidth'])) {
                             $n_height = $pm['fileheight'];
                             $n_width = $pm['filewidth'];
-                        } else if (($w_ratio * $pm['fileheight']) < $CONFIG['max_attheight']) {
+                        } elseif (($w_ratio * $pm['fileheight']) < $CONFIG['max_attheight']) {
                             $n_height = ceil($w_ratio * $pm['fileheight']);
                             $n_width = $CONFIG['max_attwidth'];
                         } else {
@@ -738,7 +741,7 @@ class pmModel
                     $online = $lang['textoffline'];
                 }
                 $pmsent = '<a href="viewprofile.php?memberid=' . rawurlencode($pm['msgfrom_uid']) . '" target="_blank">' . $pm['msgfrom'] . '</a> (' . $online . ')';
-            } else if ($pm['type'] == 'outgoing') {
+            } elseif ($pm['type'] == 'outgoing') {
                 if ($pm['msgto'] == $pm['username'] || $pm['msgto'] == $self['username']) {
                     if ($pm['invisible'] == 1) {
                         if (X_ADMIN) {
@@ -753,7 +756,7 @@ class pmModel
                     $online = $lang['textoffline'];
                 }
                 $pmsent = '<a href="viewprofile.php?memberid=' . rawurlencode($pm['msgto_uid']) . '" target="_blank">' . $pm['msgto'] . '</a> (' . $online . ')';
-            } else if ($pm['type'] == 'draft') {
+            } elseif ($pm['type'] == 'draft') {
                 $pmsent = $lang['textpmnotsent'];
             }
 
@@ -860,7 +863,11 @@ class pmModel
         global $db, $self, $lang, $CONFIG, $THEME;
         global $folderlist, $folders, $farray, $shadow, $shadow2;
 
-        if (isset($_SESSION['folder'])) {$folder = $_SESSION['folder'];} else { $folder = '';}
+        if (isset($_SESSION['folder'])) {
+            $folder = $_SESSION['folder'];
+        } else {
+            $folder = '';
+        }
 
         $pmcount = 0;
         $folders = (empty($self['pmfolders'])) ? array() : explode(',', $self['pmfolders']);

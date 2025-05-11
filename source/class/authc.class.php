@@ -1,4 +1,5 @@
 <?php
+
 /**
  * GaiaBB
  * Copyright (c) 2011-2022 The GaiaBB Group
@@ -26,7 +27,6 @@
  *
  *    You should have received a copy of the GNU General Public License
  *    along with GaiaBB.  If not, see <http://www.gnu.org/licenses/>.
- *
  **/
 
 if (!defined('IN_PROGRAM') && (defined('DEBUG') && DEBUG == false)) {
@@ -51,8 +51,7 @@ class AuthState
     public function get()
     {
         if (isset($_COOKIE['ubbstate'])) {
-            try
-            {
+            try {
                 $tmpState = $_COOKIE['ubbstate'];
 
                 $tmpState = base64_decode($tmpState, true);
@@ -62,10 +61,10 @@ class AuthState
                 }
 
                 // $this->state = mcrypt_decrypt(MCRYPT_RIJNDAEL_256, GAIABB_MASTERKEY, $tmpState, MCRYPT_MODE_ECB, mcrypt_create_iv(mcrypt_get_iv_size(MCRYPT_RIJNDAEL_256, MCRYPT_MODE_ECB), MCRYPT_RAND));
-//                if ($this->state === false)
-//                {
-//                    throw new Exception("Invalid decryption");
-//                }
+                //                if ($this->state === false)
+                //                {
+                //                    throw new Exception("Invalid decryption");
+                //                }
                 $this->state = unserialize($tmpState);
 
                 if (isset($this->state['version']) && $this->state['version'] != 1) {
@@ -99,19 +98,18 @@ class AuthState
     {
         global $onlinetime, $cookiepath, $cookiedomain;
 
-        try
-        {
+        try {
             $this->state['version'] = 1;
             $this->state['ubbuid'] = $this->ubbuid;
             $this->state['ubbpw'] = $this->ubbpw;
 
             $tmpState = serialize($this->state);
 
-//            $tmpState = mcrypt_encrypt(MCRYPT_RIJNDAEL_256, GAIABB_MASTERKEY, $tmpState, MCRYPT_MODE_ECB, mcrypt_create_iv(mcrypt_get_iv_size(MCRYPT_RIJNDAEL_256, MCRYPT_MODE_ECB), MCRYPT_RAND));
-//            if ($this->state === false)
-//            {
-//                throw new Exception("Invalid encryption");
-//            }
+            //            $tmpState = mcrypt_encrypt(MCRYPT_RIJNDAEL_256, GAIABB_MASTERKEY, $tmpState, MCRYPT_MODE_ECB, mcrypt_create_iv(mcrypt_get_iv_size(MCRYPT_RIJNDAEL_256, MCRYPT_MODE_ECB), MCRYPT_RAND));
+            //            if ($this->state === false)
+            //            {
+            //                throw new Exception("Invalid encryption");
+            //            }
             $tmpState = base64_encode($tmpState);
             $currtime = $onlinetime + (86400 * 30);
             setcookie('ubbstate', $tmpState, $currtime, $cookiepath, $cookiedomain);
@@ -198,9 +196,9 @@ class AuthC
 
         if (isset($_SESSION['ubbuid']) && $_SESSION['ubbuid'] > 0) {
             $auto = $this->autoLoginViaSession();
-        } else if (isset($_COOKIE['ubbstate'])) {
+        } elseif (isset($_COOKIE['ubbstate'])) {
             $auto = $this->autoLoginViaAuthState();
-        } else if (isset($_COOKIE['ubbuid'])) {
+        } elseif (isset($_COOKIE['ubbuid'])) {
             $auto = $this->autoLoginViaCookie();
         }
 
