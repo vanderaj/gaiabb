@@ -864,7 +864,7 @@ function loadtime()
             $stuff = array();
             $stuff[] = '<table style="width: 97%;"><tr><td style="width: 2em;">#</td><td style="width: 8em;">Duration:</td><td>Query:</td></tr>';
             foreach ($db->querylist as $key => $val) {
-                $val = mysql_syn_highlight(htmlentities($val));
+                $val = sql_syn_highlight(htmlentities($val));
                 $stuff[] = '<tr><td><strong>' . ++$key . '.</strong></td><td>' . number_format($db->querytimes[$key - 1], 8) . '</td><td>' . $val . '</td></tr>';
             }
             $stuff[] = '</table>';
@@ -1580,7 +1580,7 @@ function array_keys2keys($array, $translator)
     return $new_array;
 }
 
-function mysql_syn_highlight($query)
+function sql_syn_highlight($query)
 {
     global $tables, $tablepre;
 
