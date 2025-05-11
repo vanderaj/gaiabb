@@ -2,7 +2,7 @@
 
 /**
  * GaiaBB
- * Copyright (c) 2009-2021 The GaiaBB Project
+ * Copyright (c) 2011-2025 The GaiaBB Project
  * https://github.com/vanderaj/gaiabb
  *
  * Forked from UltimaBB's installer (ajv)
@@ -26,7 +26,6 @@
  **/
 
 // phpcs:disable PSR1.Files.SideEffects
-use GaiaBB\MariaDB;
 
 if (!defined('IN_PROGRAM') && (defined('DEBUG') && DEBUG == false)) {
     exit('This file is not designed to be called directly');
@@ -37,7 +36,7 @@ if (!defined('IN_PROGRAM') && (defined('DEBUG') && DEBUG == false)) {
  *
  * This will work as long as the DNS is good.
  *
- * @return type, the board's URL from headers
+ * @return string the board's URL from headers
  */
 function get_boardurl()
 {

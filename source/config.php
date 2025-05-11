@@ -2,7 +2,7 @@
 
 /**
  * GaiaBB
- * Copyright (c) 2009-2021 The GaiaBB Project
+ * Copyright (c) 2011-2025 The GaiaBB Project
  * https://github.com/vanderaj/gaiabb
  *
  * Forked from UltimaBB
@@ -10,7 +10,7 @@
  * (defunct)
  *
  * Forked from XMB
- * Copyright (c) 2001 - 2021 The XMB Development Team
+ * Copyright (c) 2001 - 2004 The XMB Development Team
  * https://forums.xmbforum2.com/
  *
  * This file is part of GaiaBB
