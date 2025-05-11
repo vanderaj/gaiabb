@@ -113,7 +113,7 @@ class attachment
         global $db;
 
         $aid = intval($attach['aid']);
-        if ($aid == 0 || ini_get('safe_mode')) {
+        if ($aid == 0) {
             return false;
         }
 

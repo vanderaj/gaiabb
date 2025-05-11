@@ -67,10 +67,8 @@ class Forum
     {
         global $db;
 
-        if (!((bool) ini_get('safe_mode'))) {
-            set_time_limit(0);
-        }
-
+        set_time_limit(0);
+        
         // Forums
         $query = $db->query("SELECT fid FROM " . X_PREFIX . "forums ORDER BY fid DESC");
         while ($forums = $db->fetch_array($query)) {

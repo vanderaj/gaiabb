@@ -104,9 +104,7 @@ function doPanel()
     $oToken->assert_token();
 
     $start = true;
-    if (!((bool) ini_get('safe_mode'))) {
-        set_time_limit(180);
-    }
+    set_time_limit(180);
     $tables = $db->getTables();
     $q = array();
     ?>

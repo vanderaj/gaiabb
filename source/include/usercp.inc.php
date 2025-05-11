@@ -850,9 +850,8 @@ class userObj
             $height = $size[1];
             $type = $size[2];
 
-            if (!((bool) ini_get('safe_mode'))) {
-                set_time_limit(30);
-            }
+            set_time_limit(30);
+            
             $imginfo = getimagesize($tmppath);
             $type = $imginfo[2];
 
@@ -1255,10 +1254,8 @@ class userObj
             $height = $size[1];
             $type = $size[2];
 
-            if (!((bool) ini_get('safe_mode'))) {
-                set_time_limit(30);
-            }
-
+            set_time_limit(30);
+            
             $imginfo = getimagesize($tmppath);
             $type = $imginfo[2];
 

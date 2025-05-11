@@ -124,9 +124,8 @@ function doPanel()
     global $lang, $db, $config_cache, $mailsys;
     global $oToken, $CONFIG, $self;
 
-    if (!((bool) ini_get('safe_mode'))) {
-        set_time_limit(0);
-    }
+    set_time_limit(0);
+    
     ignore_user_abort(1);
     ob_implicit_flush(1);
 

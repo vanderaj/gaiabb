@@ -570,10 +570,8 @@ class member
         }
 
         // Needs a lot of time
-        if (!((bool) ini_get('safe_mode'))) {
-            set_time_limit(0);
-        }
-
+        set_time_limit(0);
+        
         // Find all posts from the user, and delete them
         $query = $db->query("DELETE FROM " . X_PREFIX . "posts WHERE author = '" . $db->escape($this->record['username']) . "'");
         $this->dirty = true;
@@ -713,10 +711,8 @@ class member
         }
 
         // we're good to go, rename user
-        if (!((bool) ini_get('safe_mode'))) {
-            set_time_limit(180);
-        }
-
+        set_time_limit(180);
+        
         $db->query("UPDATE " . X_PREFIX . "members SET username = '$userto' WHERE username = '$userfrom'");
         $db->query("UPDATE " . X_PREFIX . "addresses SET username = '$userto' WHERE username = '$userfrom'");
         $db->query("UPDATE " . X_PREFIX . "addresses SET addressname = '$userto' WHERE addressname = '$userfrom'");

@@ -124,9 +124,8 @@ function doPanel()
     <td bgcolor="<?php echo $THEME['bordercolor'] ?>">
     <table border="0px" cellspacing="<?php echo $THEME['borderwidth'] ?>" cellpadding="<?php echo $THEME['tablespace'] ?>" width="100%">
     <?php
-if (!((bool) ini_get('safe_mode'))) {
-        set_time_limit(180);
-    }
+
+    set_time_limit(180);
 
     $tables = $db->getTables();
 
